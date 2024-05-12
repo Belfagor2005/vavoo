@@ -1,6 +1,6 @@
 <screen name="vavoo" position="0,0" size="1280,720" backgroundColor="transparent" flags="wfNoBorder">
   <widget name="name" position="21,602" size="704,40" noWrap="1" zPosition="1" transparent="1" font="Regular; 24" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
-  <widget name="menulist" position="21,141" size="712,431" backgroundColor="#30000000" zPosition="1" scrollbarMode="showNever" transparent="1" foregroundColor="#00ffffff" />
+  <widget name="menulist" position="21,141" size="710,420" backgroundColor="#30000000" zPosition="1" scrollbarMode="showNever" transparent="1" foregroundColor="#00ffffff" />
   <widget name="text" position="26,72" size="690,50" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 34" halign="center" foregroundColor="#f4b700" />
   <widget name="Title" position="26,22" size="689,40" noWrap="1" zPosition="1" transparent="1" font="Regular; 26" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
   <widget name="red" font="Regular; 20" halign="center" valign="center" position="64,662" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
