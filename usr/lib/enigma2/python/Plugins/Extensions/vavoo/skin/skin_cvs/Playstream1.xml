@@ -1,0 +1,13 @@
+<!-- Skin FullHD1 10/05/2021 -->
+<screen name="FullHD1" position="0,0" size="1920,1080" title="Player Choice" backgroundColor="#FF000000" flags="wfNoBorder">
+	<eLabel position="595,330" zPosition="-1" size="767,391" backgroundColor="#00000000" />
+	<widget name="list" position="616,401" size="726,212" zPosition="4" scrollbarMode="showOnDemand" />
+	<widget name="info" position="595,335" zPosition="4" size="764,56" font="Regular;38" foregroundColor="#ffffff" transparent="1" halign="center" valign="center" />
+	<widget name="key_red" render="Label" position="613,637" size="210,60" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_green" render="Label" position="1138,637" size="210,60" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<eLabel backgroundColor="#00ff0000" position="612,629" size="210,6" zPosition="12" />
+	<eLabel backgroundColor="#0000ff00" position="1137,630" size="210,6" zPosition="12" /> 
+
+	<widget name="progress" position="830,643" size="300,50" foregroundColor="#2a70a4" backgroundColor="#10000000" transparent="1" zPosition="5" />
+	<widget source="progresstext" render="Label" font="Regular;20" position="829,643" size="300,50" backgroundColor="#202020" transparent="1" halign="center" zPosition="6" />
+</screen>

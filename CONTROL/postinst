@@ -1,0 +1,15 @@
+#!/bin/sh
+echo "****************************************"
+echo "*Please .. Restarting Enigma2          *"
+echo "****************************************"
+echo "*       Enjoy our plugin               *"
+echo "****************************************"
+echo "*   Please .. Restarting Enigma2       *"
+echo "*    by Lululla                        *"
+echo "*     all right reserved               *"
+echo "*          no copy                     *"
+echo "****************************************"
+#init 4
+#killall -9 enigma2 > /dev/null 2>&1
+#init 3
+exit 0

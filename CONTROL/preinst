@@ -1,0 +1,23 @@
+#!/bin/sh
+if [ -d /usr/lib/python2.6 ]; then
+if [ ! -d /usr/lib/python2.7 ]; then
+echo "**********************************************************"
+echo "*                        Oooooooops                      *"
+echo "*                Not Compatible with (OE1.6)             *"
+echo "**********************************************************"
+sleep 2
+exit 1 
+fi
+fi
+echo "Checking for an older version of vavoo in the system..."
+if [ -d /usr/lib/enigma2/python/Plugins/Extensions/vavoo ]
+then
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/vavoo > /dev/null 2>&1
+echo "An older version of vavoo was found and removed"
+echo "Proceeding to installation..."
+else
+echo "TiVustream Panel was not found in the system"
+fi
+
+
+exit 0
