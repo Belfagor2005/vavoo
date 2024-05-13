@@ -116,32 +116,47 @@ class m2list(MenuList):
             self.l.setFont(0, gFont('Regular', textfont))
 
 
+Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
+              "France", "Germany", "Italy", "Netherlands",
+              "Poland", "Portugal", "Romania", "Russia",
+              "Spain", "Turkey", "United Kingdom") 
+
+
 def show_(name, link):
     res = [(name, link)]
-    if Utils.isFHD():
-        res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+    pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
+    if any(s in name for s in Panel_list):
+        pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
+    if os.path.isfile(pngx):
+        print('pngx =:', pngx)  
     else:
-        res.append(MultiContentEntryText(pos=(0, 0), size=(800, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
+        print('pngx =:', pngx)
+    if Utils.isFHD():
+        res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+    else:
+        res.append(MultiContentEntryText(pos=(85, 0), size=(500, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+    res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
     return res
 
 
-Panel_list = [
-    ('Albania'),
-    ('Arabia'),
-    ('Balkans'),
-    ('Bulgaria'),
-    ('France'),
-    ('Germany'),
-    ('Italy'),
-    ('Netherlands'),
-    ('Poland'),
-    ('Portugal'),
-    ('Romania'),
-    ('Russia'),
-    ('Spain'),
-    ('Turkey'),
-    ('United Kingdom'),
-    ]
+# Panel_list = [
+    # ('Albania'),
+    # ('Arabia'),
+    # ('Balkans'),
+    # ('Bulgaria'),
+    # ('France'),
+    # ('Germany'),
+    # ('Italy'),
+    # ('Netherlands'),
+    # ('Poland'),
+    # ('Portugal'),
+    # ('Romania'),
+    # ('Russia'),
+    # ('Spain'),
+    # ('Turkey'),
+    # ('United Kingdom'),
+    # ]
 
 
 class MainVavoo(Screen):

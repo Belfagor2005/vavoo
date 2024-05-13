@@ -1,21 +1,18 @@
 <screen name="vavoo" position="0,0" size="1920,1080" backgroundColor="transparent" flags="wfNoBorder">
-  <widget name="name" position="912,890" size="926,60" noWrap="1" zPosition="1" transparent="1" font="Regular;38" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
-  <widget name="menulist" position="124,183" size="770,680" backgroundColor="#30000000" zPosition="1" scrollbarMode="showOnDemand" transparent="1" foregroundColor="#00ffffff" />
-  <widget name="text" position="103,95" size="867,76" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 38" halign="center" foregroundColor="#f4b700" />
-  <widget name="Title" position="143,892" size="400,58" noWrap="1" zPosition="1" transparent="1" font="Regular; 34" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
+  <!-- <widget name="name" position="912,890" size="926,60" noWrap="1" zPosition="1" transparent="1" font="Regular;42" halign="center" backgroundColor="#30000000" foregroundColor="#92f1fc" /> -->
+  <widget name="name" position="138,878" size="707,76" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 42" valign="center" halign="center" foregroundColor="#92f1fc" />
+  <widget name="menulist" position="152,180" size="670,660" backgroundColor="#30000000" zPosition="1" scrollbarMode="showOnDemand" transparent="1" foregroundColor="#00ffffff" />
+  <widget name="text" position="1014,1111" size="867,76" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 38" halign="center" foregroundColor="#f4b700" />
+  <widget name="Title" position="272,1114" size="694,75" noWrap="1" zPosition="1" transparent="1" font="Regular; 34" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
   <widget name="red" font="Regular;30" halign="center" valign="center" position="37,1006" size="297,59" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
-  <widget name="green" font="Regular;30" halign="center" valign="center" position="342,1006" size="297,59" backgroundColor="#0000ff00" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
-
+  <widget name="green" font="Regular;30" halign="center" valign="center" position="342,1006" size="297,59" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
   <widget source="global.CurrentTime" render="Label" position="1612,23" size="262,76" font="Regular; 54" halign="right" backgroundColor="#30000000" transparent="1" valign="center" foregroundColor="#00ffffff">
     <convert type="ClockToText">Default</convert>
   </widget>
-
   <eLabel backgroundColor="#00ff0000" position="34,1064" size="300,6" zPosition="2" />
   <eLabel backgroundColor="#0000ff00" position="342,1064" size="300,6" zPosition="2" />  
-
   <eLabel backgroundColor="#00ffffff" position="0,979" size="1920,3" zPosition="12" />  
   <eLabel backgroundColor="#30000000" position="0,0" size="1920,1080" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
-
   <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/main.png" position="0,0" size="1920,1080" alphatest="blend" zPosition="-8" />
-  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/icon.png" position="954,611" size="256,256" alphatest="blend" zPosition="3" />
+  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/logo_vavoo.png" position="1136,610" size="256,256" alphatest="blend" zPosition="3" />
 </screen>
