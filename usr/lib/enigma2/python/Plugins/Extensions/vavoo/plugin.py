@@ -103,6 +103,12 @@ def returnIMDB(text_clear):
     return False
 
 
+def add_skin_font():
+    from enigma import addFont
+    font_path = PLUGIN_PATH + '/resolver/'
+    addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 1)
+
+
 class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
@@ -795,6 +801,7 @@ class Playstream2(
 
 def main(session, **kwargs):
     try:
+        add_skin_font()
         session.open(MainVavoo)
     except:
         import traceback
