@@ -3,8 +3,9 @@ Vavoo stream
 Enigma2 project
 
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/main.png">
+<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.jpg">
 
+<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.jpg">
 
 No video files are stored in this repository. The repository simply contains user-submitted links to publicly available video stream URLs, which to the best of our knowledge have been intentionally made publicly by the copyright holders. If any links in these playlists infringe on your rights as a copyright holder, they may be removed by sending a pull request or opening an issue.
 
