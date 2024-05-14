@@ -8,6 +8,19 @@
 ****************************************
 # --------------------#
 # Info Linuxsat-support.com  corvoboys.org
+
+put to menu.xml this:
+
+<!--  <id val="mainmenu"/>  -->
+ 
+<item weight="11" level="0" text="NSS Vavoo Stream Live" entryID="vavoo">
+<code>
+from Screens.vavoo import MainVavoo
+self.session.open(MainVavoo)  
+</code>
+</item>
+
+
 '''
 from __future__ import print_function
 from Components.AVSwitch import AVSwitch
@@ -54,7 +67,6 @@ PY3 = sys.version_info[0] == 3
 if PY3:
     bytes = bytes
     unicode = str
-    range = range
     from urllib.request import urlopen
     from urllib.request import Request
     string_types = str,
@@ -65,7 +77,6 @@ if PY3:
     MAXSIZE = sys.maxsize
 else:
     str = str
-    range = xrange
     from urllib2 import urlopen
     from urllib2 import Request
     string_types = basestring,
@@ -267,7 +278,8 @@ class m2list(MenuList):
 
 def show_(name, link):
     res = [(name, link)]
-    pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)) + "/mainmenu/vavoo_ico.png"    
+    cur_skin = config.skin.primary_skin.value.replace('/skin.xml', '')
+    pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + "/mainmenu/vavoo_ico.png"
     res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(30, 30), png=loadPNG(pngx)))
     res.append(MultiContentEntryText(pos=(60, 0), size=(1200, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res

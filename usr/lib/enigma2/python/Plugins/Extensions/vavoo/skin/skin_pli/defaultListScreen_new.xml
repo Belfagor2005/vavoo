@@ -1,5 +1,5 @@
+<!-- Skin FHD1 10/05/2024 -->
 <screen name="vavoo" position="0,0" size="1920,1080" backgroundColor="transparent" flags="wfNoBorder">
-  <!-- <widget name="name" position="912,890" size="926,60" noWrap="1" zPosition="1" transparent="1" font="Regular;42" halign="center" backgroundColor="#30000000" foregroundColor="#92f1fc" /> -->
   <widget name="name" position="138,878" size="707,76" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 42" valign="center" halign="center" foregroundColor="#00ffffff" />
   <widget name="menulist" position="152,180" size="670,643" backgroundColor="#30000000" zPosition="1" scrollbarMode="showOnDemand" transparent="1" foregroundColor="#00ffffff" />
   <widget name="text" position="1014,1111" size="867,76" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 38" halign="center" foregroundColor="#f4b700" />
