@@ -15,4 +15,5 @@
     <eLabel backgroundColor="#30000000" position="0,0" size="1280,720" transparent="0" zPosition="-9" foregroundColor="#00ffffff"/>
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/main.png" position="0,0" size="1280,720" alphatest="blend" zPosition="-8"/>
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/logo_vavoo.png" position="1148,39" size="80,80" alphatest="blend" zPosition="3"/>
+    <eLabel name="" position="1199,659" size="52,52" backgroundColor="#003e4b53" halign="center" valign="center" transparent="0" cornerRadius="26" font="Regular; 17" zPosition="3" text="INFO" />
 </screen>

@@ -63,18 +63,18 @@ if sys.version_info >= (2, 7, 9):
 
 
 def getEncodedString(value):
-	returnValue = ""
-	try:
-		returnValue = value.encode("utf-8", 'ignore')
-	except UnicodeDecodeError:
-		try:
-			returnValue = value.encode("iso8859-1", 'ignore')
-		except UnicodeDecodeError:
-			try:
-				returnValue = value.decode("cp1252").encode("utf-8")
-			except UnicodeDecodeError:
-				returnValue = "n/a"
-	return returnValue
+    returnValue = ""
+    try:
+        returnValue = value.encode("utf-8", 'ignore')
+    except UnicodeDecodeError:
+        try:
+            returnValue = value.encode("iso8859-1", 'ignore')
+        except UnicodeDecodeError:
+            try:
+                returnValue = value.decode("cp1252").encode("utf-8")
+            except UnicodeDecodeError:
+                returnValue = "n/a"
+    return returnValue
 
 
 def ensure_str(text, encoding='utf-8', errors='strict'):
@@ -505,13 +505,13 @@ def checkStr(text, encoding='utf8'):
     return text
 
 def str_encode(text, encoding="utf8"):
-	if not PY3:
-		if isinstance(text, unicode):
-			return text.encode(encoding)
-		else:
-			return text
-	else:
-		return text
+    if not PY3:
+        if isinstance(text, unicode):
+            return text.encode(encoding)
+        else:
+            return text
+    else:
+        return text
 
 def checkRedirect(url):
     # print("*** check redirect ***")

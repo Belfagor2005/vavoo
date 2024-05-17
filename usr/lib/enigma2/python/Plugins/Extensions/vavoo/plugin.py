@@ -10,6 +10,7 @@
 # Info Linuxsat-support.com  corvoboys.org
 '''
 from __future__ import print_function
+from . import _
 from . import Utils
 from . import html_conv
 from Components.AVSwitch import AVSwitch
@@ -23,15 +24,14 @@ from Components.config import config
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from Screens.Standby import Standby
 from Screens.InfoBarGenerics import InfoBarSubtitleSupport, InfoBarSummarySupport, \
     InfoBarNumberZap, InfoBarMenu, InfoBarEPG, InfoBarSeek, InfoBarMoviePlayerSummarySupport, \
     InfoBarAudioSelection, InfoBarNotifications, InfoBarServiceNotifications
 from Tools.Directories import SCOPE_PLUGINS
-try:
-    from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
-except ImportError:
-    from Tools.Directories import SCOPE_SKIN
+# try:
+    # from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
+# except ImportError:
+    # from Tools.Directories import SCOPE_SKIN
 from Tools.Directories import resolveFilename
 from enigma import RT_VALIGN_CENTER
 from enigma import RT_HALIGN_LEFT
@@ -43,7 +43,6 @@ from enigma import iPlayableService
 from enigma import iServiceInformation
 from enigma import loadPNG
 from os.path import exists as file_exists
-import base64
 import os
 import re
 import six
@@ -125,7 +124,7 @@ class m2list(MenuList):
 Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
               "France", "Germany", "Italy", "Netherlands",
               "Poland", "Portugal", "Romania", "Russia",
-              "Spain", "Turkey", "United Kingdom") 
+              "Spain", "Turkey", "United Kingdom")
 
 
 def show_(name, link):
@@ -134,7 +133,7 @@ def show_(name, link):
     if any(s in name for s in Panel_list):
         pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
     if os.path.isfile(pngx):
-        print('pngx =:', pngx)  
+        print('pngx =:', pngx)
     else:
         pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
         print('pngx =:', pngx)
@@ -187,6 +186,7 @@ class MainVavoo(Screen):
         self.url = Utils.b64decoder(stripurl)
         self['actions'] = ActionMap(['OkCancelActions',
                                      'ColorActions',
+                                     'EPGSelectActions',
                                      'DirectionActions',
                                      'MovieSelectionActions'], {'up': self.up,
                                                                 'down': self.down,
@@ -195,6 +195,7 @@ class MainVavoo(Screen):
                                                                 'ok': self.ok,
                                                                 'green': self.msgdeleteBouquets,
                                                                 'cancel': self.close,
+                                                                'info': self.info,
                                                                 'red': self.close}, -1)
         self.timer = eTimer()
         try:
@@ -203,6 +204,10 @@ class MainVavoo(Screen):
             self.timer.callback.append(self.cat)
         # self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+
+    def info(self):
+        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\nThanks:\n@KiddaC #oktus and staff Linuxsat-support.com') % currversion, MessageBox.TYPE_INFO)
+        aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
         self[self.currentList].up()
@@ -317,6 +322,7 @@ class vavoo(Screen):
         self.url = url
         self['actions'] = ActionMap(['OkCancelActions',
                                      'ColorActions',
+                                     'EPGSelectActions',
                                      'DirectionActions',
                                      'MovieSelectionActions'], {'up': self.up,
                                                                 'down': self.down,
@@ -325,6 +331,7 @@ class vavoo(Screen):
                                                                 'ok': self.ok,
                                                                 'green': self.message2,
                                                                 'cancel': self.close,
+                                                                'info': self.info,
                                                                 'red': self.close}, -1)
         self.timer = eTimer()
         try:
@@ -333,6 +340,10 @@ class vavoo(Screen):
             self.timer.callback.append(self.cat)
         # self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+
+    def info(self):
+        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\nThanks:\n@KiddaC #oktus and staff Linuxsat-support.com') % currversion, MessageBox.TYPE_INFO)
+        aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
         self[self.currentList].up()
