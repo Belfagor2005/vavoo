@@ -1,0 +1,83 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: vavoo\n"
+"POT-Creation-Date: 2024-05-27 14:23+0300\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: biko\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: plugin.py\n"
+
+#: plugin.py:177
+msgid "Exit"
+msgstr "خروج"
+
+#: plugin.py:178
+msgid "Remove"
+msgstr "حذف "
+
+#: plugin.py:209 plugin.py:345
+#, python-format
+msgid ""
+"Vavoo Plugin v.%s\n"
+"by Lululla\n"
+"Thanks @KiddaC #oktus and staff Linuxsat-support.com"
+msgstr ""
+"البلوجين Vavoo v.%s\n"
+"بواسطة لولولا\n"
+"شكرًا @KiddaC #oktus وطاقم Linuxsat-support.com"
+
+#: plugin.py:210 plugin.py:346
+msgid "Info Vavoo"
+msgstr "معلومات فافو"
+
+#: plugin.py:277
+msgid "Remove all Vavoo Favorite Bouquet?"
+msgstr "إزالة باقة فافو المفضلة؟"
+
+#: plugin.py:295
+msgid "Vavoo Favorites List have been removed"
+msgstr "تمت إزالة قائمة مفضلات فافو"
+
+#: plugin.py:312
+msgid "Back"
+msgstr "رجوع"
+
+#: plugin.py:313
+msgid "Export"
+msgstr "تصدير "
+
+#: plugin.py:422
+msgid ""
+"Do you want to Convert to favorite .tv ?\n"
+"\n"
+"Attention!! It may take some time depending\n"
+"on the number of streams contained !!!"
+msgstr ""
+"هل تريد التحويل إلى المفضلة .tv ؟\n"
+"\n"
+"انتبه!!! قد يستغرق الأمر بعض الوقت حسب\n"
+"عدد ملفات الاستريم الموجودة !!!!"
+
+#: plugin.py:429
+#, python-format
+msgid ""
+"bouquets reloaded..\n"
+"With %s channel"
+msgstr ""
+"تم إعادة تحميل الباقاتا\n"
+"مع قناة %s"
+
+#: plugin.py:431
+msgid "Download Error"
+msgstr "خطأ بالتحميل"
+
+#: plugin.py:824
+msgid "Vavoo Stream Live"
+msgstr "مشاهده مباشر فافو"
