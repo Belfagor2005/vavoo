@@ -42,6 +42,7 @@ from enigma import gFont
 from enigma import iPlayableService
 from enigma import iServiceInformation
 from enigma import loadPNG
+from enigma import getDesktop
 from os.path import exists as file_exists
 import os
 import re
@@ -57,8 +58,8 @@ if sys.version_info >= (2, 7, 9):
     except:
         sslContext = None
 
-currversion = '1.0'
-title_plug = 'Vavoo '
+currversion = '1.1'
+title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::.. ' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 pluglogo = os.path.join(PLUGIN_PATH, 'res/pics/logo.png')
@@ -66,13 +67,21 @@ stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 searchurl = 'aHR0cHM6Ly90aXZ1c3RyZWFtLndlYnNpdGUvcGhwX2ZpbHRlci9rb2RpMTkva29kaTE5LnBocD9tb2RlPW1vdmllJnF1ZXJ5PQ=='
 _session = None
 enigma_path = '/etc/enigma2/'
-if Utils.isFHD():
+
+
+screenwidth = getDesktop(0).size()
+
+if screenwidth.width() == 2560:
+    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_pli/defaultListScreen_uhd.xml')
+    if os.path.exists('/var/lib/dpkg/status'):
+        skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')
+elif screenwidth.width() == 1920:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_pli/defaultListScreen_new.xml')
-    if Utils.DreamOS():
+    if os.path.exists('/var/lib/dpkg/status'):
         skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')
 else:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_pli/defaultListScreen.xml')
-    if Utils.DreamOS():
+    if os.path.exists('/var/lib/dpkg/status'):
         skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')
 
 
@@ -111,7 +120,12 @@ def add_skin_font():
 class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-        if Utils.isFHD():
+
+        if screenwidth.width() == 2560:
+            self.l.setItemHeight(60)
+            textfont = int(42)
+            self.l.setFont(0, gFont('Regular', textfont))
+        elif os.path.exists('/var/lib/dpkg/status'):
             self.l.setItemHeight(50)
             textfont = int(34)
             self.l.setFont(0, gFont('Regular', textfont))
@@ -137,13 +151,17 @@ def show_(name, link):
     else:
         pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
         print('pngx =:', pngx)
-    if Utils.isFHD():
-        res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
-    else:
-        res.append(MultiContentEntryText(pos=(85, 0), size=(500, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
-    res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-    return res
 
+    if screenwidth.width() == 2560:
+        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
+        res.append(MultiContentEntryText(pos=(85, 0), size=(800, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+    elif screenwidth.width() == 1920:
+        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
+        res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+    else:
+        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
+        res.append(MultiContentEntryText(pos=(85, 0), size=(500, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+    return res
 
 # Panel_list = [
     # ('Albania'),
@@ -172,11 +190,12 @@ class MainVavoo(Screen):
         Screen.__init__(self, session)
         with open(skin_path, 'r') as f:
             self.skin = f.read()
+        print('skin=', self.skin)
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove'))
-        self['Title'] = Label(title_plug)
+        self['titel'] = Label('X VAVOO')
         self['name'] = Label('')
         self['text'] = Label('Vavoo Stream Live by Lululla')
         self.currentList = 'menulist'
@@ -202,7 +221,6 @@ class MainVavoo(Screen):
             self.timer_conn = self.timer.timeout.connect(self.cat)
         except:
             self.timer.callback.append(self.cat)
-        # self.timer.callback.append(self.cat)
         self.timer.start(500, True)
 
     def info(self):
@@ -307,11 +325,12 @@ class vavoo(Screen):
         Screen.__init__(self, session)
         with open(skin_path, 'r') as f:
             self.skin = f.read()
+        print('skin=', self.skin)
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
         self['green'] = Label(_('Export'))
-        self['Title'] = Label(title_plug)
+        self['titel'] = Label('X VAVOO')
         self['name'] = Label('')
         self['text'] = Label('Vavoo Stream Live by Lululla')
         self.currentList = 'menulist'
@@ -338,7 +357,6 @@ class vavoo(Screen):
             self.timer_conn = self.timer.timeout.connect(self.cat)
         except:
             self.timer.callback.append(self.cat)
-        # self.timer.callback.append(self.cat)
         self.timer.start(500, True)
 
     def info(self):
