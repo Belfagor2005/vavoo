@@ -57,12 +57,15 @@ if sys.version_info >= (2, 7, 9):
         sslContext = ssl._create_unverified_context()
     except:
         sslContext = None
+                    
+                                        
+             
 
-currversion = '1.1'
+currversion = '1.2'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::.. ' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
-pluglogo = os.path.join(PLUGIN_PATH, 'res/pics/logo.png')
+pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 searchurl = 'aHR0cHM6Ly90aXZ1c3RyZWFtLndlYnNpdGUvcGhwX2ZpbHRlci9rb2RpMTkva29kaTE5LnBocD9tb2RlPW1vdmllJnF1ZXJ5PQ=='
 _session = None
@@ -115,6 +118,7 @@ def add_skin_font():
     from enigma import addFont
     font_path = PLUGIN_PATH + '/resolver/'
     addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 1)
+    addFont(font_path + 'lcd.ttf', 'Lcd', 100, 1)
 
 
 class m2list(MenuList):
@@ -122,16 +126,16 @@ class m2list(MenuList):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
 
         if screenwidth.width() == 2560:
-            self.l.setItemHeight(60)
+            self.l.setItemHeight(50)
             textfont = int(42)
             self.l.setFont(0, gFont('Regular', textfont))
         elif os.path.exists('/var/lib/dpkg/status'):
             self.l.setItemHeight(50)
-            textfont = int(34)
+            textfont = int(45)
             self.l.setFont(0, gFont('Regular', textfont))
         else:
             self.l.setItemHeight(50)
-            textfont = int(24)
+            textfont = int(28)
             self.l.setFont(0, gFont('Regular', textfont))
 
 
@@ -190,7 +194,7 @@ class MainVavoo(Screen):
         Screen.__init__(self, session)
         with open(skin_path, 'r') as f:
             self.skin = f.read()
-        print('skin=', self.skin)
+        print('skin MainVavoo=', self.skin)
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
@@ -325,7 +329,7 @@ class vavoo(Screen):
         Screen.__init__(self, session)
         with open(skin_path, 'r') as f:
             self.skin = f.read()
-        print('skin=', self.skin)
+        print('skin vavoo=', self.skin)
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
@@ -425,15 +429,27 @@ class vavoo(Screen):
             print(e)
 
     def ok(self):
-        name = self['menulist'].getCurrent()[0][0]
-        url = self['menulist'].getCurrent()[0][1]
         try:
-            self.play_that_shit(url, name)
+            i = self['menulist'].getSelectedIndex()
+            self.currentindex = i
+            print('self.currentindex=', self.currentindex)
+            selection = self['menulist'].l.getCurrentSelection()
+            if selection is not None:
+                item = self.cat_list[i][0]
+                print('item=', item)
+                name = item[0]
+                print('name=', name)
+                url = item[1]
+            # name = self['menulist'].getCurrent()[0][0]
+            # url = self['menulist'].getCurrent()[0][1]
+            # item = name # self.cat_list[i]
+        # self.session.open(RSSFeedScreenItemviewer, [self.feed, item, self.currentindex, self.itemlist])
+            self.play_that_shit(url, name, self.currentindex, item, self.cat_list)
         except Exception as e:
             print(e)
 
-    def play_that_shit(self, url, name):
-        self.session.open(Playstream2, name, url)
+    def play_that_shit(self, url, name, index, item, cat_list):
+        self.session.open(Playstream2, name, url, index, item, cat_list)
 
     def message2(self, answer=None):
         if answer is None:
@@ -613,12 +629,16 @@ class Playstream2(
     ALLOW_SUSPEND = True
     screen_timeout = 5000
 
-    def __init__(self, session, name, url):
+    def __init__(self, session, name, url, index, item, cat_list):
         global streaml, _session
         Screen.__init__(self, session)
         self.session = session
         _session = session
         self.skinName = 'MoviePlayer'
+        self.currentindex = index
+        self.item = item
+        self.itemscount = len(cat_list)
+        self.list = cat_list
         streaml = False
         for x in InfoBarBase, \
                 InfoBarMenu, \
@@ -642,17 +662,23 @@ class Playstream2(
                                      'MovieSelectionActions',
                                      'MediaPlayerActions',
                                      'EPGSelectActions',
-                                     'MediaPlayerSeekActions',
-                                     'ColorActions',
+                                     # 'MediaPlayerSeekActions',
+                                     # 'ColorActions',
                                      'OkCancelActions',
                                      'InfobarShowHideActions',
                                      'InfobarActions',
+                                     # 'InfobarSeekActions',
+                                     'DirectionActions',
                                      'InfobarSeekActions'], {'epg': self.showIMDB,
                                                              'info': self.showIMDB,
                                                              # 'info': self.cicleStreamType,
                                                              'tv': self.cicleStreamType,
                                                              'stop': self.leavePlayer,
                                                              'cancel': self.cancel,
+                                                             'channelDown': self.previousitem,
+                                                             'channelUp': self.nextitem,
+                                                             'down': self.previousitem,
+                                                             'up': self.nextitem,
                                                              'back': self.cancel}, -1)
         if '8088' in str(self.url):
             # self.onLayoutFinish.append(self.slinkPlay)
@@ -661,6 +687,28 @@ class Playstream2(
             # self.onLayoutFinish.append(self.cicleStreamType)
             self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
+
+    def nextitem(self):
+        currentindex = int(self.currentindex) + 1
+        if currentindex == self.itemscount:
+            currentindex = 0
+        self.currentindex = currentindex
+        i = self.currentindex
+        item = self.list[i][0]
+        self.name = item[0]
+        self.url = item[1]
+        self.cicleStreamType()
+
+    def previousitem(self):
+        currentindex = int(self.currentindex) - 1
+        if currentindex < 0:
+            currentindex = self.itemscount - 1
+        self.currentindex = currentindex
+        i = self.currentindex
+        item = self.list[i][0]
+        self.name = item[0]
+        self.url = item[1]
+        self.cicleStreamType()
 
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
@@ -689,15 +737,29 @@ class Playstream2(
             pass
 
     def av(self):
-        temp = int(self.getAspect())
-        temp = temp + 1
-        if temp > 6:
-            temp = 0
-        self.new_aspect = temp
-        self.setAspect(temp)
+        self.new_aspect += 1
+        if self.new_aspect > 6:
+            self.new_aspect = 0
+        try:
+            eAVSwitch.getInstance().setAspectRatio(self.new_aspect)
+            return VIDEO_ASPECT_RATIO_MAP[self.new_aspect]
+        except Exception as e:
+            print(e)
+            return _("Resolution Change Failed")
+
+    def nextAV(self):
+        message = self.av()
+        self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=1)
+
+    # def av(self):
+        # temp = int(self.getAspect())
+        # temp = temp + 1
+        # if temp > 6:
+            # temp = 0
+        # self.new_aspect = temp
+        # self.setAspect(temp)
 
     def showinfo(self):
-        # debug = True
         sTitle = ''
         sServiceref = ''
         try:
@@ -788,12 +850,6 @@ class Playstream2(
         print('servicetype2: ', self.servicetype)
         self.openTest(self.servicetype, url)
 
-    def up(self):
-        pass
-
-    def down(self):
-        self.up()
-
     def doEofInternal(self, playing):
         self.close()
 
@@ -838,6 +894,6 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-    icona = os.path.join(PLUGIN_PATH, 'plugin.png')
-    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icona, fnc=main)]
+    icon = os.path.join(PLUGIN_PATH, 'plugin.png')
+    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)]
     return result

@@ -1,19 +1,21 @@
 <!-- Skin HD1 10/05/2024 -->
-<screen name="vavoo" position="center,center" size="1280,720" backgroundColor="#ff000000" flags="wfNoBorder">
-    <widget name="titel" position="35,737" size="524,51" zPosition="1" transparent="1" font="Regular;26" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff"/>
-    <widget name="name" position="5,595" size="528,40" zPosition="1" transparent="1" font="Regular;34" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff"/>
-    <widget name="menulist" position="21,141" size="497,440" backgroundColor="#30000000" zPosition="1" scrollbarMode="showNever" transparent="1" foregroundColor="#00ffffff"/>
-    <widget name="text" position="565,738" size="690,50" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular;34" halign="center" foregroundColor="#f4b700"/>
-    <widget name="red" font="Regular;20" halign="center" valign="center" position="64,662" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1"/>
-    <widget name="green" font="Regular;20" halign="center" valign="center" position="229,662" size="148,32" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1"/>
-    <eLabel backgroundColor="#00ff0000" position="64,699" size="150,6" zPosition="12"/>
-    <eLabel backgroundColor="#0000ff00" position="229,699" size="150,6" zPosition="12"/>
-     <widget source="global.CurrentTime" render="Label" position="894,46" size="250,65" font="cvfont; 65" halign="right" backgroundColor="#30000000" transparent="1" valign="center" foregroundColor="#00ffffff">
+<screen name="MainVavoo" position="0,0" size="1280,720" backgroundColor="transparent" flags="wfNoBorder">
+    <widget name="name" position="15,600" size="507,46" noWrap="1" zPosition="1" transparent="1" font="cvfont; 32" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
+    <widget name="menulist" position="21,141" size="480,440" backgroundColor="#30000000" zPosition="1" scrollbarMode="showNever" transparent="1" foregroundColor="#00ffffff" />
+    <widget name="text" position="593,741" size="690,50" zPosition="1" backgroundColor="#30000000" transparent="1" font="cvfont; 34" halign="center" foregroundColor="#f4b700" />
+    <widget name="titel" position="207,750" size="364,52" noWrap="1" zPosition="1" transparent="1" font="cvfont; 26" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
+    <widget name="red" font="cvfont; 20" halign="center" valign="center" position="64,662" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
+    <widget name="green" font="cvfont; 20" halign="center" valign="center" position="229,662" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
+    <eLabel backgroundColor="#00ff0000" position="64,699" size="150,6" zPosition="12" />
+    <eLabel backgroundColor="#0000ff00" position="229,699" size="150,6" zPosition="12" />
+    <widget source="global.CurrentTime" render="Label" position="894,46" size="250,65" font="Lcd; 65" halign="right" backgroundColor="#30000000" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <eLabel backgroundColor="#00ffffff" position="0,651" size="1280,2" zPosition="2"/>
-    <eLabel backgroundColor="#30000000" position="0,0" size="1280,720" transparent="0" zPosition="-9" foregroundColor="#00ffffff"/>
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/main.png" position="0,0" size="1280,720" alphatest="on" zPosition="-8"/>
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/logo_vavoo.png" position="1148,39" size="80,80" alphatest="on" zPosition="3"/>
-    <eLabel name="" position="1199,659" size="52,52" backgroundColor="#003e4b53" halign="center" valign="center" transparent="0" font="Regular;17" zPosition="3" text="INFO" />
+    <eLabel backgroundColor="#00ffffff" position="0,651" size="1280,2" zPosition="2" />
+    <eLabel backgroundColor="#30000000" position="0,0" size="1280,720" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/main.png" position="0,0" size="1280,720" alphatest="on" zPosition="-8" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/pics/vavoo_ico.png" position="1154,48" size="60,60" scale="stretch" alphatest="on" zPosition="-8" />
+    <eLabel name="" position="1235,680" size="45,35" backgroundColor="#a64d79" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="INFO" />
+    <eLabel name="" position="1190,680" size="45,35" backgroundColor="#a64d79" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="CH+" />
+    <eLabel name="" position="1145,680" size="45,35" backgroundColor="#a64d79" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="CH-" />
 </screen>

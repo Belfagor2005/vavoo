@@ -8,7 +8,6 @@
 ****************************************
 # --------------------#
 # Info Linuxsat-support.com  corvoboys.org
-
 put to menu.xml this:
 
 <!--  <id val="mainmenu"/>  -->
@@ -101,7 +100,7 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.1'
+currversion = '1.2'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::.. ' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
@@ -277,12 +276,12 @@ Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
 def show_(name, link):
     res = [(name, link)]
     cur_skin = config.skin.primary_skin.value.replace('/skin.xml', '')
-    pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + "/mainmenu/vavoo_ico.png"
+    pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + "/vavoo/vavoo_ico.png"
     if any(s in name for s in Panel_list):
         pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/%s.png' % str(name)
     if os.path.isfile(pngx):
         print('pngx =:', pngx)
-    res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
+    res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 60), png=loadPNG(pngx)))
     res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
@@ -386,7 +385,7 @@ class MainVavoox(Screen):
         name = self['menulist'].getCurrent()[0][0]
         url = self['menulist'].getCurrent()[0][1]
         try:
-            self.session.open(vavoo, name, url)
+            self.session.open(vavoox, name, url)
         except Exception as e:
             print(e)
 
@@ -419,7 +418,7 @@ class MainVavoox(Screen):
                 raise
 
 
-class vavoo(Screen):
+class vavoox(Screen):
     def __init__(self, session, name, url):
         self.session = session
         global _session
@@ -429,7 +428,7 @@ class vavoo(Screen):
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
         self['green'] = Label(_('Export'))
-        self['Title'] = Label(title_plug)
+        self['titel'] = Label('X VAVOO')
         self['name'] = Label('')
         self['text'] = Label('Vavoo Stream Live by Lululla')
         self.currentList = 'menulist'
@@ -524,15 +523,27 @@ class vavoo(Screen):
             print(e)
 
     def ok(self):
-        name = self['menulist'].getCurrent()[0][0]
-        url = self['menulist'].getCurrent()[0][1]
         try:
-            self.play_that_shit(url, name)
+            i = self['menulist'].getSelectedIndex()
+            self.currentindex = i
+            print('self.currentindex=', self.currentindex)
+            selection = self['menulist'].l.getCurrentSelection()
+            if selection is not None:
+                item = self.cat_list[i][0]
+                print('item=', item)
+                name = item[0]
+                print('name=', name)
+                url = item[1]
+            # name = self['menulist'].getCurrent()[0][0]
+            # url = self['menulist'].getCurrent()[0][1]
+            # item = name # self.cat_list[i]
+        # self.session.open(RSSFeedScreenItemviewer, [self.feed, item, self.currentindex, self.itemlist])
+            self.play_that_shit(url, name, self.currentindex, item, self.cat_list)
         except Exception as e:
             print(e)
 
-    def play_that_shit(self, url, name):
-        self.session.open(Playstream2, name, url)
+    def play_that_shit(self, url, name, index, item, cat_list):
+        self.session.open(Playstream2, name, url, index, item, cat_list)
 
     def message2(self, answer=None):
         if answer is None:
@@ -712,12 +723,17 @@ class Playstream2(
     ALLOW_SUSPEND = True
     screen_timeout = 5000
 
-    def __init__(self, session, name, url):
+    def __init__(self, session, name, url, index, item, cat_list):
         global streaml, _session
         Screen.__init__(self, session)
         self.session = session
         _session = session
         self.skinName = 'MoviePlayer'
+        self.currentindex = index
+        self.item = item
+        self.itemscount = len(cat_list)
+        self.list = cat_list
+        streaml = False
         streaml = False
         for x in InfoBarBase, \
                 InfoBarMenu, \
@@ -741,18 +757,21 @@ class Playstream2(
                                      'MovieSelectionActions',
                                      'MediaPlayerActions',
                                      'EPGSelectActions',
-                                     'MediaPlayerSeekActions',
-                                     'ColorActions',
+                                     # 'MediaPlayerSeekActions',
+                                     # 'ColorActions',
                                      'OkCancelActions',
                                      'InfobarShowHideActions',
                                      'InfobarActions',
-                                     'InfobarSeekActions'], {'epg': self.showIMDB,
-                                                             'info': self.showIMDB,
-                                                             # 'info': self.cicleStreamType,
-                                                             'tv': self.cicleStreamType,
-                                                             'stop': self.leavePlayer,
-                                                             'cancel': self.cancel,
-                                                             'back': self.cancel}, -1)
+                                     'InfobarSeekActions',
+                                     'DirectionActions'], {'epg': self.showIMDB,
+                                                           'info': self.showIMDB,
+                                                           # 'info': self.cicleStreamType,
+                                                           'tv': self.cicleStreamType,
+                                                           'stop': self.leavePlayer,
+                                                           'cancel': self.cancel,
+                                                           'left': self.previousitem, # add
+                                                           'right': self.nextitem, # add
+                                                           'back': self.cancel}, -1)
         if '8088' in str(self.url):
             # self.onLayoutFinish.append(self.slinkPlay)
             self.onFirstExecBegin.append(self.slinkPlay)
@@ -760,6 +779,28 @@ class Playstream2(
             # self.onLayoutFinish.append(self.cicleStreamType)
             self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
+
+    def nextitem(self):
+        currentindex = int(self.currentindex) + 1
+        if currentindex == self.itemscount:
+            currentindex = 0
+        self.currentindex = currentindex
+        i = self.currentindex
+        item = self.list[i][0]
+        self.name = item[0]
+        self.url = item[1]
+        self.cicleStreamType()
+
+    def previousitem(self):
+        currentindex = int(self.currentindex) - 1
+        if currentindex < 0:
+            currentindex = self.itemscount - 1
+        self.currentindex = currentindex
+        i = self.currentindex
+        item = self.list[i][0]
+        self.name = item[0]
+        self.url = item[1]
+        self.cicleStreamType()
 
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
@@ -788,15 +829,29 @@ class Playstream2(
             pass
 
     def av(self):
-        temp = int(self.getAspect())
-        temp = temp + 1
-        if temp > 6:
-            temp = 0
-        self.new_aspect = temp
-        self.setAspect(temp)
+        self.new_aspect += 1
+        if self.new_aspect > 6:
+            self.new_aspect = 0
+        try:
+            eAVSwitch.getInstance().setAspectRatio(self.new_aspect)
+            return VIDEO_ASPECT_RATIO_MAP[self.new_aspect]
+        except Exception as e:
+            print(e)
+            return _("Resolution Change Failed")
+
+    def nextAV(self):
+        message = self.av()
+        self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=1)
+
+    # def av(self):
+        # temp = int(self.getAspect())
+        # temp = temp + 1
+        # if temp > 6:
+            # temp = 0
+        # self.new_aspect = temp
+        # self.setAspect(temp)
 
     def showinfo(self):
-        # debug = True
         sTitle = ''
         sServiceref = ''
         try:
@@ -886,12 +941,6 @@ class Playstream2(
         # self.servicetype = str(next(nextStreamType))
         print('servicetype2: ', self.servicetype)
         self.openTest(self.servicetype, url)
-
-    def up(self):
-        pass
-
-    def down(self):
-        self.up()
 
     def doEofInternal(self, playing):
         self.close()
