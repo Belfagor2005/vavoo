@@ -1,28 +1,27 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-05-29 17:44+0200\n"
+"POT-Creation-Date: 2024-05-28 18:44+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.4\n"
-"X-Poedit-Basepath: ..\n"
+"X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:187
+#: plugin.py:197
 msgid "Exit"
-msgstr ""
+msgstr "退出"
 
-#: plugin.py:188
+#: plugin.py:198
 msgid "Remove"
-msgstr ""
+msgstr "刪除我的最愛"
 
-#: plugin.py:218 plugin.py:355
+#: plugin.py:228 plugin.py:364
 #, python-format
 msgid ""
 "Vavoo Plugin v.%s\n"
@@ -30,50 +29,60 @@ msgid ""
 "Thanks:\n"
 "@KiddaC #oktus and staff Linuxsat-support.com"
 msgstr ""
+"Vavoo 外掛程式 v.%s\n"
+"來自 Lululla\n"
+"謝謝：\n"
+"@KiddaC #oktus和工作人员 Linuxsat-support.com"
 
-#: plugin.py:219 plugin.py:356
+#: plugin.py:229 plugin.py:365
 msgid "Info Vavoo"
-msgstr ""
+msgstr "關於Vavoo"
 
-#: plugin.py:287
+#: plugin.py:296
 msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr ""
+msgstr "刪除所有 Vavoo 最喜歡的花束？"
 
-#: plugin.py:305
+#: plugin.py:314
 msgid "Vavoo Favorites List have been removed"
-msgstr ""
+msgstr "Vavoo 我的最愛清單已被刪除"
 
-#: plugin.py:323
+#: plugin.py:332
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
-#: plugin.py:324
+#: plugin.py:333
 msgid "Export"
-msgstr ""
+msgstr "出口"
 
-#: plugin.py:438
+#: plugin.py:453
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
 "Attention!! It may take some time depending\n"
 "on the number of streams contained !!!"
 msgstr ""
+"您要轉換成收藏的 .tv 嗎？\n"
+"\n"
+"注意力！！這可能需要一些時間，具體取決於\n"
+"關於包含的流數！！"
 
-#: plugin.py:445
+#: plugin.py:460
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
 "With %s channel"
 msgstr ""
+"花束重新載入..\n"
+"使用 %s 通道"
 
-#: plugin.py:447
+#: plugin.py:462
 msgid "Download Error"
-msgstr ""
+msgstr "下載錯誤"
 
-#: plugin.py:730
+#: plugin.py:745
 msgid "Resolution Change Failed"
-msgstr ""
+msgstr "解析度更改失敗"
 
-#: plugin.py:883
+#: plugin.py:898
 msgid "Vavoo Stream Live"
-msgstr ""
+msgstr "Vavoo 直播"

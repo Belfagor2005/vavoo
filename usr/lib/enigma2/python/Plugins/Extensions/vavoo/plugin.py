@@ -5,9 +5,10 @@
 ****************************************
 *        coded by Lululla              *
 *             26/04/2024               *
+* thank's to @oktus for image screen   *
 ****************************************
 # --------------------#
-# Info Linuxsat-support.com  corvoboys.org
+# Info Linuxsat-support.com & corvoboys.org
 '''
 from __future__ import print_function
 from . import _
@@ -28,10 +29,6 @@ from Screens.InfoBarGenerics import InfoBarSubtitleSupport, InfoBarSummarySuppor
     InfoBarNumberZap, InfoBarMenu, InfoBarEPG, InfoBarSeek, InfoBarMoviePlayerSummarySupport, \
     InfoBarAudioSelection, InfoBarNotifications, InfoBarServiceNotifications
 from Tools.Directories import SCOPE_PLUGINS
-# try:
-    # from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
-# except ImportError:
-    # from Tools.Directories import SCOPE_SKIN
 from Tools.Directories import resolveFilename
 from enigma import RT_VALIGN_CENTER
 from enigma import RT_HALIGN_LEFT
@@ -49,7 +46,12 @@ import re
 import six
 import ssl
 import sys
-
+'''
+try:
+    from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
+except ImportError:
+    from Tools.Directories import SCOPE_SKIN
+'''
 PY3 = sys.version_info.major >= 3
 
 if sys.version_info >= (2, 7, 9):
@@ -57,21 +59,17 @@ if sys.version_info >= (2, 7, 9):
         sslContext = ssl._create_unverified_context()
     except:
         sslContext = None
-                    
-                                        
-             
+
 
 currversion = '1.2'
 title_plug = 'Vavoo'
-desc_plugin = ('..:: Vavoo by Lululla %s ::.. ' % currversion)
+desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 searchurl = 'aHR0cHM6Ly90aXZ1c3RyZWFtLndlYnNpdGUvcGhwX2ZpbHRlci9rb2RpMTkva29kaTE5LnBocD9tb2RlPW1vdmllJnF1ZXJ5PQ=='
 _session = None
 enigma_path = '/etc/enigma2/'
-
-
 screenwidth = getDesktop(0).size()
 
 if screenwidth.width() == 2560:
@@ -126,8 +124,8 @@ class m2list(MenuList):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
 
         if screenwidth.width() == 2560:
-            self.l.setItemHeight(50)
-            textfont = int(42)
+            self.l.setItemHeight(60)
+            textfont = int(44)
             self.l.setFont(0, gFont('Regular', textfont))
         elif os.path.exists('/var/lib/dpkg/status'):
             self.l.setItemHeight(50)
@@ -147,43 +145,25 @@ Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
 
 def show_(name, link):
     res = [(name, link)]
-    pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
+
+    pngx = PLUGIN_PATH + '/skin/pics/Internat.png'
     if any(s in name for s in Panel_list):
         pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
-    if os.path.isfile(pngx):
-        print('pngx =:', pngx)
     else:
         pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
         print('pngx =:', pngx)
-
-    if screenwidth.width() == 2560:
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-        res.append(MultiContentEntryText(pos=(85, 0), size=(800, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
-    elif screenwidth.width() == 1920:
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-        res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
-    else:
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-        res.append(MultiContentEntryText(pos=(85, 0), size=(500, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
-    return res
-
-# Panel_list = [
-    # ('Albania'),
-    # ('Arabia'),
-    # ('Balkans'),
-    # ('Bulgaria'),
-    # ('France'),
-    # ('Germany'),
-    # ('Italy'),
-    # ('Netherlands'),
-    # ('Poland'),
-    # ('Portugal'),
-    # ('Romania'),
-    # ('Russia'),
-    # ('Spain'),
-    # ('Turkey'),
-    # ('United Kingdom'),
-    # ]
+    if os.path.isfile(pngx):
+        # print('pngx =:', pngx)
+        if screenwidth.width() == 2560:
+            res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
+            res.append(MultiContentEntryText(pos=(90, 0), size=(800, 60), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        elif screenwidth.width() == 1920:
+            res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
+            res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        else:
+            res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
+            res.append(MultiContentEntryText(pos=(85, 0), size=(500, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        return res
 
 
 class MainVavoo(Screen):
@@ -194,14 +174,15 @@ class MainVavoo(Screen):
         Screen.__init__(self, session)
         with open(skin_path, 'r') as f:
             self.skin = f.read()
-        print('skin MainVavoo=', self.skin)
+        # print('skin MainVavoo=', self.skin)
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove'))
         self['titel'] = Label('X VAVOO')
-        self['name'] = Label('')
+        self['name'] = Label('Wait please...')
         self['text'] = Label('Vavoo Stream Live by Lululla')
+        self['version'] = Label(currversion)
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -228,7 +209,7 @@ class MainVavoo(Screen):
         self.timer.start(500, True)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\nThanks:\n@KiddaC #oktus and staff Linuxsat-support.com') % currversion, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n\n@oktus\n\nAll staff Linuxsat-support.com & Corvoboys Forum') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -282,6 +263,7 @@ class MainVavoo(Screen):
                 auswahl = self['menulist'].getCurrent()[0][0]
                 self['name'].setText(str(auswahl))
         except Exception as e:
+            self['name'].setText('Error')
             print(e)
 
     def ok(self):
@@ -329,14 +311,15 @@ class vavoo(Screen):
         Screen.__init__(self, session)
         with open(skin_path, 'r') as f:
             self.skin = f.read()
-        print('skin vavoo=', self.skin)
+        # print('skin vavoo=', self.skin)
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
         self['green'] = Label(_('Export'))
         self['titel'] = Label('X VAVOO')
-        self['name'] = Label('')
+        self['name'] = Label('Wait please...')
         self['text'] = Label('Vavoo Stream Live by Lululla')
+        self['version'] = Label(currversion)
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -364,7 +347,7 @@ class vavoo(Screen):
         self.timer.start(500, True)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\nThanks:\n@KiddaC #oktus and staff Linuxsat-support.com') % currversion, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\n\this plugin is free,\nno stream direct on server\nbut only free channel found on the net') % currversion, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -426,24 +409,18 @@ class vavoo(Screen):
                     auswahl = self['menulist'].getCurrent()[0][0]
                     self['name'].setText(str(auswahl))
         except Exception as e:
+            self['name'].setText('Error')
             print(e)
 
     def ok(self):
         try:
             i = self['menulist'].getSelectedIndex()
             self.currentindex = i
-            print('self.currentindex=', self.currentindex)
             selection = self['menulist'].l.getCurrentSelection()
             if selection is not None:
                 item = self.cat_list[i][0]
-                print('item=', item)
                 name = item[0]
-                print('name=', name)
                 url = item[1]
-            # name = self['menulist'].getCurrent()[0][0]
-            # url = self['menulist'].getCurrent()[0][1]
-            # item = name # self.cat_list[i]
-        # self.session.open(RSSFeedScreenItemviewer, [self.feed, item, self.currentindex, self.itemlist])
             self.play_that_shit(url, name, self.currentindex, item, self.cat_list)
         except Exception as e:
             print(e)
@@ -521,18 +498,19 @@ class vavoo(Screen):
 
 
 class TvInfoBarShowHide():
-    """ InfoBar show/hide control, accepts toggleShow and hide actions, might start
-    fancy animations. """
     STATE_HIDDEN = 0
     STATE_HIDING = 1
     STATE_SHOWING = 2
     STATE_SHOWN = 3
+    FLAG_CENTER_DVB_SUBS = 2048
     skipToggleShow = False
 
     def __init__(self):
+
         self["ShowHideActions"] = ActionMap(["InfobarShowHideActions"],
                                             {"toggleShow": self.OkPressed,
                                              "hide": self.hide}, 0)
+
         self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evStart: self.serviceStarted})
         self.__state = self.STATE_SHOWN
         self.__locked = 0
@@ -541,12 +519,42 @@ class TvInfoBarShowHide():
             self.hideTimer_conn = self.hideTimer.timeout.connect(self.doTimerHide)
         except:
             self.hideTimer.callback.append(self.doTimerHide)
-        self.hideTimer.start(5000, True)
+        self.hideTimer.start(3000, True)
         self.onShow.append(self.__onShow)
         self.onHide.append(self.__onHide)
 
     def OkPressed(self):
         self.toggleShow()
+
+    def __onShow(self):
+        self.__state = self.STATE_SHOWN
+        self.startHideTimer()
+
+    def __onHide(self):
+        self.__state = self.STATE_HIDDEN
+
+    def serviceStarted(self):
+        if self.execing:
+            # if config.usage.show_infobar_on_zap.value:
+            self.doShow()
+
+    def startHideTimer(self):
+        if self.__state == self.STATE_SHOWN and not self.__locked:
+            self.hideTimer.stop()
+            self.hideTimer.start(3000, True)
+        elif hasattr(self, "pvrStateDialog"):
+            self.hideTimer.stop()
+        self.skipToggleShow = False
+
+    def doShow(self):
+        self.hideTimer.stop()
+        self.show()
+        self.startHideTimer()
+
+    def doTimerHide(self):
+        self.hideTimer.stop()
+        if self.__state == self.STATE_SHOWN:
+            self.hide()
 
     def toggleShow(self):
         if self.skipToggleShow:
@@ -558,35 +566,6 @@ class TvInfoBarShowHide():
         else:
             self.hide()
             self.startHideTimer()
-
-    def serviceStarted(self):
-        if self.execing:
-            if config.usage.show_infobar_on_zap.value:
-                self.doShow()
-
-    def __onShow(self):
-        self.__state = self.STATE_SHOWN
-        self.startHideTimer()
-
-    def startHideTimer(self):
-        if self.__state == self.STATE_SHOWN and not self.__locked:
-            self.hideTimer.stop()
-            idx = config.usage.infobar_timeout.index
-            if idx:
-                self.hideTimer.start(idx * 1500, True)
-
-    def __onHide(self):
-        self.__state = self.STATE_HIDDEN
-
-    def doShow(self):
-        self.hideTimer.stop()
-        self.show()
-        self.startHideTimer()
-
-    def doTimerHide(self):
-        self.hideTimer.stop()
-        if self.__state == self.STATE_SHOWN:
-            self.hide()
 
     def lockShow(self):
         try:
@@ -607,9 +586,6 @@ class TvInfoBarShowHide():
             self.__locked = 0
         if self.execing:
             self.startHideTimer()
-
-    def debug(obj, text=""):
-        print(text + " %s\n" % obj)
 
 
 class Playstream2(
@@ -741,7 +717,7 @@ class Playstream2(
         if self.new_aspect > 6:
             self.new_aspect = 0
         try:
-            eAVSwitch.getInstance().setAspectRatio(self.new_aspect)
+            AVSwitch.getInstance().setAspectRatio(self.new_aspect)
             return VIDEO_ASPECT_RATIO_MAP[self.new_aspect]
         except Exception as e:
             print(e)
@@ -750,14 +726,6 @@ class Playstream2(
     def nextAV(self):
         message = self.av()
         self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=1)
-
-    # def av(self):
-        # temp = int(self.getAspect())
-        # temp = temp + 1
-        # if temp > 6:
-            # temp = 0
-        # self.new_aspect = temp
-        # self.setAspect(temp)
 
     def showinfo(self):
         sTitle = ''
@@ -882,6 +850,17 @@ class Playstream2(
 
     def leavePlayer(self):
         self.close()
+
+
+VIDEO_ASPECT_RATIO_MAP = {
+    0: "4:3 Letterbox",
+    1: "4:3 PanScan",
+    2: "16:9",
+    3: "16:9 Always",
+    4: "16:10 Letterbox",
+    5: "16:10 PanScan",
+    6: "16:9 Letterbox"}
+VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 
 def main(session, **kwargs):
