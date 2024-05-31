@@ -61,8 +61,6 @@ from six import unichr, iteritems  # ensure_str
 from six.moves import html_entities
 import types
 PY2 = sys.version_info[0] == 2
-
-
 PY3 = sys.version_info[0] == 3
 
 if PY3:
@@ -280,9 +278,6 @@ def show_(name, link):
     pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + "/vavoo/Internat.png"
     if any(s in name for s in Panel_list):
         pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/%s.png' % str(name)
-    else:
-        pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/vavoo_ico.png'
-        print('pngx =:', pngx)
     if os.path.isfile(pngx):
         print('pngx =:', pngx)
     res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
@@ -290,7 +285,6 @@ def show_(name, link):
     return res
 
 
-'''
 def show2_(name, link):
     res = [(name, link)]
     cur_skin = config.skin.primary_skin.value.replace('/skin.xml', '')
@@ -299,7 +293,6 @@ def show2_(name, link):
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(40, 40), png=loadPNG(pngx)))
         res.append(MultiContentEntryText(pos=(65, 0), size=(600, 50), font=0, text=name, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
-'''
 
 
 class MainVavoox(Screen):
@@ -312,7 +305,7 @@ class MainVavoox(Screen):
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove'))
-        self['name'] = Label('Wait')
+        self['name'] = Label('Wait please...')
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -443,7 +436,7 @@ class vavoox(Screen):
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
         self['green'] = Label(_('Export'))
-        self['name'] = Label('Wait')
+        self['name'] = Label('Wait please...')
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -519,7 +512,7 @@ class vavoox(Screen):
                 for item in items:
                     name = item.split('###')[0]
                     url = item.split('###')[1]
-                    self.cat_list.append(show_(name, url))
+                    self.cat_list.append(show2_(name, url))
                     # make m3u
                     nname = '#EXTINF:-1,' + str(name) + '\n'
                     outfile.write(nname)
@@ -622,18 +615,19 @@ class vavoox(Screen):
 
 
 class TvInfoBarShowHide():
-    """ InfoBar show/hide control, accepts toggleShow and hide actions, might start
-    fancy animations. """
     STATE_HIDDEN = 0
     STATE_HIDING = 1
     STATE_SHOWING = 2
     STATE_SHOWN = 3
+    FLAG_CENTER_DVB_SUBS = 2048
     skipToggleShow = False
 
     def __init__(self):
+
         self["ShowHideActions"] = ActionMap(["InfobarShowHideActions"],
                                             {"toggleShow": self.OkPressed,
                                              "hide": self.hide}, 0)
+
         self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evStart: self.serviceStarted})
         self.__state = self.STATE_SHOWN
         self.__locked = 0
@@ -642,12 +636,42 @@ class TvInfoBarShowHide():
             self.hideTimer_conn = self.hideTimer.timeout.connect(self.doTimerHide)
         except:
             self.hideTimer.callback.append(self.doTimerHide)
-        self.hideTimer.start(5000, True)
+        self.hideTimer.start(3000, True)
         self.onShow.append(self.__onShow)
         self.onHide.append(self.__onHide)
 
     def OkPressed(self):
         self.toggleShow()
+
+    def __onShow(self):
+        self.__state = self.STATE_SHOWN
+        self.startHideTimer()
+
+    def __onHide(self):
+        self.__state = self.STATE_HIDDEN
+
+    def serviceStarted(self):
+        if self.execing:
+            # if config.usage.show_infobar_on_zap.value:
+            self.doShow()
+
+    def startHideTimer(self):
+        if self.__state == self.STATE_SHOWN and not self.__locked:
+            self.hideTimer.stop()
+            self.hideTimer.start(3000, True)
+        elif hasattr(self, "pvrStateDialog"):
+            self.hideTimer.stop()
+        self.skipToggleShow = False
+
+    def doShow(self):
+        self.hideTimer.stop()
+        self.show()
+        self.startHideTimer()
+
+    def doTimerHide(self):
+        self.hideTimer.stop()
+        if self.__state == self.STATE_SHOWN:
+            self.hide()
 
     def toggleShow(self):
         if self.skipToggleShow:
@@ -659,35 +683,6 @@ class TvInfoBarShowHide():
         else:
             self.hide()
             self.startHideTimer()
-
-    def serviceStarted(self):
-        if self.execing:
-            if config.usage.show_infobar_on_zap.value:
-                self.doShow()
-
-    def __onShow(self):
-        self.__state = self.STATE_SHOWN
-        self.startHideTimer()
-
-    def startHideTimer(self):
-        if self.__state == self.STATE_SHOWN and not self.__locked:
-            self.hideTimer.stop()
-            idx = config.usage.infobar_timeout.index
-            if idx:
-                self.hideTimer.start(idx * 1500, True)
-
-    def __onHide(self):
-        self.__state = self.STATE_HIDDEN
-
-    def doShow(self):
-        self.hideTimer.stop()
-        self.show()
-        self.startHideTimer()
-
-    def doTimerHide(self):
-        self.hideTimer.stop()
-        if self.__state == self.STATE_SHOWN:
-            self.hide()
 
     def lockShow(self):
         try:
@@ -708,9 +703,6 @@ class TvInfoBarShowHide():
             self.__locked = 0
         if self.execing:
             self.startHideTimer()
-
-    def debug(obj, text=""):
-        print(text + " %s\n" % obj)
 
 
 class Playstream2(

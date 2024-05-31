@@ -1,57 +1,47 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''
+"""
 ****************************************
 *        coded by Lululla              *
 *             26/04/2024               *
 * thank's to @oktus for image screen   *
 ****************************************
-# --------------------#
+# ---thank's Kiddac for support--------#
 # Info Linuxsat-support.com & corvoboys.org
-'''
-from __future__ import print_function
-from . import _
-from . import Utils
-from . import html_conv
-from Components.AVSwitch import AVSwitch
-from Components.ActionMap import ActionMap
-from Components.Label import Label
-from Components.MenuList import MenuList
-from Components.MultiContent import MultiContentEntryPixmapAlphaTest
-from Components.MultiContent import MultiContentEntryText
-from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
-from Components.config import config
-from Plugins.Plugin import PluginDescriptor
-from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
-from Screens.InfoBarGenerics import InfoBarSubtitleSupport, InfoBarSummarySupport, \
-    InfoBarNumberZap, InfoBarMenu, InfoBarEPG, InfoBarSeek, InfoBarMoviePlayerSummarySupport, \
-    InfoBarAudioSelection, InfoBarNotifications, InfoBarServiceNotifications
-from Tools.Directories import SCOPE_PLUGINS
-from Tools.Directories import resolveFilename
-from enigma import RT_VALIGN_CENTER
-from enigma import RT_HALIGN_LEFT
-from enigma import eListboxPythonMultiContent
-from enigma import eServiceReference
-from enigma import eTimer
-from enigma import gFont
-from enigma import iPlayableService
-from enigma import iServiceInformation
-from enigma import loadPNG
-from enigma import getDesktop
-from os.path import exists as file_exists
+"""
+
+
+# Standard library imports
 import os
 import re
 import six
 import ssl
 import sys
-'''
-try:
-    from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
-except ImportError:
-    from Tools.Directories import SCOPE_SKIN
-'''
+
+
+# Enigma2 components
+from Components.AVSwitch import AVSwitch
+from Components.ActionMap import ActionMap
+from Components.Label import Label
+from Components.MenuList import MenuList
+from Components.MultiContent import (MultiContentEntryPixmapAlphaTest, MultiContentEntryText)
+from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
+from Components.config import config
+from Plugins.Plugin import PluginDescriptor
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
+from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
+from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG, getDesktop)
+
+# Local application/library-specific imports
+from . import _
+from . import vUtils
+from . import html_conv
+from os.path import exists as file_exists
+
+
 PY3 = sys.version_info.major >= 3
 
 if sys.version_info >= (2, 7, 9):
@@ -119,6 +109,39 @@ def add_skin_font():
     addFont(font_path + 'lcd.ttf', 'Lcd', 100, 1)
 
 
+url1 = 'https://huhu.to'
+url2 = 'https://oha.to'
+url3 = 'https://www.kool.to'
+url4 = 'https://vavoo.to'
+
+
+def zServer(opt=0, server=None, port=None):
+    url = []
+    try:
+        from urllib.request import urlopen
+        from urllib.error import HTTPError
+    except ImportError:
+        from urllib2 import urlopen
+        from urllib2 import HTTPError
+    try:
+        url = url1
+        urlopen(url)
+    except HTTPError as err:
+        if err.code == 404:
+            url = url2
+            urlopen(url)
+        elif err.code == 404:
+            url = url3
+            urlopen(url)
+        elif err.code == 404:
+            url = url4
+            urlopen(url)
+        else:
+            url = url4
+            print(err.code)
+    return str(url)
+
+
 class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
@@ -180,27 +203,26 @@ class MainVavoo(Screen):
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove'))
         self['titel'] = Label('X VAVOO')
-        self['name'] = Label('Wait please...')
+        self['name'] = Label('Loading...')
         self['text'] = Label('Vavoo Stream Live by Lululla')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
         self.loading = 0
-        self.url = Utils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['OkCancelActions',
-                                     'ColorActions',
-                                     'EPGSelectActions',
-                                     'DirectionActions',
-                                     'MovieSelectionActions'], {'up': self.up,
-                                                                'down': self.down,
-                                                                'left': self.left,
-                                                                'right': self.right,
-                                                                'ok': self.ok,
-                                                                'green': self.msgdeleteBouquets,
-                                                                'cancel': self.close,
-                                                                'info': self.info,
-                                                                'red': self.close}, -1)
+        self.url = vUtils.b64decoder(stripurl)
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions',  'MovieSelectionActions'], {
+            'up': self.up,
+            'down': self.down,
+            'left': self.left,
+            'right': self.right,
+            'ok': self.ok,
+            'green': self.msgdeleteBouquets,
+            'cancel': self.close,
+            'info': self.info,
+            'red': self.close
+        }, -1)
+
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -239,7 +261,7 @@ class MainVavoo(Screen):
         name = ''
         country = ''
         try:
-            content = Utils.getUrl(self.url)
+            content = vUtils.getUrl(self.url)
             if six.PY3:
                 content = six.ensure_str(content)
             regexcat = '"country".*?"(.*?)".*?"id".*?"name".*?".*?"'
@@ -285,9 +307,9 @@ class MainVavoo(Screen):
             try:
                 for fname in os.listdir(enigma_path):
                     if 'userbouquet.vavoo_' in fname:
-                        Utils.purge(enigma_path, fname)
+                        vUtils.purge(enigma_path, fname)
                     elif 'bouquets.tv.bak' in fname:
-                        Utils.purge(enigma_path, fname)
+                        vUtils.purge(enigma_path, fname)
                 os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
                 tvfile = open(os.path.join(enigma_path, 'bouquets.tv'), 'w+')
                 bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'))
@@ -297,7 +319,7 @@ class MainVavoo(Screen):
                 bakfile.close()
                 tvfile.close()
                 self.session.open(MessageBox, _('Vavoo Favorites List have been removed'), MessageBox.TYPE_INFO, timeout=5)
-                Utils.ReloadBouquets()
+                vUtils.ReloadBouquets()
             except Exception as ex:
                 print(str(ex))
                 raise
@@ -311,13 +333,12 @@ class vavoo(Screen):
         Screen.__init__(self, session)
         with open(skin_path, 'r') as f:
             self.skin = f.read()
-        # print('skin vavoo=', self.skin)
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
         self['green'] = Label(_('Export'))
         self['titel'] = Label('X VAVOO')
-        self['name'] = Label('Wait please...')
+        self['name'] = Label('Loading ...')
         self['text'] = Label('Vavoo Stream Live by Lululla')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
@@ -326,19 +347,18 @@ class vavoo(Screen):
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['OkCancelActions',
-                                     'ColorActions',
-                                     'EPGSelectActions',
-                                     'DirectionActions',
-                                     'MovieSelectionActions'], {'up': self.up,
-                                                                'down': self.down,
-                                                                'left': self.left,
-                                                                'right': self.right,
-                                                                'ok': self.ok,
-                                                                'green': self.message2,
-                                                                'cancel': self.close,
-                                                                'info': self.info,
-                                                                'red': self.close}, -1)
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions', 'MovieSelectionActions'], {
+            'up': self.up,
+            'down': self.down,
+            'left': self.left,
+            'right': self.right,
+            'ok': self.ok,
+            'green': self.message2,
+            'cancel': self.close,
+            'info': self.info,
+            'red': self.close
+        }, -1)
+
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -377,7 +397,7 @@ class vavoo(Screen):
         try:
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
-                content = Utils.getUrl(self.url)
+                content = vUtils.getUrl(self.url)
                 if six.PY3:
                     content = six.ensure_str(content)
                 names = self.name
@@ -388,7 +408,7 @@ class vavoo(Screen):
                         continue
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
                     url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
-                    name = Utils.decodeHtml(name)
+                    name = vUtils.decodeHtml(name)
                     item = name + "###" + url + '\n'
                     items.append(item)
                 items.sort()
@@ -486,12 +506,12 @@ class vavoo(Screen):
                                 in_bouquets = 1
                         if in_bouquets == 0:
                             if os.path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os.path.isfile('/etc/enigma2/bouquets.tv'):
-                                Utils.remove_line('/etc/enigma2/bouquets.tv', bouquetname)
+                                vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquetname)
                                 with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
                                     outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
                                     outfile.close()
                                     in_bouquets = 1
-                        Utils.ReloadBouquets()
+                        vUtils.ReloadBouquets()
                 return ch
             except Exception as e:
                 print('error convert iptv ', e)
@@ -631,36 +651,26 @@ class Playstream2(
         self.new_aspect = self.init_aspect
         self.service = None
         self.url = url
-        self.name = Utils.decodeHtml(name)
+        self.name = vUtils.decodeHtml(name)
         self.state = self.STATE_PLAYING
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
-        self['actions'] = ActionMap(['MoviePlayerActions',
-                                     'MovieSelectionActions',
-                                     'MediaPlayerActions',
-                                     'EPGSelectActions',
-                                     # 'MediaPlayerSeekActions',
-                                     # 'ColorActions',
-                                     'OkCancelActions',
-                                     'InfobarShowHideActions',
-                                     'InfobarActions',
-                                     # 'InfobarSeekActions',
-                                     'DirectionActions',
-                                     'InfobarSeekActions'], {'epg': self.showIMDB,
-                                                             'info': self.showIMDB,
-                                                             # 'info': self.cicleStreamType,
-                                                             'tv': self.cicleStreamType,
-                                                             'stop': self.leavePlayer,
-                                                             'cancel': self.cancel,
-                                                             'channelDown': self.previousitem,
-                                                             'channelUp': self.nextitem,
-                                                             'down': self.previousitem,
-                                                             'up': self.nextitem,
-                                                             'back': self.cancel}, -1)
+        self['actions'] = ActionMap(['MoviePlayerActions', 'MovieSelectionActions', 'MediaPlayerActions', 'EPGSelectActions', 'OkCancelActions',
+                                    'InfobarShowHideActions', 'InfobarActions', 'DirectionActions', 'InfobarSeekActions'], {
+            'epg': self.showIMDB,
+            'info': self.showIMDB,
+            'tv': self.cicleStreamType,
+            'stop': self.leavePlayer,
+            'cancel': self.cancel,
+            'channelDown': self.previousitem,
+            'channelUp': self.nextitem,
+            'down': self.previousitem,
+            'up': self.nextitem,
+            'back': self.cancel
+        }, -1)
+
         if '8088' in str(self.url):
-            # self.onLayoutFinish.append(self.slinkPlay)
             self.onFirstExecBegin.append(self.slinkPlay)
         else:
-            # self.onLayoutFinish.append(self.cicleStreamType)
             self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
 
@@ -731,7 +741,7 @@ class Playstream2(
         sTitle = ''
         sServiceref = ''
         try:
-            servicename, serviceurl = Utils.getserviceinfo(self.sref)
+            servicename, serviceurl = vUtils.getserviceinfo(self.sref)
             if servicename is not None:
                 sTitle = servicename
             else:
@@ -787,34 +797,12 @@ class Playstream2(
 
     def cicleStreamType(self):
         global streml
-        streaml = False
-        # from itertools import cycle, islice
         self.servicetype = '4097'
         print('servicetype1: ', self.servicetype)
         url = str(self.url)
         if str(os.path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
-        # currentindex = 0
-        # streamtypelist = ["4097"]
-        # if "youtube" in str(self.url):
-            # self.mbox = self.session.open(MessageBox, _('For Stream Youtube coming soon!'), MessageBox.TYPE_INFO, timeout=5)
-            # return
-        # if Utils.isStreamlinkAvailable():
-            # streamtypelist.append("5002")
-            # streaml = True
-        # if os.path.exists("/usr/bin/gstplayer"):
-            # streamtypelist.append("5001")
-        # if os.path.exists("/usr/bin/exteplayer3"):
-            # streamtypelist.append("5002")
-        # if os.path.exists("/usr/bin/apt-get"):
-            # streamtypelist.append("8193")
-        # for index, item in enumerate(streamtypelist, start=0):
-            # if str(item) == str(self.servicetype):
-                # currentindex = index
-                # break
-        # nextStreamType = islice(cycle(streamtypelist), currentindex + 1, None)
-        # self.servicetype = str(next(nextStreamType))
         print('servicetype2: ', self.servicetype)
         self.openTest(self.servicetype, url)
 
@@ -845,7 +833,6 @@ class Playstream2(
                 self.setAspect(self.init_aspect)
             except:
                 pass
-        streaml = False
         self.close()
 
     def leavePlayer(self):
@@ -860,6 +847,7 @@ VIDEO_ASPECT_RATIO_MAP = {
     4: "16:10 Letterbox",
     5: "16:10 PanScan",
     6: "16:9 Letterbox"}
+
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 
