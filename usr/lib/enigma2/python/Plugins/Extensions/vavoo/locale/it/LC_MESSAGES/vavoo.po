@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-06-01 14:21+0200\n"
+"POT-Creation-Date: 2024-06-01 15:10+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgstr "Esci"
 
 #: plugin.py:204
 msgid "Remove"
-msgstr "Rimuovi Fav"
+msgstr "Rimuovi"
 
 #: plugin.py:238 plugin.py:406
 msgid "Ipv6 [Off]?"
@@ -61,7 +61,7 @@ msgstr "Torna"
 
 #: plugin.py:362
 msgid "Export"
-msgstr "Esporta Fav"
+msgstr "Esporta"
 
 #: plugin.py:363
 msgid "Search"
