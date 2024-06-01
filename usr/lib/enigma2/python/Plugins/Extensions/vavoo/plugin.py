@@ -252,7 +252,7 @@ class MainVavoo(Screen):
                 self['blue'].setText('IPV6 On')
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n\n@oktus\n\nAll staff Linuxsat-support.com & Corvoboys Forum') % desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -420,7 +420,7 @@ class vavoo(Screen):
                 self['blue'].setText('IPV6 On')
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\n\this plugin is free,\nno stream direct on server\nbut only free channel found on the net') % currversion, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):

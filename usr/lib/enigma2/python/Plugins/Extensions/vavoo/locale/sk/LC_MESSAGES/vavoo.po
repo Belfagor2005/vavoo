@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-05-29 17:44+0200\n"
+"POT-Creation-Date: 2024-06-01 15:13+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -11,59 +11,109 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.4\n"
-"X-Poedit-Basepath: ..\n"
+"X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:187
+#: plugin.py:203
 msgid "Exit"
 msgstr "Vymazať"
 
-#: plugin.py:188
+#: plugin.py:204
 msgid "Remove"
 msgstr "Vymazať"
 
-#: plugin.py:218 plugin.py:355
-#, python-format
+#: plugin.py:238 plugin.py:406
+msgid "Ipv6 [Off]?"
+msgstr ""
+
+#: plugin.py:240 plugin.py:408
+msgid "Ipv6 [On]?"
+msgstr ""
+
+#: plugin.py:255
+#, fuzzy, python-format
+#| msgid ""
+#| "Vavoo Plugin v.%s\n"
+#| "by Lululla\n"
+#| "Thanks:\n"
+#| "@KiddaC #oktus and staff Linuxsat-support.com"
 msgid ""
-"Vavoo Plugin v.%s\n"
-"by Lululla\n"
+"%s\n"
+"\n"
+"\n"
 "Thanks:\n"
-"@KiddaC #oktus and staff Linuxsat-support.com"
+"@KiddaC\n"
+"\n"
+"@oktus\n"
+"\n"
+"All staff Linuxsat-support.com & Corvoboys Forum"
 msgstr ""
 "Vavoo Plugin v.%s\n"
 "od Lululla\n"
 "Vďaka:\n"
 "@KiddaC #oktus and staff Linuxsat-support.com"
 
-#: plugin.py:219 plugin.py:356
+#: plugin.py:256 plugin.py:424
 msgid "Info Vavoo"
 msgstr "Informácia o Vavoo"
 
-#: plugin.py:287
+#: plugin.py:324
 msgid "Remove all Vavoo Favorite Bouquet?"
 msgstr "Vymazať všetky obľúbené Vavoo zložky?"
 
-#: plugin.py:305
+#: plugin.py:342
 msgid "Vavoo Favorites List have been removed"
 msgstr "Vavoo obľúbený zoznam bol vymazaný"
 
-#: plugin.py:323
+#: plugin.py:361
 msgid "Back"
 msgstr "Späť"
 
-#: plugin.py:324
+#: plugin.py:362
 msgid "Export"
 msgstr "Export"
 
-#: plugin.py:438
+#: plugin.py:363
+msgid "Search"
+msgstr ""
+
+#: plugin.py:423
+#, python-format
+msgid ""
+"Vavoo Plugin v.%s\n"
+"by Lululla\n"
+"\n"
+"\n"
+"Thanks:\n"
+"@KiddaC\n"
+"@oktus\n"
+"All staff Linuxsat-support.com\n"
+"Corvoboys - Forum\n"
+"\n"
+"\this plugin is free,\n"
+"no stream direct on server\n"
+"but only free channel found on the net"
+msgstr ""
+
+#: plugin.py:500
+msgid "Filter this category..."
+msgstr ""
+
+#: plugin.py:519
+msgid "No channels found in search!!!"
+msgstr ""
+
+#: plugin.py:549
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
 "Attention!! It may take some time depending\n"
 "on the number of streams contained !!!"
-msgstr "Chceš previesť na obľúbené? Pozor!! V závislosti od počtu obsiahnutých streamov to môže chvíľu trvať !!!"
+msgstr ""
+"Chceš previesť na obľúbené? Pozor!! V závislosti od počtu obsiahnutých "
+"streamov to môže chvíľu trvať !!!"
 
-#: plugin.py:445
+#: plugin.py:556
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -72,14 +122,14 @@ msgstr ""
 "zložky sú znova načítané \n"
 "s %s kanálom"
 
-#: plugin.py:447
+#: plugin.py:558
 msgid "Download Error"
 msgstr "Chyba sťahovania"
 
-#: plugin.py:730
+#: plugin.py:830
 msgid "Resolution Change Failed"
 msgstr "Zmena rozlíšenia zlyhala"
 
-#: plugin.py:883
+#: plugin.py:961
 msgid "Vavoo Stream Live"
 msgstr "Vavoo stream naživo"

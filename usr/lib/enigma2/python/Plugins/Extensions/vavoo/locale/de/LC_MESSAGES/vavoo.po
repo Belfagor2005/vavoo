@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 20:05+0200\n"
+"POT-Creation-Date: 2024-06-01 15:14+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ))^^(( <>\n"
 "Language-Team: *\n"
@@ -12,47 +12,91 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:177
+#: plugin.py:203
 msgid "Exit"
 msgstr "Ausgang"
 
-#: plugin.py:178
+#: plugin.py:204
 msgid "Remove"
 msgstr "Entfernen"
 
-#: plugin.py:209 plugin.py:345
+#: plugin.py:238 plugin.py:406
+msgid "Ipv6 [Off]?"
+msgstr ""
+
+#: plugin.py:240 plugin.py:408
+msgid "Ipv6 [On]?"
+msgstr ""
+
+#: plugin.py:255
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"\n"
+"Thanks:\n"
+"@KiddaC\n"
+"\n"
+"@oktus\n"
+"\n"
+"All staff Linuxsat-support.com & Corvoboys Forum"
+msgstr ""
+
+#: plugin.py:256 plugin.py:424
+msgid "Info Vavoo"
+msgstr ""
+
+#: plugin.py:324
+msgid "Remove all Vavoo Favorite Bouquet?"
+msgstr "Alle Vavoo Lieblingsstrauße entfernen?"
+
+#: plugin.py:342
+msgid "Vavoo Favorites List have been removed"
+msgstr "Vavoo Favoritenliste wurde entfernt"
+
+#: plugin.py:361
+msgid "Back"
+msgstr "Zurück"
+
+#: plugin.py:362
+msgid "Export"
+msgstr ""
+
+#: plugin.py:363
+msgid "Search"
+msgstr ""
+
+#: plugin.py:423
 #, python-format
 msgid ""
 "Vavoo Plugin v.%s\n"
 "by Lululla\n"
-"Thanks @KiddaC #oktus and staff Linuxsat-support.com"
+"\n"
+"\n"
+"Thanks:\n"
+"@KiddaC\n"
+"@oktus\n"
+"All staff Linuxsat-support.com\n"
+"Corvoboys - Forum\n"
+"\n"
+"\this plugin is free,\n"
+"no stream direct on server\n"
+"but only free channel found on the net"
 msgstr ""
 
-#: plugin.py:210 plugin.py:346
-msgid "Info Vavoo"
+#: plugin.py:500
+msgid "Filter this category..."
 msgstr ""
 
-#: plugin.py:277
-msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr "Alle Vavoo Lieblingsstrauße entfernen?"
-
-#: plugin.py:295
-msgid "Vavoo Favorites List have been removed"
-msgstr "Vavoo Favoritenliste wurde entfernt"
-
-#: plugin.py:312
-msgid "Back"
-msgstr "Zurück"
-
-#: plugin.py:313
-msgid "Export"
+#: plugin.py:519
+msgid "No channels found in search!!!"
 msgstr ""
 
-#: plugin.py:422
+#: plugin.py:549
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -64,7 +108,7 @@ msgstr ""
 "Aufmerksamkeit!! Es kann eine Weile dauern, je nach\n"
 "auf die Anzahl der enthaltenen Streams !!"
 
-#: plugin.py:429
+#: plugin.py:556
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -73,10 +117,14 @@ msgstr ""
 "Blumensträuße neu geladen..\n"
 "Mit %s Kanal"
 
-#: plugin.py:431
+#: plugin.py:558
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:824
+#: plugin.py:830
+msgid "Resolution Change Failed"
+msgstr ""
+
+#: plugin.py:961
 msgid "Vavoo Stream Live"
 msgstr ""
