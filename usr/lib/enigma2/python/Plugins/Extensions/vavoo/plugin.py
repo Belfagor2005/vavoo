@@ -7,7 +7,7 @@
 *             26/04/2024               *
 * thank's to @oktus for image screen   *
 ****************************************
-# ---thank's Kiddac for support--------#
+# ----- thank's Kiddac for support ---- #
 # Info Linuxsat-support.com & corvoboys.org
 """
 
@@ -31,14 +31,15 @@ from Components.config import config
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG, getDesktop)
 
+
 # Local application/library-specific imports
 from . import _
 from . import vUtils
-from . import html_conv
 from os.path import exists as file_exists
 
 
@@ -51,7 +52,7 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.2'
+currversion = '1.3'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -61,6 +62,11 @@ searchurl = 'aHR0cHM6Ly90aXZ1c3RyZWFtLndlYnNpdGUvcGhwX2ZpbHRlci9rb2RpMTkva29kaTE
 _session = None
 enigma_path = '/etc/enigma2/'
 screenwidth = getDesktop(0).size()
+url1 = 'https://huhu.to'
+url2 = 'https://oha.to'
+url3 = 'https://www.kool.to'
+url4 = 'https://vavoo.to'
+
 
 if screenwidth.width() == 2560:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_pli/defaultListScreen_uhd.xml')
@@ -82,7 +88,7 @@ def returnIMDB(text_clear):
     if file_exists(TMDB):
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
-            text = html_conv.html_unescape(text_clear)
+            text = vUtils.html_unescape(text_clear)
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as e:
             print("[XCF] Tmdb: ", e)
@@ -90,13 +96,13 @@ def returnIMDB(text_clear):
     elif file_exists(IMDb):
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
-            text = html_conv.html_unescape(text_clear)
+            text = vUtils.html_unescape(text_clear)
             imdb(_session, text)
         except Exception as e:
             print("[XCF] imdb: ", e)
         return True
     else:
-        text_clear = html_conv.html_unescape(text_clear)
+        text_clear = vUtils.html_unescape(text_clear)
         _session.open(MessageBox, text_clear, MessageBox.TYPE_INFO)
         return True
     return False
@@ -107,12 +113,6 @@ def add_skin_font():
     font_path = PLUGIN_PATH + '/resolver/'
     addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 1)
     addFont(font_path + 'lcd.ttf', 'Lcd', 100, 1)
-
-
-url1 = 'https://huhu.to'
-url2 = 'https://oha.to'
-url3 = 'https://www.kool.to'
-url4 = 'https://vavoo.to'
 
 
 def zServer(opt=0, server=None, port=None):
@@ -201,10 +201,12 @@ class MainVavoo(Screen):
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
-        self['green'] = Label(_('Remove'))
-        self['titel'] = Label('X VAVOO')
+        self['green'] = Label(_('Remove') + ' Fav'))
+        self['yellow'] = Label()
+        self['blue'] = Label('IPV6 Off')
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading...')
-        self['text'] = Label('Vavoo Stream Live by Lululla')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
         self.loading_ok = False
@@ -218,6 +220,7 @@ class MainVavoo(Screen):
             'right': self.right,
             'ok': self.ok,
             'green': self.msgdeleteBouquets,
+            'blue': self.ipv6,
             'cancel': self.close,
             'info': self.info,
             'red': self.close
@@ -229,6 +232,24 @@ class MainVavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+
+    def ipv6(self):
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+        else:
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+
+    def ipv6check(self, result):
+        if result:
+            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+                os.unlink('/etc/rc3.d/S99ipv6dis.sh')
+                self['blue'].setText('IPV6 Off')
+            else:
+                os.system("echo '#!/bin/bash")
+                os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
+                os.system("chmod 755 /etc/init.d/ipv6dis.sh")
+                os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
+                self['blue'].setText('IPV6 On')
 
     def info(self):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n\n@oktus\n\nAll staff Linuxsat-support.com & Corvoboys Forum') % desc_plugin, MessageBox.TYPE_INFO)
@@ -277,7 +298,7 @@ class MainVavoo(Screen):
                 url = item.split('###')[1]
                 if name not in self.cat_list:
                     self.cat_list.append(show_(name, url))
-            if len(self.cat_list) < 0:
+            if len(self.cat_list) < 1:
                 return
             else:
                 self['menulist'].l.setList(self.cat_list)
@@ -334,12 +355,16 @@ class vavoo(Screen):
         with open(skin_path, 'r') as f:
             self.skin = f.read()
         self.menulist = []
+        global search_ok
+        search_ok = False
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
-        self['green'] = Label(_('Export'))
-        self['titel'] = Label('X VAVOO')
+        self['green'] = Label(_('Export') + ' Fav'))
+        self['yellow'] = Label(_('Search'))
+        self['blue'] = Label('IPV6 Off')
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading ...')
-        self['text'] = Label('Vavoo Stream Live by Lululla')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
         self.loading_ok = False
@@ -347,16 +372,18 @@ class vavoo(Screen):
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions', 'MovieSelectionActions'], {
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions', 'MovieSelectionActions', 'VirtualKeyboardActions'], {
             'up': self.up,
             'down': self.down,
             'left': self.left,
             'right': self.right,
             'ok': self.ok,
             'green': self.message2,
-            'cancel': self.close,
+            'yellow': self.search_vavoo,
+            'blue': self.ipv6,
+            'cancel': self.backhome,
             'info': self.info,
-            'red': self.close
+            'red': self.backhome
         }, -1)
 
         self.timer = eTimer()
@@ -365,6 +392,32 @@ class vavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+
+    def backhome(self):
+        if search_ok is True:
+            # global search_ok
+            # search_ok = False
+            self.cat()
+        else:
+            self.close()
+
+    def ipv6(self):
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+        else:
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+
+    def ipv6check(self, result):
+        if result:
+            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+                os.unlink('/etc/rc3.d/S99ipv6dis.sh')
+                self['blue'].setText('IPV6 Off')
+            else:
+                os.system("echo '#!/bin/bash")
+                os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
+                os.system("chmod 755 /etc/init.d/ipv6dis.sh")
+                os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
+                self['blue'].setText('IPV6 On')
 
     def info(self):
         aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\n\this plugin is free,\nno stream direct on server\nbut only free channel found on the net') % currversion, MessageBox.TYPE_INFO)
@@ -394,6 +447,9 @@ class vavoo(Screen):
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
+        server = zServer(0, None, None)
+        global search_ok
+        search_ok = False
         try:
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
@@ -407,11 +463,16 @@ class vavoo(Screen):
                     if country != names:
                         continue
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
-                    url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
+                    # url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
+                    url = str(server) + '/play/' + str(ids) + '/index.m3u8'
                     name = vUtils.decodeHtml(name)
                     item = name + "###" + url + '\n'
                     items.append(item)
                 items.sort()
+                # use for search
+                global itemlist
+                itemlist = items
+                # use for search end
                 for item in items:
                     name = item.split('###')[0]
                     url = item.split('###')[1]
@@ -421,7 +482,7 @@ class vavoo(Screen):
                     outfile.write(nname)
                     outfile.write(str(url))
                 outfile.close()
-                if len(self.cat_list) < 0:
+                if len(self.cat_list) < 1:
                     return
                 else:
                     self['menulist'].l.setList(self.cat_list)
@@ -431,6 +492,41 @@ class vavoo(Screen):
         except Exception as e:
             self['name'].setText('Error')
             print(e)
+
+    def search_vavoo(self):
+        self.session.openWithCallback(
+            self.filterM3u,
+            VirtualKeyBoard,
+            title=_("Filter this category..."),
+            text='')
+
+    def filterM3u(self, result):
+        global search_ok
+        if result:
+            try:
+                self.cat_list = []
+                search = result
+                for item in itemlist:
+                    name = item.split('###')[0]
+                    url = item.split('###')[1]
+                    if search.lower() in str(name).lower():
+                        search_ok = True
+                        namex = name
+                        urlx = url
+                        self.cat_list.append(show_(namex, urlx))
+                print('N. channel=', len(self.cat_list))
+                if len(self.cat_list) < 1:
+                    _session.open(MessageBox, _('No channels found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
+                    return
+                else:
+                    self['menulist'].l.setList(self.cat_list)
+                    self['menulist'].moveToIndex(0)
+                    auswahl = self['menulist'].getCurrent()[0][0]
+                    self['name'].setText(str(auswahl))
+            except Exception as e:
+                self['name'].setText('Error')
+                search_ok = False
+                print(e)
 
     def ok(self):
         try:
@@ -796,7 +892,6 @@ class Playstream2(
         self.session.nav.playService(sref)
 
     def cicleStreamType(self):
-        global streml
         self.servicetype = '4097'
         print('servicetype1: ', self.servicetype)
         url = str(self.url)
@@ -847,6 +942,7 @@ VIDEO_ASPECT_RATIO_MAP = {
     4: "16:10 Letterbox",
     5: "16:10 PanScan",
     6: "16:9 Letterbox"}
+
 
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 

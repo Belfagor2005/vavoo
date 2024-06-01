@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-05-29 17:44+0200\n"
+"POT-Creation-Date: 2024-06-01 13:10+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -14,44 +14,79 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:187
+#: plugin.py:202
 msgid "Exit"
 msgstr ""
 
-#: plugin.py:188
+#: plugin.py:203
 msgid "Remove"
 msgstr ""
 
-#: plugin.py:218 plugin.py:355
+#: plugin.py:234
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"\n"
+"Thanks:\n"
+"@KiddaC\n"
+"\n"
+"@oktus\n"
+"\n"
+"All staff Linuxsat-support.com & Corvoboys Forum"
+msgstr ""
+
+#: plugin.py:235 plugin.py:382
+msgid "Info Vavoo"
+msgstr ""
+
+#: plugin.py:303
+msgid "Remove all Vavoo Favorite Bouquet?"
+msgstr ""
+
+#: plugin.py:321
+msgid "Vavoo Favorites List have been removed"
+msgstr ""
+
+#: plugin.py:340
+msgid "Back"
+msgstr ""
+
+#: plugin.py:341
+msgid "Export"
+msgstr ""
+
+#: plugin.py:342
+msgid "Search"
+msgstr ""
+
+#: plugin.py:381
 #, python-format
 msgid ""
 "Vavoo Plugin v.%s\n"
 "by Lululla\n"
+"\n"
+"\n"
 "Thanks:\n"
-"@KiddaC #oktus and staff Linuxsat-support.com"
+"@KiddaC\n"
+"@oktus\n"
+"All staff Linuxsat-support.com\n"
+"Corvoboys - Forum\n"
+"\n"
+"\this plugin is free,\n"
+"no stream direct on server\n"
+"but only free channel found on the net"
 msgstr ""
 
-#: plugin.py:219 plugin.py:356
-msgid "Info Vavoo"
+#: plugin.py:459
+msgid "Filter this category..."
 msgstr ""
 
-#: plugin.py:287
-msgid "Remove all Vavoo Favorite Bouquet?"
+#: plugin.py:480
+msgid "No channels found in search!!!"
 msgstr ""
 
-#: plugin.py:305
-msgid "Vavoo Favorites List have been removed"
-msgstr ""
-
-#: plugin.py:323
-msgid "Back"
-msgstr ""
-
-#: plugin.py:324
-msgid "Export"
-msgstr ""
-
-#: plugin.py:438
+#: plugin.py:510
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -59,21 +94,21 @@ msgid ""
 "on the number of streams contained !!!"
 msgstr ""
 
-#: plugin.py:445
+#: plugin.py:517
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
 "With %s channel"
 msgstr ""
 
-#: plugin.py:447
+#: plugin.py:519
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:730
+#: plugin.py:791
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:883
+#: plugin.py:922
 msgid "Vavoo Stream Live"
 msgstr ""

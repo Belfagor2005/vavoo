@@ -21,42 +21,36 @@ self.session.open(MainVavoo)
 
 
 '''
-from __future__ import print_function
-from Components.AVSwitch import AVSwitch
-from Components.ActionMap import ActionMap
-from Components.Label import Label
-from Components.MenuList import MenuList
-from Components.MultiContent import MultiContentEntryPixmapAlphaTest
-from Components.MultiContent import MultiContentEntryText
-from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
-from Components.config import config
-from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
-from Screens.InfoBarGenerics import InfoBarSubtitleSupport, \
-    InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications
-from Tools.Directories import SCOPE_PLUGINS
-try:
-    from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
-except ImportError:
-    from Tools.Directories import SCOPE_SKIN
-from Tools.Directories import resolveFilename
-from enigma import RT_VALIGN_CENTER
-from enigma import RT_HALIGN_LEFT
-from enigma import eListboxPythonMultiContent
-from enigma import eServiceReference
-from enigma import eTimer
-from enigma import gFont
-from enigma import iPlayableService
-from enigma import iServiceInformation
-from enigma import loadPNG
-from os.path import exists as file_exists
-from os import path as os_path
-import base64
+# Standard library imports
 import os
 import re
 import six
 import ssl
 import sys
+# Enigma2 components
+from Components.AVSwitch import AVSwitch
+from Components.ActionMap import ActionMap
+from Components.Label import Label
+from Components.MenuList import MenuList
+from Components.MultiContent import (MultiContentEntryPixmapAlphaTest, MultiContentEntryText)
+from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
+from Components.config import config
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from Screens.VirtualKeyBoard import VirtualKeyBoard
+from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
+from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
+from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG)
+
+
+try:
+    from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
+except ImportError:
+    from Tools.Directories import SCOPE_SKIN
+from os.path import exists as file_exists
+from os import path as os_path
+import base64
+
 from six import unichr, iteritems  # ensure_str
 from six.moves import html_entities
 import types
@@ -100,9 +94,11 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.2'
+currversion = '1.3'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
+                                                                             
+                                                  
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 searchurl = 'aHR0cHM6Ly90aXZ1c3RyZWFtLndlYnNpdGUvcGhwX2ZpbHRlci9rb2RpMTkva29kaTE5LnBocD9tb2RlPW1vdmllJnF1ZXJ5PQ=='
 _session = None
@@ -111,6 +107,15 @@ _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)
 _ESCAPE_RE = re.compile("[&<>\"']")
 _UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")  # Whitespace handling added due to "hand-assed" parsers of html pages
 _ESCAPE_DICT = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}
+global ipv6
+ipv6 = 'off'
+if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+    ipv6 = 'on'
+
+url1 = 'https://huhu.to'
+url2 = 'https://oha.to'
+url3 = 'https://www.kool.to'
+url4 = 'https://vavoo.to'
 
 
 def ensure_str(s, encoding='utf-8', errors='strict'):
@@ -258,6 +263,33 @@ def returnIMDB(text_clear):
     return False
 
 
+def zServer(opt=0, server=None, port=None):
+    url = []
+    try:
+        from urllib.request import urlopen
+        from urllib.error import HTTPError
+    except ImportError:
+        from urllib2 import urlopen
+        from urllib2 import HTTPError
+    try:
+        url = url1
+        urlopen(url)
+    except HTTPError as err:
+        if err.code == 404:
+            url = url2
+            urlopen(url)
+        elif err.code == 404:
+            url = url3
+            urlopen(url)
+        elif err.code == 404:
+            url = url4
+            urlopen(url)
+        else:
+            url = url4
+            print(err.code)
+    return str(url)
+
+
 class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
@@ -304,26 +336,31 @@ class MainVavoox(Screen):
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
-        self['green'] = Label(_('Remove'))
-        self['name'] = Label('Wait please...')
+        self['green'] = Label(_('Remove') + ' Fav')
+        self['yellow'] = Label()
+        self['blue'] = Label('IPV6 Off')
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self['blue'].setText('IPV6 On')
+        self['name'] = Label('Loading...')
+        self['version'] = Label(currversion)
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
         self.loading = 0
         self.url = b64decoder(stripurl)
-        self['actions'] = ActionMap(['OkCancelActions',
-                                     'ColorActions',
-                                     'EPGSelectActions',
-                                     'DirectionActions',
-                                     'MovieSelectionActions'], {'up': self.up,
-                                                                'down': self.down,
-                                                                'left': self.left,
-                                                                'right': self.right,
-                                                                'ok': self.ok,
-                                                                'green': self.msgdeleteBouquets,
-                                                                'cancel': self.close,
-                                                                'info': self.info,
-                                                                'red': self.close}, -1)
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions',  'MovieSelectionActions'], {
+            'up': self.up,
+            'down': self.down,
+            'left': self.left,
+            'right': self.right,
+            'ok': self.ok,
+            'green': self.msgdeleteBouquets,
+            'blue': self.ipv6,
+            'cancel': self.close,
+            'info': self.info,
+            'red': self.close
+        }, -1)
+
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -331,8 +368,26 @@ class MainVavoox(Screen):
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
 
+    def ipv6(self):
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+        else:
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+
+    def ipv6check(self, result):
+        if result:
+            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+                os.unlink('/etc/rc3.d/S99ipv6dis.sh')
+                self['blue'].setText('IPV6 Off')
+            else:
+                os.system("echo '#!/bin/bash")
+                os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
+                os.system("chmod 755 /etc/init.d/ipv6dis.sh")
+                os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
+                self['blue'].setText('IPV6 On')
+
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\nThanks:\n@KiddaC #oktus and staff Linuxsat-support.com') % currversion, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n\n@oktus\n\nAll staff Linuxsat-support.com & Corvoboys Forum') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -378,7 +433,7 @@ class MainVavoox(Screen):
                 url = item.split('###')[1]
                 if name not in self.cat_list:
                     self.cat_list.append(show_(name, url))
-            if len(self.cat_list) < 0:
+            if len(self.cat_list) < 1:
                 return
             else:
                 self['menulist'].l.setList(self.cat_list)
@@ -433,29 +488,37 @@ class vavoox(Screen):
         _session = session
         Screen.__init__(self, session)
         self.menulist = []
+        global search_ok
+        search_ok = False
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
-        self['green'] = Label(_('Export'))
-        self['name'] = Label('Wait please...')
+        self['green'] = Label(_('Export') + ' Fav'))
+        self['yellow'] = Label(_('Search'))
+        self['blue'] = Label('IPV6 Off')
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self['blue'].setText('IPV6 On')
+        self['name'] = Label('Loading ...')
+        self['version'] = Label(currversion)
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['OkCancelActions',
-                                     'ColorActions',
-                                     'EPGSelectActions',
-                                     'DirectionActions',
-                                     'MovieSelectionActions'], {'up': self.up,
-                                                                'down': self.down,
-                                                                'left': self.left,
-                                                                'right': self.right,
-                                                                'ok': self.ok,
-                                                                'green': self.message2,
-                                                                'cancel': self.close,
-                                                                'info': self.info,
-                                                                'red': self.close}, -1)
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions', 'MovieSelectionActions', 'VirtualKeyboardActions'], {
+            'up': self.up,
+            'down': self.down,
+            'left': self.left,
+            'right': self.right,
+            'ok': self.ok,
+            'green': self.message2,
+            'yellow': self.search_vavoo,
+            'blue': self.ipv6,
+            'cancel': self.backhome,
+            'info': self.info,
+            'red': self.backhome
+        }, -1)
+
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -463,8 +526,34 @@ class vavoox(Screen):
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
 
+    def backhome(self):
+        if search_ok is True:
+            # global search_ok
+            # search_ok = False
+            self.cat()
+        else:
+            self.close()
+
+    def ipv6(self):
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+        else:
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+
+    def ipv6check(self, result):
+        if result:
+            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+                os.unlink('/etc/rc3.d/S99ipv6dis.sh')
+                self['blue'].setText('IPV6 Off')
+            else:
+                os.system("echo '#!/bin/bash")
+                os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
+                os.system("chmod 755 /etc/init.d/ipv6dis.sh")
+                os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
+                self['blue'].setText('IPV6 On')
+
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\nThanks:\n@KiddaC #oktus and staff Linuxsat-support.com') % currversion, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('Vavoo Plugin v.%s\nby Lululla\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\n\this plugin is free,\nno stream direct on server\nbut only free channel found on the net') % currversion, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -491,6 +580,9 @@ class vavoox(Screen):
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
+        server = zServer(0, None, None)
+        global search_ok
+        search_ok = False
         try:
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
@@ -504,11 +596,16 @@ class vavoox(Screen):
                     if country != names:
                         continue
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
-                    url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
+                    # url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
+                    url = str(server) + '/play/' + str(ids) + '/index.m3u8'
                     name = decodeHtml(name)
                     item = name + "###" + url + '\n'
                     items.append(item)
                 items.sort()
+                # use for search
+                global itemlist
+                itemlist = items
+                # use for search end
                 for item in items:
                     name = item.split('###')[0]
                     url = item.split('###')[1]
@@ -518,7 +615,7 @@ class vavoox(Screen):
                     outfile.write(nname)
                     outfile.write(str(url))
                 outfile.close()
-                if len(self.cat_list) < 0:
+                if len(self.cat_list) < 1:
                     return
                 else:
                     self['menulist'].l.setList(self.cat_list)
@@ -528,6 +625,41 @@ class vavoox(Screen):
         except Exception as e:
             self['name'].setText('Error')
             print(e)
+
+    def search_vavoo(self):
+        self.session.openWithCallback(
+            self.filterM3u,
+            VirtualKeyBoard,
+            title=_("Filter this category..."),
+            text='')
+
+    def filterM3u(self, result):
+        global search_ok
+        if result:
+            try:
+                self.cat_list = []
+                search = result
+                for item in itemlist:
+                    name = item.split('###')[0]
+                    url = item.split('###')[1]
+                    if search.lower() in str(name).lower():
+                        search_ok = True
+                        namex = name
+                        urlx = url
+                        self.cat_list.append(show_(namex, urlx))
+                print('N. channel=', len(self.cat_list))
+                if len(self.cat_list) < 1:
+                    _session.open(MessageBox, _('No channels found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
+                    return
+                else:
+                    self['menulist'].l.setList(self.cat_list)
+                    self['menulist'].moveToIndex(0)
+                    auswahl = self['menulist'].getCurrent()[0][0]
+                    self['name'].setText(str(auswahl))
+            except Exception as e:
+                self['name'].setText('Error')
+                search_ok = False
+                print(e)
 
     def ok(self):
         try:
@@ -751,32 +883,23 @@ class Playstream2(
         self.name = decodeHtml(name)
         self.state = self.STATE_PLAYING
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
-        self['actions'] = ActionMap(['MoviePlayerActions',
-                                     'MovieSelectionActions',
-                                     'MediaPlayerActions',
-                                     'EPGSelectActions',
-                                     # 'MediaPlayerSeekActions',
-                                     # 'ColorActions',
-                                     'OkCancelActions',
-                                     'InfobarShowHideActions',
-                                     'InfobarActions',
-                                     # 'InfobarSeekActions',
-                                     'InfobarSeekActions'], {'epg': self.showIMDB,
-                                                             'info': self.showIMDB,
-                                                             # 'info': self.cicleStreamType,
-                                                             'tv': self.cicleStreamType,
-                                                             'stop': self.leavePlayer,
-                                                             'cancel': self.cancel,
-                                                             'channelDown': self.previousitem,
-                                                             'channelUp': self.nextitem,
-                                                             'down': self.previousitem,
-                                                             'up': self.nextitem,
-                                                             'back': self.cancel}, -1)
+        self['actions'] = ActionMap(['MoviePlayerActions', 'MovieSelectionActions', 'MediaPlayerActions', 'EPGSelectActions', 'OkCancelActions',
+                                    'InfobarShowHideActions', 'InfobarActions', 'DirectionActions', 'InfobarSeekActions'], {
+            'epg': self.showIMDB,
+            'info': self.showIMDB,
+            'tv': self.cicleStreamType,
+            'stop': self.leavePlayer,
+            'cancel': self.cancel,
+            'channelDown': self.previousitem,
+            'channelUp': self.nextitem,
+            'down': self.previousitem,
+            'up': self.nextitem,
+            'back': self.cancel
+        }, -1)
+
         if '8088' in str(self.url):
-            # self.onLayoutFinish.append(self.slinkPlay)
             self.onFirstExecBegin.append(self.slinkPlay)
         else:
-            # self.onLayoutFinish.append(self.cicleStreamType)
             self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
 
@@ -902,35 +1025,12 @@ class Playstream2(
         self.session.nav.playService(sref)
 
     def cicleStreamType(self):
-        global streml
-        streaml = False
-        # from itertools import cycle, islice
         self.servicetype = '4097'
         print('servicetype1: ', self.servicetype)
         url = str(self.url)
         if str(os.path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
-        # currentindex = 0
-        # streamtypelist = ["4097"]
-        # if "youtube" in str(self.url):
-            # self.mbox = self.session.open(MessageBox, _('For Stream Youtube coming soon!'), MessageBox.TYPE_INFO, timeout=5)
-            # return
-        # if Utils.isStreamlinkAvailable():
-            # streamtypelist.append("5002")
-            # streaml = True
-        # if os.path.exists("/usr/bin/gstplayer"):
-            # streamtypelist.append("5001")
-        # if os.path.exists("/usr/bin/exteplayer3"):
-            # streamtypelist.append("5002")
-        # if os.path.exists("/usr/bin/apt-get"):
-            # streamtypelist.append("8193")
-        # for index, item in enumerate(streamtypelist, start=0):
-            # if str(item) == str(self.servicetype):
-                # currentindex = index
-                # break
-        # nextStreamType = islice(cycle(streamtypelist), currentindex + 1, None)
-        # self.servicetype = str(next(nextStreamType))
         print('servicetype2: ', self.servicetype)
         self.openTest(self.servicetype, url)
 
@@ -961,7 +1061,6 @@ class Playstream2(
                 self.setAspect(self.init_aspect)
             except:
                 pass
-        streaml = False
         self.close()
 
     def leavePlayer(self):
@@ -976,6 +1075,8 @@ VIDEO_ASPECT_RATIO_MAP = {
     4: "16:10 Letterbox",
     5: "16:10 PanScan",
     6: "16:9 Letterbox"}
+
+
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 

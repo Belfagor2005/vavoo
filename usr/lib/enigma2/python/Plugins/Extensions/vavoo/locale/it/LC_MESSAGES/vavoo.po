@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-05-28 18:43+0200\n"
+"POT-Creation-Date: 2024-06-01 13:09+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -13,44 +13,79 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:197
+#: plugin.py:202
 msgid "Exit"
 msgstr "Esci"
 
-#: plugin.py:198
+#: plugin.py:203
 msgid "Remove"
 msgstr "Rimuovi Fav"
 
-#: plugin.py:228 plugin.py:364
+#: plugin.py:234
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"\n"
+"Thanks:\n"
+"@KiddaC\n"
+"\n"
+"@oktus\n"
+"\n"
+"All staff Linuxsat-support.com & Corvoboys Forum"
+msgstr ""
+
+#: plugin.py:235 plugin.py:382
+msgid "Info Vavoo"
+msgstr ""
+
+#: plugin.py:303
+msgid "Remove all Vavoo Favorite Bouquet?"
+msgstr "Rimuovere le liste canali favorite Vavoo?"
+
+#: plugin.py:321
+msgid "Vavoo Favorites List have been removed"
+msgstr "Le liste canali favorite Vavoo sono state rimosse!"
+
+#: plugin.py:340
+msgid "Back"
+msgstr "Torna"
+
+#: plugin.py:341
+msgid "Export"
+msgstr "Esporta Fav"
+
+#: plugin.py:342
+msgid "Search"
+msgstr "Cerca"
+
+#: plugin.py:381
 #, python-format
 msgid ""
 "Vavoo Plugin v.%s\n"
 "by Lululla\n"
+"\n"
+"\n"
 "Thanks:\n"
-"@KiddaC #oktus and staff Linuxsat-support.com"
+"@KiddaC\n"
+"@oktus\n"
+"All staff Linuxsat-support.com\n"
+"Corvoboys - Forum\n"
+"\n"
+"\this plugin is free,\n"
+"no stream direct on server\n"
+"but only free channel found on the net"
 msgstr ""
 
-#: plugin.py:229 plugin.py:365
-msgid "Info Vavoo"
-msgstr ""
+#: plugin.py:459
+msgid "Filter this category..."
+msgstr "Filtra questa categoria"
 
-#: plugin.py:296
-msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr "Rimuovere le liste canali favorite Vavoo?"
+#: plugin.py:480
+msgid "No channels found in search!!!"
+msgstr "Nessun canale trovato corrispondente alla ricerca!!!"
 
-#: plugin.py:314
-msgid "Vavoo Favorites List have been removed"
-msgstr "Le liste canali favorite Vavoo sono state rimosse!"
-
-#: plugin.py:332
-msgid "Back"
-msgstr "Torna"
-
-#: plugin.py:333
-msgid "Export"
-msgstr "Esporta Fav"
-
-#: plugin.py:453
+#: plugin.py:510
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -62,7 +97,7 @@ msgstr ""
 "Attenzione!! Potrebbe volerci un po' di tempo a seconda\n"
 "del numero di flussi contenuti !!"
 
-#: plugin.py:460
+#: plugin.py:517
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -71,14 +106,14 @@ msgstr ""
 "bouquet riordinati\n"
 "con %s canali aggiunti."
 
-#: plugin.py:462
+#: plugin.py:519
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:745
+#: plugin.py:791
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:898
+#: plugin.py:922
 msgid "Vavoo Stream Live"
 msgstr ""

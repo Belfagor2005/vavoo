@@ -2,14 +2,22 @@
 # -*- coding: utf-8 -*-
 
 
-import sys
+from enigma import getDesktop
+from six import unichr, iteritems  # ensure_str
+from six.moves import html_entities
+import base64
+# import functools
+# import itertools
+# import operator
 import os
 import re
-import base64
+import sys
+import types
 
-from enigma import getDesktop
+
 screenwidth = getDesktop(0).size()
 pythonVer = sys.version_info.major
+
 
 if pythonVer == 3:
     from urllib.request import urlopen, Request
@@ -23,6 +31,86 @@ if pythonVer == 3:
         sslContext = ssl._create_unverified_context()
     except:
         sslContext = None
+
+
+if pythonVer:
+    string_types = str,
+    integer_types = int,
+    class_types = type,
+    text_type = str
+    binary_type = bytes
+
+    MAXSIZE = sys.maxsize
+else:
+    string_types = basestring,
+    integer_types = (int, long)
+    class_types = (type, types.ClassType)
+    text_type = unicode
+    binary_type = str
+
+    if sys.platform.startswith("java"):
+        # Jython always uses 32 bits.
+        MAXSIZE = int((1 << 31) - 1)
+    else:
+        # It's possible to have sizeof(long) != sizeof(Py_ssize_t).
+        class X(object):
+
+            def __len__(self):
+                return 1 << 31
+        try:
+            len(X())
+        except OverflowError:
+            # 32-bit
+            MAXSIZE = int((1 << 31) - 1)
+        else:
+            # 64-bit
+            MAXSIZE = int((1 << 63) - 1)
+        del X
+
+_UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
+_ESCAPE_RE = re.compile("[&<>\"']")
+_UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")  # Whitespace handling added due to "hand-assed" parsers of html pages
+_ESCAPE_DICT = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}
+
+
+def ensure_str(s, encoding='utf-8', errors='strict'):
+    """Coerce *s* to `str`.
+
+    For Python 2:
+      - `unicode` -> encoded to `str`
+      - `str` -> `str`
+
+    For Python 3:
+      - `str` -> `str`
+      - `bytes` -> decoded to `str`
+    """
+    # Optimization: Fast return for the common case.
+    if type(s) is str:
+        return s
+    if pythonVer == 3 and isinstance(s, text_type):
+        return s.encode(encoding, errors)
+    elif pythonVer and isinstance(s, binary_type):
+        return s.decode(encoding, errors)
+    elif not isinstance(s, (text_type, binary_type)):
+        raise TypeError("not expecting type '%s'" % type(s))
+    return s
+
+
+def html_escape(value):
+    return _ESCAPE_RE.sub(lambda match: _ESCAPE_DICT[match.group(0)], ensure_str(value).strip())
+
+
+def html_unescape(value):
+    return _UNESCAPE_RE.sub(_convert_entity, ensure_str(value).strip())
+
+
+def _convert_entity(m):
+    if m.group(1) == "#":
+        try:
+            return unichr(int(m.group(2)[1:], 16)) if m.group(2)[:1].lower() == "x" else unichr(int(m.group(2)))
+        except ValueError:
+            return "&#%s;" % m.group(2)
+    return _UNICODE_MAP.get(m.group(2), "&%s;" % m.group(2))
 
 
 def b64decoder(s):
@@ -98,100 +186,172 @@ def ReloadBouquets():
 
 
 def decodeHtml(text):
-    text = text.replace('&auml;', 'ä')
-    text = text.replace('\u00e4', 'ä')
-    text = text.replace('&#228;', 'ä')
-    text = text.replace('&Auml;', 'Ä')
-    text = text.replace('\u00c4', 'Ä')
-    text = text.replace('&#196;', 'Ä')
-    text = text.replace('&ouml;', 'ö')
-    text = text.replace('\u00f6', 'ö')
-    text = text.replace('&#246;', 'ö')
-    text = text.replace('&ouml;', 'Ö')
-    text = text.replace('&Ouml;', 'Ö')
-    text = text.replace('\u00d6', 'Ö')
-    text = text.replace('&#214;', 'Ö')
-    text = text.replace('&uuml;', 'ü')
-    text = text.replace('\u00fc', 'ü')
-    text = text.replace('&#252;', 'ü')
-    text = text.replace('&Uuml;', 'Ü')
-    text = text.replace('\u00dc', 'Ü')
-    text = text.replace('&#220;', 'Ü')
-    text = text.replace('&szlig;', 'ß')
-    text = text.replace('\u00df', 'ß')
-    text = text.replace('&#223;', 'ß')
-    text = text.replace('&amp;', '&')
-    text = text.replace('&quot;', '\"')
-    text = text.replace('&gt;', '>')
-    text = text.replace('&apos;', "'")
-    text = text.replace('&acute;', '\'')
-    text = text.replace('&ndash;', '-')
-    text = text.replace('&bdquo;', '"')
-    text = text.replace('&rdquo;', '"')
-    text = text.replace('&ldquo;', '"')
-    text = text.replace('&lsquo;', '\'')
-    text = text.replace('&rsquo;', '\'')
-    text = text.replace('&#034;', '"')
-    text = text.replace('&#34;', '"')
-    text = text.replace('&#038;', '&')
-    text = text.replace('&#039;', '\'')
-    text = text.replace('&#39;', '\'')
-    text = text.replace('&#160;', ' ')
-    text = text.replace('\u00a0', ' ')
-    text = text.replace('\u00b4', '\'')
-    text = text.replace('\u003d', '=')
-    text = text.replace('\u0026', '&')
-    text = text.replace('&#174;', '')
-    text = text.replace('&#225;', 'a')
-    text = text.replace('&#233;', 'e')
-    text = text.replace('&#243;', 'o')
-    text = text.replace('&#8211;', '-')
-    text = text.replace('&#8212;', '—')
-    text = text.replace('&mdash;', '—')
-    text = text.replace('\u2013', '–')
-    text = text.replace('&#8216;', "'")
-    text = text.replace('&#8217;', "'")
-    text = text.replace('&#8220;', "'")
-    text = text.replace('&#8221;', '"')
-    text = text.replace('&#8222;', ', ')
-    text = text.replace('\u014d', 'ō')
-    text = text.replace('\u016b', 'ū')
-    text = text.replace('\u201a', '\"')
-    text = text.replace('\u2018', '\"')
-    text = text.replace('\u201e', '\"')
-    text = text.replace('\u201c', '\"')
-    text = text.replace('\u201d', '\'')
-    text = text.replace('\u2019s', '’')
-    text = text.replace('\u00e0', 'à')
-    text = text.replace('\u00e7', 'ç')
-    text = text.replace('\u00e8', 'é')
-    text = text.replace('\u00e9', 'é')
-    text = text.replace('\u00c1', 'Á')
-    text = text.replace('\u00c6', 'Æ')
-    text = text.replace('\u00e1', 'á')
-
-    text = text.replace('&#xC4;', 'Ä')
-    text = text.replace('&#xD6;', 'Ö')
-    text = text.replace('&#xDC;', 'Ü')
-    text = text.replace('&#xE4;', 'ä')
-    text = text.replace('&#xF6;', 'ö')
-    text = text.replace('&#xFC;', 'ü')
-    text = text.replace('&#xDF;', 'ß')
-    text = text.replace('&#xE9;', 'é')
-    text = text.replace('&#xB7;', '·')
-    text = text.replace('&#x27;', "'")
-    text = text.replace('&#x26;', '&')
-    text = text.replace('&#xFB;', 'û')
-    text = text.replace('&#xF8;', 'ø')
-    text = text.replace('&#x21;', '!')
-    text = text.replace('&#x3f;', '?')
-
-    text = text.replace('&#8230;', '...')
-    text = text.replace('\u2026', '...')
-    text = text.replace('&hellip;', '...')
-
-    text = text.replace('&#8234;', '')
-    return text
+    charlist = []
+    charlist.append(('&#034;', '"'))
+    charlist.append(('&#038;', '&'))
+    charlist.append(('&#039;', "'"))
+    charlist.append(('&#060;', ' '))
+    charlist.append(('&#062;', ' '))
+    charlist.append(('&#160;', ' '))
+    charlist.append(('&#174;', ''))
+    charlist.append(('&#192;', '\xc3\x80'))
+    charlist.append(('&#193;', '\xc3\x81'))
+    charlist.append(('&#194;', '\xc3\x82'))
+    charlist.append(('&#196;', '\xc3\x84'))
+    charlist.append(('&#204;', '\xc3\x8c'))
+    charlist.append(('&#205;', '\xc3\x8d'))
+    charlist.append(('&#206;', '\xc3\x8e'))
+    charlist.append(('&#207;', '\xc3\x8f'))
+    charlist.append(('&#210;', '\xc3\x92'))
+    charlist.append(('&#211;', '\xc3\x93'))
+    charlist.append(('&#212;', '\xc3\x94'))
+    charlist.append(('&#214;', '\xc3\x96'))
+    charlist.append(('&#217;', '\xc3\x99'))
+    charlist.append(('&#218;', '\xc3\x9a'))
+    charlist.append(('&#219;', '\xc3\x9b'))
+    charlist.append(('&#220;', '\xc3\x9c'))
+    charlist.append(('&#223;', '\xc3\x9f'))
+    charlist.append(('&#224;', '\xc3\xa0'))
+    charlist.append(('&#225;', '\xc3\xa1'))
+    charlist.append(('&#226;', '\xc3\xa2'))
+    charlist.append(('&#228;', '\xc3\xa4'))
+    charlist.append(('&#232;', '\xc3\xa8'))
+    charlist.append(('&#233;', '\xc3\xa9'))
+    charlist.append(('&#234;', '\xc3\xaa'))
+    charlist.append(('&#235;', '\xc3\xab'))
+    charlist.append(('&#236;', '\xc3\xac'))
+    charlist.append(('&#237;', '\xc3\xad'))
+    charlist.append(('&#238;', '\xc3\xae'))
+    charlist.append(('&#239;', '\xc3\xaf'))
+    charlist.append(('&#242;', '\xc3\xb2'))
+    charlist.append(('&#243;', '\xc3\xb3'))
+    charlist.append(('&#244;', '\xc3\xb4'))
+    charlist.append(('&#246;', '\xc3\xb6'))
+    charlist.append(('&#249;', '\xc3\xb9'))
+    charlist.append(('&#250;', '\xc3\xba'))
+    charlist.append(('&#251;', '\xc3\xbb'))
+    charlist.append(('&#252;', '\xc3\xbc'))
+    charlist.append(('&#8203;', ''))
+    charlist.append(('&#8211;', '-'))
+    charlist.append(('&#8211;', '-'))
+    charlist.append(('&#8212;', ''))
+    charlist.append(('&#8212;', '—'))
+    charlist.append(('&#8216;', "'"))
+    charlist.append(('&#8216;', "'"))
+    charlist.append(('&#8217;', "'"))
+    charlist.append(('&#8217;', "'"))
+    charlist.append(('&#8220;', "'"))
+    charlist.append(('&#8220;', ''))
+    charlist.append(('&#8221;', '"'))
+    charlist.append(('&#8222;', ''))
+    charlist.append(('&#8222;', ', '))
+    charlist.append(('&#8230;', '...'))
+    charlist.append(('&#8230;', '...'))
+    charlist.append(('&#8234;', ''))
+    charlist.append(('&#x21;', '!'))
+    charlist.append(('&#x26;', '&'))
+    charlist.append(('&#x27;', "'"))
+    charlist.append(('&#x3f;', '?'))
+    charlist.append(('&#xB7;', '·'))
+    charlist.append(('&#xC4;', 'Ä'))
+    charlist.append(('&#xD6;', 'Ö'))
+    charlist.append(('&#xDC;', 'Ü'))
+    charlist.append(('&#xDF;', 'ß'))
+    charlist.append(('&#xE4;', 'ä'))
+    charlist.append(('&#xE9;', 'é'))
+    charlist.append(('&#xF6;', 'ö'))
+    charlist.append(('&#xF8;', 'ø'))
+    charlist.append(('&#xFB;', 'û'))
+    charlist.append(('&#xFC;', 'ü'))
+    charlist.append(('&8221;', '\xe2\x80\x9d'))
+    charlist.append(('&8482;', '\xe2\x84\xa2'))
+    charlist.append(('&Aacute;', '\xc3\x81'))
+    charlist.append(('&Acirc;', '\xc3\x82'))
+    charlist.append(('&Agrave;', '\xc3\x80'))
+    charlist.append(('&Auml;', '\xc3\x84'))
+    charlist.append(('&Iacute;', '\xc3\x8d'))
+    charlist.append(('&Icirc;', '\xc3\x8e'))
+    charlist.append(('&Igrave;', '\xc3\x8c'))
+    charlist.append(('&Iuml;', '\xc3\x8f'))
+    charlist.append(('&Oacute;', '\xc3\x93'))
+    charlist.append(('&Ocirc;', '\xc3\x94'))
+    charlist.append(('&Ograve;', '\xc3\x92'))
+    charlist.append(('&Ouml;', '\xc3\x96'))
+    charlist.append(('&Uacute;', '\xc3\x9a'))
+    charlist.append(('&Ucirc;', '\xc3\x9b'))
+    charlist.append(('&Ugrave;', '\xc3\x99'))
+    charlist.append(('&Uuml;', '\xc3\x9c'))
+    charlist.append(('&aacute;', '\xc3\xa1'))
+    charlist.append(('&acirc;', '\xc3\xa2'))
+    charlist.append(('&acute;', '\''))
+    charlist.append(('&agrave;', '\xc3\xa0'))
+    charlist.append(('&amp;', '&'))
+    charlist.append(('&apos;', "'"))
+    charlist.append(('&auml;', '\xc3\xa4'))
+    charlist.append(('&bdquo;', '"'))
+    charlist.append(('&bdquo;', '"'))
+    charlist.append(('&eacute;', '\xc3\xa9'))
+    charlist.append(('&ecirc;', '\xc3\xaa'))
+    charlist.append(('&egrave;', '\xc3\xa8'))
+    charlist.append(('&euml;', '\xc3\xab'))
+    charlist.append(('&gt;', '>'))
+    charlist.append(('&hellip;', '...'))
+    charlist.append(('&iacute;', '\xc3\xad'))
+    charlist.append(('&icirc;', '\xc3\xae'))
+    charlist.append(('&igrave;', '\xc3\xac'))
+    charlist.append(('&iuml;', '\xc3\xaf'))
+    charlist.append(('&laquo;', '"'))
+    charlist.append(('&ldquo;', '"'))
+    charlist.append(('&lsquo;', '\''))
+    charlist.append(('&lt;', '<'))
+    charlist.append(('&mdash;', '—'))
+    charlist.append(('&nbsp;', ' '))
+    charlist.append(('&ndash;', '-'))
+    charlist.append(('&oacute;', '\xc3\xb3'))
+    charlist.append(('&ocirc;', '\xc3\xb4'))
+    charlist.append(('&ograve;', '\xc3\xb2'))
+    charlist.append(('&ouml;', '\xc3\xb6'))
+    charlist.append(('&quot;', '"'))
+    charlist.append(('&raquo;', '"'))
+    charlist.append(('&rsquo;', '\''))
+    charlist.append(('&szlig;', '\xc3\x9f'))
+    charlist.append(('&uacute;', '\xc3\xba'))
+    charlist.append(('&ucirc;', '\xc3\xbb'))
+    charlist.append(('&ugrave;', '\xc3\xb9'))
+    charlist.append(('&uuml;', '\xc3\xbc'))
+    charlist.append(('\u0026', '&'))
+    charlist.append(('\u003d', '='))
+    charlist.append(('\u00a0', ' '))
+    charlist.append(('\u00b4', '\''))
+    charlist.append(('\u00c1', 'Á'))
+    charlist.append(('\u00c4', 'Ä'))
+    charlist.append(('\u00c6', 'Æ'))
+    charlist.append(('\u00d6', 'Ö'))
+    charlist.append(('\u00dc', 'Ü'))
+    charlist.append(('\u00df', 'ß'))
+    charlist.append(('\u00e0', 'à'))
+    charlist.append(('\u00e1', 'á'))
+    charlist.append(('\u00e4', 'ä'))
+    charlist.append(('\u00e7', 'ç'))
+    charlist.append(('\u00e8', 'é'))
+    charlist.append(('\u00e9', 'é'))
+    charlist.append(('\u00f6', 'ö'))
+    charlist.append(('\u00fc', 'ü'))
+    charlist.append(('\u014d', 'ō'))
+    charlist.append(('\u016b', 'ū'))
+    charlist.append(('\u2013', '–'))
+    charlist.append(('\u2018', '\"'))
+    charlist.append(('\u2019s', '’'))
+    charlist.append(('\u201a', '\"'))
+    charlist.append(('\u201c', '\"'))
+    charlist.append(('\u201d', '\''))
+    charlist.append(('\u201e', '\"'))
+    charlist.append(('\u2026', '...'))
+    for repl in charlist:
+        text = text.replace(repl[0], repl[1])
+    from re import sub as re_sub
+    text = re_sub('<[^>]+>', '', text)
+    return str(text)  # str needed for PLi
 
 
 def remove_line(filename, what):
