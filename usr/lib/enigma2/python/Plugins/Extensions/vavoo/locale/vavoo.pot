@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-06-01 13:10+0200\n"
+"POT-Creation-Date: 2024-06-01 14:21+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -14,15 +14,23 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:202
+#: plugin.py:203
 msgid "Exit"
 msgstr ""
 
-#: plugin.py:203
+#: plugin.py:204
 msgid "Remove"
 msgstr ""
 
-#: plugin.py:234
+#: plugin.py:238 plugin.py:406
+msgid "Ipv6 [Off]?"
+msgstr ""
+
+#: plugin.py:240 plugin.py:408
+msgid "Ipv6 [On]?"
+msgstr ""
+
+#: plugin.py:255
 #, python-format
 msgid ""
 "%s\n"
@@ -36,31 +44,31 @@ msgid ""
 "All staff Linuxsat-support.com & Corvoboys Forum"
 msgstr ""
 
-#: plugin.py:235 plugin.py:382
+#: plugin.py:256 plugin.py:424
 msgid "Info Vavoo"
 msgstr ""
 
-#: plugin.py:303
+#: plugin.py:324
 msgid "Remove all Vavoo Favorite Bouquet?"
 msgstr ""
 
-#: plugin.py:321
+#: plugin.py:342
 msgid "Vavoo Favorites List have been removed"
 msgstr ""
 
-#: plugin.py:340
+#: plugin.py:361
 msgid "Back"
 msgstr ""
 
-#: plugin.py:341
+#: plugin.py:362
 msgid "Export"
 msgstr ""
 
-#: plugin.py:342
+#: plugin.py:363
 msgid "Search"
 msgstr ""
 
-#: plugin.py:381
+#: plugin.py:423
 #, python-format
 msgid ""
 "Vavoo Plugin v.%s\n"
@@ -78,15 +86,15 @@ msgid ""
 "but only free channel found on the net"
 msgstr ""
 
-#: plugin.py:459
+#: plugin.py:500
 msgid "Filter this category..."
 msgstr ""
 
-#: plugin.py:480
+#: plugin.py:519
 msgid "No channels found in search!!!"
 msgstr ""
 
-#: plugin.py:510
+#: plugin.py:549
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -94,21 +102,21 @@ msgid ""
 "on the number of streams contained !!!"
 msgstr ""
 
-#: plugin.py:517
+#: plugin.py:556
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
 "With %s channel"
 msgstr ""
 
-#: plugin.py:519
+#: plugin.py:558
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:791
+#: plugin.py:830
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:922
+#: plugin.py:961
 msgid "Vavoo Stream Live"
 msgstr ""

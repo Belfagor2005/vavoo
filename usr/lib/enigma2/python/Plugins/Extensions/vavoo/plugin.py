@@ -52,7 +52,7 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.3'
+currversion = '1.4'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -111,8 +111,8 @@ def returnIMDB(text_clear):
 def add_skin_font():
     from enigma import addFont
     font_path = PLUGIN_PATH + '/resolver/'
-    addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 1)
-    addFont(font_path + 'lcd.ttf', 'Lcd', 100, 1)
+    addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 0)
+    addFont(font_path + 'lcd.ttf', 'Lcd', 100, 0)
 
 
 def zServer(opt=0, server=None, port=None):
@@ -201,7 +201,7 @@ class MainVavoo(Screen):
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
-        self['green'] = Label(_('Remove') + ' Fav'))
+        self['green'] = Label(_('Remove') + ' Fav')
         self['yellow'] = Label()
         self['blue'] = Label('IPV6 Off')
         if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
@@ -359,7 +359,7 @@ class vavoo(Screen):
         search_ok = False
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
-        self['green'] = Label(_('Export') + ' Fav'))
+        self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
         self['blue'] = Label('IPV6 Off')
         if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):

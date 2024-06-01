@@ -97,8 +97,6 @@ else:
 currversion = '1.3'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
-                                                                             
-                                                  
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 searchurl = 'aHR0cHM6Ly90aXZ1c3RyZWFtLndlYnNpdGUvcGhwX2ZpbHRlci9rb2RpMTkva29kaTE5LnBocD9tb2RlPW1vdmllJnF1ZXJ5PQ=='
 _session = None
@@ -492,7 +490,7 @@ class vavoox(Screen):
         search_ok = False
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
-        self['green'] = Label(_('Export') + ' Fav'))
+        self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
         self['blue'] = Label('IPV6 Off')
         if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
