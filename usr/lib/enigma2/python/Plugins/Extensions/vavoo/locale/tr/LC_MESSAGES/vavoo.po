@@ -1,0 +1,186 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: vavoo\n"
+"POT-Creation-Date: 2024-06-08 17:56+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: audi06_19 <info@dreamosat-forum.com>\n"
+"Language-Team: \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: plugin.py\n"
+
+#: plugin.py:81
+msgid "interval"
+msgstr "aralık"
+
+#: plugin.py:81
+msgid "fixed time"
+msgstr "sabit zaman"
+
+#: plugin.py:223 plugin.py:510
+msgid "Back"
+msgstr "Geri"
+
+#: plugin.py:224
+msgid "Save"
+msgstr "Kaydet"
+
+#: plugin.py:247
+#, python-format
+msgid "Last channel update: %s"
+msgstr "Son kanal güncellemesi: %s"
+
+#: plugin.py:256
+msgid "Automatic bouquet update (schedule):"
+msgstr "Otomatik buket güncellemesi (program):"
+
+#: plugin.py:256
+msgid "Active Automatic Bouquet Update"
+msgstr "Aktif Otomatik Buket Güncellemesi"
+
+#: plugin.py:258
+msgid "Schedule type:"
+msgstr "Program tipi:"
+
+#: plugin.py:258
+msgid "At an interval of hours or at a fixed time"
+msgstr "Saat aralığında veya sabit bir zamanda"
+
+#: plugin.py:260
+msgid "Update interval (hours):"
+msgstr "Güncelleme aralığı (saat):"
+
+#: plugin.py:260
+msgid "Configure every interval of hours from now"
+msgstr "Şu andan itibaren her saat aralığını yapılandır"
+
+#: plugin.py:262
+msgid "Time to start update:"
+msgstr "Güncellemeyi başlatma zamanı:"
+
+#: plugin.py:262
+msgid "Configure at a fixed time"
+msgstr "Belirli bir zamanda yapılandırın"
+
+#: plugin.py:274
+msgid "SELECT YOUR CHOICE"
+msgstr "SEÇİMİNİZİ SEÇİN"
+
+#: plugin.py:321
+msgid "Settings saved successfully !"
+msgstr "Ayarlar başarıyla kaydedildi!"
+
+#: plugin.py:326
+msgid "Really close without saving settings?"
+msgstr "Ayarlarınızı kaydetmeden çıkmak istediğinizden emin misiniz?"
+
+#: plugin.py:348
+msgid "Exit"
+msgstr "Çıkış"
+
+#: plugin.py:349
+msgid "Remove"
+msgstr "Kaldır"
+
+#: plugin.py:387 plugin.py:555
+msgid "Ipv6 [Off]?"
+msgstr "IPv6 [Kapalı]?"
+
+#: plugin.py:389 plugin.py:557
+msgid "Ipv6 [On]?"
+msgstr "IPv6 [Açık]?"
+
+#: plugin.py:404 plugin.py:572
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"\n"
+"Thanks:\n"
+"@KiddaC\n"
+"@oktus\n"
+"All staff Linuxsat-support.com\n"
+"Corvoboys - Forum\n"
+"\n"
+"This plugin is free,\n"
+"no stream direct on server\n"
+"but only free channel found on the net"
+msgstr ""
+"%s\n"
+"\n"
+"\n"
+"Teşekkürler:\n"
+"@KiddaC\n"
+"@oktus\n"
+"Tüm personel Linuxsat-support.com\n"
+"Corvoboys - Forum\n"
+"\n"
+"Bu eklenti ücretsizdir,\n"
+"sunucuda doğrudan akış yok\n"
+"ancak internette yalnızca ücretsiz kanal bulundu"
+
+#: plugin.py:405 plugin.py:573
+msgid "Info Vavoo"
+msgstr "Bilgi Vavoo"
+
+#: plugin.py:473
+msgid "Remove all Vavoo Favorite Bouquet?"
+msgstr "Tüm Vavoo Favori Buketleri kaldırılsın mı?"
+
+#: plugin.py:491
+msgid "Vavoo Favorites List have been removed"
+msgstr "Vavoo Favoriler Listesi kaldırıldı"
+
+#: plugin.py:511
+msgid "Export"
+msgstr "Dışa Aktar"
+
+#: plugin.py:512
+msgid "Search"
+msgstr "Arama"
+
+#: plugin.py:649
+msgid "Filter this category..."
+msgstr "Bu kategoriyi filtrele..."
+
+#: plugin.py:668
+msgid "No channels found in search!!!"
+msgstr "Aramada kanal bulunamadı!!!"
+
+#: plugin.py:698
+msgid ""
+"Do you want to Convert to favorite .tv ?\n"
+"\n"
+"Attention!! It may take some time depending\n"
+"on the number of streams contained !!!"
+msgstr ""
+"Favori .tv'ye dönüştürmek ister misiniz?\n"
+"\n"
+"Dikkat!! bağlı olarak biraz zaman alabilir\n"
+"içerdiği akış sayısına göre !!!"
+
+#: plugin.py:710
+#, python-format
+msgid ""
+"bouquets reloaded..\n"
+"With %s channel"
+msgstr ""
+"buketler yeniden yüklendi..\n"
+"%s kanalıyla"
+
+#: plugin.py:712
+msgid "Download Error"
+msgstr "İndirme Hatası"
+
+#: plugin.py:930
+msgid "Resolution Change Failed"
+msgstr "Çözünürlük Değişikliği Başarısız"
+
+#: plugin.py:1229
+msgid "Vavoo Stream Live"
+msgstr "Vavoo Canlı Yayını"
