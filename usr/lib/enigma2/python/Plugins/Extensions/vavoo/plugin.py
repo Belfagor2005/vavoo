@@ -18,7 +18,7 @@ import re
 import six
 import ssl
 import sys
-
+import codecs
 
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
@@ -37,6 +37,14 @@ from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG, getDesktop)
 
 
+from Components.config import ConfigSubsection
+from Components.config import ConfigEnableDisable
+from Components.config import ConfigSelectionNumber, ConfigClock
+from Components.config import ConfigSelection, getConfigListEntry
+from Components.config import ConfigText
+from Components.ConfigList import ConfigListScreen
+import time
+
 # Local application/library-specific imports
 from . import _
 from . import vUtils
@@ -52,13 +60,12 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.4'
+currversion = '1.5'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
-searchurl = 'aHR0cHM6Ly90aXZ1c3RyZWFtLndlYnNpdGUvcGhwX2ZpbHRlci9rb2RpMTkva29kaTE5LnBocD9tb2RlPW1vdmllJnF1ZXJ5PQ=='
 _session = None
 enigma_path = '/etc/enigma2/'
 screenwidth = getDesktop(0).size()
@@ -67,19 +74,31 @@ url2 = 'https://oha.to'
 url3 = 'https://www.kool.to'
 url4 = 'https://vavoo.to'
 
+# config section
+config.plugins.vavoo = ConfigSubsection()
+cfg = config.plugins.vavoo
+cfg.autobouquetupdate = ConfigEnableDisable(default=False)
+cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
+cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
+cfg.fixedtime = ConfigClock(default=46800)
+cfg.last_update = ConfigText(default="Never")
 
+# set screen section
 if screenwidth.width() == 2560:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_pli/defaultListScreen_uhd.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')
+    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
+    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
+    # if os.path.exists('/var/lib/dpkg/status'):
+        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')
 elif screenwidth.width() == 1920:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_pli/defaultListScreen_new.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')
+    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
+    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
+    # if os.path.exists('/var/lib/dpkg/status'):
+        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')
 else:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_pli/defaultListScreen.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')
+    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
+    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
+    # if os.path.exists('/var/lib/dpkg/status'):
+        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')
 
 
 def returnIMDB(text_clear):
@@ -189,13 +208,139 @@ def show_(name, link):
         return res
 
 
+class vavoo_config(Screen, ConfigListScreen):
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        self.session = session
+        with codecs.open(skin_config, "r", encoding="utf-8") as f:
+            self.skin = f.read()
+        self.setup_title = ('Vavoo Config')
+        self.list = []
+        self.onChangedEntry = []
+        self["version"] = Label(currversion)
+        self['statusbar'] = Label()
+        self["description"] = Label("")
+        self["red"] = Label(_("Back"))
+        self["green"] = Label(_("Save"))
+        # self["blue"] = Label(_("Import") + " txt")
+        # self["yellow"] = Label(_("Import") + " sh")
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'DirectionActions'], {
+            "cancel": self.extnok,
+            "left": self.keyLeft,
+            "right": self.keyRight,
+            "up": self.keyUp,
+            "down": self.keyDown,
+            # "yellow": self.iptv_sh,
+            "green": self.save,
+            # "blue": self.ImportInfosServer,
+            # "showVirtualKeyboard": self.KeyText,
+            "ok": self.save,
+        }, -1)
+        self.update_status()
+        ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
+        self.createSetup()
+        self.showhide()
+        self.onLayoutFinish.append(self.layoutFinished)
+
+    def update_status(self):
+        if cfg.autobouquetupdate:
+            self['statusbar'].setText(_("Last channel update: %s") % cfg.last_update.value)
+
+    def layoutFinished(self):
+        self.setTitle(self.setup_title)
+
+    def createSetup(self):
+        self.editListEntry = None
+        self.list = []
+        indent = "- "
+        self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
+        if cfg.autobouquetupdate.getValue():
+            self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
+            if cfg.timetype.value == "interval":
+                self.list.append(getConfigListEntry(2 * indent + (_("Update interval (hours):")), cfg.updateinterval, (_("Configure every interval of hours from now"))))
+            if cfg.timetype.value == "fixed time":
+                self.list.append(getConfigListEntry(2 * indent + (_("Time to start update:")), cfg.fixedtime, (_("Configure at a fixed time"))))
+
+        self["config"].list = self.list
+        self["config"].l.setList(self.list)
+        self.setInfo()
+
+    def setInfo(self):
+        try:
+            sel = self['config'].getCurrent()[2]
+            if sel:
+                self['description'].setText(str(sel))
+            else:
+                self['description'].setText(_('SELECT YOUR CHOICE'))
+            return
+        except Exception as e:
+            print("Error ", e)
+
+    def changedEntry(self):
+        for x in self.onChangedEntry:
+            x()
+
+    def getCurrentEntry(self):
+        return self["config"].getCurrent()[0]
+
+    def showhide(self):
+        pass
+
+    def getCurrentValue(self):
+        return str(self["config"].getCurrent()[1].getText())
+
+    def createSummary(self):
+        from Screens.Setup import SetupSummary
+        return SetupSummary
+
+    def keyLeft(self):
+        ConfigListScreen.keyLeft(self)
+        self.createSetup()
+        self.showhide()
+
+    def keyRight(self):
+        ConfigListScreen.keyRight(self)
+        self.createSetup()
+        self.showhide()
+
+    def keyDown(self):
+        self['config'].instance.moveSelection(self['config'].instance.moveDown)
+        self.createSetup()
+        self.showhide()
+
+    def keyUp(self):
+        self['config'].instance.moveSelection(self['config'].instance.moveUp)
+        self.createSetup()
+        self.showhide()
+
+    def save(self):
+        if self["config"].isChanged():
+            for x in self["config"].list:
+                x[1].save()
+            # self.xml_plugin()
+            self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
+        self.close()
+
+    def extnok(self, answer=None):
+        if answer is None:
+            self.session.openWithCallback(self.extnok, MessageBox, _("Really close without saving settings?"))
+        elif answer:
+            for x in self["config"].list:
+                x[1].cancel()
+            self.close()
+        else:
+            return
+
+
 class MainVavoo(Screen):
     def __init__(self, session):
         self.session = session
         global _session
         _session = session
         Screen.__init__(self, session)
-        with open(skin_path, 'r') as f:
+        # with open(skin_path, 'r') as f:
+            # self.skin = f.read()
+        with codecs.open(skin_path, "r", encoding="utf-8") as f:
             self.skin = f.read()
         # print('skin MainVavoo=', self.skin)
         self.menulist = []
@@ -213,12 +358,13 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions',  'MovieSelectionActions'], {
+        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions',  'MovieSelectionActions'], {
             'up': self.up,
             'down': self.down,
             'left': self.left,
             'right': self.right,
             'ok': self.ok,
+            'menu': self.goConfig,
             'green': self.msgdeleteBouquets,
             'blue': self.ipv6,
             'cancel': self.close,
@@ -232,6 +378,9 @@ class MainVavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+
+    def goConfig(self):
+        self.session.open(vavoo_config)
 
     def ipv6(self):
         if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
@@ -352,7 +501,7 @@ class vavoo(Screen):
         global _session
         _session = session
         Screen.__init__(self, session)
-        with open(skin_path, 'r') as f:
+        with codecs.open(skin_path, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.menulist = []
         global search_ok
@@ -378,7 +527,7 @@ class vavoo(Screen):
             'left': self.left,
             'right': self.right,
             'ok': self.ok,
-            'green': self.message2,
+            'green': self.message1,
             'yellow': self.search_vavoo,
             'blue': self.ipv6,
             'cancel': self.backhome,
@@ -544,73 +693,23 @@ class vavoo(Screen):
     def play_that_shit(self, url, name, index, item, cat_list):
         self.session.open(Playstream2, name, url, index, item, cat_list)
 
-    def message2(self, answer=None):
+    def message1(self, answer=None):
         if answer is None:
-            self.session.openWithCallback(self.message2, MessageBox, _('Do you want to Convert to favorite .tv ?\n\nAttention!! It may take some time depending\non the number of streams contained !!!'))
+            self.session.openWithCallback(self.message1, MessageBox, _('Do you want to Convert to favorite .tv ?\n\nAttention!! It may take some time depending\non the number of streams contained !!!'))
         elif answer:
-            print('url: ', self.url)
-            service = '4097'
-            ch = 0
-            ch = self.convert_bouquet(service)
-            if ch > 0:
-                _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
-            else:
-                _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
+            name = self.name
+            url = self.url
+            self.message2(name, url)
 
-    def convert_bouquet(self, service):
-        from time import sleep
-        dir_enigma2 = '/etc/enigma2/'
-        files = '/tmp/' + self.name + '.m3u'
-        type = 'tv'
-        if "radio" in self.name.lower():
-            type = "radio"
-        name_file = self.name.replace('/', '_').replace(',', '')
-        cleanName = re.sub(r'[\<\>\:\"\/\\\|\?\*]', '_', str(name_file))
-        cleanName = re.sub(r' ', '_', cleanName)
-        cleanName = re.sub(r'\d+:\d+:[\d.]+', '_', cleanName)
-        name_file = re.sub(r'_+', '_', cleanName)
-        bouquetname = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), type.lower())
-        if os.path.exists(str(files)):
-            sleep(5)
-            ch = 0
-            try:
-                if os.path.isfile(files) and os.stat(files).st_size > 0:
-                    print('ChannelList is_tmp exist in playlist')
-                    desk_tmp = ''
-                    in_bouquets = 0
-                    with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
-                        outfile.write('#NAME %s\r\n' % name_file.capitalize())
-                        for line in open(files):
-                            if line.startswith('http://') or line.startswith('https'):
-                                outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
-                                outfile.write('#DESCRIPTION %s' % desk_tmp)
-                            elif line.startswith('#EXTINF'):
-                                desk_tmp = '%s' % line.split(',')[-1]
-                            elif '<stream_url><![CDATA' in line:
-                                outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
-                                outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
-                            elif '<title>' in line:
-                                if '<![CDATA[' in line:
-                                    desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
-                                else:
-                                    desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
-                            ch += 1
-                        outfile.close()
-                    if os.path.isfile('/etc/enigma2/bouquets.tv'):
-                        for line in open('/etc/enigma2/bouquets.tv'):
-                            if bouquetname in line:
-                                in_bouquets = 1
-                        if in_bouquets == 0:
-                            if os.path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os.path.isfile('/etc/enigma2/bouquets.tv'):
-                                vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquetname)
-                                with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
-                                    outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
-                                    outfile.close()
-                                    in_bouquets = 1
-                        vUtils.ReloadBouquets()
-                return ch
-            except Exception as e:
-                print('error convert iptv ', e)
+    def message2(self, name, url):
+        # print('url: ', url)
+        service = '4097'
+        ch = 0
+        ch = convert_bouquet(service, name, url)
+        if ch > 0:
+            _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
+        else:
+            _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
 
 
 class TvInfoBarShowHide():
@@ -626,7 +725,6 @@ class TvInfoBarShowHide():
         self["ShowHideActions"] = ActionMap(["InfobarShowHideActions"],
                                             {"toggleShow": self.OkPressed,
                                              "hide": self.hide}, 0)
-
         self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evStart: self.serviceStarted})
         self.__state = self.STATE_SHOWN
         self.__locked = 0
@@ -934,23 +1032,190 @@ class Playstream2(
         self.close()
 
 
-VIDEO_ASPECT_RATIO_MAP = {
-    0: "4:3 Letterbox",
-    1: "4:3 PanScan",
-    2: "16:9",
-    3: "16:9 Always",
-    4: "16:10 Letterbox",
-    5: "16:10 PanScan",
-    6: "16:9 Letterbox"}
-
-
+VIDEO_ASPECT_RATIO_MAP = {0: "4:3 Letterbox", 1: "4:3 PanScan", 2: "16:9", 3: "16:9 Always", 4: "16:10 Letterbox", 5: "16:10 PanScan", 6: "16:9 Letterbox"}
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
+
+
+def convert_bouquet(service, name, url):
+    from time import sleep
+    dir_enigma2 = '/etc/enigma2/'
+    files = '/tmp/' + name + '.m3u'
+    type = 'tv'
+    if "radio" in name.lower():
+        type = "radio"
+    name_file = name.replace('/', '_').replace(',', '')
+    cleanName = re.sub(r'[\<\>\:\"\/\\\|\?\*]', '_', str(name_file))
+    cleanName = re.sub(r' ', '_', cleanName)
+    cleanName = re.sub(r'\d+:\d+:[\d.]+', '_', cleanName)
+    name_file = re.sub(r'_+', '_', cleanName)
+    with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
+        r.write(str(name_file) + '###' + str(url))
+        r.close()
+    bouquetname = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), type.lower())
+    if os.path.exists(str(files)):
+        sleep(5)
+        ch = 0
+        try:
+            if os.path.isfile(files) and os.stat(files).st_size > 0:
+                print('ChannelList is_tmp exist in playlist')
+                desk_tmp = ''
+                in_bouquets = 0
+                with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
+                    outfile.write('#NAME %s\r\n' % name_file.capitalize())
+                    for line in open(files):
+                        if line.startswith('http://') or line.startswith('https'):
+                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
+                            outfile.write('#DESCRIPTION %s' % desk_tmp)
+                        elif line.startswith('#EXTINF'):
+                            desk_tmp = '%s' % line.split(',')[-1]
+                        elif '<stream_url><![CDATA' in line:
+                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
+                            outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
+                        elif '<title>' in line:
+                            if '<![CDATA[' in line:
+                                desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
+                            else:
+                                desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
+                        ch += 1
+                    outfile.close()
+                if os.path.isfile('/etc/enigma2/bouquets.tv'):
+                    for line in open('/etc/enigma2/bouquets.tv'):
+                        if bouquetname in line:
+                            in_bouquets = 1
+                    if in_bouquets == 0:
+                        if os.path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os.path.isfile('/etc/enigma2/bouquets.tv'):
+                            vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquetname)
+                            with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
+                                outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
+                                outfile.close()
+                                in_bouquets = 1
+                    vUtils.ReloadBouquets()
+            return ch
+        except Exception as e:
+            print('error convert iptv ', e)
+
+
+_session = None
+autoStartTimer = None
+_firstStart = True
+
+
+class AutoStartTimer:
+    def __init__(self, session):
+        print("*** running AutoStartTimerFxy ***")
+        self.session = session
+        self.timer = eTimer()
+        try:
+            self.timer.callback.append(self.on_timer)
+        except:
+            self.timer_conn = self.timer.timeout.connect(self.on_timer)
+        self.timer.start(100, 1)
+        self.update()
+
+    def get_wake_time(self):
+        if cfg.autobouquetupdate.value is True:
+            if cfg.timetype.value == "interval":
+                interval = int(cfg.updateinterval.value)
+                nowt = time.time()
+                return int(nowt) + interval * 60 * 60
+            if cfg.timetype.value == "fixed time":
+                ftc = cfg.fixedtime.value
+                now = time.localtime(time.time())
+                fwt = int(time.mktime((now.tm_year,
+                                       now.tm_mon,
+                                       now.tm_mday,
+                                       ftc[0],
+                                       ftc[1],
+                                       now.tm_sec,
+                                       now.tm_wday,
+                                       now.tm_yday,
+                                       now.tm_isdst)))
+                return fwt
+        else:
+            return -1
+
+    def update(self, constant=0):
+        self.timer.stop()
+        wake = self.get_wake_time()
+        nowt = time.time()
+        now = int(nowt)
+        if wake > 0:
+            if wake < now + constant:
+                if cfg.timetype.value == "interval":
+                    interval = int(cfg.updateinterval.value)
+                    wake += interval * 60 * 60
+                elif cfg.timetype.value == "fixed time":
+                    wake += 86400
+            next = wake - now
+            self.timer.startLongTimer(next)
+        else:
+            wake = -1
+        return wake
+
+    def on_timer(self):
+        self.timer.stop()
+        now = int(time.time())
+        wake = now
+        constant = 0
+        if cfg.timetype.value == "fixed time":
+            wake = self.get_wake_time()
+        if wake - now < 60:
+            try:
+                self.startMain()
+                self.update()
+                localtime = time.asctime(time.localtime(time.time()))
+                cfg.last_update.value = localtime
+                cfg.last_update.save()
+            except Exception as e:
+                print(e)
+        self.update(constant)
+
+    def startMain(self):
+        name = url = ''
+        if os.path.exists(PLUGIN_PATH + '/Favorite.txt'):
+            with open(PLUGIN_PATH + '/Favorite.txt', 'r') as f:
+                line = f.readline()
+                name = line.split('###')[0]
+                url = line.split('###')[1]
+                print('name %s and url %s:' % (name, url))
+            # try:
+            print('session start convert time')
+            vid2 = vavoo(_session, name, url)
+            vid2.message2(name, url)
+            # except Exception as e:
+                # print('timeredit error vavoo', e)
+
+
+def check_configuring():
+    if cfg.autobouquetupdate.value is True:
+        """Check for new config values for auto start
+        """
+        global autoStartTimer
+        if autoStartTimer is not None:
+            autoStartTimer.update()
+        return
+
+
+def autostart(reason, session=None, **kwargs):
+    global autoStartTimer
+    global _session
+    if reason == 0 and _session is None:
+        if session is not None:
+            _session = session
+            if autoStartTimer is None:
+                autoStartTimer = AutoStartTimer(session)
+    return
+
+
+def get_next_wakeup():
+    return -1
 
 
 def main(session, **kwargs):
     try:
         add_skin_font()
         session.open(MainVavoo)
+        # session.openWithCallback(check_configuring, MainVavoo)
     except:
         import traceback
         traceback.print_exc()
@@ -958,5 +1223,6 @@ def main(session, **kwargs):
 
 def Plugins(**kwargs):
     icon = os.path.join(PLUGIN_PATH, 'plugin.png')
-    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)]
+    result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
+              PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)]
     return result

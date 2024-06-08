@@ -20,7 +20,8 @@
     <eLabel backgroundColor="#00ffffff" position="0,651" size="1280,2" zPosition="2" />
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/main.png" position="0,0" size="1280,720" alphatest="on" zPosition="-8" />
     <!-- <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/pics/vavoo_ico.png" position="1154,48" size="60,60" scale="stretch" alphatest="on" zPosition="-8" /> -->
-    <eLabel name="" position="1220,685" size="60,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="INFO" />
-    <eLabel name="" position="1150,685" size="70,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="CH+" />
-    <eLabel name="" position="1080,685" size="70,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="CH-" />
+    <eLabel name="" position="1220,690" size="60,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="MENU" />
+    <eLabel name="" position="1160,690" size="60,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="INFO" />
+    <eLabel name="" position="1090,690" size="70,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="CH+" />
+    <eLabel name="" position="1020,690" size="70,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 17" zPosition="3" text="CH-" />
 </screen>

@@ -19,7 +19,8 @@
     </widget>
     <eLabel backgroundColor="#30000000" position="0,0" size="1920,1080" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/main.png" position="0,0" size="1920,1080" alphatest="on" zPosition="-8" />
-    <eLabel name="" position="1834,1018" size="75,50" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 24" zPosition="3" text="INFO" />
-    <eLabel name="" position="1770,1018" size="64,50" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 24" zPosition="3" text="CH+" />
-    <eLabel name="" position="1706,1018" size="64,50" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 24" zPosition="3" text="CH-" />
+    <eLabel name="" position="1844,1028" size="75,50" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 24" zPosition="3" text="MENU" />
+    <eLabel name="" position="1771,1028" size="75,50" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 24" zPosition="3" text="INFO" />
+    <eLabel name="" position="1705,1028" size="64,50" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 24" zPosition="3" text="CH+" />
+    <eLabel name="" position="1641,1028" size="64,50" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont; 24" zPosition="3" text="CH-" />
 </screen>
