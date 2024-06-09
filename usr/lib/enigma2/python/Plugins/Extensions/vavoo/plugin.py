@@ -35,8 +35,6 @@ from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG, getDesktop)
-
-
 from Components.config import ConfigSubsection
 from Components.config import ConfigEnableDisable
 from Components.config import ConfigSelectionNumber, ConfigClock
@@ -134,31 +132,45 @@ def add_skin_font():
     addFont(font_path + 'lcd.ttf', 'Lcd', 100, 0)
 
 
+
+def raises(url):
+    try:
+        import requests
+        from requests.adapters import HTTPAdapter, Retry
+        retries = Retry(total=1, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
+        http = requests.Session()
+        http.mount("http://", adapter)
+        http.mount("https://", adapter)
+        r = http.get(url, headers={'User-Agent': vUtils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
+        r.raise_for_status()
+        if r.status_code == requests.codes.ok:
+            return True
+    except Exception as e:
+        print('error requests -----------> ', e)
+    return False
+
+
 def zServer(opt=0, server=None, port=None):
     url = []
+    import requests
     try:
-        from urllib.request import urlopen
         from urllib.error import HTTPError
     except ImportError:
-        from urllib2 import urlopen
         from urllib2 import HTTPError
     try:
-        url = url1
-        urlopen(url)
-    except HTTPError as err:
-        if err.code == 404:
-            url = url2
-            urlopen(url)
-        elif err.code == 404:
-            url = url3
-            urlopen(url)
-        elif err.code == 404:
-            url = url4
-            urlopen(url)
+        if raises(url1):
+            return str(url1)
+        elif raises(url2):
+            return str(url2)
+        elif raises(url3):
+            return str(url3)
+        elif raises(url4):
+            return str(url4)
         else:
-            url = url4
-            print(err.code)
-    return str(url)
+            return None
+    except HTTPError as err:
+        print(err.code)
 
 
 class m2list(MenuList):
@@ -707,6 +719,9 @@ class vavoo(Screen):
         ch = 0
         ch = convert_bouquet(service, name, url)
         if ch > 0:
+            localtime = time.asctime(time.localtime(time.time()))
+            cfg.last_update.value = localtime
+            cfg.last_update.save()
             _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
         else:
             _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
