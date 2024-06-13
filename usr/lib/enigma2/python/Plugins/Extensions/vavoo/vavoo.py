@@ -7,7 +7,7 @@
 *             26/04/2024               *
 ****************************************
 # --------------------#
-# Info Linuxsat-support.com  corvoboys.org
+# Info Linuxsat-support.com & corvoboys.org
 put to menu.xml this:
 
 <!--  <id val="mainmenu"/>  -->
@@ -53,6 +53,9 @@ from Components.config import ConfigSelection, getConfigListEntry
 from Components.config import ConfigText
 from Components.ConfigList import ConfigListScreen
 import time
+import json
+import requests
+from random import choice
 try:
     from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
 except ImportError:
@@ -101,10 +104,11 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.5'
+currversion = '1.8'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
+keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 _session = None
 enigma_path = '/etc/enigma2/'
 _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
@@ -116,20 +120,31 @@ ipv6 = 'off'
 if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     ipv6 = 'on'
 
-url1 = 'https://huhu.to'
-url2 = 'https://oha.to'
-url3 = 'https://www.kool.to'
-url4 = 'https://vavoo.to'
+myser = [("https://vavoo.to", "https://vavoo.to"), ("https://oha.to", "https://oha.to"), ("https://kool.to", "https://kool.to"), ("https://huhu.to", "https://huhu.to")]
+modemovie = [("4097", "4097")]
+if file_exists("/usr/bin/gstplayer"):
+    modemovie.append(("5001", "5001"))
+if file_exists("/usr/bin/exteplayer3"):
+    modemovie.append(("5002", "5002"))
+if file_exists('/var/lib/dpkg/info'):
+    modemovie.append(("8193", "8193"))
+
 
 # config section
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
+cfg.server = ConfigSelection(default="https://kool.to", choices=myser)
+cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.ipv6 = ConfigEnableDisable(default=False)
+eserv = int(cfg.services.value)
+# vavookey = os.path.join(PLUGIN_PATH, 'resolver/vavookey')
+# json_file = os.path.join(PLUGIN_PATH, 'resolver/data.json')
+json_file = '/tmp/vavookey'
 if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
@@ -254,6 +269,45 @@ def b64decoder(s):
         return outp
 
 
+def Sig():
+    sig = ''
+    if not os.path.exists(json_file):
+        myUrl = b64decoder(keyurl)
+        vecKeylist = requests.get(myUrl).json()
+        vecs = {'time': int(time.time()), 'vecs': vecKeylist}
+        with open(json_file, "w") as f:
+            json.dump(vecKeylist, f, indent=2)
+    else:
+        vec = None
+        try:
+            with open(json_file) as f:
+                vecs = json.load(f)
+                # print('json vecs', vecs)
+                vec = choice(vecs)
+                print('vec=', str(vec))
+                headers = {
+                    # Already added when you pass json=
+                    'Content-Type': 'application/json',
+                }
+            json_data = '{"vec": "' + str(vec) + '"}'
+            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
+            if req.get('signed'):
+                sig = req['signed']
+            elif req.get('data', {}).get('signed'):
+                sig = req['data']['signed']
+            elif req.get('response', {}).get('signed'):
+                sig = req['response']['signed']
+            # # original command
+            # cmd01 = "curl -k --location --request POST 'https://www.vavoo.tv/api/box/ping2' --header 'Content-Type: application/json' --data "{\"vec\": \"$vec\"}" | sed 's#^.*"signed":"##' | sed "s#\"}}##g" | sed 's/".*//'"
+            # res = popen(cmd01).read()
+            # popen(cmd01)
+            print('res key:', str(sig))
+        except Exception as e:
+
+            print('error vec', e)
+    return sig
+
+
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
     IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
@@ -282,7 +336,6 @@ def returnIMDB(text_clear):
 
 def raises(url):
     try:
-        import requests
         from requests.adapters import HTTPAdapter, Retry
         retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
@@ -304,16 +357,9 @@ def zServer(opt=0, server=None, port=None):
     except ImportError:
         from urllib2 import HTTPError
     try:
-        if raises(url1):
-            return str(url1)
-        elif raises(url2):
-            return str(url2)
-        elif raises(url3):
-            return str(url3)
-        elif raises(url4):
-            return str(url4)
-        else:
-            return None
+        if raises(server):
+            print('server is raise:', str(server))
+            return str(server)
     except HTTPError as err:
         print(err.code)
 
@@ -367,17 +413,17 @@ class vavoo_config(Screen, ConfigListScreen):
         self["description"] = Label("")
         self["red"] = Label(_("Back"))
         self["green"] = Label(_("Save"))
-        # self["blue"] = Label(_("Import") + " txt")
-        # self["yellow"] = Label(_("Import") + " sh")
+        # self["blue"] = Label(_("IPV6 Off")
+        # self["yellow"] = Label(_("")
         self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'DirectionActions'], {
             "cancel": self.extnok,
             "left": self.keyLeft,
             "right": self.keyRight,
             "up": self.keyUp,
             "down": self.keyDown,
-            # "yellow": self.iptv_sh,
             "green": self.save,
-            # "blue": self.ImportInfosServer,
+            # "yellow": self.ipt,
+            # "blue": self.Import,
             # "showVirtualKeyboard": self.KeyText,
             "ok": self.save,
         }, -1)
@@ -399,7 +445,9 @@ class vavoo_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
+        self.list.append(getConfigListEntry(_("Server for Player used"), cfg.server, (_("Server for player. Use it: %s") % cfg.server.value)))
         self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, (_("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value)))
+        self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
         self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
         if cfg.autobouquetupdate.getValue():
             self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
@@ -486,7 +534,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 x[1].save()
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
-            self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
+            self.session.open(MessageBox, _("Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
 
     def extnok(self, answer=None):
@@ -671,7 +719,7 @@ class vavoox(Screen):
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions', 'MovieSelectionActions', 'VirtualKeyboardActions'], {
+        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions'], {
             'up': self.up,
             'down': self.down,
             'left': self.left,
@@ -679,8 +727,9 @@ class vavoox(Screen):
             'ok': self.ok,
             'green': self.message1,
             'yellow': self.search_vavoo,
-            'blue': self.ipv6,
+            # 'blue': self.ipv6,
             'cancel': self.backhome,
+            'menu': self.goConfig,
             'info': self.info,
             'red': self.backhome
         }, -1)
@@ -704,6 +753,9 @@ class vavoox(Screen):
             self.cat()
         else:
             self.close()
+
+    def goConfig(self):
+        self.session.open(vavoo_config)
 
     def info(self):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
@@ -733,10 +785,13 @@ class vavoox(Screen):
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
-        server = zServer(0, None, None)
+        server = cfg.server.value  # zServer(0, None, None)
         global search_ok
         search_ok = False
         try:
+            sig = Sig()
+            app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
+            print('sig:', str(sig))
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = getUrl(self.url)
@@ -750,7 +805,7 @@ class vavoox(Screen):
                         continue
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
                     # url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
-                    url = str(server) + '/play/' + str(ids) + '/index.m3u8'
+                    url = str(server) + '/live2/play/' + str(ids) + '.ts' + app
                     name = decodeHtml(name)
                     item = name + "###" + url + '\n'
                     items.append(item)
@@ -762,12 +817,15 @@ class vavoox(Screen):
                 for item in items:
                     name = item.split('###')[0]
                     url = item.split('###')[1]
+                    url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
                     self.cat_list.append(show2_(name, url))
                     # make m3u
                     nname = '#EXTINF:-1,' + str(name) + '\n'
                     outfile.write(nname)
-                    outfile.write(str(url))
+                    outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
+                    outfile.write(str(url) + '\n')
                 outfile.close()
+                # make m3u end
                 if len(self.cat_list) < 1:
                     return
                 else:
@@ -798,9 +856,9 @@ class vavoox(Screen):
                     if search.lower() in str(name).lower():
                         search_ok = True
                         namex = name
-                        urlx = url
+                        urlx = url.replace('%0a', '').replace('%0A', '')
                         self.cat_list.append(show_(namex, urlx))
-                print('N. channel=', len(self.cat_list))
+                # print('N. channel=', len(self.cat_list))
                 if len(self.cat_list) < 1:
                     _session.open(MessageBox, _('No channels found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
                     return
@@ -839,8 +897,7 @@ class vavoox(Screen):
             self.message2(name, url)
 
     def message2(self, name, url):
-        # print('url: ', url)
-        service = '4097'
+        service = cfg.services.value
         ch = 0
         ch = convert_bouquet(service, name, url)
         if ch > 0:
@@ -1116,7 +1173,7 @@ class Playstream2(
 
     def openTest(self, servicetype, url):
         name = self.name
-        ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
+        ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
         print('reference:   ', ref)
         if streaml is True:
             url = 'http://127.0.0.1:8088/' + str(url)
@@ -1130,8 +1187,10 @@ class Playstream2(
         self.session.nav.playService(sref)
 
     def cicleStreamType(self):
-        self.servicetype = '4097'
+        self.servicetype = cfg.services.value
         print('servicetype1: ', self.servicetype)
+        if not self.url.startswith('http'):
+            self.url = 'http://' + self.url
         url = str(self.url)
         if str(os.path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
@@ -1197,7 +1256,7 @@ def convert_bouquet(service, name, url):
         ch = 0
         try:
             if os.path.isfile(files) and os.stat(files).st_size > 0:
-                print('ChannelList is_tmp exist in playlist')
+                # print('ChannelList is_tmp exist in playlist')
                 desk_tmp = ''
                 in_bouquets = 0
                 with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
@@ -1297,7 +1356,7 @@ class AutoStartTimer:
     def on_timer(self):
         self.timer.stop()
         now = int(time.time())
-        wake = self.getWakeTime()
+        wake = now
         constant = 0
         if cfg.timetype.value == "fixed time":
             wake = self.get_wake_time()

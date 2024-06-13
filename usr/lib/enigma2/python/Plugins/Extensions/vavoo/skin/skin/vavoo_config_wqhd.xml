@@ -3,7 +3,7 @@
 <screen name="vavoo_config" position="center,center" size="2560,1440" backgroundColor="#ff000000" flags="wfNoBorder">
     <!-- <widget name="titel" position="310,1495" size="924,104" zPosition="1" transparent="1" font="cvfont;46" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" /> -->
     <widget name="description" position="145,1165" size="960,130" zPosition="1" transparent="1" font="cvfont;56" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
-    <widget name="config" position="203,240" size="850,780" itemHeight="50" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
+    <widget name="config" position="203,240" size="850,780" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
     <widget name="version" position="2212,1256" size="150,50" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 32" halign="center" foregroundColor="#ffffff" />
     <widget name="statusbar" position="1082,1327" size="1050,80" font="Regular;43" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<!-- Buttons Colors -->

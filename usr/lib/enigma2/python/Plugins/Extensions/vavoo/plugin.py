@@ -20,7 +20,6 @@ import ssl
 import sys
 import codecs
 from os.path import exists as file_exists
-
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap
@@ -44,9 +43,7 @@ from Components.config import ConfigText
 from Components.ConfigList import ConfigListScreen
 import time
 import json
-import random
 import requests
-from os import popen
 from random import choice
 # Local application/library-specific imports
 from . import _
@@ -135,17 +132,11 @@ def Sig():
                 # print('json vecs', vecs)
                 vec = choice(vecs)
                 print('vec=', str(vec))
-            # cmd01 = """
-                    # curl -k --location --request POST 'https://www.vavoo.tv/api/box/ping2' \
-                    # --header 'Content-Type: application/json' \
-                    # --data '{"vec": "%s"}' | sed 's#^.*"signed":"##' | sed "s#\"}}##g" | sed 's/".*//'
-                    # """ % vec
                 headers = {
                     # Already added when you pass json=
                     'Content-Type': 'application/json',
                 }
             json_data = '{"vec": "' + str(vec) + '"}'
-            # req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, json=json_data, verify=False)
             req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
             if req.get('signed'):
                 sig = req['signed']
@@ -221,14 +212,6 @@ def zServer(opt=0, server=None, port=None):
         if raises(server):
             print('server is raise:', str(server))
             return str(server)
-        # elif raises(server):
-            # return str(server)
-        # elif raises(server):
-            # return str(url3)
-        # elif raises(url4):
-            # return str(url4)
-        # else:
-            # return None
     except HTTPError as err:
         print(err.code)
 
@@ -670,7 +653,6 @@ class vavoo(Screen):
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
         server = cfg.server.value  # zServer(0, None, None)
-        # server = zServer(0, servera, None)
         global search_ok
         search_ok = False
         try:
@@ -743,7 +725,7 @@ class vavoo(Screen):
                     url = item.split('###')[1]
                     if search.lower() in str(name).lower():
                         search_ok = True
-                        namex = name  # .strip('\n')
+                        namex = name
                         urlx = url.replace('%0a', '').replace('%0A', '')
                         self.cat_list.append(show_(namex, urlx))
                 # print('N. channel=', len(self.cat_list))
@@ -795,7 +777,6 @@ class vavoo(Screen):
             _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
         else:
             _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
-        # return
 
 
 class TvInfoBarShowHide():
@@ -931,7 +912,6 @@ class Playstream2(
         self.new_aspect = self.init_aspect
         self.service = None
         self.url = url.replace('%0a', '').replace('%0A', '')
-
         self.name = vUtils.decodeHtml(name)
         self.state = self.STATE_PLAYING
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
