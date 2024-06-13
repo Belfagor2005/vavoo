@@ -27,7 +27,9 @@ import re
 import six
 import ssl
 import sys
-
+from os.path import exists as file_exists
+from os import path as os_path
+import base64
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap
@@ -51,19 +53,14 @@ from Components.config import ConfigSelection, getConfigListEntry
 from Components.config import ConfigText
 from Components.ConfigList import ConfigListScreen
 import time
-
-
 try:
     from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
 except ImportError:
     from Tools.Directories import SCOPE_SKIN
-from os.path import exists as file_exists
-from os import path as os_path
-import base64
-
 from six import unichr, iteritems  # ensure_str
 from six.moves import html_entities
 import types
+
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
@@ -132,6 +129,10 @@ cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("inte
 cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
+cfg.ipv6 = ConfigEnableDisable(default=False)
+if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+    cfg.ipv6.setValue(True)
+    cfg.ipv6.save()
 
 
 def ensure_str(s, encoding='utf-8', errors='strict'):
@@ -279,31 +280,42 @@ def returnIMDB(text_clear):
     return False
 
 
-def zServer(opt=0, server=None, port=None):
-    url = []
+def raises(url):
     try:
-        from urllib.request import urlopen
+        import requests
+        from requests.adapters import HTTPAdapter, Retry
+        retries = Retry(total=1, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
+        http = requests.Session()
+        http.mount("http://", adapter)
+        http.mount("https://", adapter)
+        r = http.get(url, headers={'User-Agent': RequestAgent()}, timeout=10, verify=False)  # , stream=True)
+        r.raise_for_status()
+        if r.status_code == requests.codes.ok:
+            return True
+    except Exception as e:
+        print('error requests -----------> ', e)
+    return False
+
+
+def zServer(opt=0, server=None, port=None):
+    try:
         from urllib.error import HTTPError
     except ImportError:
-        from urllib2 import urlopen
         from urllib2 import HTTPError
     try:
-        url = url1
-        urlopen(url)
-    except HTTPError as err:
-        if err.code == 404:
-            url = url2
-            urlopen(url)
-        elif err.code == 404:
-            url = url3
-            urlopen(url)
-        elif err.code == 404:
-            url = url4
-            urlopen(url)
+        if raises(url1):
+            return str(url1)
+        elif raises(url2):
+            return str(url2)
+        elif raises(url3):
+            return str(url3)
+        elif raises(url4):
+            return str(url4)
         else:
-            url = url4
-            print(err.code)
-    return str(url)
+            return None
+    except HTTPError as err:
+        print(err.code)
 
 
 class m2list(MenuList):
@@ -372,6 +384,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self.update_status()
         ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
         self.createSetup()
+        self.v6 = cfg.ipv6.getValue()
         self.showhide()
         self.onLayoutFinish.append(self.layoutFinished)
 
@@ -386,6 +399,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
+        self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, (_("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value)))
         self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
         if cfg.autobouquetupdate.getValue():
             self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
@@ -393,7 +407,6 @@ class vavoo_config(Screen, ConfigListScreen):
                 self.list.append(getConfigListEntry(2 * indent + (_("Update interval (hours):")), cfg.updateinterval, (_("Configure every interval of hours from now"))))
             if cfg.timetype.value == "fixed time":
                 self.list.append(getConfigListEntry(2 * indent + (_("Time to start update:")), cfg.fixedtime, (_("Configure at a fixed time"))))
-
         self["config"].list = self.list
         self["config"].l.setList(self.list)
         self.setInfo()
@@ -408,6 +421,27 @@ class vavoo_config(Screen, ConfigListScreen):
             return
         except Exception as e:
             print("Error ", e)
+
+    def ipv6(self):
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+        else:
+            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+
+    def ipv6check(self, result):
+        if result:
+            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+                os.unlink('/etc/rc3.d/S99ipv6dis.sh')
+                cfg.ipv6.setValue(False)
+                # self['blue'].setText('IPV6 Off')
+            else:
+                os.system("echo '#!/bin/bash")
+                os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
+                os.system("chmod 755 /etc/init.d/ipv6dis.sh")
+                os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
+                cfg.ipv6.setValue(True)
+                # self['blue'].setText('IPV6 On')
+            cfg.ipv6.save()
 
     def changedEntry(self):
         for x in self.onChangedEntry:
@@ -450,7 +484,8 @@ class vavoo_config(Screen, ConfigListScreen):
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
-            # self.xml_plugin()
+            if self.v6 != cfg.ipv6.value:
+                self.ipv6()
             self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
 
@@ -494,7 +529,7 @@ class MainVavoox(Screen):
             'ok': self.ok,
             'menu': self.goConfig,
             'green': self.msgdeleteBouquets,
-            'blue': self.ipv6,
+            # 'blue': self.ipv6,
             'cancel': self.close,
             'info': self.info,
             'red': self.close
@@ -506,27 +541,16 @@ class MainVavoox(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+        self.onShow.append(self.check)
+
+    def check(self):
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self['blue'].setText('IPV6 On')
+        else:
+            self['blue'].setText('IPV6 Off')
 
     def goConfig(self):
         self.session.open(vavoo_config)
-
-    def ipv6(self):
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
-        else:
-            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
-
-    def ipv6check(self, result):
-        if result:
-            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-                os.unlink('/etc/rc3.d/S99ipv6dis.sh')
-                self['blue'].setText('IPV6 Off')
-            else:
-                os.system("echo '#!/bin/bash")
-                os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
-                os.system("chmod 755 /etc/init.d/ipv6dis.sh")
-                os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
-                self['blue'].setText('IPV6 On')
 
     def info(self):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
@@ -667,32 +691,19 @@ class vavoox(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+        self.onShow.append(self.check)
+
+    def check(self):
+        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            self['blue'].setText('IPV6 On')
+        else:
+            self['blue'].setText('IPV6 Off')
 
     def backhome(self):
         if search_ok is True:
-            # global search_ok
-            # search_ok = False
             self.cat()
         else:
             self.close()
-
-    def ipv6(self):
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
-        else:
-            self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
-
-    def ipv6check(self, result):
-        if result:
-            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-                os.unlink('/etc/rc3.d/S99ipv6dis.sh')
-                self['blue'].setText('IPV6 Off')
-            else:
-                os.system("echo '#!/bin/bash")
-                os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
-                os.system("chmod 755 /etc/init.d/ipv6dis.sh")
-                os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
-                self['blue'].setText('IPV6 On')
 
     def info(self):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
@@ -833,6 +844,9 @@ class vavoox(Screen):
         ch = 0
         ch = convert_bouquet(service, name, url)
         if ch > 0:
+            localtime = time.asctime(time.localtime(time.time()))
+            cfg.last_update.value = localtime
+            cfg.last_update.save()
             _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
         else:
             _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
@@ -851,7 +865,6 @@ class TvInfoBarShowHide():
         self["ShowHideActions"] = ActionMap(["InfobarShowHideActions"],
                                             {"toggleShow": self.OkPressed,
                                              "hide": self.hide}, 0)
-
         self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evStart: self.serviceStarted})
         self.__state = self.STATE_SHOWN
         self.__locked = 0
@@ -971,7 +984,7 @@ class Playstream2(
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
         self.service = None
-        self.url = url
+        self.url = url.replace('%0a', '').replace('%0A', '')
         self.name = decodeHtml(name)
         self.state = self.STATE_PLAYING
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
@@ -1216,28 +1229,27 @@ def convert_bouquet(service, name, url):
                                 outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
                                 outfile.close()
                                 in_bouquets = 1
-                    ReloadBouquets()
-            return ch
+                ReloadBouquets()
         except Exception as e:
             print('error convert iptv ', e)
+        return ch
 
 
 _session = None
 autoStartTimer = None
-_firstStart = True
 
 
 class AutoStartTimer:
     def __init__(self, session):
-        print("*** running AutoStartTimerFxy ***")
+        print("*** running AutoStartTimer Vavoo ***")
         self.session = session
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.on_timer)
         except:
             self.timer_conn = self.timer.timeout.connect(self.on_timer)
-        self.timer.start(100, 1)
-        self.update()
+        self.timer.start(100, True)
+        self.update()  # issue loop
 
     def get_wake_time(self):
         if cfg.autobouquetupdate.value is True:
@@ -1265,15 +1277,18 @@ class AutoStartTimer:
         self.timer.stop()
         wake = self.get_wake_time()
         nowt = time.time()
-        now = int(nowt)
         if wake > 0:
-            if wake < now + constant:
+            if wake < nowt + constant:
                 if cfg.timetype.value == "interval":
                     interval = int(cfg.updateinterval.value)
                     wake += interval * 60 * 60
                 elif cfg.timetype.value == "fixed time":
                     wake += 86400
-            next = wake - now
+            next = wake - int(nowt)
+            if next > 3600:
+                next = 3600
+            if next <= 0:
+                next = 60
             self.timer.startLongTimer(next)
         else:
             wake = -1
@@ -1282,14 +1297,16 @@ class AutoStartTimer:
     def on_timer(self):
         self.timer.stop()
         now = int(time.time())
-        wake = now
+        wake = self.getWakeTime()
         constant = 0
         if cfg.timetype.value == "fixed time":
             wake = self.get_wake_time()
-        if wake - now < 60:
+        # if wake - now < 60:
+        if abs(wake - now) < 60:
             try:
                 self.startMain()
-                self.update()
+                constant = 60
+                # self.update()
                 localtime = time.asctime(time.localtime(time.time()))
                 cfg.last_update.value = localtime
                 cfg.last_update.save()
@@ -1304,13 +1321,13 @@ class AutoStartTimer:
                 line = f.readline()
                 name = line.split('###')[0]
                 url = line.split('###')[1]
-                print('name %s and url %s:' % (name, url))
-            # try:
+                '''# print('name %s and url %s:' % (name, url))
+            # try:'''
             print('session start convert time')
             vid2 = vavoox(_session, name, url)
             vid2.message2(name, url)
-            # except Exception as e:
-                # print('timeredit error vavoo', e)
+            '''# except Exception as e:
+                # print('timeredit error vavoo', e)'''
 
 
 def check_configuring():

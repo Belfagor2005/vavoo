@@ -1,9 +1,9 @@
 Package: enigma2-plugin-extensions-vavoo
-Version: 1.5
+Version: 1.6
 Section: misc
 Priority: optional
 Architecture: all
 Maintainer: *
 Description: Vavoo stream online
 Source: *
-Homepage: corvoboys forum
+Homepage: *

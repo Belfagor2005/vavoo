@@ -1,6 +1,10 @@
 #!/bin/sh
 
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/vavoo/
-opkg remove enigma2-plugin-extensions-vavoo
+dreamos='/var/lib/dpkg/status'
+if [ -d $dreamos ]; then
+	rm -rf /usr/lib/enigma2/python/Plugins/Extensions/vavoo/
+else
+	opkg remove enigma2-plugin-extensions-vavoo
+fi
 echo "Plugin removed! You should restart enigma2 now!"
 exit 0
