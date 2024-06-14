@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-06-01 15:13+0200\n"
+"POT-Creation-Date: 2024-06-13 10:37+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jakarta\n"
 "Language-Team: Jakarta\n"
@@ -9,78 +9,127 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:203
-msgid "Exit"
-msgstr "Quitter"
+#: plugin.py:90
+msgid "interval"
+msgstr "intervalle"
 
-#: plugin.py:204
-msgid "Remove"
-msgstr "Retirer"
+#: plugin.py:90
+msgid "fixed time"
+msgstr "heure fixe"
 
-#: plugin.py:238 plugin.py:406
-msgid "Ipv6 [Off]?"
-msgstr "IPv6 [Désactivé] ?"
-
-#: plugin.py:240 plugin.py:408
-msgid "Ipv6 [On]?"
-msgstr "IPv6 [Activé] ?"
-
-#: plugin.py:255
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"\n"
-"Thanks:\n"
-"@KiddaC\n"
-"\n"
-"@oktus\n"
-"\n"
-"All staff Linuxsat-support.com & Corvoboys Forum"
-msgstr ""
-"%s\n"
-"\n"
-"\n"
-"Remerciements :\n"
-"@KiddaC\n"
-"\n"
-"@oktus\n"
-"\n"
-"Toute l'équipe Linuxsat-support.com & Corvoboys Forum"
-
-#: plugin.py:256 plugin.py:424
-msgid "Info Vavoo"
-msgstr "Info Vavoo"
-
-#: plugin.py:324
-msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr "Supprimer tous les Favoris du Bouquet Vavoo ?"
-
-#: plugin.py:342
-msgid "Vavoo Favorites List have been removed"
-msgstr "Les listes des favoris de Vavoo ont été supprimées"
-
-#: plugin.py:361
+#: plugin.py:294 plugin.py:592
 msgid "Back"
 msgstr "Retour"
 
-#: plugin.py:362
-msgid "Export"
-msgstr "Exporter"
+#: plugin.py:295
+msgid "Save"
+msgstr "Sauvegarder"
 
-#: plugin.py:363
-msgid "Search"
-msgstr "Rechercher"
+#: plugin.py:319
+#, python-format
+msgid "Last channel update: %s"
+msgstr "Dernière m-à-j des chaînes: %s"
 
-#: plugin.py:423
+#: plugin.py:328
+msgid "Server for Player used"
+msgstr "Serveur utilisé pour le Lecteur"
+
+#: plugin.py:328
+#, python-format
+msgid "Server for player. Use it: %s"
+msgstr "Serveur pour le lecteur : %s"
+
+#: plugin.py:329
+msgid "Ipv6 state lan (On/Off), now is:"
+msgstr "Le réseau local d'état IPv6 (On/Off) :"
+
+#: plugin.py:329
+#, python-format
+msgid "Active or Disactive lan Ipv6, now is: %s"
+msgstr "LAN Ipv6 actif ou désactivé: %s"
+
+#: plugin.py:330
+msgid "Movie Services Reference"
+msgstr "Référence des services"
+
+#: plugin.py:330
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "Configurer la référence du service iptv-gstreamer-exteplayer3"
+
+#: plugin.py:331
+msgid "Automatic bouquet update (schedule):"
+msgstr "Mise à jour automatique du bouquet:"
+
+#: plugin.py:331
+msgid "Active Automatic Bouquet Update"
+msgstr "Mise à jour automatique active du bouquet"
+
+#: plugin.py:333
+msgid "Schedule type:"
+msgstr "Type d'horaire :"
+
+#: plugin.py:333
+msgid "At an interval of hours or at a fixed time"
+msgstr "A intervalles d'heures ou à heure fixe"
+
+#: plugin.py:335
+msgid "Update interval (hours):"
+msgstr "Intervalle de mise à jour (heures) :"
+
+#: plugin.py:335
+msgid "Configure every interval of hours from now"
+msgstr "Configurez chaque intervalle d'heures à partir de maintenant"
+
+#: plugin.py:337
+msgid "Time to start update:"
+msgstr "Il est temps de commencer la mise à jour :"
+
+#: plugin.py:337
+msgid "Configure at a fixed time"
+msgstr "Configurer à heure fixe"
+
+#: plugin.py:348
+msgid "SELECT YOUR CHOICE"
+msgstr "SÉLECTIONNEZ VOTRE CHOIX"
+
+#: plugin.py:355
+msgid "Ipv6 [Off]?"
+msgstr "IPv6 [Désactivé] ?"
+
+#: plugin.py:357
+msgid "Ipv6 [On]?"
+msgstr "IPv6 [Activé] ?"
+
+#: plugin.py:417
+msgid ""
+"Settings saved successfully !\n"
+"you need to restart the GUI\n"
+"to apply the new configuration!"
+msgstr ""
+"Paramètres enregistrés avec succès !\n"
+"vous devez redémarrer l'interface graphique\n"
+"pour appliquer la nouvelle configuration !"
+
+#: plugin.py:422
+msgid "Really close without saving settings?"
+msgstr "Vraiment fermer sans enregistrer les paramètres ?"
+
+#: plugin.py:441
+msgid "Exit"
+msgstr "Sortir"
+
+#: plugin.py:442
+msgid "Remove"
+msgstr "Retirer"
+
+#: plugin.py:486 plugin.py:645
 #, python-format
 msgid ""
-"Vavoo Plugin v.%s\n"
-"by Lululla\n"
+"%s\n"
 "\n"
 "\n"
 "Thanks:\n"
@@ -89,12 +138,11 @@ msgid ""
 "All staff Linuxsat-support.com\n"
 "Corvoboys - Forum\n"
 "\n"
-"\this plugin is free,\n"
+"This plugin is free,\n"
 "no stream direct on server\n"
 "but only free channel found on the net"
 msgstr ""
-"Plugin Vavoo v.%s\n"
-"par Lululla\n"
+"%s\n"
 "\n"
 "\n"
 "Merci:\n"
@@ -103,19 +151,39 @@ msgstr ""
 "Tout le personnel Linuxsat-support.com\n"
 "Corvoboys - Forum\n"
 "\n"
-"ce plugin est gratuit,\n"
+"Ce plugin est gratuit,\n"
 "pas de flux direct sur le serveur\n"
-"uniquement chaînes gratuites trouvées sur le net"
+"mais seule chaîne gratuite trouvée sur le net"
 
-#: plugin.py:500
+#: plugin.py:487 plugin.py:646
+msgid "Info Vavoo"
+msgstr "Info Vavoo"
+
+#: plugin.py:555
+msgid "Remove all Vavoo Favorite Bouquet?"
+msgstr "Supprimer tous les Favoris du Bouquet Vavoo ?"
+
+#: plugin.py:573
+msgid "Vavoo Favorites List have been removed"
+msgstr "Les listes des favoris de Vavoo ont été supprimées"
+
+#: plugin.py:593
+msgid "Export"
+msgstr "Exporter"
+
+#: plugin.py:594
+msgid "Search"
+msgstr "Rechercher"
+
+#: plugin.py:732
 msgid "Filter this category..."
 msgstr "Filtrer cette catégorie..."
 
-#: plugin.py:519
+#: plugin.py:751
 msgid "No channels found in search!!!"
 msgstr "Aucune chaîne trouvée dans la recherche !"
 
-#: plugin.py:549
+#: plugin.py:781
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -127,7 +195,7 @@ msgstr ""
 "Attention!! Cela peut prendre un certain temps selon\n"
 "sur le nombre de streams contenus !!!"
 
-#: plugin.py:556
+#: plugin.py:795
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -136,14 +204,17 @@ msgstr ""
 "bouquets rechargés\n"
 "avec %s canaux ajoutés"
 
-#: plugin.py:558
+#: plugin.py:797
 msgid "Download Error"
 msgstr "Erreur de Téléchargement"
 
-#: plugin.py:830
+#: plugin.py:1015
 msgid "Resolution Change Failed"
 msgstr "Échec du changement de résolution"
 
-#: plugin.py:961
+#: plugin.py:1332
 msgid "Vavoo Stream Live"
 msgstr "Vavoo Diffusion en direct"
+
+#~ msgid "Settings saved successfully !"
+#~ msgstr "Impostazioni salvate con successo !"
