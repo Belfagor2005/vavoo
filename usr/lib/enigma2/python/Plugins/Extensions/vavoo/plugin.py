@@ -95,7 +95,7 @@ if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
 
-GETPath = os.path.join(PLUGIN_PATH + "/fonts")
+FNTPath = os.path.join(PLUGIN_PATH + "/fonts")
 fonts = []
 if os.path.exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
     try:
@@ -103,9 +103,9 @@ if os.path.exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
     except Exception as error:
         trace_error()
 try:
-    if os.path.exists(GETPath):
-        for fontName in os.listdir(GETPath):
-            fontNamePath = os.path.join(GETPath, fontName)
+    if os.path.exists(FNTPath):
+        for fontName in os.listdir(FNTPath):
+            fontNamePath = os.path.join(FNTPath, fontName)
             if fontName.endswith(".ttf") or fontName.endswith(".otf"):
                 fontName = fontName[:-4]
                 fonts.append((fontNamePath, fontName))
@@ -1209,13 +1209,13 @@ def convert_bouquet(service, name, url):
                     for line in open(files):
                         if line.startswith('http://') or line.startswith('https'):
                             # outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
-                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
+                            outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
                             outfile.write('#DESCRIPTION %s' % desk_tmp)
                         elif line.startswith('#EXTINF'):
                             desk_tmp = '%s' % line.split(',')[-1]
                         elif '<stream_url><![CDATA' in line:
                             # outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
-                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
+                            outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
                             outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
                         elif '<title>' in line:
                             if '<![CDATA[' in line:
@@ -1373,7 +1373,7 @@ def add_skin_font():
     # addFont(filename, name, scale, isReplacement, render)
     # font_path = PLUGIN_PATH + '/resolver/'
     addFont((FONTSTYPE), 'cvfont', 100, 1)
-    addFont((GETPath + '/lcd.ttf'), 'xLcd', 100, 1)
+    addFont((FNTPath + '/lcd.ttf'), 'xLcd', 100, 1)
 
 
 def main(session, **kwargs):
