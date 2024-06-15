@@ -1,6 +1,6 @@
 <screen name="MainVavoo" position="0,0" size="1280,720" backgroundColor="transparent" flags="wfNoBorder">
     <widget name="description" position="15,600" size="507,46" noWrap="1" zPosition="1" transparent="1" font="Regular; 20" valign="center" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
-    <widget name="config" position="26,141" size="480,400" font="Regular; 24" itemHeight="50" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
+    <widget name="config" position="26,141" size="480,400" itemHeight="50" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
 	<widget name="statusbar" position="374,660" size="830,40" font="Regular; 24" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
     <widget name="version" position="1095,623" size="100,30" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 20" halign="center" foregroundColor="#ffffff" />
     <widget name="red" font="cvfont; 20" halign="center" valign="center" position="15,660" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />

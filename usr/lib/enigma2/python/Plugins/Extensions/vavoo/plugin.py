@@ -11,15 +11,16 @@
 # Info Linuxsat-support.com & corvoboys.org
 """
 
-
 # Standard library imports
 import os
 import re
 import six
 import ssl
 import sys
-import codecs
+# import codecs
 from os.path import exists as file_exists
+
+
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap
@@ -34,13 +35,14 @@ from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG, getDesktop)
+from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG, getDesktop)
 from Components.config import ConfigSubsection
 from Components.config import ConfigEnableDisable
 from Components.config import ConfigSelectionNumber, ConfigClock
 from Components.config import ConfigSelection, getConfigListEntry
-from Components.config import ConfigText
+from Components.config import ConfigText, configfile
 from Components.ConfigList import ConfigListScreen
+from twisted.web.client import error
 import time
 import json
 import requests
@@ -48,24 +50,39 @@ from random import choice
 # Local application/library-specific imports
 from . import _
 from . import vUtils
+global HALIGN
+
+
+def trace_error():
+    import sys
+    import traceback
+    try:
+        traceback.print_exc(file=sys.stdout)
+        traceback.print_exc(file=open("/tmp/vavoo.log", "a"))
+    except:
+        pass
 
 
 PY3 = sys.version_info.major >= 3
+
+
 if sys.version_info >= (2, 7, 9):
     try:
         sslContext = ssl._create_unverified_context()
     except:
         sslContext = None
 
-
-currversion = '1.8'
+currversion = '1.10'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
+default_font = ''
 _session = None
+
+
 enigma_path = '/etc/enigma2/'
 screenwidth = getDesktop(0).size()
 myser = [("https://vavoo.to", "https://vavoo.to"), ("https://oha.to", "https://oha.to"), ("https://kool.to", "https://kool.to"), ("https://huhu.to", "https://huhu.to")]
@@ -78,6 +95,24 @@ if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
 
+GETPath = os.path.join(PLUGIN_PATH + "/fonts")
+fonts = []
+if os.path.exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
+    try:
+        default_font = PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"
+    except Exception as error:
+        trace_error()
+try:
+    if os.path.exists(GETPath):
+        for fontName in os.listdir(GETPath):
+            fontNamePath = os.path.join(GETPath, fontName)
+            if fontName.endswith(".ttf") or fontName.endswith(".otf"):
+                fontName = fontName[:-4]
+                fonts.append((fontNamePath, fontName))
+except Exception as error:
+    trace_error()
+
+fonts = sorted(fonts, key=lambda x: x[1])
 # config section
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
@@ -89,8 +124,10 @@ cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.ipv6 = ConfigEnableDisable(default=False)
+cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
+FONTSTYPE = cfg.fonts.value
 eserv = int(cfg.services.value)
-vavookey = os.path.join(PLUGIN_PATH, 'resolver/vavookey')
+# vavookey = os.path.join(PLUGIN_PATH, 'resolver/vavookey')
 # json_file = os.path.join(PLUGIN_PATH, 'resolver/data.json')
 json_file = '/tmp/vavookey'
 if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
@@ -102,18 +139,35 @@ if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
 if screenwidth.width() == 2560:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
     skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
+    if os.path.exists('/var/lib/dpkg/status'):
+        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
     '''# if os.path.exists('/var/lib/dpkg/status'):
         # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')'''
 elif screenwidth.width() == 1920:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
     skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
+    if os.path.exists('/var/lib/dpkg/status'):
+        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
     '''# if os.path.exists('/var/lib/dpkg/status'):
         # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')'''
 else:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
     skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
+    if os.path.exists('/var/lib/dpkg/status'):
+        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
     '''# if os.path.exists('/var/lib/dpkg/status'):
         # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')'''
+
+
+HALIGN = RT_HALIGN_LEFT
+try:
+    lng = config.osd.language.value
+    lng = lng[:-3]
+    if lng == 'ar':
+        HALIGN = RT_HALIGN_RIGHT
+except:
+    lng = 'en'
+    pass
 
 
 def Sig():
@@ -126,31 +180,35 @@ def Sig():
             json.dump(vecKeylist, f, indent=2)
     else:
         vec = None
-        try:
-            with open(json_file) as f:
-                vecs = json.load(f)
-                # print('json vecs', vecs)
-                vec = choice(vecs)
-                print('vec=', str(vec))
-                headers = {
-                    # Already added when you pass json=
-                    'Content-Type': 'application/json',
-                }
-            json_data = '{"vec": "' + str(vec) + '"}'
+        # try:
+        with open(json_file) as f:
+            vecs = json.load(f)
+            # print('json vecs', vecs)
+            vec = choice(vecs)
+            print('vec=', str(vec))
+            headers = {
+                # Already added when you pass json=
+                'Content-Type': 'application/json',
+            }
+        json_data = '{"vec": "' + str(vec) + '"}'
+        if PY3:
             req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
-            if req.get('signed'):
-                sig = req['signed']
-            elif req.get('data', {}).get('signed'):
-                sig = req['data']['signed']
-            elif req.get('response', {}).get('signed'):
-                sig = req['response']['signed']
-            # # original command
-            # cmd01 = "curl -k --location --request POST 'https://www.vavoo.tv/api/box/ping2' --header 'Content-Type: application/json' --data "{\"vec\": \"$vec\"}" | sed 's#^.*"signed":"##' | sed "s#\"}}##g" | sed 's/".*//'"
-            # res = popen(cmd01).read()
-            # popen(cmd01)
-            print('res key:', str(sig))
-        except Exception as e:
-            print('error vec', e)
+        else:
+            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
+        print('req:', req)
+        if req.get('signed'):
+            sig = req['signed']
+        elif req.get('data', {}).get('signed'):
+            sig = req['data']['signed']
+        elif req.get('response', {}).get('signed'):
+            sig = req['response']['signed']
+        # # original command
+        # cmd01 = "curl -k --location --request POST 'https://www.vavoo.tv/api/box/ping2' --header 'Content-Type: application/json' --data "{\"vec\": \"$vec\"}" | sed 's#^.*"signed":"##' | sed "s#\"}}##g" | sed 's/".*//'"
+        # res = popen(cmd01).read()
+        # popen(cmd01)
+        print('res key:', str(sig))
+        # except Exception as error:
+            # trace_error()
     return sig
 
 
@@ -189,17 +247,12 @@ def raises(url):
         http.mount("http://", adapter)
         http.mount("https://", adapter)
         r = http.get(url, headers={'User-Agent': vUtils.RequestAgent()}, timeout=10, verify=False, stream=True, allow_redirects=False)
-        # r = http.get(url, headers={vUtils.std_headers()}, timeout=10, verify=False)  # , stream=True)
-        # r = http.get(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36'}, timeout=10, verify=False)  # , stream=True)
-        # req = Request('https://www2.vavoo.to/live2/index?output=json', headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36'})
-        # req.add_header('Content-Type', 'application/json; charset=utf-8')
-        # r = urlopen(req)
-        print('rrrrrrrrrrr:', r)
+        # r = http.get(url, headers={'User-Agent': vUtils.RequestAgent()}, timeout=10, stream=True, allow_redirects=False)
         r.raise_for_status()
         if r.status_code == requests.codes.ok:
             return True
-    except Exception as e:
-        print('error requests -----------> ', e)
+    except Exception as error:
+        trace_error()
     return False
 
 
@@ -252,13 +305,13 @@ def show_(name, link):
     if os.path.isfile(pngx):
         if screenwidth.width() == 2560:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(90, 0), size=(800, 60), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(90, 0), size=(720, 60), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
         elif screenwidth.width() == 1920:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(80, 0), size=(580, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
         else:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(85, 0), size=(500, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(85, 0), size=(380, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
         return res
 
 
@@ -266,7 +319,7 @@ class vavoo_config(Screen, ConfigListScreen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        with codecs.open(skin_config, "r", encoding="utf-8") as f:
+        with open(skin_config, "r") as f:
             self.skin = f.read()
         self.setup_title = ('Vavoo Config')
         self.list = []
@@ -276,7 +329,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self["description"] = Label("")
         self["red"] = Label(_("Back"))
         self["green"] = Label(_("Save"))
-        # self["blue"] = Label(_("IPV6 Off")
+        # self["blue"] = Label(_("HALIGN")
         # self["yellow"] = Label(_("")
         self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'DirectionActions'], {
             "cancel": self.extnok,
@@ -311,8 +364,9 @@ class vavoo_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Server for Player used"), cfg.server, (_("Server for player. Use it: %s") % cfg.server.value)))
         self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, (_("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value)))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
+        self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, (_("Configure Fonts. Eg:Arabic or other."))))
         self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
-        if cfg.autobouquetupdate.getValue():
+        if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
             if cfg.timetype.value == "interval":
                 self.list.append(getConfigListEntry(2 * indent + (_("Update interval (hours):")), cfg.updateinterval, (_("Configure every interval of hours from now"))))
@@ -330,8 +384,8 @@ class vavoo_config(Screen, ConfigListScreen):
             else:
                 self['description'].setText(_('SELECT YOUR CHOICE'))
             return
-        except Exception as e:
-            print("Error ", e)
+        except Exception as error:
+            trace_error()
 
     def ipv6(self):
         if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
@@ -395,8 +449,10 @@ class vavoo_config(Screen, ConfigListScreen):
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
+            configfile.save()
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
+            add_skin_font()
             self.session.open(MessageBox, _("Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
 
@@ -417,16 +473,16 @@ class MainVavoo(Screen):
         global _session
         _session = session
         Screen.__init__(self, session)
-        with codecs.open(skin_path, "r", encoding="utf-8") as f:
+        with open(skin_path, "r") as f:
             self.skin = f.read()
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove') + ' Fav')
         self['yellow'] = Label()
-        self['blue'] = Label('IPV6 Off')
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            self['blue'].setText('IPV6 On')
+        self["blue"] = Label(_("HALIGN"))
+        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            # self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading...')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
@@ -442,7 +498,7 @@ class MainVavoo(Screen):
             'ok': self.ok,
             'menu': self.goConfig,
             'green': self.msgdeleteBouquets,
-            # 'blue': self.ipv6,
+            'blue': self.arabic,
             'cancel': self.close,
             'info': self.info,
             'red': self.close
@@ -454,13 +510,21 @@ class MainVavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
-        self.onShow.append(self.check)
+        # self.onShow.append(self.check)
 
-    def check(self):
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            self['blue'].setText('IPV6 On')
-        else:
-            self['blue'].setText('IPV6 Off')
+    def arabic(self):
+        global HALIGN
+        if HALIGN == RT_HALIGN_LEFT:
+            HALIGN = RT_HALIGN_RIGHT
+        elif HALIGN == RT_HALIGN_RIGHT:
+            HALIGN = RT_HALIGN_LEFT
+        self.cat()
+
+    # def check(self):
+        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            # self['blue'].setText('IPV6 On')
+        # else:
+            # self['blue'].setText('IPV6 Off')
 
     def goConfig(self):
         self.session.open(vavoo_config)
@@ -519,17 +583,17 @@ class MainVavoo(Screen):
                 self['menulist'].moveToIndex(0)
                 auswahl = self['menulist'].getCurrent()[0][0]
                 self['name'].setText(str(auswahl))
-        except Exception as e:
+        except Exception as error:
+            trace_error()
             self['name'].setText('Error')
-            print(e)
 
     def ok(self):
         name = self['menulist'].getCurrent()[0][0]
         url = self['menulist'].getCurrent()[0][1]
         try:
             self.session.open(vavoo, name, url)
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            trace_error()
 
     def exit(self):
         self.close()
@@ -555,9 +619,8 @@ class MainVavoo(Screen):
                 tvfile.close()
                 self.session.open(MessageBox, _('Vavoo Favorites List have been removed'), MessageBox.TYPE_INFO, timeout=5)
                 vUtils.ReloadBouquets()
-            except Exception as ex:
-                print(str(ex))
-                raise
+            except Exception as error:
+                trace_error()
 
 
 class vavoo(Screen):
@@ -566,7 +629,7 @@ class vavoo(Screen):
         global _session
         _session = session
         Screen.__init__(self, session)
-        with codecs.open(skin_path, "r", encoding="utf-8") as f:
+        with open(skin_path, "r") as f:
             self.skin = f.read()
         self.menulist = []
         global search_ok
@@ -575,9 +638,9 @@ class vavoo(Screen):
         self['red'] = Label(_('Back'))
         self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
-        self['blue'] = Label('IPV6 Off')
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            self['blue'].setText('IPV6 On')
+        self["blue"] = Label(_("HALIGN"))
+        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            # self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading ...')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
@@ -594,7 +657,7 @@ class vavoo(Screen):
             'ok': self.ok,
             'green': self.message1,
             'yellow': self.search_vavoo,
-            # 'blue': self.ipv6,
+            'blue': self.arabic,
             'cancel': self.backhome,
             'menu': self.goConfig,
             'info': self.info,
@@ -607,13 +670,21 @@ class vavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
-        self.onShow.append(self.check)
+        # self.onShow.append(self.check)
 
-    def check(self):
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            self['blue'].setText('IPV6 On')
-        else:
-            self['blue'].setText('IPV6 Off')
+    # def check(self):
+        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            # self['blue'].setText('IPV6 On')
+        # else:
+            # self['blue'].setText('IPV6 Off')
+
+    def arabic(self):
+        global HALIGN
+        if HALIGN == RT_HALIGN_LEFT:
+            HALIGN = RT_HALIGN_RIGHT
+        elif HALIGN == RT_HALIGN_RIGHT:
+            HALIGN = RT_HALIGN_LEFT
+        self.cat()
 
     def backhome(self):
         if search_ok is True:
@@ -652,7 +723,8 @@ class vavoo(Screen):
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
-        server = cfg.server.value  # zServer(0, None, None)
+        svr = cfg.server.value
+        server = zServer(0, svr, None)
         global search_ok
         search_ok = False
         try:
@@ -703,9 +775,9 @@ class vavoo(Screen):
                     self['menulist'].moveToIndex(0)
                     auswahl = self['menulist'].getCurrent()[0][0]
                     self['name'].setText(str(auswahl))
-        except Exception as e:
+        except Exception as error:
+            trace_error()
             self['name'].setText('Error')
-            print(e)
 
     def search_vavoo(self):
         self.session.openWithCallback(
@@ -737,10 +809,10 @@ class vavoo(Screen):
                     self['menulist'].moveToIndex(0)
                     auswahl = self['menulist'].getCurrent()[0][0]
                     self['name'].setText(str(auswahl))
-            except Exception as e:
+            except Exception as error:
+                trace_error()
                 self['name'].setText('Error')
                 search_ok = False
-                print(e)
 
     def ok(self):
         try:
@@ -752,8 +824,8 @@ class vavoo(Screen):
                 name = item[0]
                 url = item[1]
             self.play_that_shit(url, name, self.currentindex, item, self.cat_list)
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            trace_error()
 
     def play_that_shit(self, url, name, index, item, cat_list):
         self.session.open(Playstream2, name, url, index, item, cat_list)
@@ -990,8 +1062,8 @@ class Playstream2(
         try:
             AVSwitch.getInstance().setAspectRatio(self.new_aspect)
             return VIDEO_ASPECT_RATIO_MAP[self.new_aspect]
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            trace_error()
             return _("Resolution Change Failed")
 
     def nextAV(self):
@@ -1026,8 +1098,8 @@ class Playstream2(
             text_clear = self.name
             if returnIMDB(text_clear):
                 print('show imdb/tmdb')
-        except Exception as ex:
-            print(str(ex))
+        except Exception as error:
+            trace_error()
             print("Error: can't find Playstream2 in live_to_stream")
 
     def slinkPlay(self):
@@ -1164,8 +1236,8 @@ def convert_bouquet(service, name, url):
                                 outfile.close()
                                 in_bouquets = 1
                 vUtils.ReloadBouquets()
-        except Exception as e:
-            print('error convert iptv ', e)
+        except Exception as error:
+            trace_error()
         return ch
 
 
@@ -1244,8 +1316,8 @@ class AutoStartTimer:
                 localtime = time.asctime(time.localtime(time.time()))
                 cfg.last_update.value = localtime
                 cfg.last_update.save()
-            except Exception as e:
-                print(e)
+            except Exception as error:
+                trace_error()
         self.update(constant)
 
     def startMain(self):
@@ -1289,11 +1361,19 @@ def get_next_wakeup():
     return -1
 
 
+# def add_skin_font():
+    # from enigma import addFont
+    # font_path = PLUGIN_PATH + '/resolver/'
+    # addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 0)
+    # addFont(font_path + 'lcd.ttf', 'xLcd', 100, 0)
+
+
 def add_skin_font():
     from enigma import addFont
-    font_path = PLUGIN_PATH + '/resolver/'
-    addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 0)
-    addFont(font_path + 'lcd.ttf', 'Lcd', 100, 0)
+    # addFont(filename, name, scale, isReplacement, render)
+    # font_path = PLUGIN_PATH + '/resolver/'
+    addFont((FONTSTYPE), 'cvfont', 100, 1)
+    addFont((GETPath + '/lcd.ttf'), 'xLcd', 100, 1)
 
 
 def main(session, **kwargs):
@@ -1301,9 +1381,8 @@ def main(session, **kwargs):
         add_skin_font()
         session.open(MainVavoo)
         # session.openWithCallback(check_configuring, MainVavoo)
-    except:
-        import traceback
-        traceback.print_exc()
+    except Exception as error:
+        trace_error()
 
 
 def Plugins(**kwargs):

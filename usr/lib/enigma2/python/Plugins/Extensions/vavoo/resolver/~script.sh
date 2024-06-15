@@ -16,7 +16,7 @@ sleep 2
 ########################################################################################
 echo "start install..."
 
-
+Cowntry="Italy"
 ###Paketprüfung
 echo pruefe curl
 PAKET=curl
@@ -36,7 +36,7 @@ curl -k "https://www2.vavoo.to/live2/index?countries=all&output=json" > vavoo
 echo "#EXTM3U" > index
 cat vavoo | sed 's/\(}\),/\1}\n,/g' | sed 's/"url":"/"url":\n/g' | sed 's#,{\"group\":#\#EXTINF:-1 group-title=#g' | sed 's#,\"logo\":\"\",\"name\":#,#g' | sed 's/\"}.*//' | sed 's/\",\"tvg.*//' | sed 's#\",\"#\",#g'  >> index 
 mv index index.m3u
-for country in Italy; do
+for country in $Cowntry; do
     cat index.m3u | grep -E -A1 =\"$country > $country.m3u
     # file m3u for vlc
     echo erstelle $country.m3u...
@@ -75,7 +75,7 @@ pfad=/etc/enigma2/userbouquet.vavoo-Germany.tv
 echo "#NAME vavooSID" > e3
 echo "#SERVICE 1:64:1:2:0:0SID:0:0:0:0:http%3a//egal.de:##### FTA #####" >> e3
 echo "#DESCRIPTION ##### FTA #####" >> e3
-    cat $pfad | grep -B 1 -i "DESCRIPTION Das Erste" | sed 's#4097:0:0:0:0:0:0:0:0:0:#4097:0:19:283D:3FB:1:C00000:0:0:0:#g' >> e3
+    cat $pfad | grep -B 1 -i "DESCRIPTION 111 TV (6)" | sed 's#4097:0:0:0:0:0:0:0:0:0:#4097:0:1:4EE4:A03:EC:0:0:0:0:#g' >> e3
     cat $pfad | grep -B 1 -i "DESCRIPTION DasErste" | sed 's#4097:0:0:0:0:0:0:0:0:0:#4097:0:19:283D:3FB:1:C00000:0:0:0:#g' >> e3
     cat $pfad | grep -B 1 -i "DESCRIPTION ARD HD" | sed 's#4097:0:0:0:0:0:0:0:0:0:#4097:0:19:283D:3FB:1:C00000:0:0:0:#g' >> e3
     cat $pfad | grep -B 1 -i "DESCRIPTION ARD FHD" | sed 's#4097:0:0:0:0:0:0:0:0:0:#4097:0:19:283D:3FB:1:C00000:0:0:0:#g' >> e3
