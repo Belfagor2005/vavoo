@@ -27,6 +27,7 @@ from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.MultiContent import (MultiContentEntryPixmapAlphaTest, MultiContentEntryText)
+from Components.Pixmap import Pixmap
 from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
 from Components.config import config
 from Plugins.Plugin import PluginDescriptor
@@ -35,32 +36,27 @@ from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG, getDesktop)
+from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, iPlayableService, iServiceInformation, getDesktop)
 from Components.config import ConfigSubsection
 from Components.config import ConfigEnableDisable
 from Components.config import ConfigSelectionNumber, ConfigClock
 from Components.config import ConfigSelection, getConfigListEntry
 from Components.config import ConfigText, configfile
 from Components.ConfigList import ConfigListScreen
+from enigma import gPixmapPtr
+from enigma import gFont
+from enigma import ePicLoad
+from enigma import loadPNG
 from twisted.web.client import error
 import time
 import json
 import requests
+import traceback
 from random import choice
 # Local application/library-specific imports
 from . import _
 from . import vUtils
 global HALIGN
-
-
-def trace_error():
-    import sys
-    import traceback
-    try:
-        traceback.print_exc(file=sys.stdout)
-        traceback.print_exc(file=open("/tmp/vavoo.log", "a"))
-    except:
-        pass
 
 
 PY3 = sys.version_info.major >= 3
@@ -72,19 +68,29 @@ if sys.version_info >= (2, 7, 9):
     except:
         sslContext = None
 
-currversion = '1.10'
+currversion = '1.11'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
+enigma_path = '/etc/enigma2/'
+json_file = '/tmp/vavookey'
+HALIGN = RT_HALIGN_LEFT
+screenwidth = getDesktop(0).size()
 default_font = ''
 _session = None
 
 
-enigma_path = '/etc/enigma2/'
-screenwidth = getDesktop(0).size()
+def trace_error():
+    try:
+        traceback.print_exc(file=sys.stdout)
+        traceback.print_exc(file=open("/tmp/vavoo.log", "a"))
+    except:
+        pass
+
+
 myser = [("https://vavoo.to", "https://vavoo.to"), ("https://oha.to", "https://oha.to"), ("https://kool.to", "https://kool.to"), ("https://huhu.to", "https://huhu.to")]
 modemovie = [("4097", "4097")]
 if file_exists("/usr/bin/gstplayer"):
@@ -127,39 +133,13 @@ cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
 FONTSTYPE = cfg.fonts.value
 eserv = int(cfg.services.value)
-# vavookey = os.path.join(PLUGIN_PATH, 'resolver/vavookey')
-# json_file = os.path.join(PLUGIN_PATH, 'resolver/data.json')
-json_file = '/tmp/vavookey'
+
+
 if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
 
 
-# set screen section
-if screenwidth.width() == 2560:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
-    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
-    '''# if os.path.exists('/var/lib/dpkg/status'):
-        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')'''
-elif screenwidth.width() == 1920:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
-    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
-    '''# if os.path.exists('/var/lib/dpkg/status'):
-        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')'''
-else:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
-    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
-    '''# if os.path.exists('/var/lib/dpkg/status'):
-        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')'''
-
-
-HALIGN = RT_HALIGN_LEFT
 try:
     lng = config.osd.language.value
     lng = lng[:-3]
@@ -168,6 +148,32 @@ try:
 except:
     lng = 'en'
     pass
+
+# set screen section
+if screenwidth.width() == 2560:
+    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
+    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
+    skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_wqhd.xml')
+    if os.path.exists('/var/lib/dpkg/status'):
+        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
+    '''# if os.path.exists('/var/lib/dpkg/status'):
+        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')'''
+elif screenwidth.width() == 1920:
+    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
+    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
+    skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_fhd.xml')
+    if os.path.exists('/var/lib/dpkg/status'):
+        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
+    '''# if os.path.exists('/var/lib/dpkg/status'):
+        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')'''
+else:
+    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
+    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
+    skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt.xml')
+    if os.path.exists('/var/lib/dpkg/status'):
+        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
+    '''# if os.path.exists('/var/lib/dpkg/status'):
+        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')'''
 
 
 def Sig():
@@ -293,9 +299,8 @@ Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
               "Spain", "Turkey", "United Kingdom")
 
 
-def show_(name, link):
+def show_list(name, link):
     res = [(name, link)]
-
     pngx = PLUGIN_PATH + '/skin/pics/Internat.png'
     if any(s in name for s in Panel_list):
         pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
@@ -467,6 +472,70 @@ class vavoo_config(Screen, ConfigListScreen):
             return
 
 
+class startVavoo(Screen):
+    def __init__(self, session):
+        self.session = session
+        global _session, first
+        _session = session
+        first = True
+        Screen.__init__(self, session)
+        with open(skin_strt, "r") as f:
+            self.skin = f.read()
+        self["poster"] = Pixmap()
+        self['poster'].show()
+        self['actions'] = ActionMap(['OkCancelActions'], {'ok': self.clsgo, 'cancel': self.clsgo, 'back': self.clsgo, 'red': self.clsgo, 'green': self.clsgo}, -1)
+        # self.onFirstExecBegin.append(self.loadDefaultImage)
+        self.onLayoutFinish.append(self.loadDefaultImage)
+        # self.onLayoutFinish.append(self.clsgo)
+
+    def decodeImage(self):
+        pixmapx = self.fldpng
+        if file_exists(pixmapx):
+            size = self['poster'].instance.size()
+            self.picload = ePicLoad()
+            self.scale = AVSwitch().getFramebufferScale()
+            self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+            # _l = self.picload.PictureData.get()
+            # del self.picload
+            if file_exists("/var/lib/dpkg/status"):
+                self.picload.startDecode(pixmapx, False)
+            else:
+                self.picload.startDecode(pixmapx, 0, 0, False)
+            ptr = self.picload.getData()
+            if ptr is not None:
+                self['poster'].instance.setPixmap(ptr)
+                self['poster'].show()
+            # return
+
+    def loadDefaultImage(self):
+        self.fldpng = '/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/pics/presplash.png'
+        self.timer = eTimer()
+        if os.path.exists('/var/lib/dpkg/status'):
+            self.timer_conn = self.timer.timeout.connect(self.decodeImage)
+        else:
+            self.timer.callback.append(self.decodeImage)
+        self.timer.start(500, True)
+        print('decode image')
+        self.timerx = eTimer()
+        if os.path.exists('/var/lib/dpkg/status'):
+            self.timerx_conn = self.timerx.timeout.connect(self.clsgo)
+        else:
+            self.timerx.callback.append(self.clsgo)
+        self.timerx.start(2000, True)
+        print('to close screen')
+
+    def clsgo(self):
+        if first is True:
+            self.session.openWithCallback(self.passe, MainVavoo)
+        else:
+            self.close()
+
+    def passe(self):
+        global first
+        first = False
+        self.close()
+
+
 class MainVavoo(Screen):
     def __init__(self, session):
         self.session = session
@@ -575,7 +644,7 @@ class MainVavoo(Screen):
                 name = item.split('###')[0]
                 url = item.split('###')[1]
                 if name not in self.cat_list:
-                    self.cat_list.append(show_(name, url))
+                    self.cat_list.append(show_list(name, url))
             if len(self.cat_list) < 1:
                 return
             else:
@@ -760,7 +829,7 @@ class vavoo(Screen):
                     name = item.split('###')[0]
                     url = item.split('###')[1]
                     url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
-                    self.cat_list.append(show_(name, url))
+                    self.cat_list.append(show_list(name, url))
                     # make m3u
                     nname = '#EXTINF:-1,' + str(name) + '\n'
                     outfile.write(nname)
@@ -799,7 +868,7 @@ class vavoo(Screen):
                         search_ok = True
                         namex = name
                         urlx = url.replace('%0a', '').replace('%0A', '')
-                        self.cat_list.append(show_(namex, urlx))
+                        self.cat_list.append(show_list(namex, urlx))
                 # print('N. channel=', len(self.cat_list))
                 if len(self.cat_list) < 1:
                     _session.open(MessageBox, _('No channels found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
@@ -1115,7 +1184,6 @@ class Playstream2(
 
     def openTest(self, servicetype, url):
         name = self.name
-
         # ('reference:   ', '8193:0:1:0:0:0:0:0:0:0:http%3a//huhu.to/play/2687017841/index.m3u8:4K TR%3a FLASH TV (1)')
         # ('final reference:   ', '8193:0:1:0:0:0:0:0:0:0:http%3a//huhu.to/play/2687017841/index.m3u8:4K TR%3a FLASH TV (1)')
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
@@ -1361,13 +1429,6 @@ def get_next_wakeup():
     return -1
 
 
-# def add_skin_font():
-    # from enigma import addFont
-    # font_path = PLUGIN_PATH + '/resolver/'
-    # addFont(font_path + 'Questrial-Regular.ttf', 'cvfont', 100, 0)
-    # addFont(font_path + 'lcd.ttf', 'xLcd', 100, 0)
-
-
 def add_skin_font():
     from enigma import addFont
     # addFont(filename, name, scale, isReplacement, render)
@@ -1379,7 +1440,7 @@ def add_skin_font():
 def main(session, **kwargs):
     try:
         add_skin_font()
-        session.open(MainVavoo)
+        session.open(startVavoo)
         # session.openWithCallback(check_configuring, MainVavoo)
     except Exception as error:
         trace_error()
