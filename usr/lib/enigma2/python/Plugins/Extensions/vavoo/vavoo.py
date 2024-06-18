@@ -27,36 +27,39 @@ import re
 import six
 import ssl
 import sys
-from os.path import exists as file_exists
-from os import path as os_path
-import base64
+
+
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap
+from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.MultiContent import (MultiContentEntryPixmapAlphaTest, MultiContentEntryText)
 from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
+from Components.config import ConfigEnableDisable
+from Components.config import (ConfigSelection, getConfigListEntry)
+from Components.config import (ConfigSelectionNumber, ConfigClock)
+from Components.config import ConfigSubsection
+from Components.config import (ConfigText, configfile)
 from Components.config import config
 from Plugins.Plugin import PluginDescriptor
+from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG)
-
-from Components.config import ConfigSubsection
-from Components.config import ConfigEnableDisable
-from Components.config import ConfigSelectionNumber, ConfigClock
-from Components.config import ConfigSelection, getConfigListEntry
-from Components.config import ConfigText, configfile
-from Components.ConfigList import ConfigListScreen
+from os import path as os_path
+from os.path import exists as file_exists
+from random import choice
 from twisted.web.client import error
-import time
+import base64
 import json
 import requests
-from random import choice
+import time
+import traceback
+
 try:
     from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
 except ImportError:
@@ -117,13 +120,15 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.10'
+currversion = '1.11'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
-_session = None
 enigma_path = '/etc/enigma2/'
+json_file = '/tmp/vavookey'
+HALIGN = RT_HALIGN_LEFT
+_session = None
 _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
 _ESCAPE_RE = re.compile("[&<>\"']")
 _UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")  # Whitespace handling added due to "hand-assed" parsers of html pages
@@ -175,13 +180,12 @@ cfg.ipv6 = ConfigEnableDisable(default=False)
 # cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
 # FONTSTYPE = cfg.fonts.value
 eserv = int(cfg.services.value)
-# vavookey = os.path.join(PLUGIN_PATH, 'resolver/vavookey')
-# json_file = os.path.join(PLUGIN_PATH, 'resolver/data.json')
-json_file = '/tmp/vavookey'
+
+
 if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
-HALIGN = RT_HALIGN_LEFT
+
 
 try:
     lng = config.osd.language.value
@@ -459,8 +463,8 @@ class vavoo_config(Screen, ConfigListScreen):
         self["description"] = Label("")
         self["red"] = Label(_("Back"))
         self["green"] = Label(_("Save"))
-        # self["blue"] = Label(_("IPV6 Off")
-        # self["yellow"] = Label(_("")
+        # self["blue"] = Label(_("HALIGN")
+        # self["yellow"] = Label("")
         self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'DirectionActions'], {
             "cancel": self.extnok,
             "left": self.keyLeft,
@@ -1328,12 +1332,12 @@ def convert_bouquet(service, name, url):
                     outfile.write('#NAME %s\r\n' % name_file.capitalize())
                     for line in open(files):
                         if line.startswith('http://') or line.startswith('https'):
-                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
+                            outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
                             outfile.write('#DESCRIPTION %s' % desk_tmp)
                         elif line.startswith('#EXTINF'):
                             desk_tmp = '%s' % line.split(',')[-1]
                         elif '<stream_url><![CDATA' in line:
-                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
+                            outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
                             outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
                         elif '<title>' in line:
                             if '<![CDATA[' in line:
@@ -1489,6 +1493,8 @@ def get_next_wakeup():
 
 def main(session, **kwargs):
     try:
+        if os.path.exists('/tmp/vavoo.log'):
+            os.remove('/tmp/vavoo.log')
         # add_skin_font()
         session.open(MainVavoox)
         # session.openWithCallback(check_configuring, MainVavoo)

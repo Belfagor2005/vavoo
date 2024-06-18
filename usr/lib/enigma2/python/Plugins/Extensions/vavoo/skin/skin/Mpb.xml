@@ -1,0 +1,47 @@
+<screen backgroundColor="#00ffffff" name="MessageBoxExt" position="460,0" size="1000,150" title="Message" flags="wfNoBorder">
+    <widget name="title" position="-2,0" size="1000,40" font="Regular; 32" backgroundColor="#20000000" foregroundColor="#00ffffff" zPosition="1" halign="center" valign="center" transparent="1" />
+    <widget name="bgup" position="1,1" size="1000,40" backgroundColor="#20000000" />
+    <widget name="bgdown" position="0,41" size="1000,110" backgroundColor="#20000000" />
+    <widget name="text" position="108,55" size="950,0" font="Regular; 26" zPosition="1" backgroundColor="#20000000" transparent="1" />
+    <widget name="ErrorPixmap" pixmap="skin_default/icons/input_error.png" position="20,53" size="35,35" alphatest="on" zPosition="1" transparent="1" />
+    <widget name="QuestionPixmap" pixmap="skin_default/icons/input_question.png" position="20,53" size="35,35" alphatest="on" zPosition="1" transparent="1" />
+    <widget name="InfoPixmap" pixmap="skin_default/icons/input_info.png" position="20,53" size="35,35" alphatest="on" zPosition="1" transparent="1" />
+    <widget name="list" position="112,41" size="888,93" backgroundColor="#20000000" itemHeight="34" transparent="1" zPosition="1" />
+	<applet type="onLayoutFinish">
+# this should be factored out into some helper code, but currently demonstrates applets.
+from enigma import eSize, ePoint
+
+orgwidth = self.instance.size().width()
+orgpos = self.instance.position()
+textsize = self["text"].getSize()
+
+# y size still must be fixed in font stuff...
+textsize = (textsize[0] + 30, textsize[1] + 30)
+offset = 45
+if self.type == self.TYPE_YESNO:
+	offset = 110
+wsizex = textsize[0] + 120
+wsizey = textsize[1] + offset
+if (400 &gt; wsizex):
+	wsizex = 400
+wsize = (wsizex, wsizey)
+
+# resize
+self.instance.resize(eSize(*wsize))
+
+# resize label
+self["text"].instance.resize(eSize(*textsize))
+self["title"].instance.resize(eSize(*(wsize[0]-2, 40)))
+self["bgup"].instance.resize(eSize(*(wsize[0]-2, 40)))
+self["bgdown"].instance.resize(eSize(*(wsize[0]-2, wsize[1]-43)))
+
+# move list
+listsize = (wsizex - 20, 90)
+self["list"].instance.move(ePoint(10, textsize[1]+45))
+self["list"].instance.resize(eSize(*listsize))
+
+# center window
+newwidth = wsize[0]
+self.instance.move(ePoint(orgpos.x() + (orgwidth - newwidth)/2, (720-wsizey)/2))
+	</applet>
+</screen>
