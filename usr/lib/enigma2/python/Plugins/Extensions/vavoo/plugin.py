@@ -18,41 +18,40 @@ import six
 import ssl
 import sys
 # import codecs
-
+import time
+import traceback
 
 # Enigma2 components
+# from enigma import gPixmapPtr
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap
+from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.MultiContent import (MultiContentEntryPixmapAlphaTest, MultiContentEntryText)
 from Components.Pixmap import Pixmap
 from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
+from Components.config import ConfigEnableDisable
+from Components.config import (ConfigSelection, getConfigListEntry)
+from Components.config import (ConfigSelectionNumber, ConfigClock)
+from Components.config import (ConfigText, configfile)
+from Components.config import ConfigSubsection
 from Components.config import config
 from Plugins.Plugin import PluginDescriptor
+from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, iPlayableService, iServiceInformation, getDesktop)
-from Components.config import ConfigSubsection
-from Components.config import ConfigEnableDisable
-from Components.config import ConfigSelectionNumber, ConfigClock
-from Components.config import ConfigSelection, getConfigListEntry
-from Components.config import ConfigText, configfile
-from Components.ConfigList import ConfigListScreen
-# from enigma import gPixmapPtr
-from enigma import gFont
 from enigma import ePicLoad
+from enigma import gFont
 from enigma import loadPNG
 from os.path import exists as file_exists
 from random import choice
 from twisted.web.client import error
-import time
 import json
 import requests
-import traceback
 
 
 # Local application/library-specific imports
@@ -62,6 +61,10 @@ from .mb import MessageBoxExt
 global HALIGN, tmlast
 tmlast = None
 now = None
+
+
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
 
 if sys.version_info >= (2, 7, 9):
@@ -80,7 +83,6 @@ stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 enigma_path = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
-PY3 = sys.version_info.major >= 3
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 default_font = ''
@@ -135,12 +137,14 @@ cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidt
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.ipv6 = ConfigEnableDisable(default=False)
-if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-    cfg.ipv6.setValue(True)
-    cfg.ipv6.save()
 cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
 FONTSTYPE = cfg.fonts.value
 eserv = int(cfg.services.value)
+
+
+if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+    cfg.ipv6.setValue(True)
+    cfg.ipv6.save()
 
 
 try:
@@ -238,6 +242,7 @@ def loop_sig():
     pass
 
 # loop_sig()
+
 
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
@@ -651,7 +656,7 @@ class MainVavoo(Screen):
         country = ''
         try:
             content = vUtils.getUrl(self.url)
-            if six.PY3:
+            if PY3:
                 content = six.ensure_str(content)
             regexcat = '"country".*?"(.*?)".*?"id".*?"name".*?".*?"'
             match = re.compile(regexcat, re.DOTALL).findall(content)
@@ -762,7 +767,6 @@ class vavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
-
         # self.onShow.append(self.check)
 
     # def check(self):
@@ -812,8 +816,6 @@ class vavoo(Screen):
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
-
-
     def cat(self):
         self.cat_list = []
         items = []
@@ -830,7 +832,7 @@ class vavoo(Screen):
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
-                if six.PY3:
+                if PY3:
                     content = six.ensure_str(content)
                 names = self.name
                 regexcat = '"country".*?"(.*?)".*?"id"(.*?)"name".*?"(.*?)"'
@@ -932,9 +934,9 @@ class vavoo(Screen):
         elif answer:
             name = self.name
             url = self.url
-            self.message2(name, url)
+            self.message2(name, url, True)
 
-    def message2(self, name, url):
+    def message2(self, name, url, response):
         service = cfg.services.value
         ch = 0
         ch = convert_bouquet(service, name, url)
@@ -942,11 +944,11 @@ class vavoo(Screen):
             localtime = time.asctime(time.localtime(time.time()))
             cfg.last_update.value = localtime
             cfg.last_update.save()
-            _session.open(MessageBoxExt, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBoxExt.TYPE_INFO, timeout=5)
+            if response is True:
+                _session.open(MessageBoxExt, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBoxExt.TYPE_INFO, timeout=5)
         else:
+            # if response is True:
             _session.open(MessageBoxExt, _('Download Error'), MessageBoxExt.TYPE_INFO, timeout=5)
-
-
 
 
 class TvInfoBarShowHide():
@@ -1287,12 +1289,10 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 def convert_bouquet(service, name, url):
     from time import sleep
-
     tmlast = int(time.time())
     sig = Sig()
     app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-    print('sig:', str(sig))
-
+    # print('sig:', str(sig))
     dir_enigma2 = '/etc/enigma2/'
     files = '/tmp/' + name + '.m3u'
     type = 'tv'
@@ -1399,7 +1399,7 @@ class AutoStartTimer:
             if wake < nowt + constant:
                 if cfg.timetype.value == "interval":
                     interval = int(cfg.updateinterval.value)
-                    wake += interval * 60 # * 60
+                    wake += interval * 60  # * 60
                 elif cfg.timetype.value == "fixed time":
                     wake += 86400
             next = wake - int(nowt)
@@ -1443,7 +1443,7 @@ class AutoStartTimer:
             # try:'''
             print('session start convert time')
             vid2 = vavoo(_session, name, url)
-            vid2.message2(name, url)
+            vid2.message2(name, url, False)
             # _session.open(MessageBoxExt, _('bouquets reloaded..), MessageBoxExt.TYPE_INFO, timeout=5)
             '''# except Exception as e:
                 # print('timeredit error vavoo', e)'''

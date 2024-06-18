@@ -562,7 +562,6 @@ class hlsclient(threading.Thread):
 
 
 if __name__ == '__main__':
-    pass  # print "Here in sys.argv =", sys.argv
     try:
         h = hlsclient()
         h.setUrl(sys.argv[1])

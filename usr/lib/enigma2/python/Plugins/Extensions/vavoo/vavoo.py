@@ -27,6 +27,8 @@ import re
 import six
 import ssl
 import sys
+import time
+import traceback
 
 
 # Enigma2 components
@@ -40,8 +42,8 @@ from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
 from Components.config import ConfigEnableDisable
 from Components.config import (ConfigSelection, getConfigListEntry)
 from Components.config import (ConfigSelectionNumber, ConfigClock)
-from Components.config import ConfigSubsection
 from Components.config import (ConfigText, configfile)
+from Components.config import ConfigSubsection
 from Components.config import config
 from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
@@ -49,16 +51,17 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, gFont, iPlayableService, iServiceInformation, loadPNG)
+from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, iPlayableService, iServiceInformation)
 from os import path as os_path
+from enigma import gFont
+from enigma import loadPNG
 from os.path import exists as file_exists
 from random import choice
 from twisted.web.client import error
 import base64
 import json
 import requests
-import time
-import traceback
+
 
 try:
     from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
@@ -67,21 +70,21 @@ except ImportError:
 from six import unichr, iteritems  # ensure_str
 from six.moves import html_entities
 import types
-global HALIGN
-
-
-def trace_error():
-    import sys
-    import traceback
-    try:
-        traceback.print_exc(file=sys.stdout)
-        traceback.print_exc(file=open("/tmp/vavoo.log", "a"))
-    except:
-        pass
+global HALIGN, tmlast
+tmlast = None
+now = None
 
 
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
+
+
+if sys.version_info >= (2, 7, 9):
+    try:
+        sslContext = ssl._create_unverified_context()
+    except:
+        sslContext = None
+
 
 if PY3:
     bytes = bytes
@@ -120,7 +123,7 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.11'
+currversion = '1.12'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
@@ -137,6 +140,15 @@ global ipv6
 ipv6 = 'off'
 if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     ipv6 = 'on'
+
+
+def trace_error():
+    try:
+        traceback.print_exc(file=sys.stdout)
+        traceback.print_exc(file=open("/tmp/vavoo.log", "a"))
+    except:
+        pass
+
 
 myser = [("https://vavoo.to", "https://vavoo.to"), ("https://oha.to", "https://oha.to"), ("https://kool.to", "https://kool.to"), ("https://huhu.to", "https://huhu.to")]
 modemovie = [("4097", "4097")]
@@ -173,7 +185,8 @@ cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.server = ConfigSelection(default="https://kool.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
-cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
+cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
+# cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.ipv6 = ConfigEnableDisable(default=False)
@@ -234,13 +247,6 @@ def _convert_entity(m):
         except ValueError:
             return "&#%s;" % m.group(2)
     return _UNICODE_MAP.get(m.group(2), "&%s;" % m.group(2))
-
-
-if sys.version_info >= (2, 7, 9):
-    try:
-        sslContext = ssl._create_unverified_context()
-    except:
-        sslContext = None
 
 
 def getserviceinfo(sref):
@@ -358,6 +364,25 @@ def Sig():
     return sig
 
 
+def loop_sig():
+    while True:
+        sig = ''
+        now = int(time.time())
+        print('now=', str(now))
+        last = tmlast
+        print('last=', str(last))
+        if now > last + 1200:
+            print('go to sig....')
+            sig = Sig()
+        else:
+            print('sleep time loop sig....')
+            time.sleep(int(last + 1200 - now))
+        return sig
+    pass
+
+# loop_sig()
+
+
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
     IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
@@ -392,7 +417,7 @@ def raises(url):
         http = requests.Session()
         http.mount("http://", adapter)
         http.mount("https://", adapter)
-        r = http.get(url, headers={'User-Agent': RequestAgent()}, timeout=10, verify=False)  # , stream=True)
+        r = http.get(url, headers={'User-Agent': RequestAgent()}, timeout=10, verify=False, stream=True, allow_redirects=False)                                                                                                                          
         r.raise_for_status()
         if r.status_code == requests.codes.ok:
             return True
@@ -503,7 +528,7 @@ class vavoo_config(Screen, ConfigListScreen):
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
             if cfg.timetype.value == "interval":
-                self.list.append(getConfigListEntry(2 * indent + (_("Update interval (hours):")), cfg.updateinterval, (_("Configure every interval of hours from now"))))
+                self.list.append(getConfigListEntry(2 * indent + (_("Update interval (minutes):")), cfg.updateinterval, (_("Configure every interval of minutes from now"))))
             if cfg.timetype.value == "fixed time":
                 self.list.append(getConfigListEntry(2 * indent + (_("Time to start update:")), cfg.fixedtime, (_("Configure at a fixed time"))))
         self["config"].list = self.list
@@ -693,7 +718,7 @@ class MainVavoox(Screen):
         country = ''
         try:
             content = getUrl(self.url)
-            if six.PY3:
+            if PY3:
                 content = six.ensure_str(content)
             regexcat = '"country".*?"(.*?)".*?"id".*?"name".*?".*?"'
             match = re.compile(regexcat, re.DOTALL).findall(content)
@@ -749,6 +774,8 @@ class MainVavoox(Screen):
                         tvfile.write(line)
                 bakfile.close()
                 tvfile.close()
+                if os.path.exists(enigma_path + '/Favorite.txt'):
+                    os.remove(enigma_path + '/Favorite.txt')
                 self.session.open(MessageBox, _('Vavoo Favorites List have been removed'), MessageBox.TYPE_INFO, timeout=5)
                 ReloadBouquets()
             except Exception as error:
@@ -858,13 +885,14 @@ class vavoox(Screen):
         global search_ok
         search_ok = False
         try:
-            sig = Sig()
-            app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-            print('sig:', str(sig))
+            # tmlast = int(time.time())
+            # sig = Sig()
+            # app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
+            # print('sig:', str(sig))
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = getUrl(self.url)
-                if six.PY3:
+                if PY3:
                     content = six.ensure_str(content)
                 names = self.name
                 regexcat = '"country".*?"(.*?)".*?"id"(.*?)"name".*?"(.*?)"'
@@ -874,7 +902,7 @@ class vavoox(Screen):
                         continue
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
                     # url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
-                    url = str(server) + '/live2/play/' + str(ids) + '.ts' + app
+                    url = str(server) + '/live2/play/' + str(ids) + '.ts'  # + app
                     name = decodeHtml(name)
                     item = name + "###" + url + '\n'
                     items.append(item)
@@ -959,13 +987,13 @@ class vavoox(Screen):
 
     def message1(self, answer=None):
         if answer is None:
-            self.session.openWithCallback(self.message1, MessageBox, _('Do you want to Convert to favorite .tv ?\n\nAttention!! It may take some time depending\non the number of streams contained !!!'))
+            self.session.openWithCallback(self.message1, MessageBox, _('Do you want to Convert to favorite .tv ?\n\nAttention!! It may take some time\ndepending on the number of streams contained !!!'))
         elif answer:
             name = self.name
             url = self.url
-            self.message2(name, url)
+            self.message2(name, url, True)
 
-    def message2(self, name, url):
+    def message2(self, name, url, response):
         service = cfg.services.value
         ch = 0
         ch = convert_bouquet(service, name, url)
@@ -973,8 +1001,10 @@ class vavoox(Screen):
             localtime = time.asctime(time.localtime(time.time()))
             cfg.last_update.value = localtime
             cfg.last_update.save()
-            _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
+            if response is True:
+                _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
         else:
+            # if response is True:
             _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
 
 
@@ -1241,7 +1271,12 @@ class Playstream2(
         self.session.nav.playService(sref)
 
     def openTest(self, servicetype, url):
+        tmlast = int(time.time())
+        sig = Sig()
+        app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
+        print('sig:', str(sig))
         name = self.name
+        url = url + app
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
         print('reference:   ', ref)
         if streaml is True:
@@ -1306,6 +1341,10 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 def convert_bouquet(service, name, url):
     from time import sleep
+    tmlast = int(time.time())
+    sig = Sig()
+    app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
+    # print('sig:', str(sig))
     dir_enigma2 = '/etc/enigma2/'
     files = '/tmp/' + name + '.m3u'
     type = 'tv'
@@ -1325,25 +1364,25 @@ def convert_bouquet(service, name, url):
         ch = 0
         try:
             if os.path.isfile(files) and os.stat(files).st_size > 0:
-                # print('ChannelList is_tmp exist in playlist')
                 desk_tmp = ''
                 in_bouquets = 0
                 with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
                     outfile.write('#NAME %s\r\n' % name_file.capitalize())
                     for line in open(files):
                         if line.startswith('http://') or line.startswith('https'):
+                            line = str(line).strip('\n\r') + str(app) + '\n'
                             outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
                             outfile.write('#DESCRIPTION %s' % desk_tmp)
                         elif line.startswith('#EXTINF'):
                             desk_tmp = '%s' % line.split(',')[-1]
-                        elif '<stream_url><![CDATA' in line:
-                            outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
-                            outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
-                        elif '<title>' in line:
-                            if '<![CDATA[' in line:
-                                desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
-                            else:
-                                desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
+                        # elif '<stream_url><![CDATA' in line:
+                            # outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
+                            # outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
+                        # elif '<title>' in line:
+                            # if '<![CDATA[' in line:
+                                # desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
+                            # else:
+                                # desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
                         ch += 1
                     outfile.close()
                 if os.path.isfile('/etc/enigma2/bouquets.tv'):
@@ -1384,7 +1423,7 @@ class AutoStartTimer:
             if cfg.timetype.value == "interval":
                 interval = int(cfg.updateinterval.value)
                 nowt = time.time()
-                return int(nowt) + interval * 60 * 60
+                return int(nowt) + interval * 60  # * 60
             if cfg.timetype.value == "fixed time":
                 ftc = cfg.fixedtime.value
                 now = time.localtime(time.time())
@@ -1409,7 +1448,7 @@ class AutoStartTimer:
             if wake < nowt + constant:
                 if cfg.timetype.value == "interval":
                     interval = int(cfg.updateinterval.value)
-                    wake += interval * 60 * 60
+                    wake += interval * 60  # * 60
                 elif cfg.timetype.value == "fixed time":
                     wake += 86400
             next = wake - int(nowt)
@@ -1453,7 +1492,8 @@ class AutoStartTimer:
             # try:'''
             print('session start convert time')
             vid2 = vavoox(_session, name, url)
-            vid2.message2(name, url)
+            vid2.message2(name, url, False)
+            # _session.open(MessageBoxExt, _('bouquets reloaded..), MessageBoxExt.TYPE_INFO, timeout=5)
             '''# except Exception as e:
                 # print('timeredit error vavoo', e)'''
 
