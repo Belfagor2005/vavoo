@@ -1,5 +1,13 @@
 #!/bin/sh
 
+echo "****************************************"
+echo "*Please .. Restart Enigma2 *"
+echo "****************************************"
+echo "* Enjoy our plugin *"
+echo "****************************************"
+echo "* All Rights Reserved *"
+echo "* © 2024 - Lululla *"
+echo "****************************************"
 echo "Checking for an older version of vavoo in the system..."
 if [ -d /usr/lib/enigma2/python/Plugins/Extensions/vavoo ]
 then
