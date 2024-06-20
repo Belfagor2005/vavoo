@@ -1,12 +1,12 @@
-<screen backgroundColor="#00ffffff" name="MessageBoxExt" position="460,0" size="1000,150" title="Message" flags="wfNoBorder">
-    <widget name="title" position="-2,0" size="1000,40" font="Regular; 32" backgroundColor="#20000000" foregroundColor="#00ffffff" zPosition="1" halign="center" valign="center" transparent="1" />
-    <widget name="bgup" position="1,1" size="1000,40" backgroundColor="#20000000" />
-    <widget name="bgdown" position="0,41" size="1000,110" backgroundColor="#20000000" />
-    <widget name="text" position="108,55" size="950,0" font="Regular; 26" zPosition="1" backgroundColor="#20000000" transparent="1" />
+<screen backgroundColor="#00ffffff" name="MessageBoxExt" position="0,0" size="1000,100" title="Message" flags="wfNoBorder">
+    <widget name="title" position="-2,0" size="1280,30" font="Regular; 24" backgroundColor="#20000000" foregroundColor="#00ffffff" zPosition="1" halign="center" valign="center" transparent="1" />
+    <widget name="bgup" position="0,0" size="1280,30" backgroundColor="#20000000" />
+    <widget name="bgdown" position="0,30" size="1280,70" backgroundColor="#20000000" />
+    <widget name="text" position="100,50" size="950,0" font="Regular; 26" zPosition="1" backgroundColor="#20000000" transparent="1" />
     <widget name="ErrorPixmap" pixmap="skin_default/icons/input_error.png" position="20,53" size="35,35" alphatest="on" zPosition="1" transparent="1" />
     <widget name="QuestionPixmap" pixmap="skin_default/icons/input_question.png" position="20,53" size="35,35" alphatest="on" zPosition="1" transparent="1" />
     <widget name="InfoPixmap" pixmap="skin_default/icons/input_info.png" position="20,53" size="35,35" alphatest="on" zPosition="1" transparent="1" />
-    <widget name="list" position="112,41" size="888,93" backgroundColor="#20000000" itemHeight="34" transparent="1" zPosition="1" />
+    <widget name="list" position="100,30" size="1050,66" backgroundColor="#20000000" itemHeight="35" transparent="1" zPosition="1" />
 	<applet type="onLayoutFinish">
 # this should be factored out into some helper code, but currently demonstrates applets.
 from enigma import eSize, ePoint

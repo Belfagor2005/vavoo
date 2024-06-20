@@ -11,9 +11,20 @@ from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
 from Components.MenuList import MenuList
 from enigma import eTimer, eActionMap
+from enigma import getDesktop
 import os
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
+screenwidth = getDesktop(0).size()
+# set screen section
+if screenwidth.width() == 2560:
+    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbWqhd.xml')
+
+elif screenwidth.width() == 1920:
+    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbFhd.xml')
+
+else:
+    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
 
 
 class MessageBoxExt(Screen):
@@ -24,12 +35,12 @@ class MessageBoxExt(Screen):
     IS_DIALOG = True
 
     def __init__(self, session, text, type=TYPE_YESNO, timeout=-1, close_on_any_key=False, default=True, enable_input=True, msgBoxID=None, title=None, additionalActionMap=None):
-        skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
-        with open(skin_path, "r") as f:
+        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
+        Screen.__init__(self, session)
+        with open(skin_mb, "r") as f:
             self.skin = f.read()
             f.close()
         self.type = type
-        Screen.__init__(self, session)
         self.msgBoxID = msgBoxID
         self["text"] = Label(text)
         self["Text"] = StaticText(text)

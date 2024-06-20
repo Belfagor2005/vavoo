@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-06-17 21:21+0200\n"
+"POT-Creation-Date: 2024-06-19 21:17+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -13,136 +13,138 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:132
+#: plugin.py:135
 msgid "interval"
 msgstr "intervallo"
 
-#: plugin.py:132
+#: plugin.py:135
 msgid "fixed time"
 msgstr "orario predefinito"
 
-#: plugin.py:356 plugin.py:730
+#: plugin.py:366 plugin.py:748
 msgid "Back"
 msgstr "Torna"
 
-#: plugin.py:357
+#: plugin.py:367
 msgid "Save"
 msgstr "Salva"
 
-#: plugin.py:381
+#: plugin.py:391
 #, python-format
 msgid "Last channel update: %s"
 msgstr "Ultimo aggiornamento canali: %s"
 
-#: plugin.py:390
+#: plugin.py:400
 msgid "Server for Player used"
-msgstr "Server in uso per il Player."
+msgstr "Server in uso per il Player"
 
-#: plugin.py:390
+#: plugin.py:400
 #, python-format
 msgid "Server for player. Use it: %s"
 msgstr "Server per il Player. Utilizzato adesso: %s"
 
-#: plugin.py:391
+#: plugin.py:401
 msgid "Ipv6 state lan (On/Off), now is:"
 msgstr "Stato Ipv6 Lan(On/Off), adesso è:"
 
-#: plugin.py:391
+#: plugin.py:401
 #, python-format
 msgid "Active or Disactive lan Ipv6, now is: %s"
 msgstr "Attivare o disattivare Ipv6, adesso è: %s"
 
-#: plugin.py:392
+#: plugin.py:402
 msgid "Movie Services Reference"
 msgstr "Service Reference del Player"
 
-#: plugin.py:392
+#: plugin.py:402
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Impostare il Referenze per il Player. Iptv-Gstreamer-Exteplayer3"
 
-#: plugin.py:393
+#: plugin.py:403
 msgid "Select Fonts"
 msgstr "Seleziona Fonts"
 
-#: plugin.py:393
+#: plugin.py:403
 msgid "Configure Fonts. Eg:Arabic or other."
 msgstr "Configura il Fonts. Es: arabo o altro."
 
-#: plugin.py:394
+#: plugin.py:404
 msgid "Automatic bouquet update (schedule):"
 msgstr "Aggiornamento automatico del bouquet (programma):"
 
-#: plugin.py:394
+#: plugin.py:404
 msgid "Active Automatic Bouquet Update"
 msgstr "Attivare aggiornamento automatico del bouquet"
 
-#: plugin.py:396
+#: plugin.py:406
 msgid "Schedule type:"
 msgstr "Tipo programmazione:"
 
-#: plugin.py:396
+#: plugin.py:406
 msgid "At an interval of hours or at a fixed time"
 msgstr "A intervalli di ore o a un'ora fissa"
 
-#: plugin.py:398
-#, fuzzy
-#| msgid "Update interval (hours):"
+#: plugin.py:408
 msgid "Update interval (minutes):"
-msgstr "Intervallo di aggiornamento (ore):"
+msgstr "Intervallo di aggiornamento (minuti):"
 
-#: plugin.py:398
-#, fuzzy
-#| msgid "Configure every interval of hours from now"
+#: plugin.py:408
 msgid "Configure every interval of minutes from now"
-msgstr "Configura ogni intervallo di ore da ora in poi"
+msgstr "Configura ogni intervallo di minuti da ora in poi"
 
-#: plugin.py:400
+#: plugin.py:410
 msgid "Time to start update:"
 msgstr "Ora inizio l'aggiornamento:"
 
-#: plugin.py:400
+#: plugin.py:410
 msgid "Configure at a fixed time"
 msgstr "Configura a un'ora fissa"
 
-#: plugin.py:411
+#: plugin.py:421
 msgid "SELECT YOUR CHOICE"
 msgstr "SELEZIONA LA TUA SCELTA"
 
-#: plugin.py:418
+#: plugin.py:428
 msgid "Ipv6 [Off]?"
 msgstr ""
 
-#: plugin.py:420
+#: plugin.py:430
 msgid "Ipv6 [On]?"
 msgstr ""
 
-#: plugin.py:482
+#: plugin.py:493
 msgid ""
 "Settings saved successfully !\n"
 "you need to restart the GUI\n"
-"to apply the new configuration!"
+"to apply the new configuration!\n"
+"Do you want to Restart the GUI now?"
 msgstr ""
 "Impostazioni salvate con successo !\n"
 "è necessario riavviare la GUI\n"
-"per applicare la nuova configurazione!"
+"per applicare la nuova configurazione!\n"
+"Vuoi riavviare adesso?"
 
-#: plugin.py:487
+#: plugin.py:494
+msgid "Restart GUI now?"
+msgstr ""
+
+#: plugin.py:499
 msgid "Really close without saving settings?"
 msgstr "Chiudi davvero senza salvare le impostazioni?"
 
-#: plugin.py:570
+#: plugin.py:588
 msgid "Exit"
 msgstr "Esci"
 
-#: plugin.py:571
+#: plugin.py:589
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: plugin.py:573 plugin.py:733
+#: plugin.py:591 plugin.py:751
 msgid "HALIGN"
 msgstr ""
 
-#: plugin.py:623 plugin.py:792
+#: plugin.py:641 plugin.py:809
 #, python-format
 msgid ""
 "%s\n"
@@ -159,41 +161,35 @@ msgid ""
 "but only free channel found on the net"
 msgstr ""
 
-#: plugin.py:624 plugin.py:793
+#: plugin.py:642 plugin.py:810
 msgid "Info Vavoo"
 msgstr ""
 
-#: plugin.py:692
+#: plugin.py:710
 msgid "Remove all Vavoo Favorite Bouquet?"
 msgstr "Rimuovere le liste canali favorite Vavoo?"
 
-#: plugin.py:712
+#: plugin.py:730
 msgid "Vavoo Favorites List have been removed"
-msgstr "Le liste canali favorite Vavoo sono state rimosse!"
+msgstr "Le liste canali favorite Vavoo sono state rimosse"
 
-#: plugin.py:731
+#: plugin.py:749
 msgid "Export"
 msgstr "Esporta"
 
-#: plugin.py:732
+#: plugin.py:750
 msgid "Search"
 msgstr "Cerca"
 
-#: plugin.py:882
+#: plugin.py:897
 msgid "Filter this category..."
-msgstr "Filtra questa categoria"
+msgstr "Filtra questa categoria..."
 
-#: plugin.py:901
+#: plugin.py:916
 msgid "No channels found in search!!!"
 msgstr "Nessun canale trovato corrispondente alla ricerca!!!"
 
-#: plugin.py:931
-#, fuzzy
-#| msgid ""
-#| "Do you want to Convert to favorite .tv ?\n"
-#| "\n"
-#| "Attention!! It may take some time depending\n"
-#| "on the number of streams contained !!!"
+#: plugin.py:946
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -203,26 +199,26 @@ msgstr ""
 "Vuoi convertire in .tv preferito?\n"
 "\n"
 "Attenzione!! Potrebbe volerci un po' di tempo\n"
-"a seconda del numero di flussi contenuti !!"
+"a seconda del numero di flussi contenuti !!!"
 
-#: plugin.py:945
+#: plugin.py:961
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
 "With %s channel"
 msgstr ""
 "bouquet riordinati\n"
-"con %s canali aggiunti."
+"con %s canali aggiunti"
 
-#: plugin.py:947
+#: plugin.py:964
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:1165
+#: plugin.py:1180
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:1498
+#: plugin.py:1511
 msgid "Vavoo Stream Live"
 msgstr ""
 

@@ -73,6 +73,7 @@ import types
 global HALIGN, tmlast
 tmlast = None
 now = None
+_session = None
 
 
 PY2 = sys.version_info[0] == 2
@@ -123,7 +124,7 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.12'
+currversion = '1.14'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
@@ -131,14 +132,14 @@ keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 enigma_path = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
-_session = None
+
 _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
 _ESCAPE_RE = re.compile("[&<>\"']")
 _UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")  # Whitespace handling added due to "hand-assed" parsers of html pages
 _ESCAPE_DICT = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}
 global ipv6
 ipv6 = 'off'
-if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     ipv6 = 'on'
 
 
@@ -160,17 +161,17 @@ if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
 
-# GETPath = os.path.join(PLUGIN_PATH + "/fonts")
+# GETPath = os_path.join(PLUGIN_PATH + "/fonts")
 # fonts = []
-# if os.path.exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
+# if file_exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
     # try:
         # default_font = PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"
     # except Exception as error:
         # trace_error()
 # try:
-    # if os.path.exists(GETPath):
+    # if file_exists(GETPath):
         # for fontName in os.listdir(GETPath):
-            # fontNamePath = os.path.join(GETPath, fontName)
+            # fontNamePath = os_path.join(GETPath, fontName)
             # if fontName.endswith(".ttf") or fontName.endswith(".otf"):
                 # fontName = fontName[:-4]
                 # fonts.append((fontNamePath, fontName))
@@ -182,7 +183,7 @@ if file_exists('/var/lib/dpkg/info'):
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
-cfg.server = ConfigSelection(default="https://kool.to", choices=myser)
+cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
@@ -195,7 +196,7 @@ cfg.ipv6 = ConfigEnableDisable(default=False)
 eserv = int(cfg.services.value)
 
 
-if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
 
@@ -324,7 +325,7 @@ def b64decoder(s):
 
 def Sig():
     sig = ''
-    if not os.path.exists(json_file):
+    if not file_exists(json_file):
         myUrl = b64decoder(keyurl)
         vecKeylist = requests.get(myUrl).json()
         vecs = {'time': int(time.time()), 'vecs': vecKeylist}
@@ -437,6 +438,7 @@ def zServer(opt=0, server=None, port=None):
             return str(server)
     except HTTPError as err:
         print(err.code)
+        return 'https://vavoo.to'
 
 
 class m2list(MenuList):
@@ -459,7 +461,7 @@ def show_(name, link):
     pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + "/vavoo/Internat.png"
     if any(s in name for s in Panel_list):
         pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/%s.png' % str(name)
-    if os.path.isfile(pngx):
+    if os_path.isfile(pngx):
         print('pngx =:', pngx)
     res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
     res.append(MultiContentEntryText(pos=(85, 0), size=(600, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
@@ -470,7 +472,7 @@ def show2_(name, link):
     res = [(name, link)]
     cur_skin = config.skin.primary_skin.value.replace('/skin.xml', '')
     pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/vavoo_ico.png'
-    if os.path.isfile(pngx):
+    if os_path.isfile(pngx):
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(40, 40), png=loadPNG(pngx)))
         res.append(MultiContentEntryText(pos=(65, 0), size=(580, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
@@ -496,6 +498,7 @@ class vavoo_config(Screen, ConfigListScreen):
             "right": self.keyRight,
             "up": self.keyUp,
             "down": self.keyDown,
+            "red": self.extnok,
             "green": self.save,
             # "yellow": self.ipt,
             # "blue": self.Import,
@@ -547,14 +550,14 @@ class vavoo_config(Screen, ConfigListScreen):
             trace_error()
 
     def ipv6(self):
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+        if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
             self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
         else:
             self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
 
     def ipv6check(self, result):
         if result:
-            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
                 os.unlink('/etc/rc3.d/S99ipv6dis.sh')
                 cfg.ipv6.setValue(False)
                 # self['blue'].setText('IPV6 Off')
@@ -612,7 +615,9 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             # add_skin_font()
-            self.session.open(MessageBox, _("Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!"), MessageBox.TYPE_INFO, timeout=5)
+            # self.session.open(MessageBox, _("Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!"), MessageBox.TYPE_INFO, timeout=5)
+            restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
+            restartbox.setTitle(_('Restart GUI now?'))
         self.close()
 
     def extnok(self, answer=None):
@@ -625,6 +630,12 @@ class vavoo_config(Screen, ConfigListScreen):
         else:
             return
 
+    def restartGUI(self, answer):
+        if answer is True:
+            self.session.open(TryQuitMainloop, 3)
+        else:
+            pass  # self.close()
+ 
 
 class MainVavoox(Screen):
     def __init__(self, session):
@@ -638,7 +649,7 @@ class MainVavoox(Screen):
         self['green'] = Label(_('Remove') + ' Fav')
         self['yellow'] = Label()
         self["blue"] = Label(_("HALIGN"))
-        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
             # self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading...')
         self['version'] = Label(currversion)
@@ -678,7 +689,7 @@ class MainVavoox(Screen):
         self.cat()
 
     # def check(self):
-        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
             # self['blue'].setText('IPV6 On')
         # else:
             # self['blue'].setText('IPV6 Off')
@@ -766,15 +777,15 @@ class MainVavoox(Screen):
                         purge(enigma_path, fname)
                     elif 'bouquets.tv.bak' in fname:
                         purge(enigma_path, fname)
-                os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
-                tvfile = open(os.path.join(enigma_path, 'bouquets.tv'), 'w+')
-                bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'))
+                os.rename(os_path.join(enigma_path, 'bouquets.tv'), os_path.join(enigma_path, 'bouquets.tv.bak'))
+                tvfile = open(os_path.join(enigma_path, 'bouquets.tv'), 'w+')
+                bakfile = open(os_path.join(enigma_path, 'bouquets.tv.bak'))
                 for line in bakfile:
                     if '.vavoo_' not in line:
                         tvfile.write(line)
                 bakfile.close()
                 tvfile.close()
-                if os.path.exists(enigma_path + '/Favorite.txt'):
+                if file_exists(enigma_path + '/Favorite.txt'):
                     os.remove(enigma_path + '/Favorite.txt')
                 self.session.open(MessageBox, _('Vavoo Favorites List have been removed'), MessageBox.TYPE_INFO, timeout=5)
                 ReloadBouquets()
@@ -796,7 +807,7 @@ class vavoox(Screen):
         self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
-        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
             # self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading ...')
         self['version'] = Label(currversion)
@@ -830,7 +841,7 @@ class vavoox(Screen):
         # self.onShow.append(self.check)
 
     # def check(self):
-        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
             # self['blue'].setText('IPV6 On')
         # else:
             # self['blue'].setText('IPV6 Off')
@@ -1002,7 +1013,7 @@ class vavoox(Screen):
             cfg.last_update.value = localtime
             cfg.last_update.save()
             if response is True:
-                _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBox.TYPE_INFO, timeout=5)
+                _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel') % str(ch), MessageBox.TYPE_INFO, timeout=5)
         else:
             # if response is True:
             _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
@@ -1296,7 +1307,7 @@ class Playstream2(
         if not self.url.startswith('http'):
             self.url = 'http://' + self.url
         url = str(self.url)
-        if str(os.path.splitext(self.url)[-1]) == ".m3u8":
+        if str(os_path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
         print('servicetype2: ', self.servicetype)
@@ -1320,7 +1331,7 @@ class Playstream2(
             self.doShow()
 
     def cancel(self):
-        if os.path.isfile('/tmp/hls.avi'):
+        if os_path.isfile('/tmp/hls.avi'):
             os.remove('/tmp/hls.avi')
         self.session.nav.stopService()
         self.session.nav.playService(self.srefInit)
@@ -1359,11 +1370,11 @@ def convert_bouquet(service, name, url):
         r.write(str(name_file) + '###' + str(url))
         r.close()
     bouquetname = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), type.lower())
-    if os.path.exists(str(files)):
+    if file_exists(str(files)):
         sleep(5)
         ch = 0
         try:
-            if os.path.isfile(files) and os.stat(files).st_size > 0:
+            if os_path.isfile(files) and os.stat(files).st_size > 0:
                 desk_tmp = ''
                 in_bouquets = 0
                 with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
@@ -1385,12 +1396,12 @@ def convert_bouquet(service, name, url):
                                 # desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
                         ch += 1
                     outfile.close()
-                if os.path.isfile('/etc/enigma2/bouquets.tv'):
+                if os_path.isfile('/etc/enigma2/bouquets.tv'):
                     for line in open('/etc/enigma2/bouquets.tv'):
                         if bouquetname in line:
                             in_bouquets = 1
                     if in_bouquets == 0:
-                        if os.path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os.path.isfile('/etc/enigma2/bouquets.tv'):
+                        if os_path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os_path.isfile('/etc/enigma2/bouquets.tv'):
                             remove_line('/etc/enigma2/bouquets.tv', bouquetname)
                             with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
                                 outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
@@ -1444,6 +1455,7 @@ class AutoStartTimer:
         self.timer.stop()
         wake = self.get_wake_time()
         nowt = time.time()
+                         
         if wake > 0:
             if wake < nowt + constant:
                 if cfg.timetype.value == "interval":
@@ -1483,7 +1495,7 @@ class AutoStartTimer:
 
     def startMain(self):
         name = url = ''
-        if os.path.exists(enigma_path + '/Favorite.txt'):
+        if file_exists(enigma_path + '/Favorite.txt'):
             with open(enigma_path + '/Favorite.txt', 'r') as f:
                 line = f.readline()
                 name = line.split('###')[0]
@@ -1533,7 +1545,7 @@ def get_next_wakeup():
 
 def main(session, **kwargs):
     try:
-        if os.path.exists('/tmp/vavoo.log'):
+        if file_exists('/tmp/vavoo.log'):
             os.remove('/tmp/vavoo.log')
         # add_skin_font()
         session.open(MainVavoox)
@@ -1707,7 +1719,7 @@ def RequestAgent():
 
 
 def remove_line(filename, what):
-    if os.path.isfile(filename):
+    if os_path.isfile(filename):
         file_read = open(filename).readlines()
         file_write = open(filename, 'w')
         for line in file_read:
@@ -1736,7 +1748,7 @@ def ReloadBouquets():
 
 def purge(dir, pattern):
     for f in os.listdir(dir):
-        file_path = os.path.join(dir, f)
-        if os.path.isfile(file_path):
+        file_path = os_path.join(dir, f)
+        if os_path.isfile(file_path):
             if re.search(pattern, f):
                 os.remove(file_path)

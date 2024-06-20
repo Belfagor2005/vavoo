@@ -36,7 +36,7 @@ from Components.config import (ConfigSelection, getConfigListEntry)
 from Components.config import (ConfigSelectionNumber, ConfigClock)
 from Components.config import (ConfigText, configfile)
 from Components.config import ConfigSubsection
-from Components.config import config
+from Components.config import (config, ConfigYesNo)
 from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Screens.MessageBox import MessageBox
@@ -52,15 +52,18 @@ from random import choice
 from twisted.web.client import error
 import json
 import requests
+from Screens.Standby import TryQuitMainloop
 
 
 # Local application/library-specific imports
 from . import _
 from . import vUtils
 from .mb import MessageBoxExt
+
 global HALIGN, tmlast
 tmlast = None
 now = None
+_session = None
 
 
 PY2 = sys.version_info[0] == 2
@@ -73,8 +76,10 @@ if sys.version_info >= (2, 7, 9):
     except:
         sslContext = None
 
+                                        
+             
 
-currversion = '1.12'
+currversion = '1.14'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -86,7 +91,6 @@ json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 default_font = ''
-_session = None
 
 
 def trace_error():
@@ -129,13 +133,14 @@ fonts = sorted(fonts, key=lambda x: x[1])
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
-cfg.server = ConfigSelection(default="https://kool.to", choices=myser)
+cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
 # cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
+cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
 FONTSTYPE = cfg.fonts.value
@@ -161,6 +166,7 @@ if screenwidth.width() == 2560:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
     skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
     skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_wqhd.xml')
+    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbWqhd.xml')
     if os.path.exists('/var/lib/dpkg/status'):
         skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
     '''# if os.path.exists('/var/lib/dpkg/status'):
@@ -169,6 +175,7 @@ elif screenwidth.width() == 1920:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
     skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
     skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_fhd.xml')
+    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbFhd.xml')
     if os.path.exists('/var/lib/dpkg/status'):
         skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
     '''# if os.path.exists('/var/lib/dpkg/status'):
@@ -177,6 +184,7 @@ else:
     skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
     skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
     skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt.xml')
+    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
     if os.path.exists('/var/lib/dpkg/status'):
         skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
     '''# if os.path.exists('/var/lib/dpkg/status'):
@@ -299,6 +307,7 @@ def zServer(opt=0, server=None, port=None):
             return str(server)
     except HTTPError as err:
         print(err.code)
+        return 'https://vavoo.to'
 
 
 class m2list(MenuList):
@@ -368,6 +377,7 @@ class vavoo_config(Screen, ConfigListScreen):
             "right": self.keyRight,
             "up": self.keyUp,
             "down": self.keyDown,
+            "red": self.extnok,
             "green": self.save,
             # "yellow": self.ipt,
             # "blue": self.Import,
@@ -396,6 +406,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, (_("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value)))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
         self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, (_("Configure Fonts. Eg:Arabic or other."))))
+        self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
         self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
@@ -484,8 +495,17 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             add_skin_font()
-            self.session.open(MessageBox, _("Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!"), MessageBox.TYPE_INFO, timeout=5)
-        self.close()
+            restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
+            restartbox.setTitle(_('Restart GUI now?'))
+        else:
+            self.close()
+
+    def restartGUI(self, answer):
+        if answer is True:
+            self.session.open(TryQuitMainloop, 3)
+        else:
+            self.close()
+            # pass  # self.close()
 
     def extnok(self, answer=None):
         if answer is None:
@@ -945,7 +965,7 @@ class vavoo(Screen):
             cfg.last_update.value = localtime
             cfg.last_update.save()
             if response is True:
-                _session.open(MessageBoxExt, _('bouquets reloaded..\nWith %s channel' % str(ch)), MessageBoxExt.TYPE_INFO, timeout=5)
+                _session.open(MessageBoxExt, _('bouquets reloaded..\nWith %s channel') % str(ch), MessageBoxExt.TYPE_INFO, timeout=5)
         else:
             # if response is True:
             _session.open(MessageBoxExt, _('Download Error'), MessageBoxExt.TYPE_INFO, timeout=5)
@@ -1481,6 +1501,13 @@ def add_skin_font():
     addFont((FNTPath + '/lcd.ttf'), 'xLcd', 100, 1)
 
 
+def cfgmain(menuid, **kwargs):
+    if menuid == 'mainmenu':
+        return [(_('Vavoo Stream Live'), main, 'Vavoo', 44)]
+    else:
+        return []
+
+
 def main(session, **kwargs):
     try:
         if os.path.exists('/tmp/vavoo.log'):
@@ -1494,6 +1521,9 @@ def main(session, **kwargs):
 
 def Plugins(**kwargs):
     icon = os.path.join(PLUGIN_PATH, 'plugin.png')
+    mainDescriptor = PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_MENU, icon=icon, fnc=cfgmain)
     result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
               PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)]
+    if cfg.stmain.value:
+        result.append(mainDescriptor)
     return result
