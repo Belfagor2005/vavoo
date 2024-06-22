@@ -309,7 +309,7 @@ class m2list(MenuList):
             self.l.setFont(0, gFont('Regular', textfont))
         elif os.path.exists('/var/lib/dpkg/status'):
             self.l.setItemHeight(50)
-            textfont = int(45)
+            textfont = int(38)
             self.l.setFont(0, gFont('Regular', textfont))
         else:
             self.l.setItemHeight(50)
@@ -334,10 +334,10 @@ def show_list(name, link):
     if os.path.isfile(pngx):
         if screenwidth.width() == 2560:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(90, 0), size=(720, 60), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(90, 0), size=(700, 60), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
         elif screenwidth.width() == 1920:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(80, 0), size=(580, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(80, 0), size=(540, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
         else:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
             res.append(MultiContentEntryText(pos=(85, 0), size=(380, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
