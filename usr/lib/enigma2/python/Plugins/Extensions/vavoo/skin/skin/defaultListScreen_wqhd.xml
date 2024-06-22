@@ -7,17 +7,17 @@
     <widget name="green" font="cvfont;40" halign="center" valign="center" position="606,1325" size="396,79" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <widget name="yellow" font="cvfont;40" halign="center" valign="center" position="1076,1325" size="396,79" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <widget name="blue" font="cvfont;40" halign="center" valign="center" position="1556,1325" size="396,79" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
-    <eLabel backgroundColor="#00ff0000" position="145,1409" size="400,8" zPosition="4" cornerRadius="26" />
-    <eLabel backgroundColor="#0000ff00" position="611,1409" size="400,8" zPosition="4" cornerRadius="26" />
-    <eLabel backgroundColor="#00ffff00" position="1081,1409" size="400,8" zPosition="4" cornerRadius="26" />
-    <eLabel backgroundColor="#000000ff" position="1552,1409" size="400,8" zPosition="4" cornerRadius="26" />
+    <eLabel backgroundColor="#00ff0000" position="145,1409" size="400,8" zPosition="4" />
+    <eLabel backgroundColor="#0000ff00" position="611,1409" size="400,8" zPosition="4" />
+    <eLabel backgroundColor="#00ffff00" position="1081,1409" size="400,8" zPosition="4" />
+    <eLabel backgroundColor="#000000ff" position="1552,1409" size="400,8" zPosition="4" />
     <widget source="global.CurrentTime" render="Label" position="1932,105" size="422,130" font="xLcd; 100" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
     <eLabel backgroundColor="#00ffffff" position="0,1306" size="2560,4" zPosition="2" />
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/main.png" position="0,0" size="2560,1440" scale="stretch" alphatest="on" zPosition="-8" />
-    <eLabel name="" position="2440,1390" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="Regular;28" zPosition="3" text="MENU" />
-    <eLabel name="" position="2320,1390" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="Regular;28" zPosition="3" text="INFO" />
-    <eLabel name="" position="2210,1390" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont;28" zPosition="3" text="CH+" />
-    <eLabel name="" position="2100,1390" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" cornerRadius="26" font="cvfont;28" zPosition="3" text="CH-" />
+    <eLabel name="" position="2440,1390" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="Regular;28" zPosition="3" text="MENU" />
+    <eLabel name="" position="2320,1390" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="Regular;28" zPosition="3" text="INFO" />
+    <eLabel name="" position="2210,1390" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont;28" zPosition="3" text="CH+" />
+    <eLabel name="" position="2100,1390" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont;28" zPosition="3" text="CH-" />
 </screen>

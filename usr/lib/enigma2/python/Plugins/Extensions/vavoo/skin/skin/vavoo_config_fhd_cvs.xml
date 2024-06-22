@@ -5,8 +5,8 @@
 	<widget name="statusbar" position="843,988" size="1050,80" font="Regular; 34" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
     <widget name="red" font="cvfont;30" halign="center" valign="center" position="118,995" size="297,59" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <widget name="green" font="cvfont;30" halign="center" valign="center" position="472,995" size="297,59" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
-    <eLabel backgroundColor="#00ff0000" position="118,1048" size="300,8" zPosition="4" cornerRadius="26" />
-    <eLabel backgroundColor="#0000ff00" position="472,1048" size="300,8" zPosition="4" cornerRadius="26" />
+    <eLabel backgroundColor="#00ff0000" position="118,1048" size="300,8" zPosition="4" />
+    <eLabel backgroundColor="#0000ff00" position="472,1048" size="300,8" zPosition="4" />
     <widget source="global.CurrentTime" render="Label" position="1438,70" size="316,117" font="xLcd; 84" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
