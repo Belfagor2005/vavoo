@@ -57,6 +57,7 @@ from Screens.Standby import TryQuitMainloop
 # Local application/library-specific imports
 from . import _
 from . import vUtils
+from .Console import Console
 # from .mb import MessageBoxExt
 
 global HALIGN
@@ -76,13 +77,14 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.14'
+currversion = '1.15'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
+installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS92YXZvby9tYWluL2luc3RhbGxlci5zaA=='
 enigma_path = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
@@ -583,7 +585,7 @@ class MainVavoo(Screen):
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove') + ' Fav')
-        self['yellow'] = Label()
+        self['yellow'] = Label(_('Update Me'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading...')
         self['version'] = Label(currversion)
@@ -603,7 +605,8 @@ class MainVavoo(Screen):
             'blue': self.arabic,
             'cancel': self.close,
             'info': self.info,
-            'red': self.close
+            'red': self.close,
+            'yellow': self.update_me  
         }, -1)
 
         self.timer = eTimer()
@@ -613,6 +616,7 @@ class MainVavoo(Screen):
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
         # self.onShow.append(self.check)
+
 
     def arabic(self):
         global HALIGN
@@ -627,6 +631,43 @@ class MainVavoo(Screen):
             # self['blue'].setText('IPV6 On')
         # else:
             # self['blue'].setText('IPV6 Off')
+
+    def update_me(self):
+      remote_version = '0.0'
+      remote_changelog = ''
+      req = vUtils.Request(vUtils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
+      page = vUtils.urlopen(req).read()
+      if PY3:
+        data = page.decode("utf-8")
+      else:
+        data = page.encode("utf-8")
+      if data:
+        lines = data.split("\n")
+        for line in lines:
+          if line.startswith("version"):
+            remote_version = line.split("=")
+            remote_version = line.split("'")[1]
+          if line.startswith("changelog"):
+            remote_changelog = line.split("=")
+            remote_changelog = line.split("'")[1]
+            break
+            
+      if float(currversion) < float(remote_version):
+        new_version = remote_version
+        new_changelog = remote_changelog
+        self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?" % (new_version, new_changelog)), MessageBox.TYPE_YESNO)
+      else:
+        self.session.open(MessageBox,("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+        
+    def install_update(self, answer=False):
+		      if answer:
+		        self.session.open(Console, title='Upgrading...', cmdlist='wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh', finishedCallback=self.myCallback, closeOnSuccess=False)
+		        #self.session.open(MessageBox,("test1"),  MessageBox.TYPE_INFO, timeout=6)
+		      else:
+		        self.session.open(MessageBox,("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+        
+    def myCallback(self, result):
+		      return
 
     def goConfig(self):
         self.session.open(vavoo_config)
