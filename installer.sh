@@ -71,17 +71,19 @@ set -e
 if [ -f /var/lib/dpkg/status ]; then
    echo "# Your image is OE2.5/2.6 #"
    echo ""
-   echo ""
 else
    echo "# Your image is OE2.0 #"
    echo ""
-   echo ""
 fi
-   opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
-   sleep 2
-   wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
-   tar -xzf main.tar.gz
-   cp -r 'vavoo-main/usr' '/'
+if [ $OSTYPE = "DreamOs" ]; then
+		apt-get update && apt-get install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp -y
+else
+  opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
+fi
+sleep 2
+wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
+tar -xzf main.tar.gz
+cp -r 'vavoo-main/usr' '/'
 set +e
 cd
 sleep 2
