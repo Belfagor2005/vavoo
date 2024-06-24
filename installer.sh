@@ -3,7 +3,7 @@
 
 ######### Only This 2 lines to edit with new version ######
 version='1.15'
-changelog='\nFix little bugs\nAdd Installer Script'
+changelog='\nAdd Installer Script\nAdd Update Me (Yellow Button)'
 ##############################################################
 
 TMPPATH=/tmp/vavooE2
@@ -77,6 +77,8 @@ else
    echo ""
    echo ""
 fi
+   opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
+   sleep 2
    wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
    tar -xzf main.tar.gz
    cp -r 'vavoo-main/usr' '/'
