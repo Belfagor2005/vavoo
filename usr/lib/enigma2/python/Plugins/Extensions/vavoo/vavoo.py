@@ -49,6 +49,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, iPlayableService, iServiceInformation)
@@ -336,9 +337,8 @@ def Sig():
         # try:
         with open(json_file) as f:
             vecs = json.load(f)
-            # print('json vecs', vecs)
             vec = choice(vecs)
-            print('vec=', str(vec))
+            # print('vec=', str(vec))
             headers = {
                 # Already added when you pass json=
                 'Content-Type': 'application/json',
@@ -348,18 +348,14 @@ def Sig():
             req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
         else:
             req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
-        print('req:', req)
+        # print('req:', req)
         if req.get('signed'):
             sig = req['signed']
         elif req.get('data', {}).get('signed'):
             sig = req['data']['signed']
         elif req.get('response', {}).get('signed'):
             sig = req['response']['signed']
-        # # original command
-        # cmd01 = "curl -k --location --request POST 'https://www.vavoo.tv/api/box/ping2' --header 'Content-Type: application/json' --data "{\"vec\": \"$vec\"}" | sed 's#^.*"signed":"##' | sed "s#\"}}##g" | sed 's/".*//'"
-        # res = popen(cmd01).read()
-        # popen(cmd01)
-        print('res key:', str(sig))
+        # print('res key:', str(sig))
         # except Exception as error:
             # trace_error()
     return sig
@@ -418,7 +414,7 @@ def raises(url):
         http = requests.Session()
         http.mount("http://", adapter)
         http.mount("https://", adapter)
-        r = http.get(url, headers={'User-Agent': RequestAgent()}, timeout=10, verify=False, stream=True, allow_redirects=False)                                                                                                                          
+        r = http.get(url, headers={'User-Agent': RequestAgent()}, timeout=10, verify=False, stream=True, allow_redirects=False)
         r.raise_for_status()
         if r.status_code == requests.codes.ok:
             return True
@@ -445,7 +441,7 @@ class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
         self.l.setItemHeight(50)
-        textfont = int(45)
+        textfont = int(38)
         self.l.setFont(0, gFont('Regular', textfont))
 
 
@@ -464,7 +460,7 @@ def show_(name, link):
     if os_path.isfile(pngx):
         print('pngx =:', pngx)
     res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-    res.append(MultiContentEntryText(pos=(85, 0), size=(580, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
+    res.append(MultiContentEntryText(pos=(85, 0), size=(540, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
 
 
@@ -474,7 +470,7 @@ def show2_(name, link):
     pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/vavoo_ico.png'
     if os_path.isfile(pngx):
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(40, 40), png=loadPNG(pngx)))
-        res.append(MultiContentEntryText(pos=(65, 0), size=(580, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
+        res.append(MultiContentEntryText(pos=(65, 0), size=(540, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
 
 
@@ -523,17 +519,17 @@ class vavoo_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
-        self.list.append(getConfigListEntry(_("Server for Player used"), cfg.server, (_("Server for player. Use it: %s") % cfg.server.value)))
-        self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, (_("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value)))
-        self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
-        # self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, (_("Configure Fonts. Eg:Arabic or other."))))
-        self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
+        self.list.append(getConfigListEntry(_("Server for Player used"), cfg.server, _("Server for player. Use it: %s") % cfg.server.value))
+        self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, _("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value))
+        self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
+        # self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts. Eg:Arabic or other.")))
+        self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:
-            self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
+            self.list.append(getConfigListEntry(indent + _("Schedule type:"), cfg.timetype, _("At an interval of hours or at a fixed time")))
             if cfg.timetype.value == "interval":
-                self.list.append(getConfigListEntry(2 * indent + (_("Update interval (minutes):")), cfg.updateinterval, (_("Configure every interval of minutes from now"))))
+                self.list.append(getConfigListEntry(2 * indent + _("Update interval (minutes):"), cfg.updateinterval, _("Configure every interval of minutes from now")))
             if cfg.timetype.value == "fixed time":
-                self.list.append(getConfigListEntry(2 * indent + (_("Time to start update:")), cfg.fixedtime, (_("Configure at a fixed time"))))
+                self.list.append(getConfigListEntry(2 * indent + _("Time to start update:"), cfg.fixedtime, _("Configure at a fixed time")))
         self["config"].list = self.list
         self["config"].l.setList(self.list)
         self.setInfo()
@@ -618,7 +614,15 @@ class vavoo_config(Screen, ConfigListScreen):
             # self.session.open(MessageBox, _("Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!"), MessageBox.TYPE_INFO, timeout=5)
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
-        self.close()
+        else:
+            self.close()
+
+    def restartGUI(self, answer):
+        if answer is True:
+            self.session.open(TryQuitMainloop, 3)
+        else:
+            self.close()
+            # pass  # self.close()
 
     def extnok(self, answer=None):
         if answer is None:
@@ -630,12 +634,6 @@ class vavoo_config(Screen, ConfigListScreen):
         else:
             return
 
-    def restartGUI(self, answer):
-        if answer is True:
-            self.session.open(TryQuitMainloop, 3)
-        else:
-            pass  # self.close()
- 
 
 class MainVavoox(Screen):
     def __init__(self, session):
@@ -687,12 +685,6 @@ class MainVavoox(Screen):
         elif HALIGN == RT_HALIGN_RIGHT:
             HALIGN = RT_HALIGN_LEFT
         self.cat()
-
-    # def check(self):
-        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            # self['blue'].setText('IPV6 On')
-        # else:
-            # self['blue'].setText('IPV6 Off')
 
     def goConfig(self):
         self.session.open(vavoo_config)
@@ -807,8 +799,6 @@ class vavoox(Screen):
         self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
-        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            # self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading ...')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
@@ -838,13 +828,6 @@ class vavoox(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
-        # self.onShow.append(self.check)
-
-    # def check(self):
-        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            # self['blue'].setText('IPV6 On')
-        # else:
-            # self['blue'].setText('IPV6 Off')
 
     def arabic(self):
         global HALIGN
@@ -1386,14 +1369,6 @@ def convert_bouquet(service, name, url):
                             outfile.write('#DESCRIPTION %s' % desk_tmp)
                         elif line.startswith('#EXTINF'):
                             desk_tmp = '%s' % line.split(',')[-1]
-                        # elif '<stream_url><![CDATA' in line:
-                            # outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
-                            # outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
-                        # elif '<title>' in line:
-                            # if '<![CDATA[' in line:
-                                # desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
-                            # else:
-                                # desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
                         ch += 1
                     outfile.close()
                 if os_path.isfile('/etc/enigma2/bouquets.tv'):
@@ -1455,7 +1430,6 @@ class AutoStartTimer:
         self.timer.stop()
         wake = self.get_wake_time()
         nowt = time.time()
-                         
         if wake > 0:
             if wake < nowt + constant:
                 if cfg.timetype.value == "interval":

@@ -41,6 +41,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, iPlayableService, iServiceInformation, getDesktop)
@@ -52,7 +53,6 @@ from random import choice
 from twisted.web.client import error
 import json
 import requests
-from Screens.Standby import TryQuitMainloop
 
 # Local application/library-specific imports
 from . import _
