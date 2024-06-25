@@ -17,6 +17,7 @@ import re
 import six
 import ssl
 import sys
+
 # import codecs
 import time
 import traceback
@@ -53,7 +54,6 @@ import json
 import requests
 from Screens.Standby import TryQuitMainloop
 
-
 # Local application/library-specific imports
 from . import _
 from . import vUtils
@@ -77,7 +77,7 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.15'
+currversion = '1.16'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -606,7 +606,7 @@ class MainVavoo(Screen):
             'cancel': self.close,
             'info': self.info,
             'red': self.close,
-            'yellow': self.update_me  
+            'yellow': self.update_me
         }, -1)
 
         self.timer = eTimer()
@@ -617,7 +617,6 @@ class MainVavoo(Screen):
         self.timer.start(500, True)
         # self.onShow.append(self.check)
 
-
     def arabic(self):
         global HALIGN
         if HALIGN == RT_HALIGN_LEFT:
@@ -626,48 +625,41 @@ class MainVavoo(Screen):
             HALIGN = RT_HALIGN_LEFT
         self.cat()
 
-    # def check(self):
-        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            # self['blue'].setText('IPV6 On')
-        # else:
-            # self['blue'].setText('IPV6 Off')
-
     def update_me(self):
-      remote_version = '0.0'
-      remote_changelog = ''
-      req = vUtils.Request(vUtils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
-      page = vUtils.urlopen(req).read()
-      if PY3:
-        data = page.decode("utf-8")
-      else:
-        data = page.encode("utf-8")
-      if data:
-        lines = data.split("\n")
-        for line in lines:
-          if line.startswith("version"):
-            remote_version = line.split("=")
-            remote_version = line.split("'")[1]
-          if line.startswith("changelog"):
-            remote_changelog = line.split("=")
-            remote_changelog = line.split("'")[1]
-            break
-            
-      if float(currversion) < float(remote_version):
-        new_version = remote_version
-        new_changelog = remote_changelog
-        self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?" % (new_version, new_changelog)), MessageBox.TYPE_YESNO)
-      else:
-        self.session.open(MessageBox,("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
-        
+        remote_version = '0.0'
+        remote_changelog = ''
+        req = vUtils.Request(vUtils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
+        page = vUtils.urlopen(req).read()
+        if PY3:
+            data = page.decode("utf-8")
+        else:
+            data = page.encode("utf-8")
+        if data:
+            lines = data.split("\n")
+            for line in lines:
+                if line.startswith("version"):
+                    remote_version = line.split("=")
+                    remote_version = line.split("'")[1]
+                if line.startswith("changelog"):
+                    remote_changelog = line.split("=")
+                    remote_changelog = line.split("'")[1]
+                    break
+
+        if float(currversion) < float(remote_version):
+            new_version = remote_version
+            new_changelog = remote_changelog
+            self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?" % (new_version, new_changelog)), MessageBox.TYPE_YESNO)
+        else:
+            self.session.open(MessageBox, ("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+
     def install_update(self, answer=False):
-		      if answer:
-		        self.session.open(Console, title='Upgrading...', cmdlist='wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh', finishedCallback=self.myCallback, closeOnSuccess=False)
-		        #self.session.open(MessageBox,("test1"),  MessageBox.TYPE_INFO, timeout=6)
-		      else:
-		        self.session.open(MessageBox,("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
-        
+        if answer:
+            self.session.open(Console, title='Upgrading...', cmdlist='wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh', finishedCallback=self.myCallback, closeOnSuccess=False)
+        else:
+            self.session.open(MessageBox, ("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+
     def myCallback(self, result):
-		      return
+        return
 
     def goConfig(self):
         self.session.open(vavoo_config)
@@ -784,8 +776,6 @@ class vavoo(Screen):
         self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
-        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            # self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading ...')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
@@ -815,13 +805,6 @@ class vavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
-        # self.onShow.append(self.check)
-
-    # def check(self):
-        # if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            # self['blue'].setText('IPV6 On')
-        # else:
-            # self['blue'].setText('IPV6 Off')
 
     def arabic(self):
         global HALIGN
