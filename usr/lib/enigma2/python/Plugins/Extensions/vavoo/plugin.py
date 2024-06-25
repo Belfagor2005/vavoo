@@ -76,9 +76,9 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.14'
+currversion = '1.15'
 title_plug = 'Vavoo'
-desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
+desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
