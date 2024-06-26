@@ -649,13 +649,13 @@ class MainVavoo(Screen):
             new_changelog = remote_changelog
             self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?" % (new_version, new_changelog)), MessageBox.TYPE_YESNO)
         else:
-            self.session.open(MessageBox, ("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+            self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
 
     def install_update(self, answer=False):
         if answer:
             self.session.open(Console, title='Upgrading...', cmdlist='wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh', finishedCallback=self.myCallback, closeOnSuccess=False)
         else:
-            self.session.open(MessageBox, ("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+            self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
 
     def myCallback(self, result):
         return
