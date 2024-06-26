@@ -77,7 +77,7 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.16'
+currversion = '1.17'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -496,7 +496,6 @@ class vavoo_config(Screen, ConfigListScreen):
             self.session.open(TryQuitMainloop, 3)
         else:
             self.close()
-            # pass  # self.close()
 
     def extnok(self, answer=None):
         if answer is None:
@@ -976,11 +975,8 @@ class vavoo(Screen):
             cfg.last_update.value = localtime
             cfg.last_update.save()
             if response is True:
-                # _session.open(MessageBoxExt, _('bouquets reloaded..\nWith %s channel') % str(ch), MessageBoxExt.TYPE_INFO, timeout=5)
                 _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel') % str(ch), MessageBox.TYPE_INFO, timeout=5)
         else:
-            # if response is True:
-            # _session.open(MessageBoxExt, _('Download Error'), MessageBoxExt.TYPE_INFO, timeout=5)
             _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
 
 
@@ -993,7 +989,6 @@ class TvInfoBarShowHide():
     skipToggleShow = False
 
     def __init__(self):
-
         self["ShowHideActions"] = ActionMap(["InfobarShowHideActions"],
                                             {"toggleShow": self.OkPressed,
                                              "hide": self.hide}, 0)
@@ -1253,7 +1248,6 @@ class Playstream2(
         print('sig:', str(sig))
         name = self.name
         url = url + app
-
         # ('reference:   ', '8193:0:1:0:0:0:0:0:0:0:http%3a//huhu.to/play/2687017841/index.m3u8:4K TR%3a FLASH TV (1)')
         # ('final reference:   ', '8193:0:1:0:0:0:0:0:0:0:http%3a//huhu.to/play/2687017841/index.m3u8:4K TR%3a FLASH TV (1)')
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
@@ -1269,7 +1263,6 @@ class Playstream2(
         sref.setName(name)
         self.session.nav.stopService()
         self.session.nav.playService(sref)
-        # loop_sig()
 
     def cicleStreamType(self):
         self.servicetype = cfg.services.value
@@ -1517,7 +1510,6 @@ def main(session, **kwargs):
             os.remove('/tmp/vavoo.log')
         add_skin_font()
         session.open(startVavoo)
-        # session.openWithCallback(check_configuring, MainVavoo)
     except Exception as error:
         trace_error()
 
