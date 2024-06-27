@@ -81,7 +81,9 @@ else
   opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
 fi
 sleep 2
-wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
+# wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
+wget --no-check-certificate --no-cache --no-dns-cache 'https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz'
+
 tar -xzf main.tar.gz
 cp -r 'vavoo-main/usr' '/'
 set +e
