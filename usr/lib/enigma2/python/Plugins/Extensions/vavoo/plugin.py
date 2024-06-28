@@ -332,7 +332,7 @@ def show_list(name, link):
         pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
     else:
         pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
-        print('pngx =:', pngx)
+    print('HALIGN =:', str(HALIGN))
     if os.path.isfile(pngx):
         if screenwidth.width() == 2560:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))

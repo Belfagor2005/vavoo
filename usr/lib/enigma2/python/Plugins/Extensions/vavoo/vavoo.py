@@ -458,7 +458,7 @@ def show_(name, link):
     if any(s in name for s in Panel_list):
         pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/%s.png' % str(name)
     if os_path.isfile(pngx):
-        print('pngx =:', pngx)
+    # print('pngx =:', pngx)
     res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
     res.append(MultiContentEntryText(pos=(85, 0), size=(540, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
