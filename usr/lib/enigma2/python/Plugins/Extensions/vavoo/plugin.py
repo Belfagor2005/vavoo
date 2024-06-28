@@ -653,11 +653,13 @@ class MainVavoo(Screen):
 
     def install_update(self, answer=False):
         if answer:
-            self.session.open(Console, title='Upgrading...', cmdlist='wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh', finishedCallback=self.myCallback, closeOnSuccess=False)
+            # def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None
+            self.session.open(Console, 'Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False)
         else:
             self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
 
     def myCallback(self, result):
+        print('result:', result)
         return
 
     def goConfig(self):
