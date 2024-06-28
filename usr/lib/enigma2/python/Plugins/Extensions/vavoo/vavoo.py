@@ -1626,8 +1626,9 @@ def decodeHtml(text):
     text = text.replace('\u2026', '...')
     text = text.replace('&hellip;', '...')
     text = text.replace('&#8234;', '')
-    return text
-
+    if PY3:
+        text = text.encode('utf-8').decode('unicode_escape')
+    return str(text) # str needed for PLi
 
 ListAgent = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
