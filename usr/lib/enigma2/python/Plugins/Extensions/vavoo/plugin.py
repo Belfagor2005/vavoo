@@ -77,7 +77,7 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.18'
+currversion = '1.17'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -659,7 +659,6 @@ class MainVavoo(Screen):
             self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
 
     def myCallback(self, result=None):
-    # def myCallback(self, result):
         print('result:', result)
         return
 
