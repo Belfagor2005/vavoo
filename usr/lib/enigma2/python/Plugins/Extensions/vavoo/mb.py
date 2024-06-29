@@ -19,10 +19,8 @@ screenwidth = getDesktop(0).size()
 # set screen section
 if screenwidth.width() == 2560:
     skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbWqhd.xml')
-
 elif screenwidth.width() == 1920:
     skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbFhd.xml')
-
 else:
     skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
 

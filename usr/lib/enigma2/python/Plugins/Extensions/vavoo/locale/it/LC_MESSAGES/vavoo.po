@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-06-26 19:26+0200\n"
+"POT-Creation-Date: 2024-06-29 14:25+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,7 +21,7 @@ msgstr "intervallo"
 msgid "fixed time"
 msgstr "orario predefinito"
 
-#: plugin.py:361 plugin.py:774
+#: plugin.py:361 plugin.py:776
 msgid "Back"
 msgstr "Torna"
 
@@ -148,7 +148,7 @@ msgstr "Rimuovi"
 msgid "Update Me"
 msgstr "Aggiornami"
 
-#: plugin.py:588 plugin.py:777
+#: plugin.py:588 plugin.py:779
 msgid "HALIGN"
 msgstr "Allinea"
 
@@ -171,11 +171,11 @@ msgstr ""
 msgid "Congrats! You already have the latest version..."
 msgstr "Congratulazioni! Hai già l'ultima versione..."
 
-#: plugin.py:658
+#: plugin.py:659
 msgid "Update Aborted!"
 msgstr "Aggiornamento annullato!"
 
-#: plugin.py:667 plugin.py:826
+#: plugin.py:669 plugin.py:828
 #, python-format
 msgid ""
 "%s\n"
@@ -192,35 +192,35 @@ msgid ""
 "but only free channel found on the net"
 msgstr ""
 
-#: plugin.py:668 plugin.py:827
+#: plugin.py:670 plugin.py:829
 msgid "Info Vavoo"
 msgstr ""
 
-#: plugin.py:736
+#: plugin.py:738
 msgid "Remove all Vavoo Favorite Bouquet?"
 msgstr "Rimuovere le liste canali favorite Vavoo?"
 
-#: plugin.py:756
+#: plugin.py:758
 msgid "Vavoo Favorites List have been removed"
 msgstr "Le liste canali favorite Vavoo sono state rimosse"
 
-#: plugin.py:775
+#: plugin.py:777
 msgid "Export"
 msgstr "Esporta"
 
-#: plugin.py:776
+#: plugin.py:778
 msgid "Search"
 msgstr "Cerca"
 
-#: plugin.py:914
+#: plugin.py:916
 msgid "Filter this category..."
 msgstr "Filtra questa categoria..."
 
-#: plugin.py:933
+#: plugin.py:935
 msgid "No channels found in search!!!"
 msgstr "Nessun canale trovato corrispondente alla ricerca!!!"
 
-#: plugin.py:963
+#: plugin.py:965
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -232,7 +232,7 @@ msgstr ""
 "Attenzione!! Potrebbe volerci un po' di tempo\n"
 "a seconda del numero di flussi contenuti !!!"
 
-#: plugin.py:978
+#: plugin.py:980
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -241,15 +241,15 @@ msgstr ""
 "bouquet riordinati\n"
 "con %s canali aggiunti"
 
-#: plugin.py:980
+#: plugin.py:982
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:1195
+#: plugin.py:1197
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:1502 plugin.py:1519 plugin.py:1521
+#: plugin.py:1504 plugin.py:1521 plugin.py:1523
 msgid "Vavoo Stream Live"
 msgstr ""
 

@@ -154,7 +154,7 @@ if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
 try:
     lng = config.osd.language.value
     lng = lng[:-3]
-    if lng == 'ar':
+    if lng.lower() == 'ar':
         HALIGN = RT_HALIGN_RIGHT
 except:
     lng = 'en'

@@ -1,17 +1,15 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-29 14:26+0200\n"
+"POT-Creation-Date: 2024-06-29 14:27+0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: ))^^(( <>\n"
-"Language-Team: *\n"
-"Language: de\n"
+"Last-Translator: \n"
+"Language-Team: biko\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 3.4.4\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
@@ -26,7 +24,7 @@ msgstr ""
 
 #: plugin.py:361 plugin.py:776
 msgid "Back"
-msgstr "Zurück"
+msgstr "رجوع"
 
 #: plugin.py:362
 msgid "Save"
@@ -137,11 +135,11 @@ msgstr ""
 
 #: plugin.py:585
 msgid "Exit"
-msgstr "Ausgang"
+msgstr "خروج"
 
 #: plugin.py:586
 msgid "Remove"
-msgstr "Entfernen"
+msgstr "حذف "
 
 #: plugin.py:587
 msgid "Update Me"
@@ -188,19 +186,19 @@ msgstr ""
 
 #: plugin.py:670 plugin.py:829
 msgid "Info Vavoo"
-msgstr ""
+msgstr "معلومات فافو"
 
 #: plugin.py:738
 msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr "Alle Vavoo Lieblingsstrauße entfernen?"
+msgstr "إزالة باقة فافو المفضلة؟"
 
 #: plugin.py:758
 msgid "Vavoo Favorites List have been removed"
-msgstr "Vavoo Favoritenliste wurde entfernt"
+msgstr "تمت إزالة قائمة مفضلات فافو"
 
 #: plugin.py:777
 msgid "Export"
-msgstr ""
+msgstr "تصدير "
 
 #: plugin.py:778
 msgid "Search"
@@ -227,10 +225,10 @@ msgid ""
 "Attention!! It may take some time\n"
 "depending on the number of streams contained !!!"
 msgstr ""
-"Möchten Sie in Ihr Lieblings-.tv konvertieren?\n"
+"هل تريد التحويل إلى المفضلة .tv ؟\n"
 "\n"
-"Aufmerksamkeit!! Es kann eine Weile dauern, je nach\n"
-"auf die Anzahl der enthaltenen Streams !!"
+"انتبه!!! قد يستغرق الأمر بعض الوقت حسب\n"
+"عدد ملفات الاستريم الموجودة !!!!"
 
 #: plugin.py:980
 #, python-format
@@ -238,12 +236,12 @@ msgid ""
 "bouquets reloaded..\n"
 "With %s channel"
 msgstr ""
-"Blumensträuße neu geladen..\n"
-"Mit %s Kanal"
+"تم إعادة تحميل الباقاتا\n"
+"مع قناة %s"
 
 #: plugin.py:982
 msgid "Download Error"
-msgstr ""
+msgstr "خطأ بالتحميل"
 
 #: plugin.py:1197
 msgid "Resolution Change Failed"
@@ -251,4 +249,19 @@ msgstr ""
 
 #: plugin.py:1504 plugin.py:1521 plugin.py:1523
 msgid "Vavoo Stream Live"
-msgstr ""
+msgstr "مشاهده مباشر فافو"
+
+#, fuzzy, python-format
+#~| msgid ""
+#~| "Vavoo Plugin v.%s\n"
+#~| "by Lululla\n"
+#~| "Thanks @KiddaC #oktus and staff Linuxsat-support.com"
+#~ msgid ""
+#~ "Vavoo Plugin v.%s\n"
+#~ "by Lululla\n"
+#~ "Thanks:\n"
+#~ "@KiddaC #oktus and staff Linuxsat-support.com"
+#~ msgstr ""
+#~ "البلوجين Vavoo v.%s\n"
+#~ "بواسطة لولولا\n"
+#~ "شكرًا @KiddaC #oktus وطاقم Linuxsat-support.com"
