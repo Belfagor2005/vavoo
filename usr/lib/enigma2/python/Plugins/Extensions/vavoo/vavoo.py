@@ -125,9 +125,9 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.15'
+currversion = '1.18'
 title_plug = 'Vavoo'
-desc_plugin = ('..:: Vavoo by Lululla %s ::..' % currversion)
+desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 enigma_path = '/etc/enigma2/'
@@ -205,7 +205,7 @@ if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
 try:
     lng = config.osd.language.value
     lng = lng[:-3]
-    if lng == 'ar':
+    if lng.lower() == 'ar':
         HALIGN = RT_HALIGN_RIGHT
 except:
     lng = 'en'
@@ -458,7 +458,7 @@ def show_(name, link):
     if any(s in name for s in Panel_list):
         pngx = os_path.dirname(resolveFilename(SCOPE_SKIN, str(cur_skin))) + '/vavoo/%s.png' % str(name)
     if os_path.isfile(pngx):
-    # print('pngx =:', pngx)
+        print('pngx =:', pngx)
     res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
     res.append(MultiContentEntryText(pos=(85, 0), size=(540, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
@@ -647,8 +647,6 @@ class MainVavoox(Screen):
         self['green'] = Label(_('Remove') + ' Fav')
         self['yellow'] = Label()
         self["blue"] = Label(_("HALIGN"))
-        # if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-            # self['blue'].setText('IPV6 On')
         self['name'] = Label('Loading...')
         self['version'] = Label(currversion)
         self.currentList = 'menulist'
@@ -1628,7 +1626,8 @@ def decodeHtml(text):
     text = text.replace('&#8234;', '')
     if PY3:
         text = text.encode('utf-8').decode('unicode_escape')
-    return str(text) # str needed for PLi
+    return str(text)  # str needed for PLi
+
 
 ListAgent = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
