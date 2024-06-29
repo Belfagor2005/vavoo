@@ -2,11 +2,11 @@
 ##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
 ######### Only This 2 lines to edit with new version ######
-version='1.17'
+version='1.18'
 changelog='\nAdd Locale Language\nFix conponent stream'
 ##############################################################
 
-TMPPATH=/tmp/vavooE2
+TMPPATH=/tmp/vavoo-main
 
 if [ ! -d /usr/lib64 ]; then
 	PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/vavoo
@@ -76,14 +76,13 @@ else
    echo ""
 fi
 if [ $OSTYPE = "DreamOs" ]; then
-		apt-get update && apt-get install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp -y
+	apt-get update && apt-get install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp -y
 else
-  opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
+	opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
 fi
 sleep 2
 # wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
 wget --no-check-certificate --no-cache --no-dns-cache 'https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz'
-
 tar -xzf main.tar.gz
 cp -r 'vavoo-main/usr' '/'
 set +e
