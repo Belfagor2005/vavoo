@@ -101,7 +101,7 @@ def trace_error():
         pass
 
 
-myser = [("https://vavoo.to", "https://vavoo.to"), ("https://oha.to", "https://oha.to"), ("https://kool.to", "https://kool.to"), ("https://huhu.to", "https://huhu.to")]
+myser = [("https://vavoo.to", "vavoo"), ("https://oha.to", "oha"), ("https://kool.to", "kool"), ("https://huhu.to", "huhu")]
 modemovie = [("4097", "4097")]
 if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "5001"))
@@ -333,7 +333,7 @@ def show_list(name, link):
         pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
     else:
         pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
-    print('HALIGN =:', str(HALIGN))
+    # print('HALIGN =:', str(HALIGN))
     if os.path.isfile(pngx):
         if screenwidth.width() == 2560:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
@@ -356,7 +356,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self.setup_title = ('Vavoo Config')
         self.list = []
         self.onChangedEntry = []
-        self["version"] = Label(currversion)
+        self["version"] = Label()
         self['statusbar'] = Label()
         self["description"] = Label("")
         self["red"] = Label(_("Back"))
@@ -389,6 +389,7 @@ class vavoo_config(Screen, ConfigListScreen):
 
     def layoutFinished(self):
         self.setTitle(self.setup_title)
+        self['version'].setText('V.' + currversion)
 
     def createSetup(self):
         self.editListEntry = None
@@ -586,7 +587,7 @@ class MainVavoo(Screen):
         self['yellow'] = Label(_('Update Me'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading...')
-        self['version'] = Label(currversion)
+        self['version'] = Label()
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -721,6 +722,7 @@ class MainVavoo(Screen):
         except Exception as error:
             trace_error()
             self['name'].setText('Error')
+        self['version'].setText('V.' + currversion)
 
     def ok(self):
         name = self['menulist'].getCurrent()[0][0]
@@ -777,7 +779,7 @@ class vavoo(Screen):
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading ...')
-        self['version'] = Label(currversion)
+        self['version'] = Label()
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -907,6 +909,7 @@ class vavoo(Screen):
         except Exception as error:
             trace_error()
             self['name'].setText('Error')
+        self['version'].setText('V.' + currversion)
 
     def search_vavoo(self):
         self.session.openWithCallback(
@@ -967,7 +970,7 @@ class vavoo(Screen):
             url = self.url
             filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
             if os.path.exists(filenameout):
-                print('bouquet list exist', filenameout)
+                # print('bouquet list exist', filenameout)
                 self.message3(name, url, True)
             else:
                 self.message2(name, url, True)
@@ -977,7 +980,7 @@ class vavoo(Screen):
         url = self.url
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         if os.path.exists(filenameout):
-            print('bouquet list exist', filenameout)
+            # print('bouquet list exist', filenameout)
             self.message3(name, url, False)
         else:
             self.message2(name, url, False)
@@ -1279,7 +1282,7 @@ class Playstream2(
         url = self.url
         name = self.name
         ref = "{0}:{1}".format(url.replace(":", "%3a"), name.replace(":", "%3a"))
-        print('final reference:   ', ref)
+        # print('final reference:   ', ref)
         sref = eServiceReference(ref)
         self.sref = sref
         sref.setName(name)
@@ -1290,7 +1293,7 @@ class Playstream2(
         # tmlast = int(time.time())
         sig = Sig()
         app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-        print('sig:', str(sig))
+        # print('sig:', str(sig))
         name = self.name
         url = url + app
         # ('reference:   ', '8193:0:1:0:0:0:0:0:0:0:http%3a//huhu.to/play/2687017841/index.m3u8:4K TR%3a FLASH TV (1)')
@@ -1301,7 +1304,6 @@ class Playstream2(
         if streaml is True:
             url = 'http://127.0.0.1:8088/' + str(url)
             ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-            print('streaml reference:   ', ref)
         print('final reference:   ', ref)
         sref = eServiceReference(ref)
         self.sref = sref
@@ -1311,14 +1313,14 @@ class Playstream2(
 
     def cicleStreamType(self):
         self.servicetype = cfg.services.value
-        print('servicetype1: ', self.servicetype)
+        # print('servicetype1: ', self.servicetype)
         if not self.url.startswith('http'):
             self.url = 'http://' + self.url
         url = str(self.url)
         if str(os.path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
-        print('servicetype2: ', self.servicetype)
+        # print('servicetype2: ', self.servicetype)
         self.openTest(self.servicetype, url)
 
     def doEofInternal(self, playing):
@@ -1363,7 +1365,6 @@ def convert_bouquet(service, name, url):
     # tmlast = int(time.time())
     sig = Sig()
     app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-    # print('sig:', str(sig))
     dir_enigma2 = '/etc/enigma2/'
     files = '/tmp/' + name + '.m3u'
     type = 'tv'
