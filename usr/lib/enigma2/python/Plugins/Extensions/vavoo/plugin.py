@@ -51,6 +51,7 @@ from enigma import loadPNG
 from os.path import exists as file_exists
 from random import choice
 from twisted.web.client import error
+import re
 import json
 import requests
 
@@ -77,7 +78,7 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.18'
+currversion = '1.19'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -966,6 +967,21 @@ class vavoo(Screen):
         elif answer:
             name = self.name
             url = self.url
+            filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+            if os.path.exists(filenameout):
+                print('bouquet list exist', filenameout)
+                self.message3(name, url, True)
+            else:
+                self.message2(name, url, True)
+
+    def message0(self, name, url, response):
+        name = self.name
+        url = self.url
+        filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+        if os.path.exists(filenameout):
+            print('bouquet list exist', filenameout)
+            self.message3(name, url, True)
+        else:
             self.message2(name, url, True)
 
     def message2(self, name, url, response):
@@ -980,6 +996,35 @@ class vavoo(Screen):
                 _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel') % str(ch), MessageBox.TYPE_INFO, timeout=5)
         else:
             _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
+
+    def message3(self, name, url, response):
+        sig = Sig()
+        app = str(sig)
+        filename = PLUGIN_PATH + '/list/userbouquet.vavoo_%s.tv' % name.lower()
+        filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+        key = None
+        with open(filename, "rt") as fin:
+            data = fin.read()
+            regexcat = '#SERVICE.*?vavoo_auth=(.+?)#User'
+            match = re.compile(regexcat, re.DOTALL).findall(data)
+            # print("In showContent match =", match)
+            for key in match:
+                key = str(key)
+
+        with open(filename, 'r') as f:
+            newlines = []
+            for line in f.readlines():
+                newlines.append(line.replace(key, app))
+
+        with open(filenameout, 'w') as f:
+            for line in newlines:
+                f.write(line)
+        vUtils.ReloadBouquets()
+        localtime = time.asctime(time.localtime(time.time()))
+        cfg.last_update.value = localtime
+        cfg.last_update.save()
+        if response is True:
+            _session.open(MessageBox, _('Wait...\nUpdate List Bouquet...\nbouquets reloaded..'), MessageBox.TYPE_INFO, timeout=5)
 
 
 class TvInfoBarShowHide():
@@ -1462,7 +1507,8 @@ class AutoStartTimer:
             # try:'''
             print('session start convert time')
             vid2 = vavoo(_session, name, url)
-            vid2.message2(name, url, False)
+            # vid2.message2(name, url, False)
+            vid2.message0(name, url, False)
             '''# except Exception as e:
                 # print('timeredit error vavoo', e)'''
 

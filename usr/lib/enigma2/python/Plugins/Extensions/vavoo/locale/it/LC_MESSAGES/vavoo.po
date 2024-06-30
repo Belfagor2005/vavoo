@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-06-30 00:26+0200\n"
+"POT-Creation-Date: 2024-06-30 12:59+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -232,7 +232,7 @@ msgstr ""
 "Attenzione!! Potrebbe volerci un po' di tempo\n"
 "a seconda del numero di flussi contenuti !!!"
 
-#: plugin.py:980
+#: plugin.py:985
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -241,15 +241,22 @@ msgstr ""
 "bouquet riordinati\n"
 "con %s canali aggiunti"
 
-#: plugin.py:982
+#: plugin.py:987
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:1197
+#: plugin.py:1013
+msgid ""
+"Wait...\n"
+"Update List Bouquet...\n"
+"bouquets reloaded.."
+msgstr ""
+
+#: plugin.py:1228
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:1504 plugin.py:1521 plugin.py:1523
+#: plugin.py:1535 plugin.py:1552 plugin.py:1554
 msgid "Vavoo Stream Live"
 msgstr ""
 
