@@ -997,9 +997,9 @@ class vavoox(Screen):
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         if os.path.exists(filenameout):
             print('bouquet list exist', filenameout)
-            self.message3(name, url, True)
+            self.message3(name, url, False)
         else:
-            self.message2(name, url, True)
+            self.message2(name, url, False)
 
     def message2(self, name, url, response):
         service = cfg.services.value
@@ -1017,7 +1017,7 @@ class vavoox(Screen):
     def message3(self, name, url, response):
         sig = Sig()
         app = str(sig)
-        filename = enigma_path + '/list/userbouquet.vavoo_%s.tv' % name.lower()
+        filename = enigma_path + '/list/userbouquet.vavoo_%s.tv' % name.lower()  # change folder with all lists please
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         key = None
         with open(filename, "rt") as fin:
