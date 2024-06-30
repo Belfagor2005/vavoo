@@ -980,9 +980,9 @@ class vavoo(Screen):
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         if os.path.exists(filenameout):
             print('bouquet list exist', filenameout)
-            self.message3(name, url, True)
+            self.message3(name, url, False)
         else:
-            self.message2(name, url, True)
+            self.message2(name, url, False)
 
     def message2(self, name, url, response):
         service = cfg.services.value
