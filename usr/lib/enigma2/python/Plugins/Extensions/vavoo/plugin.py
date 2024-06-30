@@ -519,11 +519,10 @@ class startVavoo(Screen):
         with open(skin_strt, "r") as f:
             self.skin = f.read()
         self["poster"] = Pixmap()
-        self['poster'].show()
-        self['actions'] = ActionMap(['OkCancelActions'], {'ok': self.clsgo, 'cancel': self.clsgo, 'back': self.clsgo, 'red': self.clsgo, 'green': self.clsgo}, -1)
-        # self.onFirstExecBegin.append(self.loadDefaultImage)
+        # self['poster'].show()
+        self["version"] = Label()
+        self['actions'] = ActionMap(['OkCancelActions'], {'ok': self.clsgo, 'cancel': self.clsgo}, -1)
         self.onLayoutFinish.append(self.loadDefaultImage)
-        # self.onLayoutFinish.append(self.clsgo)
 
     def decodeImage(self):
         pixmapx = self.fldpng
@@ -542,6 +541,7 @@ class startVavoo(Screen):
             if ptr is not None:
                 self['poster'].instance.setPixmap(ptr)
                 self['poster'].show()
+                self['version'].setText('V.' + currversion)
             # return
 
     def loadDefaultImage(self):
@@ -552,14 +552,12 @@ class startVavoo(Screen):
         else:
             self.timer.callback.append(self.decodeImage)
         self.timer.start(500, True)
-        print('decode image')
         self.timerx = eTimer()
         if os.path.exists('/var/lib/dpkg/status'):
             self.timerx_conn = self.timerx.timeout.connect(self.clsgo)
         else:
             self.timerx.callback.append(self.clsgo)
         self.timerx.start(2000, True)
-        print('to close screen')
 
     def clsgo(self):
         if first is True:
