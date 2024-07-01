@@ -596,7 +596,7 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions',  'MovieSelectionActions'], {
+        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'HotkeyActions', 'ColorActions', 'DirectionActions'], {
             'up': self.up,
             'down': self.down,
             'left': self.left,
@@ -609,7 +609,9 @@ class MainVavoo(Screen):
             'info': self.info,
             'red': self.close,
             'yellow': self.update_me,
-            'infolong': self.update_dev              
+            'yellow_long': self.update_dev,
+            'info_long': self.update_dev,
+            'infolong': self.update_dev,            
         }, -1)
 
         self.timer = eTimer()
