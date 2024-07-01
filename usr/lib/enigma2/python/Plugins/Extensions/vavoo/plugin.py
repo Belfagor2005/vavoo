@@ -79,7 +79,7 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-currversion = '1.19'
+currversion = '1.20'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -171,6 +171,7 @@ if screenwidth.width() == 2560:
     skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbWqhd.xml')
     if os.path.exists('/var/lib/dpkg/status'):
         skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
+
     '''# if os.path.exists('/var/lib/dpkg/status'):
         # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')'''
 elif screenwidth.width() == 1920:
@@ -191,7 +192,7 @@ else:
         skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
     '''# if os.path.exists('/var/lib/dpkg/status'):
         # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')'''
-
+print('skin_path is:', skin_path)
 
 def Sig():
     sig = ''
@@ -310,7 +311,7 @@ class m2list(MenuList):
 
         if screenwidth.width() == 2560:
             self.l.setItemHeight(60)
-            textfont = int(44)
+            textfont = int(38)
             self.l.setFont(0, gFont('Regular', textfont))
         # elif os.path.exists('/var/lib/dpkg/status'):
         elif screenwidth.width() == 1920:
@@ -340,7 +341,7 @@ def show_list(name, link):
     if os.path.isfile(pngx):
         if screenwidth.width() == 2560:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(90, 0), size=(700, 60), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(90, 0), size=(750, 60), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
         elif screenwidth.width() == 1920:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
             res.append(MultiContentEntryText(pos=(80, 0), size=(540, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
@@ -398,12 +399,12 @@ class vavoo_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
-        self.list.append(getConfigListEntry(_("Server for Player used"), cfg.server, _("Server for player. Use it: %s") % cfg.server.value))
-        self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, _("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value))
+        self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
+        self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
-        self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts. Eg:Arabic or other.")))
+        self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
         self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
-        self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
+        self.list.append(getConfigListEntry(_("Scheduled Bouquet Update:"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + _("Schedule type:"), cfg.timetype, _("At an interval of hours or at a fixed time")))
             if cfg.timetype.value == "interval":
@@ -550,12 +551,14 @@ class startVavoo(Screen):
 
     def loadDefaultImage(self):
         self.fldpng = '/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/pics/presplash.png'
+
         self.timer = eTimer()
         if os.path.exists('/var/lib/dpkg/status'):
             self.timer_conn = self.timer.timeout.connect(self.decodeImage)
         else:
             self.timer.callback.append(self.decodeImage)
         self.timer.start(500, True)
+
         self.timerx = eTimer()
         if os.path.exists('/var/lib/dpkg/status'):
             self.timerx_conn = self.timerx.timeout.connect(self.clsgo)
@@ -596,7 +599,7 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'HotkeyActions', 'ColorActions', 'DirectionActions', 'ButtonSetupActions'], {
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions'], {
             'up': self.up,
             'down': self.down,
             'left': self.left,
@@ -607,11 +610,13 @@ class MainVavoo(Screen):
             'blue': self.arabic,
             'cancel': self.close,
             'info': self.info,
+            'showEventInfo': self.info, 
             'red': self.close,
             'yellow': self.update_me,
             'yellow_long': self.update_dev,
             'info_long': self.update_dev,
-            'infolong': self.update_dev,            
+            'infolong': self.update_dev,
+            'showEventInfoPlugin': self.update_dev,          
         }, -1)
 
         self.timer = eTimer()
@@ -1406,7 +1411,6 @@ def convert_bouquet(service, name, url):
                     for line in open(files):
                         if line.startswith('http://') or line.startswith('https'):
                             line = str(line).strip('\n\r') + str(app) + '\n'
-                            # outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
                             outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
                             outfile.write('#DESCRIPTION %s' % desk_tmp)
                         elif line.startswith('#EXTINF'):
@@ -1472,7 +1476,6 @@ class AutoStartTimer:
         self.timer.stop()
         wake = self.get_wake_time()
         nowt = time.time()
-        # now = int(nowt)
         if wake > 0:
             if wake < nowt + constant:
                 if cfg.timetype.value == "interval":
@@ -1502,7 +1505,7 @@ class AutoStartTimer:
             try:
                 self.startMain()
                 constant = 60
-                # self.update()  # ??
+                # self.update()
                 localtime = time.asctime(time.localtime(time.time()))
                 cfg.last_update.value = localtime
                 cfg.last_update.save()

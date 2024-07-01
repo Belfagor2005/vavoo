@@ -523,11 +523,13 @@ class vavoo_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
-        self.list.append(getConfigListEntry(_("Server for Player used"), cfg.server, _("Server for player. Use it: %s") % cfg.server.value))
-        self.list.append(getConfigListEntry(_("Ipv6 state lan (On/Off), now is:"), cfg.ipv6, _("Active or Disactive lan Ipv6, now is: %s") % cfg.ipv6.value))
+
+        self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
+        self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
-        # self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts. Eg:Arabic or other.")))
-        self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
+        # self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
+        # self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
+        self.list.append(getConfigListEntry(_("Scheduled Bouquet Update:"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + _("Schedule type:"), cfg.timetype, _("At an interval of hours or at a fixed time")))
             if cfg.timetype.value == "interval":
@@ -658,7 +660,7 @@ class MainVavoox(Screen):
         self.count = 0
         self.loading = 0
         self.url = b64decoder(stripurl)
-        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions',  'MovieSelectionActions'], {
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions'], {
             'up': self.up,
             'down': self.down,
             'left': self.left,
@@ -669,6 +671,7 @@ class MainVavoox(Screen):
             'blue': self.arabic,
             'cancel': self.close,
             'info': self.info,
+            'showEventInfo': self.info,
             'red': self.close
         }, -1)
 
@@ -692,7 +695,7 @@ class MainVavoox(Screen):
         self.session.open(vavoo_config)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQ4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -850,7 +853,7 @@ class vavoox(Screen):
         self.session.open(vavoo_config)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQ4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -1022,7 +1025,7 @@ class vavoox(Screen):
     def message3(self, name, url, response):
         sig = Sig()
         app = str(sig)
-        filename = enigma_path + '/list/userbouquet.vavoo_%s.tv' % name.lower()  # change folder with all lists please
+        filename = enigma_path + '/list/userbouquet.vavoo_%s.tv' % name.lower()
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         key = None
         with open(filename, "rt") as fin:
@@ -1475,7 +1478,6 @@ class AutoStartTimer:
         self.timer.stop()
         wake = self.get_wake_time()
         nowt = time.time()
-
         if wake > 0:
             if wake < nowt + constant:
                 if cfg.timetype.value == "interval":

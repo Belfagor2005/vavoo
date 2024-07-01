@@ -1,4 +1,4 @@
 <screen name="Plgnstrt" position="0,0" size="1280,720" backgroundColor="transparent" flags="wfNoBorder">
 	<widget name="poster" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/pics/presplash.png" position="360,200" size="512,256" alphatest="blend" scale="stretch" zPosition="4" />
-	<widget name="version" position="767,419" size="100,30" zPosition="5" backgroundColor="#30000000" transparent="1" font="Regular; 20" halign="center" foregroundColor="#ffffff" />
+	<widget name="version" position="767,419" size="100,30" zPosition="8" backgroundColor="#30000000" transparent="1" font="Regular; 20" halign="center" foregroundColor="#ffffff" />
 </screen>
