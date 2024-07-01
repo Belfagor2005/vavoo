@@ -631,7 +631,7 @@ class MainVavoo(Screen):
     def update_me(self):
         remote_version = '0.0'
         remote_changelog = ''
-        req = vUtils.Request(vUtils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
+        req = vUtils.Request(vUtils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
         page = vUtils.urlopen(req).read()
         if PY3:
             data = page.decode("utf-8")
@@ -640,7 +640,7 @@ class MainVavoo(Screen):
         if data:
             lines = data.split("\n")
             for line in lines:
-                if line.startswith("currversion"):
+                if line.startswith("version"):
                     remote_version = line.split("=")
                     remote_version = line.split("'")[1]
                 if line.startswith("changelog"):
