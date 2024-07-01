@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-07-01 18:09+0200\n"
+"POT-Creation-Date: 2024-07-01 18:37+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -274,7 +274,7 @@ msgstr ""
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:1569 plugin.py:1586 plugin.py:1588
+#: plugin.py:1567 plugin.py:1584 plugin.py:1586
 msgid "Vavoo Stream Live"
 msgstr ""
 
