@@ -596,7 +596,7 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'HotkeyActions', 'ColorActions', 'DirectionActions'], {
+        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'HotkeyActions', 'ColorActions', 'DirectionActions', 'ButtonSetupActions'], {
             'up': self.up,
             'down': self.down,
             'left': self.left,
