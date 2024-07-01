@@ -69,10 +69,10 @@ try:
     from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
 except ImportError:
     from Tools.Directories import SCOPE_SKIN
-from six import unichr, iteritems  # ensure_str
+from six import unichr, iteritems
 from six.moves import html_entities
 import types
-global HALIGN, tmlast
+global HALIGN
 tmlast = None
 now = None
 _session = None
@@ -131,6 +131,7 @@ title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
+
 enigma_path = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
@@ -153,7 +154,7 @@ def trace_error():
         pass
 
 
-myser = [("https://vavoo.to", "https://vavoo.to"), ("https://oha.to", "https://oha.to"), ("https://kool.to", "https://kool.to"), ("https://huhu.to", "https://huhu.to")]
+myser = [("https://vavoo.to", "vavoo"), ("https://oha.to", "oha"), ("https://kool.to", "kool"), ("https://huhu.to", "huhu")]
 modemovie = [("4097", "4097")]
 if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "5001"))
@@ -192,6 +193,7 @@ cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidt
 # cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
+
 cfg.ipv6 = ConfigEnableDisable(default=False)
 # cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
 # FONTSTYPE = cfg.fonts.value
@@ -442,7 +444,7 @@ class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
         self.l.setItemHeight(50)
-        textfont = int(38)
+        textfont = int(34)
         self.l.setFont(0, gFont('Regular', textfont))
 
 
@@ -482,7 +484,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self.setup_title = ('Vavoo Config')
         self.list = []
         self.onChangedEntry = []
-        self["version"] = Label(currversion)
+        self["version"] = Label()
         self['statusbar'] = Label()
         self["description"] = Label("")
         self["red"] = Label(_("Back"))
@@ -515,6 +517,7 @@ class vavoo_config(Screen, ConfigListScreen):
 
     def layoutFinished(self):
         self.setTitle(self.setup_title)
+        self['version'].setText('V.' + currversion)
 
     def createSetup(self):
         self.editListEntry = None
@@ -649,7 +652,7 @@ class MainVavoox(Screen):
         self['yellow'] = Label()
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading...')
-        self['version'] = Label(currversion)
+        self['version'] = Label()
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -689,7 +692,7 @@ class MainVavoox(Screen):
         self.session.open(vavoo_config)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQ4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -745,6 +748,7 @@ class MainVavoox(Screen):
         except Exception as error:
             trace_error()
             self['name'].setText('Error')
+        self['version'].setText('V.' + currversion)
 
     def ok(self):
         name = self['menulist'].getCurrent()[0][0]
@@ -799,7 +803,7 @@ class vavoox(Screen):
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading ...')
-        self['version'] = Label(currversion)
+        self['version'] = Label()
         self.currentList = 'menulist'
         self.loading_ok = False
         self.count = 0
@@ -846,7 +850,7 @@ class vavoox(Screen):
         self.session.open(vavoo_config)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQ4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -926,6 +930,7 @@ class vavoox(Screen):
         except Exception as error:
             trace_error()
             self['name'].setText('Error')
+        self['version'].setText('V.' + currversion)
 
     def search_vavoo(self):
         self.session.openWithCallback(
@@ -986,7 +991,7 @@ class vavoox(Screen):
             url = self.url
             filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
             if os.path.exists(filenameout):
-                print('bouquet list exist', filenameout)
+                # print('bouquet list exist', filenameout)
                 self.message3(name, url, True)
             else:
                 self.message2(name, url, True)
@@ -996,7 +1001,7 @@ class vavoox(Screen):
         url = self.url
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         if os.path.exists(filenameout):
-            print('bouquet list exist', filenameout)
+            # print('bouquet list exist', filenameout)
             self.message3(name, url, False)
         else:
             self.message2(name, url, False)
@@ -1036,7 +1041,7 @@ class vavoox(Screen):
         with open(filenameout, 'w') as f:
             for line in newlines:
                 f.write(line)
-        vUtils.ReloadBouquets()
+        ReloadBouquets()
         localtime = time.asctime(time.localtime(time.time()))
         cfg.last_update.value = localtime
         cfg.last_update.save()
@@ -1298,7 +1303,7 @@ class Playstream2(
         url = self.url
         name = self.name
         ref = "{0}:{1}".format(url.replace(":", "%3a"), name.replace(":", "%3a"))
-        print('final reference:   ', ref)
+        # print('final reference:   ', ref)
         sref = eServiceReference(ref)
         self.sref = sref
         sref.setName(name)
@@ -1306,10 +1311,10 @@ class Playstream2(
         self.session.nav.playService(sref)
 
     def openTest(self, servicetype, url):
-        tmlast = int(time.time())
+        # tmlast = int(time.time())
         sig = Sig()
         app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-        print('sig:', str(sig))
+        # print('sig:', str(sig))
         name = self.name
         url = url + app
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
@@ -1317,7 +1322,6 @@ class Playstream2(
         if streaml is True:
             url = 'http://127.0.0.1:8088/' + str(url)
             ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-            print('streaml reference:   ', ref)
         print('final reference:   ', ref)
         sref = eServiceReference(ref)
         self.sref = sref
@@ -1327,14 +1331,14 @@ class Playstream2(
 
     def cicleStreamType(self):
         self.servicetype = cfg.services.value
-        print('servicetype1: ', self.servicetype)
+        # print('servicetype1: ', self.servicetype)
         if not self.url.startswith('http'):
             self.url = 'http://' + self.url
         url = str(self.url)
         if str(os_path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
-        print('servicetype2: ', self.servicetype)
+        # print('servicetype2: ', self.servicetype)
         self.openTest(self.servicetype, url)
 
     def doEofInternal(self, playing):
@@ -1376,7 +1380,7 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 def convert_bouquet(service, name, url):
     from time import sleep
-    tmlast = int(time.time())
+    # tmlast = int(time.time())
     sig = Sig()
     app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
     # print('sig:', str(sig))
@@ -1471,6 +1475,7 @@ class AutoStartTimer:
         self.timer.stop()
         wake = self.get_wake_time()
         nowt = time.time()
+
         if wake > 0:
             if wake < nowt + constant:
                 if cfg.timetype.value == "interval":
@@ -1519,7 +1524,7 @@ class AutoStartTimer:
             # try:'''
             print('session start convert time')
             vid2 = vavoox(_session, name, url)
-            vid2.message2(name, url, False)
+            # vid2.message2(name, url, False)
             vid2.message0(name, url, False)
             '''# except Exception as e:
                 # print('timeredit error vavoo', e)'''
@@ -1570,9 +1575,7 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-
     result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup)]
-
     return result
 
 

@@ -54,6 +54,7 @@ from twisted.web.client import error
 import re
 import json
 import requests
+from datetime import datetime
 
 # Local application/library-specific imports
 from . import _
@@ -86,6 +87,7 @@ pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS92YXZvby9tYWluL2luc3RhbGxlci5zaA=='
+developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvdmF2b28='
 enigma_path = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
@@ -310,9 +312,10 @@ class m2list(MenuList):
             self.l.setItemHeight(60)
             textfont = int(44)
             self.l.setFont(0, gFont('Regular', textfont))
-        elif os.path.exists('/var/lib/dpkg/status'):
+        # elif os.path.exists('/var/lib/dpkg/status'):
+        elif screenwidth.width() == 1920:
             self.l.setItemHeight(50)
-            textfont = int(38)
+            textfont = int(34)
             self.l.setFont(0, gFont('Regular', textfont))
         else:
             self.l.setItemHeight(50)
@@ -605,7 +608,8 @@ class MainVavoo(Screen):
             'cancel': self.close,
             'info': self.info,
             'red': self.close,
-            'yellow': self.update_me
+            'yellow': self.update_me,
+            'infolong': self.update_dev              
         }, -1)
 
         self.timer = eTimer()
@@ -627,7 +631,7 @@ class MainVavoo(Screen):
     def update_me(self):
         remote_version = '0.0'
         remote_changelog = ''
-        req = vUtils.Request(vUtils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
+        req = vUtils.Request(vUtils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
         page = vUtils.urlopen(req).read()
         if PY3:
             data = page.decode("utf-8")
@@ -636,7 +640,7 @@ class MainVavoo(Screen):
         if data:
             lines = data.split("\n")
             for line in lines:
-                if line.startswith("version"):
+                if line.startswith("currversion"):
                     remote_version = line.split("=")
                     remote_version = line.split("'")[1]
                 if line.startswith("changelog"):
@@ -650,6 +654,15 @@ class MainVavoo(Screen):
             self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (new_version, new_changelog), MessageBox.TYPE_YESNO)
         else:
             self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+
+    def update_dev(self):
+        req = vUtils.Request(vUtils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
+        page = vUtils.urlopen(req).read()
+        data = json.loads(page)
+        remote_date = data['pushed_at']
+        strp_remote_date = datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
+        remote_date = strp_remote_date.strftime('%Y-%m-%d')
+        self.session.openWithCallback(self.install_update, MessageBox, _("Do you want to install update ( %s ) now?") % (remote_date), MessageBox.TYPE_YESNO)
 
     def install_update(self, answer=False):
         if answer:
@@ -666,7 +679,7 @@ class MainVavoo(Screen):
         self.session.open(vavoo_config)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQ4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
@@ -826,7 +839,7 @@ class vavoo(Screen):
         self.session.open(vavoo_config)
 
     def info(self):
-        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQ4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
     def up(self):
