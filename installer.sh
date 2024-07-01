@@ -3,7 +3,7 @@
 
 ######### Only This 2 lines to edit with new version ######
 version='1.20'
-changelog='\nAdd EPG\nAdd PNG Picons'
+changelog='\nFix Screen\nForce Update InfoLong\n'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-main
