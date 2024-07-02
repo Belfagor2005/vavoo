@@ -17,8 +17,6 @@ import re
 import six
 import ssl
 import sys
-
-# import codecs
 import time
 import traceback
 
@@ -51,7 +49,6 @@ from enigma import loadPNG
 from os.path import exists as file_exists
 from random import choice
 from twisted.web.client import error
-import re
 import json
 import requests
 from datetime import datetime
@@ -66,8 +63,6 @@ global HALIGN
 tmlast = None
 now = None
 _session = None
-
-
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
@@ -120,6 +115,7 @@ if os.path.exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
         default_font = PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"
     except Exception as error:
         trace_error()
+
 try:
     if os.path.exists(FNTPath):
         for fontName in os.listdir(FNTPath):
@@ -129,6 +125,8 @@ try:
                 fonts.append((fontNamePath, fontName))
 except Exception as error:
     trace_error()
+
+
 fonts = sorted(fonts, key=lambda x: x[1])
 
 # config section
@@ -599,24 +597,22 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions'], {
-            'up': self.up,
-            'down': self.down,
-            'left': self.left,
-            'right': self.right,
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+            'prevBouquet': self.chDown,
+            'nextBouquet': self.chUp,
             'ok': self.ok,
             'menu': self.goConfig,
             'green': self.msgdeleteBouquets,
             'blue': self.arabic,
             'cancel': self.close,
             'info': self.info,
-            'showEventInfo': self.info, 
+            'showEventInfo': self.info,
             'red': self.close,
             'yellow': self.update_me,
             'yellow_long': self.update_dev,
             'info_long': self.update_dev,
             'infolong': self.update_dev,
-            'showEventInfoPlugin': self.update_dev,          
+            'showEventInfoPlugin': self.update_dev,
         }, -1)
 
         self.timer = eTimer()
@@ -689,23 +685,15 @@ class MainVavoo(Screen):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
-    def up(self):
-        self[self.currentList].up()
+    def chUp(self):
+        for x in range(5):
+            self[self.currentList].pageUp()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
-    def down(self):
-        self[self.currentList].down()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def left(self):
-        self[self.currentList].pageUp()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def right(self):
-        self[self.currentList].pageDown()
+    def chDown(self):
+        for x in range(5):
+            self[self.currentList].pageDown()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
@@ -806,11 +794,9 @@ class vavoo(Screen):
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions'], {
-            'up': self.up,
-            'down': self.down,
-            'left': self.left,
-            'right': self.right,
+        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions', 'ChannelSelectBaseActions'], {
+            'prevBouquet': self.chDown,
+            'nextBouquet': self.chUp,
             'ok': self.ok,
             'green': self.message1,
             'yellow': self.search_vavoo,
@@ -849,23 +835,15 @@ class vavoo(Screen):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
-    def up(self):
-        self[self.currentList].up()
+    def chUp(self):
+        for x in range(5):
+            self[self.currentList].pageUp()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
-    def down(self):
-        self[self.currentList].down()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def left(self):
-        self[self.currentList].pageUp()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def right(self):
-        self[self.currentList].pageDown()
+    def chDown(self):
+        for x in range(5):
+            self[self.currentList].pageDown()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 

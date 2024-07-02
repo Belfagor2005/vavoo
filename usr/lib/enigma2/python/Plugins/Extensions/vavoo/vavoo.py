@@ -126,7 +126,7 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.19'
+currversion = '1.20'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
@@ -660,11 +660,9 @@ class MainVavoox(Screen):
         self.count = 0
         self.loading = 0
         self.url = b64decoder(stripurl)
-        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions'], {
-            'up': self.up,
-            'down': self.down,
-            'left': self.left,
-            'right': self.right,
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+            'prevBouquet': self.chDown,
+            'nextBouquet': self.chUp,
             'ok': self.ok,
             'menu': self.goConfig,
             'green': self.msgdeleteBouquets,
@@ -698,23 +696,15 @@ class MainVavoox(Screen):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
-    def up(self):
-        self[self.currentList].up()
+    def chUp(self):
+        for x in range(5):
+            self[self.currentList].pageUp()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
-    def down(self):
-        self[self.currentList].down()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def left(self):
-        self[self.currentList].pageUp()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def right(self):
-        self[self.currentList].pageDown()
+    def chDown(self):
+        for x in range(5):
+            self[self.currentList].pageDown()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
@@ -813,11 +803,9 @@ class vavoox(Screen):
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions'], {
-            'up': self.up,
-            'down': self.down,
-            'left': self.left,
-            'right': self.right,
+        self['actions'] = ActionMap(['MenuActions', 'OkCancelActions', 'ColorActions', 'EPGSelectActions', 'DirectionActions', 'ChannelSelectBaseActions'], {
+            'prevBouquet': self.chDown,
+            'nextBouquet': self.chUp,
             'ok': self.ok,
             'green': self.message1,
             'yellow': self.search_vavoo,
@@ -856,23 +844,15 @@ class vavoox(Screen):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
-    def up(self):
-        self[self.currentList].up()
+    def chUp(self):
+        for x in range(5):
+            self[self.currentList].pageUp()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
-    def down(self):
-        self[self.currentList].down()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def left(self):
-        self[self.currentList].pageUp()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
-
-    def right(self):
-        self[self.currentList].pageDown()
+    def chDown(self):
+        for x in range(5):
+            self[self.currentList].pageDown()
         auswahl = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(auswahl))
 
@@ -1386,7 +1366,6 @@ def convert_bouquet(service, name, url):
     # tmlast = int(time.time())
     sig = Sig()
     app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-    # print('sig:', str(sig))
     dir_enigma2 = '/etc/enigma2/'
     files = '/tmp/' + name + '.m3u'
     type = 'tv'
