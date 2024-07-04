@@ -915,41 +915,6 @@ class vavoox(Screen):
             self['name'].setText('Error')
         self['version'].setText('V.' + currversion)
 
-    def search_vavoo(self):
-        self.session.openWithCallback(
-            self.filterM3u,
-            VirtualKeyBoard,
-            title=_("Filter this category..."),
-            text='')
-
-    def filterM3u(self, result):
-        global search_ok
-        if result:
-            try:
-                self.cat_list = []
-                search = result
-                for item in itemlist:
-                    name = item.split('###')[0]
-                    url = item.split('###')[1]
-                    if search.lower() in str(name).lower():
-                        search_ok = True
-                        namex = name
-                        urlx = url.replace('%0a', '').replace('%0A', '')
-                        self.cat_list.append(show_(namex, urlx))
-                # print('N. channel=', len(self.cat_list))
-                if len(self.cat_list) < 1:
-                    _session.open(MessageBox, _('No channels found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
-                    return
-                else:
-                    self['menulist'].l.setList(self.cat_list)
-                    self['menulist'].moveToIndex(0)
-                    auswahl = self['menulist'].getCurrent()[0][0]
-                    self['name'].setText(str(auswahl))
-            except Exception as error:
-                trace_error()
-                self['name'].setText('Error')
-                search_ok = False
-
     def ok(self):
         try:
             i = self['menulist'].getSelectedIndex()
@@ -966,6 +931,15 @@ class vavoox(Screen):
     def play_that_shit(self, url, name, index, item, cat_list):
         self.session.open(Playstream2, name, url, index, item, cat_list)
 
+    def message0(self, name, url, response):
+        name = self.name
+        url = self.url
+        filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+        if os.path.exists(filenameout):
+            self.message3(name, url, False)
+        else:
+            self.message2(name, url, False)
+
     def message1(self, answer=None):
         if answer is None:
             self.session.openWithCallback(self.message1, MessageBox, _('Do you want to Convert to favorite .tv ?\n\nAttention!! It may take some time\ndepending on the number of streams contained !!!'))
@@ -974,20 +948,9 @@ class vavoox(Screen):
             url = self.url
             filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
             if os.path.exists(filenameout):
-                # print('bouquet list exist', filenameout)
-                self.message3(name, url, True)
+                self.message4()
             else:
                 self.message2(name, url, True)
-
-    def message0(self, name, url, response):
-        name = self.name
-        url = self.url
-        filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
-        if os.path.exists(filenameout):
-            # print('bouquet list exist', filenameout)
-            self.message3(name, url, False)
-        else:
-            self.message2(name, url, False)
 
     def message2(self, name, url, response):
         service = cfg.services.value
@@ -1012,7 +975,6 @@ class vavoox(Screen):
             data = fin.read()
             regexcat = '#SERVICE.*?vavoo_auth=(.+?)#User'
             match = re.compile(regexcat, re.DOTALL).findall(data)
-            # print("In showContent match =", match)
             for key in match:
                 key = str(key)
 
@@ -1030,6 +992,49 @@ class vavoox(Screen):
         cfg.last_update.save()
         if response is True:
             _session.open(MessageBox, _('Wait...\nUpdate List Bouquet...\nbouquets reloaded..'), MessageBox.TYPE_INFO, timeout=5)
+
+    def message4(self, answer=None):
+        if answer is None:
+            self.session.openWithCallback(self.message4, MessageBox, _('The favorite channel list exists.\nWant to update it with epg and picons?\n\nYES for Update'))
+        elif answer:
+            name = self.name
+            url = self.url
+            filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+            self.message3(name, url, True)
+
+    def search_vavoo(self):
+        self.session.openWithCallback(
+            self.filterM3u,
+            VirtualKeyBoard,
+            title=_("Filter this category..."),
+            text='')
+
+    def filterM3u(self, result):
+        global search_ok
+        if result:
+            try:
+                self.cat_list = []
+                search = result
+                for item in itemlist:
+                    name = item.split('###')[0]
+                    url = item.split('###')[1]
+                    if search.lower() in str(name).lower():
+                        search_ok = True
+                        namex = name
+                        urlx = url.replace('%0a', '').replace('%0A', '')
+                        self.cat_list.append(show_(namex, urlx))
+                if len(self.cat_list) < 1:
+                    _session.open(MessageBox, _('No channels found in search!!!'), MessageBox.TYPE_INFO, timeout=5)
+                    return
+                else:
+                    self['menulist'].l.setList(self.cat_list)
+                    self['menulist'].moveToIndex(0)
+                    auswahl = self['menulist'].getCurrent()[0][0]
+                    self['name'].setText(str(auswahl))
+            except Exception as error:
+                trace_error()
+                self['name'].setText('Error')
+                search_ok = False
 
 
 class TvInfoBarShowHide():

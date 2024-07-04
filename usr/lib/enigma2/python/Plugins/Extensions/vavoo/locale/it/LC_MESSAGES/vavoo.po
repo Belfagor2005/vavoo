@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-07-01 18:37+0200\n"
+"POT-Creation-Date: 2024-07-04 20:45+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -13,32 +13,32 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:140
+#: plugin.py:138
 msgid "interval"
 msgstr "intervallo"
 
-#: plugin.py:140
+#: plugin.py:138
 msgid "fixed time"
 msgstr "orario predefinito"
 
-#: plugin.py:366 plugin.py:797
+#: plugin.py:365 plugin.py:786
 msgid "Back"
 msgstr "Torna"
 
-#: plugin.py:367
+#: plugin.py:366
 msgid "Save"
 msgstr "Salva"
 
-#: plugin.py:392
+#: plugin.py:391
 #, python-format
 msgid "Last channel update: %s"
 msgstr "Ultimo aggiornamento canali: %s"
 
-#: plugin.py:402
+#: plugin.py:401
 msgid "Server for Player Used"
 msgstr "Server Utilizzato per il Player"
 
-#: plugin.py:402
+#: plugin.py:401
 #, python-format
 msgid ""
 "Server for player.\n"
@@ -47,11 +47,11 @@ msgstr ""
 "Server per il Player.\n"
 "Adesso %s"
 
-#: plugin.py:403
+#: plugin.py:402
 msgid "Ipv6 State Of Lan (On/Off)"
 msgstr "Stato Ipv6 Lan(On/Off)"
 
-#: plugin.py:403
+#: plugin.py:402
 #, python-format
 msgid ""
 "Active or Disactive lan Ipv6.\n"
@@ -60,19 +60,19 @@ msgstr ""
 "Attivare o disattivare Lan Ipv6\n"
 "Adesso %s"
 
-#: plugin.py:404
+#: plugin.py:403
 msgid "Movie Services Reference"
 msgstr "Service Reference del Player"
 
-#: plugin.py:404
+#: plugin.py:403
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Impostare il Referenze per il Player. Iptv-Gstreamer-Exteplayer3"
 
-#: plugin.py:405
+#: plugin.py:404
 msgid "Select Fonts"
 msgstr "Seleziona Fonts"
 
-#: plugin.py:405
+#: plugin.py:404
 msgid ""
 "Configure Fonts.\n"
 "Eg:Arabic or other language."
@@ -80,55 +80,55 @@ msgstr ""
 "Configura il Fonts. \n"
 "Es: arabo o altra lingua."
 
-#: plugin.py:406
+#: plugin.py:405
 msgid "Link in Main Menu"
 msgstr "Mostra in Menu Principale"
 
-#: plugin.py:407
+#: plugin.py:406
 msgid "Scheduled Bouquet Update:"
 msgstr "Aggiornamento Programmato Bouquet:"
 
-#: plugin.py:407
+#: plugin.py:406
 msgid "Active Automatic Bouquet Update"
 msgstr "Attivare aggiornamento automatico del bouquet"
 
-#: plugin.py:409
+#: plugin.py:408
 msgid "Schedule type:"
 msgstr "Tipo programmazione:"
 
-#: plugin.py:409
+#: plugin.py:408
 msgid "At an interval of hours or at a fixed time"
 msgstr "A intervalli di ore o a un'ora fissa"
 
-#: plugin.py:411
+#: plugin.py:410
 msgid "Update interval (minutes):"
 msgstr "Intervallo di aggiornamento (minuti):"
 
-#: plugin.py:411
+#: plugin.py:410
 msgid "Configure every interval of minutes from now"
 msgstr "Configura ogni intervallo di minuti da ora in poi"
 
-#: plugin.py:413
+#: plugin.py:412
 msgid "Time to start update:"
 msgstr "Ora inizio l'aggiornamento:"
 
-#: plugin.py:413
+#: plugin.py:412
 msgid "Configure at a fixed time"
 msgstr "Configura a un'ora fissa"
 
-#: plugin.py:424
+#: plugin.py:423
 msgid "SELECT YOUR CHOICE"
 msgstr "SELEZIONA LA TUA SCELTA"
 
-#: plugin.py:431
+#: plugin.py:430
 msgid "Ipv6 [Off]?"
 msgstr ""
 
-#: plugin.py:433
+#: plugin.py:432
 msgid "Ipv6 [On]?"
 msgstr ""
 
-#: plugin.py:495
+#: plugin.py:494
 msgid ""
 "Settings saved successfully !\n"
 "you need to restart the GUI\n"
@@ -140,31 +140,31 @@ msgstr ""
 "per applicare la nuova configurazione!\n"
 "Vuoi riavviare adesso?"
 
-#: plugin.py:496
+#: plugin.py:495
 msgid "Restart GUI now?"
 msgstr "Riavvia Interfaccia Grafica adesso?"
 
-#: plugin.py:508
+#: plugin.py:507
 msgid "Really close without saving settings?"
 msgstr "Chiudi davvero senza salvare le impostazioni?"
 
-#: plugin.py:591
+#: plugin.py:590
 msgid "Exit"
 msgstr "Esci"
 
-#: plugin.py:592
+#: plugin.py:591
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: plugin.py:593
+#: plugin.py:592
 msgid "Update Me"
 msgstr "Aggiornami"
 
-#: plugin.py:594 plugin.py:800
+#: plugin.py:593 plugin.py:789
 msgid "HALIGN"
 msgstr "Allinea"
 
-#: plugin.py:661
+#: plugin.py:658
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -179,20 +179,20 @@ msgstr ""
 "\n"
 "Vuoi installarla ora?"
 
-#: plugin.py:663
+#: plugin.py:660
 msgid "Congrats! You already have the latest version..."
 msgstr "Congratulazioni! Hai già l'ultima versione..."
 
-#: plugin.py:672
+#: plugin.py:669
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
-msgstr ""
+msgstr "Vuoi installare l'aggiornamento ( %s ) ora?"
 
-#: plugin.py:679
+#: plugin.py:676
 msgid "Update Aborted!"
 msgstr "Aggiornamento annullato!"
 
-#: plugin.py:689 plugin.py:849
+#: plugin.py:686 plugin.py:836
 #, python-format
 msgid ""
 "%s\n"
@@ -210,35 +210,27 @@ msgid ""
 "but only free channel found on the net"
 msgstr ""
 
-#: plugin.py:690 plugin.py:850
+#: plugin.py:687 plugin.py:837
 msgid "Info Vavoo"
 msgstr ""
 
-#: plugin.py:759
+#: plugin.py:748
 msgid "Remove all Vavoo Favorite Bouquet?"
 msgstr "Rimuovere le liste canali favorite Vavoo?"
 
-#: plugin.py:779
+#: plugin.py:768
 msgid "Vavoo Favorites List have been removed"
 msgstr "Le liste canali favorite Vavoo sono state rimosse"
 
-#: plugin.py:798
+#: plugin.py:787
 msgid "Export"
 msgstr "Esporta"
 
-#: plugin.py:799
+#: plugin.py:788
 msgid "Search"
 msgstr "Cerca"
 
-#: plugin.py:938
-msgid "Filter this category..."
-msgstr "Filtra questa categoria..."
-
-#: plugin.py:957
-msgid "No channels found in search!!!"
-msgstr "Nessun canale trovato corrispondente alla ricerca!!!"
-
-#: plugin.py:987
+#: plugin.py:940
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -250,7 +242,7 @@ msgstr ""
 "Attenzione!! Potrebbe volerci un po' di tempo\n"
 "a seconda del numero di flussi contenuti !!!"
 
-#: plugin.py:1017
+#: plugin.py:959
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -259,22 +251,45 @@ msgstr ""
 "bouquet riordinati\n"
 "con %s canali aggiunti"
 
-#: plugin.py:1019
+#: plugin.py:961
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:1048
+#: plugin.py:989
 msgid ""
 "Wait...\n"
 "Update List Bouquet...\n"
 "bouquets reloaded.."
 msgstr ""
+"Aspettare...\n"
+"Aggiornamento elenco Bouquet...\n"
+"bouqet aggiornato.."
 
-#: plugin.py:1263
+#: plugin.py:993
+msgid ""
+"The favorite channel list exists.\n"
+"Want to update it with epg and picons?\n"
+"\n"
+"YES for Update"
+msgstr ""
+"L'elenco dei canali preferiti esiste.\n"
+"Vuoi aggiornarlo con epg e picons?\n"
+"\n"
+"SÌ per Aggiornare"
+
+#: plugin.py:1004
+msgid "Filter this category..."
+msgstr "Filtra questa categoria..."
+
+#: plugin.py:1022
+msgid "No channels found in search!!!"
+msgstr "Nessun canale trovato corrispondente alla ricerca!!!"
+
+#: plugin.py:1247
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:1567 plugin.py:1584 plugin.py:1586
+#: plugin.py:1551 plugin.py:1568 plugin.py:1570
 msgid "Vavoo Stream Live"
 msgstr ""
 
