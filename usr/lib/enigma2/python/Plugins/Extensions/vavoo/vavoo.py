@@ -46,16 +46,31 @@ from Components.config import (ConfigText, configfile)
 from Components.config import ConfigSubsection
 from Components.config import config
 from Plugins.Plugin import PluginDescriptor
-from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
+from Screens.InfoBarGenerics import (
+    InfoBarSubtitleSupport,
+    InfoBarMenu,
+    InfoBarSeek,
+    InfoBarAudioSelection,
+    InfoBarNotifications,
+)
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, iPlayableService, iServiceInformation)
+from enigma import (
+    RT_VALIGN_CENTER,
+    RT_HALIGN_LEFT,
+    RT_HALIGN_RIGHT,
+    eListboxPythonMultiContent,
+    eServiceReference,
+    eTimer,
+    iPlayableService,
+    iServiceInformation,
+    gFont,
+    loadPNG,
+)
 from os import path as os_path
-from enigma import gFont
-from enigma import loadPNG
 from os.path import exists as file_exists
 from random import choice
 from twisted.web.client import error
@@ -63,7 +78,13 @@ import base64
 import re
 import json
 import requests
+                             
 
+                                            
+               
+                    
+                            
+                               
 
 try:
     from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
@@ -214,6 +235,14 @@ except:
     lng = 'en'
     pass
 
+                    
+                               
+                                                                                 
+                                                                              
+                                                                        
+                                                                
+                                              
+                                                                                      
 
 def ensure_str(s, encoding='utf-8', errors='strict'):
     """Coerce *s* to `str`.
@@ -337,7 +366,6 @@ def Sig():
             json.dump(vecKeylist, f, indent=2)
     else:
         vec = None
-        # try:
         with open(json_file) as f:
             vecs = json.load(f)
             vec = choice(vecs)
@@ -359,8 +387,6 @@ def Sig():
         elif req.get('response', {}).get('signed'):
             sig = req['response']['signed']
         # print('res key:', str(sig))
-        # except Exception as error:
-            # trace_error()
     return sig
 
 
@@ -881,7 +907,6 @@ class vavoox(Screen):
                     if country != names:
                         continue
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
-                    # url = 'http://vavoo.to/play/' + str(ids) + '/index.m3u8'
                     url = str(server) + '/live2/play/' + str(ids) + '.ts'  # + app
                     name = decodeHtml(name)
                     item = name + "###" + url + '\n'
@@ -935,7 +960,7 @@ class vavoox(Screen):
         name = self.name
         url = self.url
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
-        if os.path.exists(filenameout):
+        if file_exists(filenameout):
             self.message3(name, url, False)
         else:
             self.message2(name, url, False)
@@ -947,7 +972,7 @@ class vavoox(Screen):
             name = self.name
             url = self.url
             filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
-            if os.path.exists(filenameout):
+            if file_exists(filenameout):
                 self.message4()
             else:
                 self.message2(name, url, True)
@@ -1541,6 +1566,12 @@ def get_next_wakeup():
     return -1
 
 
+                    
+                              
+                                                           
+                                          
+                                                   
+
 # def add_skin_font():
     # from enigma import addFont
     # # addFont(filename, name, scale, isReplacement, render)
@@ -1561,7 +1592,12 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
+                                                  
+                                                                                                                                                     
     result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup)]
+                                                                                                                                                  
+                        
+                                     
     return result
 
 

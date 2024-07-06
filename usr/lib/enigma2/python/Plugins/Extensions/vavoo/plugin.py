@@ -36,19 +36,38 @@ from Components.config import (ConfigText, configfile)
 from Components.config import ConfigSubsection
 from Components.config import (config, ConfigYesNo)
 from Plugins.Plugin import PluginDescriptor
-from Screens.InfoBarGenerics import (InfoBarSubtitleSupport, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications)
+from Screens.InfoBarGenerics import (
+    InfoBarSubtitleSupport,
+    InfoBarMenu,
+    InfoBarSeek,
+    InfoBarAudioSelection,
+    InfoBarNotifications,
+)
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from enigma import (RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, eListboxPythonMultiContent, eServiceReference, eTimer, iPlayableService, iServiceInformation, getDesktop)
-from enigma import ePicLoad
-from enigma import gFont
-from enigma import loadPNG
+from enigma import (
+    RT_VALIGN_CENTER,
+    RT_HALIGN_LEFT,
+    RT_HALIGN_RIGHT,
+    eListboxPythonMultiContent,
+    eServiceReference,
+    eTimer,
+    iPlayableService,
+    iServiceInformation,
+    getDesktop,
+    ePicLoad,
+    gFont,
+    loadPNG,
+)
+from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
 from twisted.web.client import error
+             
+         
 import json
 import requests
 from datetime import datetime
@@ -74,11 +93,18 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
+            
+                    
+                             
+                    
+                                        
+             
+                    
 currversion = '1.20'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
-pluglogo = os.path.join(PLUGIN_PATH, 'plugin.png')
+pluglogo = os_path.join(PLUGIN_PATH, 'plugin.png')
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS92YXZvby9tYWluL2luc3RhbGxlci5zaA=='
@@ -108,18 +134,18 @@ if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
 
-FNTPath = os.path.join(PLUGIN_PATH + "/fonts")
+FNTPath = os_path.join(PLUGIN_PATH + "/fonts")
 fonts = []
-if os.path.exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
+if file_exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
     try:
         default_font = PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"
     except Exception as error:
         trace_error()
 
 try:
-    if os.path.exists(FNTPath):
+    if file_exists(FNTPath):
         for fontName in os.listdir(FNTPath):
-            fontNamePath = os.path.join(FNTPath, fontName)
+            fontNamePath = os_path.join(FNTPath, fontName)
             if fontName.endswith(".ttf") or fontName.endswith(".otf"):
                 fontName = fontName[:-4]
                 fonts.append((fontNamePath, fontName))
@@ -147,7 +173,7 @@ FONTSTYPE = cfg.fonts.value
 eserv = int(cfg.services.value)
 
 
-if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
 
@@ -163,39 +189,39 @@ except:
 
 # set screen section
 if screenwidth.width() == 2560:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
-    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
-    skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_wqhd.xml')
-    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbWqhd.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
+    skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
+    skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
+    skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_wqhd.xml')
+    skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/MpbWqhd.xml')
+    if file_exists('/var/lib/dpkg/status'):
+        skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
 
-    '''# if os.path.exists('/var/lib/dpkg/status'):
-        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')'''
+    '''# if file_exists('/var/lib/dpkg/status'):
+        # skin_path = os_path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')'''
 elif screenwidth.width() == 1920:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
-    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
-    skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_fhd.xml')
-    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/MpbFhd.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
-    '''# if os.path.exists('/var/lib/dpkg/status'):
-        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')'''
+    skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
+    skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
+    skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_fhd.xml')
+    skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/MpbFhd.xml')
+    if file_exists('/var/lib/dpkg/status'):
+        skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
+    '''# if file_exists('/var/lib/dpkg/status'):
+        # skin_path = os_path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')'''
 else:
-    skin_path = os.path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
-    skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
-    skin_strt = os.path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt.xml')
-    skin_mb = os.path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
-    if os.path.exists('/var/lib/dpkg/status'):
-        skin_config = os.path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
-    '''# if os.path.exists('/var/lib/dpkg/status'):
-        # skin_path = os.path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')'''
+    skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
+    skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
+    skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt.xml')
+    skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
+    if file_exists('/var/lib/dpkg/status'):
+        skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
+    '''# if file_exists('/var/lib/dpkg/status'):
+        # skin_path = os_path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')'''
 print('skin_path is:', skin_path)
 
 
 def Sig():
     sig = ''
-    if not os.path.exists(json_file):
+    if not file_exists(json_file):
         myUrl = vUtils.b64decoder(keyurl)
         vecKeylist = requests.get(myUrl).json()
         vecs = {'time': int(time.time()), 'vecs': vecKeylist}
@@ -281,7 +307,6 @@ def raises(url):
         http.mount("http://", adapter)
         http.mount("https://", adapter)
         r = http.get(url, headers={'User-Agent': vUtils.RequestAgent()}, timeout=10, verify=False, stream=True, allow_redirects=False)
-        # r = http.get(url, headers={'User-Agent': vUtils.RequestAgent()}, timeout=10, stream=True, allow_redirects=False)
         r.raise_for_status()
         if r.status_code == requests.codes.ok:
             return True
@@ -312,7 +337,7 @@ class m2list(MenuList):
             self.l.setItemHeight(60)
             textfont = int(38)
             self.l.setFont(0, gFont('Regular', textfont))
-        # elif os.path.exists('/var/lib/dpkg/status'):
+        # elif file_exists('/var/lib/dpkg/status'):
         elif screenwidth.width() == 1920:
             self.l.setItemHeight(50)
             textfont = int(34)
@@ -336,8 +361,7 @@ def show_list(name, link):
         pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
     else:
         pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
-    # print('HALIGN =:', str(HALIGN))
-    if os.path.isfile(pngx):
+    if os_path.isfile(pngx):
         if screenwidth.width() == 2560:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
             res.append(MultiContentEntryText(pos=(90, 0), size=(750, 60), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
@@ -426,14 +450,14 @@ class vavoo_config(Screen, ConfigListScreen):
             trace_error()
 
     def ipv6(self):
-        if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+        if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
             self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [Off]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
         else:
             self.session.openWithCallback(self.ipv6check, MessageBox, _("Ipv6 [On]?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
 
     def ipv6check(self, result):
         if result:
-            if os.path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+            if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
                 os.unlink('/etc/rc3.d/S99ipv6dis.sh')
                 cfg.ipv6.setValue(False)
                 # self['blue'].setText('IPV6 Off')
@@ -491,6 +515,7 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             add_skin_font()
+                                                                                                                                                                              
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
@@ -501,6 +526,7 @@ class vavoo_config(Screen, ConfigListScreen):
             self.session.open(TryQuitMainloop, 3)
         else:
             self.close()
+                                  
 
     def extnok(self, answer=None):
         if answer is None:
@@ -552,14 +578,14 @@ class startVavoo(Screen):
         self.fldpng = '/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/pics/presplash.png'
 
         self.timer = eTimer()
-        if os.path.exists('/var/lib/dpkg/status'):
+        if file_exists('/var/lib/dpkg/status'):
             self.timer_conn = self.timer.timeout.connect(self.decodeImage)
         else:
             self.timer.callback.append(self.decodeImage)
         self.timer.start(500, True)
 
         self.timerx = eTimer()
-        if os.path.exists('/var/lib/dpkg/status'):
+        if file_exists('/var/lib/dpkg/status'):
             self.timerx_conn = self.timerx.timeout.connect(self.clsgo)
         else:
             self.timerx.callback.append(self.clsgo)
@@ -755,15 +781,15 @@ class MainVavoo(Screen):
                         vUtils.purge(enigma_path, fname)
                     elif 'bouquets.tv.bak' in fname:
                         vUtils.purge(enigma_path, fname)
-                os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
-                tvfile = open(os.path.join(enigma_path, 'bouquets.tv'), 'w+')
-                bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'))
+                os.rename(os_path.join(enigma_path, 'bouquets.tv'), os_path.join(enigma_path, 'bouquets.tv.bak'))
+                tvfile = open(os_path.join(enigma_path, 'bouquets.tv'), 'w+')
+                bakfile = open(os_path.join(enigma_path, 'bouquets.tv.bak'))
                 for line in bakfile:
                     if '.vavoo_' not in line:
                         tvfile.write(line)
                 bakfile.close()
                 tvfile.close()
-                if os.path.exists(PLUGIN_PATH + '/Favorite.txt'):
+                if file_exists(PLUGIN_PATH + '/Favorite.txt'):
                     os.remove(PLUGIN_PATH + '/Favorite.txt')
                 self.session.open(MessageBox, _('Vavoo Favorites List have been removed'), MessageBox.TYPE_INFO, timeout=5)
                 vUtils.ReloadBouquets()
@@ -873,11 +899,7 @@ class vavoo(Screen):
                     if country != names:
                         continue
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
-                    # url = str(server) + '/play/' + str(ids) + '/index.m3u8' +  str(app)
                     url = str(server) + '/live2/play/' + str(ids) + '.ts'  # + app
-                    # https://vavoo.to/live2/play/2037441576.ts
-                    # url = url.strip('%0a').strip('\n')
-                    # print('url append=', url)
                     name = vUtils.decodeHtml(name)
                     item = name + "###" + url + '\n'
                     items.append(item)
@@ -930,7 +952,7 @@ class vavoo(Screen):
         name = self.name
         url = self.url
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
-        if os.path.exists(filenameout):
+        if file_exists(filenameout):
             self.message3(name, url, False)
         else:
             self.message2(name, url, False)
@@ -942,7 +964,7 @@ class vavoo(Screen):
             name = self.name
             url = self.url
             filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
-            if os.path.exists(filenameout):
+            if file_exists(filenameout):
                 self.message4()
             else:
                 self.message2(name, url, True)
@@ -1300,10 +1322,7 @@ class Playstream2(
         # print('sig:', str(sig))
         name = self.name
         url = url + app
-        # ('reference:   ', '8193:0:1:0:0:0:0:0:0:0:http%3a//huhu.to/play/2687017841/index.m3u8:4K TR%3a FLASH TV (1)')
-        # ('final reference:   ', '8193:0:1:0:0:0:0:0:0:0:http%3a//huhu.to/play/2687017841/index.m3u8:4K TR%3a FLASH TV (1)')
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-        # ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
         print('reference:   ', ref)
         if streaml is True:
             url = 'http://127.0.0.1:8088/' + str(url)
@@ -1321,7 +1340,7 @@ class Playstream2(
         if not self.url.startswith('http'):
             self.url = 'http://' + self.url
         url = str(self.url)
-        if str(os.path.splitext(self.url)[-1]) == ".m3u8":
+        if str(os_path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
         # print('servicetype2: ', self.servicetype)
@@ -1345,7 +1364,7 @@ class Playstream2(
             self.doShow()
 
     def cancel(self):
-        if os.path.isfile('/tmp/hls.avi'):
+        if os_path.isfile('/tmp/hls.avi'):
             os.remove('/tmp/hls.avi')
         self.session.nav.stopService()
         self.session.nav.playService(self.srefInit)
@@ -1383,11 +1402,11 @@ def convert_bouquet(service, name, url):
         r.write(str(name_file) + '###' + str(url))
         r.close()
     bouquetname = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), type.lower())
-    if os.path.exists(str(files)):
+    if file_exists(str(files)):
         sleep(5)
         ch = 0
         try:
-            if os.path.isfile(files) and os.stat(files).st_size > 0:
+            if os_path.isfile(files) and os.stat(files).st_size > 0:
                 desk_tmp = ''
                 in_bouquets = 0
                 with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
@@ -1401,12 +1420,12 @@ def convert_bouquet(service, name, url):
                             desk_tmp = '%s' % line.split(',')[-1]
                         ch += 1
                     outfile.close()
-                if os.path.isfile('/etc/enigma2/bouquets.tv'):
+                if os_path.isfile('/etc/enigma2/bouquets.tv'):
                     for line in open('/etc/enigma2/bouquets.tv'):
                         if bouquetname in line:
                             in_bouquets = 1
                     if in_bouquets == 0:
-                        if os.path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os.path.isfile('/etc/enigma2/bouquets.tv'):
+                        if os_path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os_path.isfile('/etc/enigma2/bouquets.tv'):
                             vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquetname)
                             with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
                                 outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
@@ -1499,7 +1518,7 @@ class AutoStartTimer:
 
     def startMain(self):
         name = url = ''
-        if os.path.exists(PLUGIN_PATH + '/Favorite.txt'):
+        if file_exists(PLUGIN_PATH + '/Favorite.txt'):
             with open(PLUGIN_PATH + '/Favorite.txt', 'r') as f:
                 line = f.readline()
                 name = line.split('###')[0]
@@ -1555,7 +1574,7 @@ def cfgmain(menuid, **kwargs):
 
 def main(session, **kwargs):
     try:
-        if os.path.exists('/tmp/vavoo.log'):
+        if file_exists('/tmp/vavoo.log'):
             os.remove('/tmp/vavoo.log')
         add_skin_font()
         session.open(startVavoo)
@@ -1564,7 +1583,7 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-    icon = os.path.join(PLUGIN_PATH, 'plugin.png')
+    icon = os_path.join(PLUGIN_PATH, 'plugin.png')
     mainDescriptor = PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_MENU, icon=icon, fnc=cfgmain)
     result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
               PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)]
