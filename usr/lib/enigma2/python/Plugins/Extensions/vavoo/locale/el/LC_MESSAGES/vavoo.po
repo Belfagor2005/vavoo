@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-07-05 12:18+0200\n"
+"POT-Creation-Date: 2024-07-06 10:44+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: giorbak\n"
@@ -21,7 +21,7 @@ msgstr "διάστημα"
 
 #: plugin.py:138
 msgid "fixed time"
-msgstr "kαθορισμένη ώρα"
+msgstr "καθορισμένη ώρα"
 
 #: plugin.py:365 plugin.py:786
 msgid "Back"
@@ -47,7 +47,7 @@ msgid ""
 "Now %s"
 msgstr ""
 "Διακομιστής για αναπαραγωγή.\n"
-"Σε χρήση τώρα %s"
+"Τώρα %s"
 
 #: plugin.py:402
 msgid "Ipv6 State Of Lan (On/Off)"
@@ -60,7 +60,7 @@ msgid ""
 "Now %s"
 msgstr ""
 "Ενεργοποίηση/απενεργοποίηση Lan Ipv6.\n"
-"Τώρα είναι %s"
+"Τώρα %s"
 
 #: plugin.py:403
 msgid "Movie Services Reference"
@@ -68,11 +68,11 @@ msgstr "Αναφορά υπηρεσιών ταινιών"
 
 #: plugin.py:403
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "Ρύθμιση παραμέτρων υπηρεσίας αναφοράς Iptv-Gstreamer-Exteplayer3"
+msgstr "Διαμόρφωση αναφοράς υπηρεσιών Iptv-Gstreamer-Exteplayer3"
 
 #: plugin.py:404
 msgid "Select Fonts"
-msgstr "Επιλογή γραμματοσειράς"
+msgstr "Επιλογή γραμματοσειρών"
 
 #: plugin.py:404
 msgid ""
@@ -88,11 +88,11 @@ msgstr "Σύνδεσμος στο κύριο μενού"
 
 #: plugin.py:406
 msgid "Scheduled Bouquet Update:"
-msgstr "Πρόγραμμα ενημέρωσης μπουκέτων:"
+msgstr "Πρόγραμμα ενημέρωσης μπουκέτου:"
 
 #: plugin.py:406
 msgid "Active Automatic Bouquet Update"
-msgstr "Ενεργοποίηση αυτόματης ενημέρωσης μπουκέτων"
+msgstr "Ενεργοποίηση αυτόματης ενημέρωσης μπουκέτου"
 
 #: plugin.py:408
 msgid "Schedule type:"
@@ -164,7 +164,7 @@ msgstr "Ενημέρωση Vavoo"
 
 #: plugin.py:593 plugin.py:789
 msgid "HALIGN"
-msgstr "Δεξιά στοίχιση"
+msgstr "Ευθυγράμμιση"
 
 #: plugin.py:658
 #, python-format
@@ -192,7 +192,7 @@ msgstr "Θέλετε να εγκαταστήσετε την ενημέρωση (
 
 #: plugin.py:676
 msgid "Update Aborted!"
-msgstr "Η ενημέρωση ματαιώθηκε!"
+msgstr "Η ενημέρωση ακυρώθηκε!"
 
 #: plugin.py:686 plugin.py:836
 #, python-format
@@ -214,7 +214,7 @@ msgstr ""
 "%s\n"
 "\n"
 "\n"
-"Ευχαριστώ τους\n"
+"Ευχαριστίες:\n"
 "@KiddaC\n"
 "@oktus\n"
 "Qu4k3\n"
@@ -263,7 +263,7 @@ msgid ""
 "bouquets reloaded..\n"
 "With %s channel"
 msgstr ""
-"tα μπουκέτα επαναφορτώθηκαν..\n"
+"τα μπουκέτα επαναφορτώθηκαν..\n"
 "Με %s κανάλια"
 
 #: plugin.py:961
@@ -278,7 +278,7 @@ msgid ""
 msgstr ""
 "Παρακαλώ περιμένετε...\n"
 "Ενημέρωση της λίστας μπουκέτων...\n"
-"Τα μπουκέτα επαναφορτώθηκαν."
+"τα μπουκέτα επαναφορτώθηκαν.."
 
 #: plugin.py:993
 msgid ""
