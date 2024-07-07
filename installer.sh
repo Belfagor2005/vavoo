@@ -2,11 +2,12 @@
 ##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
 ######### Only This 2 lines to edit with new version ######
-version='1.20'
-changelog='\nFix Screen\nForce Update InfoLong\n'
+version='1.19'
+changelog='\nAdd Locale Language\nFix conponent stream'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-main
+FILEPATH=/tmp/main.tar.gz
 
 if [ ! -d /usr/lib64 ]; then
 	PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/vavoo
@@ -59,6 +60,9 @@ echo ""
 
 ## Remove tmp directory
 [ -r $TMPPATH ] && rm -f $TMPPATH > /dev/null 2>&1
+
+## Remove tmp directory
+[ -r $FILEPATH ] && rm -f $FILEPATH > /dev/null 2>&1
 
 ## Remove old plugin directory
 [ -r $PLUGINPATH ] && rm -rf $PLUGINPATH
