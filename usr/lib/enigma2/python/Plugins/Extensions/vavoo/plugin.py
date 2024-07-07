@@ -92,14 +92,6 @@ if sys.version_info >= (2, 7, 9):
     except:
         sslContext = None
 
-
-            
-                    
-                             
-                    
-                                        
-             
-                    
 currversion = '1.20'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)

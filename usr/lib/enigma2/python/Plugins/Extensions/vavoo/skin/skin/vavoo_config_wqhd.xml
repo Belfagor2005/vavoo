@@ -12,5 +12,5 @@
         <convert type="ClockToText">Default</convert>
     </widget>
     <!-- <eLabel backgroundColor="#00ffffff" position="0,1306" size="2560,4" zPosition="2" /> -->
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/main.png" position="0,0" size="2560,1440" scale="stretch" alphatest="on" zPosition="-8" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/main.png" position="0,0" size="2560,1440" scale="stretch" alphatest="off" zPosition="-1" />
 </screen>

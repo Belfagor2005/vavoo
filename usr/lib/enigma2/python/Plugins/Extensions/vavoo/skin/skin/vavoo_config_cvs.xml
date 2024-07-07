@@ -10,5 +10,5 @@
     <widget source="global.CurrentTime" render="Label" position="890,30" size="250,84" font="xLcd; 60" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/main.png" position="0,0" size="1280,720" alphatest="on" zPosition="-8" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/main.png" position="0,0" size="1280,720" alphatest="off" zPosition="-1" />
 </screen>
