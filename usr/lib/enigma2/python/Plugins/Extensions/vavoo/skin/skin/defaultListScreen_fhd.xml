@@ -11,7 +11,7 @@
     <eLabel backgroundColor="#0000ff00" position="352,1048" size="300,6" zPosition="4" />
     <eLabel backgroundColor="#00ffff00" position="652,1048" size="300,6" zPosition="4" />
     <eLabel backgroundColor="#000000ff" position="947,1048" size="300,6" zPosition="4" />
-    <widget source="global.CurrentTime" render="Label" position="1438,70" size="316,117" font="xLcd; 84" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
+    <widget source="global.CurrentTime" render="Label" position="1420,70" size="316,117" font="xLcd; 84" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/main.png" position="0,0" size="1920,1080" alphatest="off" zPosition="-1" />

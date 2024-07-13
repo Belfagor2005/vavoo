@@ -696,7 +696,7 @@ class MainVavoox(Screen):
             'cancel': self.close,
             'info': self.info,
             'showEventInfo': self.info,
-            'red': self.close
+            'red': self.close,
         }, -1)
 
         self.timer = eTimer()
