@@ -1,11 +1,10 @@
 #!/bin/bash
-##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
+## setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
-######### Only This 2 lines to edit with new version ######
-version='1.19'
-changelog='\nAdd Locale Language\nFix conponent stream'
-##############################################################
-
+## Only This 2 lines to edit with new version ######
+version='1.21'
+changelog='\nAdd Locale Language\nFix Update'
+###
 TMPPATH=/tmp/vavoo-main
 FILEPATH=/tmp/main.tar.gz
 
@@ -15,7 +14,16 @@ else
 	PLUGINPATH=/usr/lib64/enigma2/python/Plugins/Extensions/vavoo
 fi
 
-# check depends packges
+## Remove tmp directory
+[ -r $TMPPATH ] && rm -f $TMPPATH > /dev/null 2>&1
+
+## Remove tmp directory
+[ -r $FILEPATH ] && rm -f $FILEPATH > /dev/null 2>&1
+
+## Remove old plugin directory
+[ -r $PLUGINPATH ] && rm -rf $PLUGINPATH
+
+## check depends packges
 if [ -f /var/lib/dpkg/status ]; then
    STATUS=/var/lib/dpkg/status
    OSTYPE=DreamOs
@@ -50,25 +58,19 @@ else
 	echo ""
 	if [ $OSTYPE = "DreamOs" ]; then
 		apt-get update && apt-get install python-requests -y
-	elif [ $PYTHON = "PY3" ]; then
-		opkg update && opkg install python3-requests
-	elif [ $PYTHON = "PY2" ]; then
-		opkg update && opkg install python-requests
+	else
+		if [ $PYTHON = "PY3" ]; then
+			opkg update && opkg install python3-requests
+		# elif [ $PYTHON = "PY2" ]; then
+		else
+			opkg update && opkg install python-requests
+		fi
 	fi
 fi
 echo ""
 
-## Remove tmp directory
-[ -r $TMPPATH ] && rm -f $TMPPATH > /dev/null 2>&1
-
-## Remove tmp directory
-[ -r $FILEPATH ] && rm -f $FILEPATH > /dev/null 2>&1
-
-## Remove old plugin directory
-[ -r $PLUGINPATH ] && rm -rf $PLUGINPATH
-
-# Download and install plugin
-# check depends packges
+## Download and install plugin
+## check depends packges
 mkdir -p $TMPPATH
 cd $TMPPATH
 set -e
@@ -85,13 +87,6 @@ if [ $OSTYPE != "DreamOs" ]; then
 fi
 sleep 2
 
-# if [ $OSTYPE = "DreamOs" ]; then
-	# apt-get update && apt-get install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp -y
-# else
-	# opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
-# fi
-
-# wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
 wget --no-check-certificate --no-cache --no-dns-cache 'https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz'
 tar -xzf main.tar.gz
 cp -r 'vavoo-main/usr' '/'
@@ -99,7 +94,7 @@ set +e
 cd
 sleep 2
 
-### Check if plugin installed correctly
+## Check if plugin installed correctly
 if [ ! -d $PLUGINPATH ]; then
 	echo "Some thing wrong .. Plugin not installed"
 	exit 1
