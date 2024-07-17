@@ -1,6 +1,6 @@
 #!/bin/bash
-##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
+##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 ######### Only This 2 lines to edit with new version ######
 version='1.19'
 changelog='\nAdd Locale Language\nFix conponent stream'
@@ -15,7 +15,7 @@ else
 	PLUGINPATH=/usr/lib64/enigma2/python/Plugins/Extensions/vavoo
 fi
 
-# check depends packges
+## check depends packges
 if [ -f /var/lib/dpkg/status ]; then
    STATUS=/var/lib/dpkg/status
    OSTYPE=DreamOs
@@ -39,7 +39,7 @@ if [ $PYTHON = "PY3" ]; then
 	if grep -qs "Package: $Packagesix" cat $STATUS ; then
 		echo ""
 	else
-		opkg update && opkg install python3-six
+		opkg update && opkg --force-reinstall --force-overwrite install python3-six
 	fi
 fi
 echo ""
@@ -51,9 +51,9 @@ else
 	if [ $OSTYPE = "DreamOs" ]; then
 		apt-get update && apt-get install python-requests -y
 	elif [ $PYTHON = "PY3" ]; then
-		opkg update && opkg install python3-requests
+		opkg update && opkg --force-reinstall --force-overwrite install python3-requests
 	elif [ $PYTHON = "PY2" ]; then
-		opkg update && opkg install python-requests
+		opkg update && opkg --force-reinstall --force-overwrite install python-requests
 	fi
 fi
 echo ""
@@ -67,8 +67,8 @@ echo ""
 ## Remove old plugin directory
 [ -r $PLUGINPATH ] && rm -rf $PLUGINPATH
 
-# Download and install plugin
-# check depends packges
+## Download and install plugin
+## check depends packges
 mkdir -p $TMPPATH
 cd $TMPPATH
 set -e
@@ -81,17 +81,10 @@ else
 fi
 
 if [ $OSTYPE != "DreamOs" ]; then
-	opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
+	opkg update && opkg --force-reinstall --force-overwrite install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
 fi
 sleep 2
 
-# if [ $OSTYPE = "DreamOs" ]; then
-	# apt-get update && apt-get install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp -y
-# else
-	# opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
-# fi
-
-# wget https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz
 wget --no-check-certificate --no-cache --no-dns-cache 'https://github.com/Belfagor2005/vavoo/archive/refs/heads/main.tar.gz'
 tar -xzf main.tar.gz
 cp -r 'vavoo-main/usr' '/'
