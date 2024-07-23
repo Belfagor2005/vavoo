@@ -10,16 +10,12 @@
 # ---- thank's Kiddac for support ---- #
 # Info Linuxsat-support.com & corvoboys.org
 """
-
+# Local application/library-specific imports
+from . import _
+from . import vUtils
+from .Console import Console
+            
 # Standard library imports
-import os
-import re
-import six
-import ssl
-import sys
-import time
-import traceback
-
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap
@@ -29,12 +25,12 @@ from Components.MenuList import MenuList
 from Components.MultiContent import (MultiContentEntryPixmapAlphaTest, MultiContentEntryText)
 from Components.Pixmap import Pixmap
 from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
-from Components.config import ConfigEnableDisable
 from Components.config import (ConfigSelection, getConfigListEntry)
 from Components.config import (ConfigSelectionNumber, ConfigClock)
 from Components.config import (ConfigText, configfile)
-from Components.config import ConfigSubsection
 from Components.config import (config, ConfigYesNo)
+from Components.config import ConfigEnableDisable
+from Components.config import ConfigSubsection
 from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (
     InfoBarSubtitleSupport,
@@ -62,21 +58,20 @@ from enigma import (
     gFont,
     loadPNG,
 )
+from datetime import datetime         
 from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
 from twisted.web.client import error
-             
-         
 import json
+import os
+import re
 import requests
-from datetime import datetime
-
-# Local application/library-specific imports
-from . import _
-from . import vUtils
-from .Console import Console
-# from .mb import MessageBoxExt
+import six
+import ssl
+import sys
+import time
+import traceback
 
 global HALIGN
 tmlast = None
@@ -92,6 +87,8 @@ if sys.version_info >= (2, 7, 9):
     except:
         sslContext = None
 
+
+# set plugin
 currversion = '1.20'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
@@ -107,7 +104,7 @@ HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 default_font = ''
 
-
+# log
 def trace_error():
     try:
         traceback.print_exc(file=sys.stdout)
@@ -125,7 +122,7 @@ if file_exists("/usr/bin/exteplayer3"):
 if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
-
+# fonts
 FNTPath = os_path.join(PLUGIN_PATH + "/fonts")
 fonts = []
 if file_exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
@@ -146,7 +143,6 @@ except Exception as error:
 
 
 fonts = sorted(fonts, key=lambda x: x[1])
-
 # config section
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
@@ -164,12 +160,12 @@ cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
 FONTSTYPE = cfg.fonts.value
 eserv = int(cfg.services.value)
 
-
+# ipv6
 if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
 
-
+#language
 try:
     lng = config.osd.language.value
     lng = lng[:-3]
@@ -188,8 +184,6 @@ if screenwidth.width() == 2560:
     if file_exists('/var/lib/dpkg/status'):
         skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
 
-    '''# if file_exists('/var/lib/dpkg/status'):
-        # skin_path = os_path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_uhd.xml')'''
 elif screenwidth.width() == 1920:
     skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
     skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
@@ -197,8 +191,7 @@ elif screenwidth.width() == 1920:
     skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/MpbFhd.xml')
     if file_exists('/var/lib/dpkg/status'):
         skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
-    '''# if file_exists('/var/lib/dpkg/status'):
-        # skin_path = os_path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen_new.xml')'''
+
 else:
     skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
     skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
@@ -206,9 +199,7 @@ else:
     skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
     if file_exists('/var/lib/dpkg/status'):
         skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
-    '''# if file_exists('/var/lib/dpkg/status'):
-        # skin_path = os_path.join(PLUGIN_PATH, 'skin/skin_cvs/defaultListScreen.xml')'''
-print('skin_path is:', skin_path)
+# print('skin_path is:', skin_path)
 
 
 def Sig():
@@ -261,8 +252,6 @@ def loop_sig():
         return sig
     pass
 
-# loop_sig()
-
 
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
@@ -290,6 +279,7 @@ def returnIMDB(text_clear):
     return False
 
 
+# check server
 def raises(url):
     try:
         from requests.adapters import HTTPAdapter, Retry
@@ -321,6 +311,7 @@ def zServer(opt=0, server=None, port=None):
         return 'https://vavoo.to'
 
 
+# menulist
 class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
@@ -366,6 +357,7 @@ def show_list(name, link):
         return res
 
 
+# config class
 class vavoo_config(Screen, ConfigListScreen):
     def __init__(self, session):
         Screen.__init__(self, session)
@@ -875,10 +867,6 @@ class vavoo(Screen):
         global search_ok
         search_ok = False
         try:
-            # tmlast = int(time.time())
-            # sig = Sig()
-            # app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-            # print('sig:', str(sig))
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
@@ -1377,7 +1365,6 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 def convert_bouquet(service, name, url):
     from time import sleep
-    # tmlast = int(time.time())
     sig = Sig()
     app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
     dir_enigma2 = '/etc/enigma2/'
@@ -1429,6 +1416,7 @@ def convert_bouquet(service, name, url):
         return ch
 
 
+# autostart
 _session = None
 autoStartTimer = None
 
@@ -1557,9 +1545,20 @@ def add_skin_font():
     addFont((FNTPath + '/lcd.ttf'), 'xLcd', 100, 1)
 
 
+# def cfgmain(menuid, **kwargs):
+    # if menuid == 'mainmenu':
+        # return [(_('Vavoo Stream Live'), main, 'Vavoo', 44)]
+    # else:
+        # return []
+
+
 def cfgmain(menuid, **kwargs):
     if menuid == 'mainmenu':
-        return [(_('Vavoo Stream Live'), main, 'Vavoo', 44)]
+        from Tools.BoundFunction import boundFunction
+        return [(_('Vavoo Stream Live'),
+                 boundFunction(main, showExtentionMenuOption=True),
+                 'Vavoo',
+                 -1)]
     else:
         return []
 

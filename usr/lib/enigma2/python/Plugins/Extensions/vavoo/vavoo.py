@@ -78,13 +78,13 @@ import base64
 import re
 import json
 import requests
-                             
 
-                                            
-               
-                    
-                            
-                               
+
+
+
+
+
+
 
 try:
     from Tools.Directories import SCOPE_GUISKIN as SCOPE_SKIN
@@ -235,14 +235,14 @@ except:
     lng = 'en'
     pass
 
-                    
-                               
-                                                                                 
-                                                                              
-                                                                        
-                                                                
-                                              
-                                                                                      
+
+
+
+
+
+
+
+
 
 def ensure_str(s, encoding='utf-8', errors='strict'):
     """Coerce *s* to `str`.
@@ -1566,12 +1566,6 @@ def get_next_wakeup():
     return -1
 
 
-                    
-                              
-                                                           
-                                          
-                                                   
-
 # def add_skin_font():
     # from enigma import addFont
     # # addFont(filename, name, scale, isReplacement, render)
@@ -1592,12 +1586,7 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-                                                  
-                                                                                                                                                     
     result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup)]
-                                                                                                                                                  
-                        
-                                     
     return result
 
 
