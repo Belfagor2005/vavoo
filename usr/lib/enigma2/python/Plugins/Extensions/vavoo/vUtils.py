@@ -179,6 +179,16 @@ def purge(dir, pattern):
                 os.remove(file_path)
 
 
+def MemClean():
+    try:
+        os.system('sync')
+        os.system('echo 1 > /proc/sys/vm/drop_caches')
+        os.system('echo 2 > /proc/sys/vm/drop_caches')
+        os.system('echo 3 > /proc/sys/vm/drop_caches')
+    except:
+        pass
+
+
 def ReloadBouquets():
     from enigma import eDVBDB
     eDVBDB.getInstance().reloadServicelist()

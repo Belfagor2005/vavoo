@@ -14,7 +14,7 @@
 from . import _
 from . import vUtils
 from .Console import Console
-            
+
 # Standard library imports
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
@@ -25,12 +25,18 @@ from Components.MenuList import MenuList
 from Components.MultiContent import (MultiContentEntryPixmapAlphaTest, MultiContentEntryText)
 from Components.Pixmap import Pixmap
 from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
-from Components.config import (ConfigSelection, getConfigListEntry)
-from Components.config import (ConfigSelectionNumber, ConfigClock)
-from Components.config import (ConfigText, configfile)
-from Components.config import (config, ConfigYesNo)
-from Components.config import ConfigEnableDisable
-from Components.config import ConfigSubsection
+from Components.config import (
+    ConfigSelection,
+    getConfigListEntry,
+    ConfigSelectionNumber,
+    ConfigClock,
+    ConfigText,
+    configfile,
+    config,
+    ConfigYesNo,
+    ConfigEnableDisable,
+    ConfigSubsection,
+)
 from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (
     InfoBarSubtitleSupport,
@@ -58,7 +64,7 @@ from enigma import (
     gFont,
     loadPNG,
 )
-from datetime import datetime         
+from datetime import datetime
 from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
@@ -89,7 +95,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.20'
+currversion = '1.21'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -103,6 +109,7 @@ json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 default_font = ''
+
 
 # log
 def trace_error():
@@ -130,6 +137,7 @@ if file_exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
         default_font = PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"
     except Exception as error:
         trace_error()
+
 
 try:
     if file_exists(FNTPath):
@@ -165,7 +173,7 @@ if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
 
-#language
+# language
 try:
     lng = config.osd.language.value
     lng = lng[:-3]
@@ -310,6 +318,9 @@ def zServer(opt=0, server=None, port=None):
         print(err.code)
         return 'https://vavoo.to'
 
+
+def rimuovi_parentesi(testo):
+    return re.sub(r'\([^)]*\)', '', testo)
 
 # menulist
 class m2list(MenuList):
@@ -499,7 +510,7 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             add_skin_font()
-                                                                                                                                                                              
+
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
@@ -510,7 +521,6 @@ class vavoo_config(Screen, ConfigListScreen):
             self.session.open(TryQuitMainloop, 3)
         else:
             self.close()
-                                  
 
     def extnok(self, answer=None):
         if answer is None:
@@ -881,6 +891,7 @@ class vavoo(Screen):
                     ids = ids.replace(':', '').replace(' ', '').replace(',', '')
                     url = str(server) + '/live2/play/' + str(ids) + '.ts'  # + app
                     name = vUtils.decodeHtml(name)
+                    name = rimuovi_parentesi(name)
                     item = name + "###" + url + '\n'
                     items.append(item)
                 items.sort()
@@ -996,7 +1007,7 @@ class vavoo(Screen):
         elif answer:
             name = self.name
             url = self.url
-            filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+            # filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
             self.message3(name, url, True)
 
     def search_vavoo(self):
@@ -1183,10 +1194,7 @@ class Playstream2(
             'back': self.cancel
         }, -1)
 
-        if '8088' in str(self.url):
-            self.onFirstExecBegin.append(self.slinkPlay)
-        else:
-            self.onFirstExecBegin.append(self.cicleStreamType)
+        self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
 
     def nextitem(self):
@@ -1209,6 +1217,24 @@ class Playstream2(
         item = self.list[i][0]
         self.name = item[0]
         self.url = item[1]
+        self.cicleStreamType()
+
+    # def doEofInternal(self, playing):
+        # self.close()
+
+    # def __evEOF(self):
+        # self.end = True
+
+    def doEofInternal(self, playing):
+        print('doEofInternal', playing)
+        vUtils.MemClean()
+        if self.execing and playing:
+            self.cicleStreamType()
+
+    def __evEOF(self):
+        print('__evEOF')
+        self.end = True
+        vUtils.MemClean()
         self.cicleStreamType()
 
     def getAspect(self):
@@ -1303,34 +1329,22 @@ class Playstream2(
         name = self.name
         url = url + app
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-        print('reference:   ', ref)
-        if streaml is True:
-            url = 'http://127.0.0.1:8088/' + str(url)
-            ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
         print('final reference:   ', ref)
         sref = eServiceReference(ref)
         self.sref = sref
-        sref.setName(name)
+        self.sref.setName(name)
         self.session.nav.stopService()
-        self.session.nav.playService(sref)
+        self.session.nav.playService(self.sref)
 
     def cicleStreamType(self):
         self.servicetype = cfg.services.value
-        # print('servicetype1: ', self.servicetype)
         if not self.url.startswith('http'):
             self.url = 'http://' + self.url
         url = str(self.url)
         if str(os_path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
-        # print('servicetype2: ', self.servicetype)
         self.openTest(self.servicetype, url)
-
-    def doEofInternal(self, playing):
-        self.close()
-
-    def __evEOF(self):
-        self.end = True
 
     def showVideoInfo(self):
         if self.shown:
@@ -1543,13 +1557,6 @@ def add_skin_font():
     # addFont(filename, name, scale, isReplacement, render)
     addFont((FONTSTYPE), 'cvfont', 100, 1)
     addFont((FNTPath + '/lcd.ttf'), 'xLcd', 100, 1)
-
-
-# def cfgmain(menuid, **kwargs):
-    # if menuid == 'mainmenu':
-        # return [(_('Vavoo Stream Live'), main, 'Vavoo', 44)]
-    # else:
-        # return []
 
 
 def cfgmain(menuid, **kwargs):
