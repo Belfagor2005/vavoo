@@ -2,8 +2,8 @@
 
 ##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 ######### Only This 2 lines to edit with new version ######
-version='1.21'
-changelog='\nAdd Picons-Epg\nFix Block Stream on Player'
+version='1.22'
+changelog='\nAdd Language Locale\nAdd many Background screen'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-main

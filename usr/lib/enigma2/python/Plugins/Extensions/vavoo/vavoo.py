@@ -83,6 +83,7 @@ from random import choice
 from twisted.web.client import error
 import base64
 import json
+         
 import re
 import requests
 
@@ -104,8 +105,6 @@ global HALIGN
 tmlast = None
 now = None
 _session = None
-
-
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
@@ -154,7 +153,7 @@ else:
             MAXSIZE = int((1 << 63) - 1)
         del X
 
-currversion = '1.20'
+currversion = '1.22'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
@@ -191,6 +190,9 @@ if file_exists("/usr/bin/exteplayer3"):
 if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
+                                                                                     
+
+     
 
 # GETPath = os_path.join(PLUGIN_PATH + "/fonts")
 # fonts = []
@@ -200,6 +202,8 @@ if file_exists('/var/lib/dpkg/info'):
     # except Exception as error:
         # trace_error()
 # try:
+          
+    
     # if file_exists(GETPath):
         # for fontName in os.listdir(GETPath):
             # fontNamePath = os_path.join(GETPath, fontName)
@@ -208,6 +212,9 @@ if file_exists('/var/lib/dpkg/info'):
                 # fonts.append((fontNamePath, fontName))
 # except Exception as error:
     # trace_error()
+
+
+                                         
 
 # fonts = sorted(fonts, key=lambda x: x[1])
 # config section
@@ -224,7 +231,9 @@ cfg.last_update = ConfigText(default="Never")
 
 cfg.ipv6 = ConfigEnableDisable(default=False)
 # cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
+                                                              
 # FONTSTYPE = cfg.fonts.value
+                              
 eserv = int(cfg.services.value)
 
 
@@ -413,8 +422,6 @@ def loop_sig():
         return sig
     pass
 
-# loop_sig()
-
 
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
@@ -442,6 +449,7 @@ def returnIMDB(text_clear):
     return False
 
 
+# check server
 def raises(url):
     try:
         from requests.adapters import HTTPAdapter, Retry
@@ -476,6 +484,8 @@ def zServer(opt=0, server=None, port=None):
 def rimuovi_parentesi(testo):
     return re.sub(r'\([^)]*\)', '', testo)
 
+
+# menulist
 class m2list(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
@@ -664,7 +674,6 @@ class vavoo_config(Screen, ConfigListScreen):
             self.session.open(TryQuitMainloop, 3)
         else:
             self.close()
-            # pass  # self.close()
 
     def extnok(self, answer=None):
         if answer is None:
@@ -1260,6 +1269,7 @@ class Playstream2(
         self.end = True
         MemClean()
         self.cicleStreamType()
+
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
 
@@ -1453,6 +1463,7 @@ def convert_bouquet(service, name, url):
         return ch
 
 
+# autostart
 _session = None
 autoStartTimer = None
 
@@ -1574,12 +1585,32 @@ def get_next_wakeup():
     return -1
 
 
-# def add_skin_font():
-    # from enigma import addFont
-    # # addFont(filename, name, scale, isReplacement, render)
-    # # font_path = PLUGIN_PATH + '/resolver/'
-    # addFont((FONTSTYPE), 'cvfont', 100, 1)
-    # addFont((GETPath + '/lcd.ttf'), 'xLcd', 100, 1)
+                    
+                              
+                                                           
+                                          
+                                                   
+
+
+                    
+                        
+                            
+                         
+                                                                   
+                      
+                         
+                                 
+
+
+                              
+                            
+                                                     
+                                        
+                                                                   
+                         
+                     
+         
+                 
 
 
 def main(session, **kwargs):
@@ -1587,14 +1618,19 @@ def main(session, **kwargs):
         if file_exists('/tmp/vavoo.log'):
             os.remove('/tmp/vavoo.log')
         # add_skin_font()
+                       
         session.open(MainVavoox)
-        # session.openWithCallback(check_configuring, MainVavoo)
     except Exception as error:
         trace_error()
 
 
 def Plugins(**kwargs):
+                                                  
+                                                                                                                                                     
     result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup)]
+                                                                                                                                                  
+                        
+                                     
     return result
 
 

@@ -95,7 +95,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.21'
+currversion = '1.22'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -109,6 +109,7 @@ json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 default_font = ''
+default_back = 'default'
 
 
 # log
@@ -129,59 +130,6 @@ if file_exists("/usr/bin/exteplayer3"):
 if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
-# fonts
-FNTPath = os_path.join(PLUGIN_PATH + "/fonts")
-fonts = []
-if file_exists(PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"):
-    try:
-        default_font = PLUGIN_PATH + "/fonts/Questrial-Regular.ttf"
-    except Exception as error:
-        trace_error()
-
-
-try:
-    if file_exists(FNTPath):
-        for fontName in os.listdir(FNTPath):
-            fontNamePath = os_path.join(FNTPath, fontName)
-            if fontName.endswith(".ttf") or fontName.endswith(".otf"):
-                fontName = fontName[:-4]
-                fonts.append((fontNamePath, fontName))
-except Exception as error:
-    trace_error()
-
-
-fonts = sorted(fonts, key=lambda x: x[1])
-# config section
-config.plugins.vavoo = ConfigSubsection()
-cfg = config.plugins.vavoo
-cfg.autobouquetupdate = ConfigEnableDisable(default=False)
-cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
-cfg.services = ConfigSelection(default='4097', choices=modemovie)
-cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
-cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
-# cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
-cfg.fixedtime = ConfigClock(default=46800)
-cfg.last_update = ConfigText(default="Never")
-cfg.stmain = ConfigYesNo(default=True)
-cfg.ipv6 = ConfigEnableDisable(default=False)
-cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
-FONTSTYPE = cfg.fonts.value
-eserv = int(cfg.services.value)
-
-# ipv6
-if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
-    cfg.ipv6.setValue(True)
-    cfg.ipv6.save()
-
-# language
-try:
-    lng = config.osd.language.value
-    lng = lng[:-3]
-    if lng.lower() == 'ar':
-        HALIGN = RT_HALIGN_RIGHT
-except:
-    lng = 'en'
-    pass
 
 # set screen section
 if screenwidth.width() == 2560:
@@ -208,6 +156,80 @@ else:
     if file_exists('/var/lib/dpkg/status'):
         skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
 # print('skin_path is:', skin_path)
+
+
+# back
+global BackPath
+BackPath = os_path.join(PLUGIN_PATH + "skin")
+if screenwidth.width() <= 2560:
+    BackPath = BackPath + '/images_new'
+elif screenwidth.width() <= 1920:
+    BackPath = BackPath + '/images'
+print('folder back: ', BackPath)
+BakP = []
+try:
+    if file_exists(BackPath):
+        for backName in os.listdir(BackPath):
+            backNamePath = os_path.join(BackPath, backName)
+            if backName.endswith(".png"):
+                backName = backName[:-4]
+                BakP.append((backNamePath, backName))
+except Exception as error:
+    trace_error()
+print('final folder back: ', BackPath)
+# cmd = 'cp %s%s %sdefault.png' % (BackPath, BACKTYPE, BackPath)
+# BakP = sorted(BakP, key=lambda x: x[1])
+
+
+# fonts
+FNTPath = os_path.join(PLUGIN_PATH + "/fonts")
+fonts = []
+try:
+    if file_exists(FNTPath):
+        for fontName in os.listdir(FNTPath):
+            fontNamePath = os_path.join(FNTPath, fontName)
+            if fontName.endswith(".ttf") or fontName.endswith(".otf"):
+                fontName = fontName[:-4]
+                fonts.append((fontNamePath, fontName))
+except Exception as error:
+    trace_error()
+
+
+fonts = sorted(fonts, key=lambda x: x[1])
+
+# config section
+config.plugins.vavoo = ConfigSubsection()
+cfg = config.plugins.vavoo
+cfg.autobouquetupdate = ConfigEnableDisable(default=False)
+cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
+cfg.services = ConfigSelection(default='4097', choices=modemovie)
+cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
+cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
+# cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
+cfg.fixedtime = ConfigClock(default=46800)
+cfg.last_update = ConfigText(default="Never")
+cfg.stmain = ConfigYesNo(default=True)
+cfg.ipv6 = ConfigEnableDisable(default=False)
+cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
+cfg.back = ConfigSelection(default=default_back, choices=BakP)
+FONTSTYPE = cfg.fonts.value
+BACKTYPE = str(cfg.back.value)
+eserv = int(cfg.services.value)
+
+# ipv6
+if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
+    cfg.ipv6.setValue(True)
+    cfg.ipv6.save()
+
+# language
+try:
+    lng = config.osd.language.value
+    lng = lng[:-3]
+    if lng.lower() == 'ar':
+        HALIGN = RT_HALIGN_RIGHT
+except:
+    lng = 'en'
+    pass
 
 
 def Sig():
@@ -322,6 +344,7 @@ def zServer(opt=0, server=None, port=None):
 def rimuovi_parentesi(testo):
     return re.sub(r'\([^)]*\)', '', testo)
 
+
 # menulist
 class m2list(MenuList):
     def __init__(self, list):
@@ -358,13 +381,13 @@ def show_list(name, link):
     if os_path.isfile(pngx):
         if screenwidth.width() == 2560:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(90, 0), size=(750, 60), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(90, 0), size=(750, 60), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
         elif screenwidth.width() == 1920:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(80, 0), size=(540, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(80, 0), size=(540, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
         else:
             res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(85, 0), size=(380, 50), font=0, text=name, color=0xa6d1fe, flags=HALIGN | RT_VALIGN_CENTER))
+            res.append(MultiContentEntryText(pos=(85, 0), size=(380, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
         return res
 
 
@@ -420,6 +443,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
         self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
+        self.list.append(getConfigListEntry(_("Select Background"), cfg.back, _("Configure Main Background Image.")))
         self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
         self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
         self.list.append(getConfigListEntry(_("Scheduled Bouquet Update:"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
@@ -510,7 +534,7 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             add_skin_font()
-
+            add_skin_back()
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
@@ -1559,6 +1583,16 @@ def add_skin_font():
     addFont((FNTPath + '/lcd.ttf'), 'xLcd', 100, 1)
 
 
+def add_skin_back():
+    bakk = str(BACKTYPE)
+    # print('bakkk =', bakk)
+    if file_exists(bakk):
+        cmd = 'cp -f %s %s/default.png' % (str(BACKTYPE), BackPath)
+        os.system(cmd)
+        os.system('sync')
+        print('cmd skin:\n', cmd)
+
+
 def cfgmain(menuid, **kwargs):
     if menuid == 'mainmenu':
         from Tools.BoundFunction import boundFunction
@@ -1575,6 +1609,7 @@ def main(session, **kwargs):
         if file_exists('/tmp/vavoo.log'):
             os.remove('/tmp/vavoo.log')
         add_skin_font()
+        add_skin_back()
         session.open(startVavoo)
     except Exception as error:
         trace_error()
