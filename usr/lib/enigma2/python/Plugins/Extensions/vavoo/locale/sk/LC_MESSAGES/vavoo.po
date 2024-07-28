@@ -2,160 +2,170 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-07-01 18:38+0200\n"
+"POT-Creation-Date: 2024-07-27 10:50+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: slovakia\n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.4\n"
-"X-Poedit-Basepath: ../../..\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:140
+#: plugin.py:160
 msgid "interval"
-msgstr ""
+msgstr "interval"
 
-#: plugin.py:140
+#: plugin.py:160
 msgid "fixed time"
-msgstr ""
+msgstr "pevný čas"
 
-#: plugin.py:366 plugin.py:797
+#: plugin.py:384 plugin.py:806
 msgid "Back"
 msgstr "Späť"
 
-#: plugin.py:367
+#: plugin.py:385
 msgid "Save"
-msgstr ""
+msgstr "Uložiť"
 
-#: plugin.py:392
+#: plugin.py:410
 #, python-format
 msgid "Last channel update: %s"
-msgstr ""
+msgstr "Posledná aktualizácia kanála: %s"
 
-#: plugin.py:402
+#: plugin.py:420
 msgid "Server for Player Used"
-msgstr ""
+msgstr "Používaný server pre prehrávač"
 
-#: plugin.py:402
+#: plugin.py:420
 #, python-format
 msgid ""
 "Server for player.\n"
 "Now %s"
 msgstr ""
+"Server pre hráča.\n"
+"Teraz %s"
 
-#: plugin.py:403
+#: plugin.py:421
 msgid "Ipv6 State Of Lan (On/Off)"
-msgstr ""
+msgstr "Ipv6 State Of Lan (zapnuté/vypnuté)"
 
-#: plugin.py:403
+#: plugin.py:421
 #, python-format
 msgid ""
 "Active or Disactive lan Ipv6.\n"
 "Now %s"
 msgstr ""
+"Aktívny alebo neaktívny lan Ipv6.\n"
+"Teraz %s"
 
-#: plugin.py:404
+#: plugin.py:422
 msgid "Movie Services Reference"
-msgstr ""
+msgstr "Odkaz na filmové služby"
 
-#: plugin.py:404
+#: plugin.py:422
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr ""
+msgstr "Konfigurácia služby Referencia Iptv-Gstreamer-Exteplayer3"
 
-#: plugin.py:405
+#: plugin.py:423
 msgid "Select Fonts"
-msgstr ""
+msgstr "Vyberte položku Písma"
 
-#: plugin.py:405
+#: plugin.py:423
 msgid ""
 "Configure Fonts.\n"
 "Eg:Arabic or other language."
 msgstr ""
-
-#: plugin.py:406
-msgid "Link in Main Menu"
-msgstr ""
-
-#: plugin.py:407
-msgid "Scheduled Bouquet Update:"
-msgstr ""
-
-#: plugin.py:407
-msgid "Active Automatic Bouquet Update"
-msgstr ""
-
-#: plugin.py:409
-msgid "Schedule type:"
-msgstr ""
-
-#: plugin.py:409
-msgid "At an interval of hours or at a fixed time"
-msgstr ""
-
-#: plugin.py:411
-msgid "Update interval (minutes):"
-msgstr ""
-
-#: plugin.py:411
-msgid "Configure every interval of minutes from now"
-msgstr ""
-
-#: plugin.py:413
-msgid "Time to start update:"
-msgstr ""
-
-#: plugin.py:413
-msgid "Configure at a fixed time"
-msgstr ""
+"Konfigurovať písma.\n"
+"Napr.: arabčina alebo iný jazyk."
 
 #: plugin.py:424
-msgid "SELECT YOUR CHOICE"
-msgstr ""
+msgid "Link in Main Menu"
+msgstr "Odkaz v hlavnom menu"
+
+#: plugin.py:425
+msgid "Scheduled Bouquet Update:"
+msgstr "Plánovaná aktualizácia kytice:"
+
+#: plugin.py:425
+msgid "Active Automatic Bouquet Update"
+msgstr "Aktívna automatická aktualizácia kytice"
+
+#: plugin.py:427
+msgid "Schedule type:"
+msgstr "Typ rozvrhu:"
+
+#: plugin.py:427
+msgid "At an interval of hours or at a fixed time"
+msgstr "V intervale hodín alebo v pevne stanovenom čase"
+
+#: plugin.py:429
+msgid "Update interval (minutes):"
+msgstr "Interval aktualizácie (v minútach):"
+
+#: plugin.py:429
+msgid "Configure every interval of minutes from now"
+msgstr "Odteraz konfigurujte každý interval minút"
 
 #: plugin.py:431
+msgid "Time to start update:"
+msgstr "Čas na spustenie aktualizácie:"
+
+#: plugin.py:431
+msgid "Configure at a fixed time"
+msgstr "Konfigurujte v pevnom čase"
+
+#: plugin.py:442
+msgid "SELECT YOUR CHOICE"
+msgstr "VYBERTE SI SVOJ VÝBER"
+
+#: plugin.py:449
 msgid "Ipv6 [Off]?"
-msgstr ""
+msgstr "IPv6 [Vypnuté]?"
 
-#: plugin.py:433
+#: plugin.py:451
 msgid "Ipv6 [On]?"
-msgstr ""
+msgstr "Ipv6 [zapnuté]?"
 
-#: plugin.py:495
+#: plugin.py:514
 msgid ""
 "Settings saved successfully !\n"
 "you need to restart the GUI\n"
 "to apply the new configuration!\n"
 "Do you want to Restart the GUI now?"
 msgstr ""
+"Nastavenia boli úspešne uložené!\n"
+"musíte reštartovať GUI\n"
+"aplikujte novú konfiguráciu!\n"
+"Chcete teraz reštartovať GUI?"
 
-#: plugin.py:496
+#: plugin.py:515
 msgid "Restart GUI now?"
-msgstr ""
+msgstr "Reštartovať grafické používateľské rozhranie teraz?"
 
-#: plugin.py:508
+#: plugin.py:527
 msgid "Really close without saving settings?"
-msgstr ""
+msgstr "Naozaj zavrieť bez uloženia nastavení?"
 
-#: plugin.py:591
+#: plugin.py:610
 msgid "Exit"
-msgstr "Vymazať"
+msgstr "Ukončiť"
 
-#: plugin.py:592
+#: plugin.py:611
 msgid "Remove"
-msgstr "Vymazať"
+msgstr "Odstrániť"
 
-#: plugin.py:593
+#: plugin.py:612
 msgid "Update Me"
-msgstr ""
+msgstr "Aktualizujte ma"
 
-#: plugin.py:594 plugin.py:800
+#: plugin.py:613 plugin.py:809
 msgid "HALIGN"
-msgstr ""
+msgstr "HALIGN"
 
-#: plugin.py:661
+#: plugin.py:678
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -164,27 +174,27 @@ msgid ""
 "\n"
 "Do you want to install it now?"
 msgstr ""
+"K dispozícii je nová verzia %s.\n"
+"\n"
+"Denník zmien: %s \n"
+"\n"
+"Chcete ho nainštalovať teraz?"
 
-#: plugin.py:663
+#: plugin.py:680
 msgid "Congrats! You already have the latest version..."
-msgstr ""
+msgstr "Gratulujem! Už máte najnovšiu verziu..."
 
-#: plugin.py:672
+#: plugin.py:689
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
-msgstr ""
+msgstr "Chcete teraz nainštalovať aktualizáciu ( %s )?"
 
-#: plugin.py:679
+#: plugin.py:696
 msgid "Update Aborted!"
-msgstr ""
+msgstr "Aktualizácia prerušená!"
 
-#: plugin.py:689 plugin.py:849
-#, fuzzy, python-format
-#| msgid ""
-#| "Vavoo Plugin v.%s\n"
-#| "by Lululla\n"
-#| "Thanks:\n"
-#| "@KiddaC #oktus and staff Linuxsat-support.com"
+#: plugin.py:706 plugin.py:856
+#, python-format
 msgid ""
 "%s\n"
 "\n"
@@ -200,79 +210,99 @@ msgid ""
 "no stream direct on server\n"
 "but only free channel found on the net"
 msgstr ""
-"Vavoo Plugin v.%s\n"
-"od Lululla\n"
+"%s\n"
+"\n"
+"\n"
 "Vďaka:\n"
-"@KiddaC #oktus and staff Linuxsat-support.com"
+"@KiddaC\n"
+"@oktus\n"
+"Qu4k3\n"
+"Všetci zamestnanci Linuxsat-support.com\n"
+"Corvoboys - Fórum\n"
+"\n"
+"Tento plugin je zadarmo,\n"
+"žiadny stream priamo na serveri\n"
+"ale iba bezplatný kanál nájdený na nete"
 
-#: plugin.py:690 plugin.py:850
+#: plugin.py:707 plugin.py:857
 msgid "Info Vavoo"
-msgstr "Informácia o Vavoo"
+msgstr "Info Vavoo"
 
-#: plugin.py:759
+#: plugin.py:768
 msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr "Vymazať všetky obľúbené Vavoo zložky?"
+msgstr "Odstrániť všetky obľúbené kytice Vavoo?"
 
-#: plugin.py:779
+#: plugin.py:788
 msgid "Vavoo Favorites List have been removed"
-msgstr "Vavoo obľúbený zoznam bol vymazaný"
+msgstr "Zoznam obľúbených Vavoo bol odstránený"
 
-#: plugin.py:798
+#: plugin.py:807
 msgid "Export"
-msgstr "Export"
+msgstr "Exportovať"
 
-#: plugin.py:799
+#: plugin.py:808
 msgid "Search"
-msgstr ""
+msgstr "Hľadať"
 
-#: plugin.py:938
-msgid "Filter this category..."
-msgstr ""
-
-#: plugin.py:957
-msgid "No channels found in search!!!"
-msgstr ""
-
-#: plugin.py:987
-#, fuzzy
-#| msgid ""
-#| "Do you want to Convert to favorite .tv ?\n"
-#| "\n"
-#| "Attention!! It may take some time depending\n"
-#| "on the number of streams contained !!!"
+#: plugin.py:953
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
 "Attention!! It may take some time\n"
 "depending on the number of streams contained !!!"
 msgstr ""
-"Chceš previesť na obľúbené? Pozor!! V závislosti od počtu obsiahnutých "
-"streamov to môže chvíľu trvať !!!"
+"Chcete previesť na obľúbené .tv?\n"
+"\n"
+"Pozor!! Môže to chvíľu trvať\n"
+"v závislosti od počtu obsiahnutých streamov !!!"
 
-#: plugin.py:1017
+#: plugin.py:972
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
 "With %s channel"
 msgstr ""
-"zložky sú znova načítané \n"
-"s %s kanálom"
+"kytice nabité..\n"
+"S kanálom %s"
 
-#: plugin.py:1019
+#: plugin.py:974
 msgid "Download Error"
-msgstr "Chyba sťahovania"
+msgstr "Chyba pri sťahovaní"
 
-#: plugin.py:1048
+#: plugin.py:1002
 msgid ""
 "Wait...\n"
 "Update List Bouquet...\n"
 "bouquets reloaded.."
 msgstr ""
+"počkaj...\n"
+"Aktualizovať zoznam kytice...\n"
+"kytice nabité.."
 
-#: plugin.py:1263
+#: plugin.py:1006
+msgid ""
+"The favorite channel list exists.\n"
+"Want to update it with epg and picons?\n"
+"\n"
+"YES for Update"
+msgstr ""
+"Existuje zoznam obľúbených kanálov.\n"
+"Chcete ho aktualizovať pomocou epg a pikon?\n"
+"\n"
+"ÁNO pre aktualizáciu"
+
+#: plugin.py:1017
+msgid "Filter this category..."
+msgstr "Filtrovať túto kategóriu..."
+
+#: plugin.py:1035
+msgid "No channels found in search!!!"
+msgstr "Vo vyhľadávaní sa nenašli žiadne kanály!!!"
+
+#: plugin.py:1275
 msgid "Resolution Change Failed"
-msgstr "Zmena rozlíšenia zlyhala"
+msgstr "Zmena uznesenia neúspešná"
 
-#: plugin.py:1567 plugin.py:1584 plugin.py:1586
+#: plugin.py:1565 plugin.py:1585 plugin.py:1587
 msgid "Vavoo Stream Live"
-msgstr "Vavoo stream naživo"
+msgstr "Streamujte Vavoo naživo"
