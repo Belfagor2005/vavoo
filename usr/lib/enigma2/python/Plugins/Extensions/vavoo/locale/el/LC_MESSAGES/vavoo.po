@@ -76,7 +76,7 @@ msgstr "Επιλογή φόντου"
 
 #: plugin.py:446
 msgid "Configure Main Background Image."
-msgstr "Διαμορφώστε την κύρια εικόνα φόντου."
+msgstr "Ρύθμιση της κύριας εικόνας φόντου."
 
 #: plugin.py:447
 msgid "Select Fonts"
