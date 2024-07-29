@@ -997,7 +997,7 @@ class vavoox(Screen):
         service = cfg.services.value
         ch = 0
         ch = convert_bouquet(service, name, url)
-        if ch > 0:
+        if int(ch) > 0:
             localtime = time.asctime(time.localtime(time.time()))
             cfg.last_update.value = localtime
             cfg.last_update.save()
