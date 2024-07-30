@@ -28,9 +28,9 @@ from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
 from Components.config import (
     ConfigSelection,
     getConfigListEntry,
-    ConfigSelectionNumber,
-    ConfigClock,
-    ConfigText,
+    # ConfigSelectionNumber,
+    # ConfigClock,
+    # ConfigText,
     configfile,
     config,
     ConfigYesNo,
@@ -95,7 +95,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.23'
+currversion = '1.22'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -109,7 +109,6 @@ json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 default_font = ''
-default_back = 'default'
 
 
 # log
@@ -163,7 +162,7 @@ global BackPath
 BackPath = os_path.join(PLUGIN_PATH + "skin")
 if screenwidth.width() <= 2560:
     BackPath = BackPath + '/images_new'
-elif screenwidth.width() <= 1920:
+elif screenwidth.width() < 1920:
     BackPath = BackPath + '/images'
 print('folder back: ', BackPath)
 BakP = []
@@ -178,7 +177,7 @@ except Exception as error:
     trace_error()
 print('final folder back: ', BackPath)
 # cmd = 'cp %s%s %sdefault.png' % (BackPath, BACKTYPE, BackPath)
-# BakP = sorted(BakP, key=lambda x: x[1])
+BakP = sorted(BakP, key=lambda x: x[1])
 
 
 # fonts
@@ -200,18 +199,17 @@ fonts = sorted(fonts, key=lambda x: x[1])
 # config section
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
-cfg.autobouquetupdate = ConfigEnableDisable(default=False)
+# cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
-cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
-cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
-# cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
-cfg.fixedtime = ConfigClock(default=46800)
-cfg.last_update = ConfigText(default="Never")
+# cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
+# cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
+# cfg.fixedtime = ConfigClock(default=46800)
+# cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
-cfg.back = ConfigSelection(default=default_back, choices=BakP)
+cfg.back = ConfigSelection(default='oktus', choices=BakP)
 FONTSTYPE = cfg.fonts.value
 BACKTYPE = str(cfg.back.value)
 eserv = int(cfg.services.value)
@@ -406,8 +404,6 @@ class vavoo_config(Screen, ConfigListScreen):
         self["description"] = Label("")
         self["red"] = Label(_("Back"))
         self["green"] = Label(_("Save"))
-        # self["blue"] = Label(_("HALIGN")
-        # self["yellow"] = Label("")
         self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'DirectionActions'], {
             "cancel": self.extnok,
             "left": self.keyLeft,
@@ -416,22 +412,21 @@ class vavoo_config(Screen, ConfigListScreen):
             "down": self.keyDown,
             "red": self.extnok,
             "green": self.save,
-            # "yellow": self.ipt,
             # "blue": self.Import,
-            # "showVirtualKeyboard": self.KeyText,
             "ok": self.save,
         }, -1)
-        self.update_status()
+        # self.update_status()
         ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
         self.createSetup()
         self.v6 = cfg.ipv6.getValue()
         self.showhide()
         self.onLayoutFinish.append(self.layoutFinished)
 
+    '''
     def update_status(self):
         if cfg.autobouquetupdate:
             self['statusbar'].setText(_("Last channel update: %s") % cfg.last_update.value)
-
+    '''
     def layoutFinished(self):
         self.setTitle(self.setup_title)
         self['version'].setText('V.' + currversion)
@@ -439,13 +434,14 @@ class vavoo_config(Screen, ConfigListScreen):
     def createSetup(self):
         self.editListEntry = None
         self.list = []
-        indent = "- "
+        # indent = "- "
         self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
         self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
         self.list.append(getConfigListEntry(_("Select Background"), cfg.back, _("Configure Main Background Image.")))
         self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
         self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
+        '''
         self.list.append(getConfigListEntry(_("Scheduled Bouquet Update:"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + _("Schedule type:"), cfg.timetype, _("At an interval of hours or at a fixed time")))
@@ -453,6 +449,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 self.list.append(getConfigListEntry(2 * indent + _("Update interval (minutes):"), cfg.updateinterval, _("Configure every interval of minutes from now")))
             if cfg.timetype.value == "fixed time":
                 self.list.append(getConfigListEntry(2 * indent + _("Time to start update:"), cfg.fixedtime, _("Configure at a fixed time")))
+        '''
         self["config"].list = self.list
         self["config"].l.setList(self.list)
         self.setInfo()
@@ -567,7 +564,6 @@ class startVavoo(Screen):
         with open(skin_strt, "r") as f:
             self.skin = f.read()
         self["poster"] = Pixmap()
-        # self['poster'].show()
         self["version"] = Label()
         self['actions'] = ActionMap(['OkCancelActions'], {'ok': self.clsgo, 'cancel': self.clsgo}, -1)
         self.onLayoutFinish.append(self.loadDefaultImage)
@@ -593,8 +589,7 @@ class startVavoo(Screen):
             # return
 
     def loadDefaultImage(self):
-        self.fldpng = '/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/pics/presplash.png'
-
+        self.fldpng = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/pics/presplash.png".format('vavoo'))
         self.timer = eTimer()
         if file_exists('/var/lib/dpkg/status'):
             self.timer_conn = self.timer.timeout.connect(self.decodeImage)
@@ -632,7 +627,8 @@ class MainVavoo(Screen):
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
-        self['green'] = Label(_('Remove') + ' Fav')
+        # self['green'] = Label(_('Remove') + ' Fav')
+        self['green'] = Label()
         self['yellow'] = Label(_('Update Me'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading...')
@@ -647,7 +643,7 @@ class MainVavoo(Screen):
             'nextBouquet': self.chUp,
             'ok': self.ok,
             'menu': self.goConfig,
-            'green': self.msgdeleteBouquets,
+            # 'green': self.msgdeleteBouquets,
             'blue': self.arabic,
             'cancel': self.close,
             'info': self.info,
@@ -787,9 +783,9 @@ class MainVavoo(Screen):
 
     def exit(self):
         self.close()
-
-    def msgdeleteBouquets(self):
-        self.session.openWithCallback(self.deleteBouquets, MessageBox, _("Remove all Vavoo Favorite Bouquet?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+    '''
+    # def msgdeleteBouquets(self):
+        # self.session.openWithCallback(self.deleteBouquets, MessageBox, _("Remove all Vavoo Favorite Bouquet?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
 
     def deleteBouquets(self, result):
         if result:
@@ -813,6 +809,7 @@ class MainVavoo(Screen):
                 vUtils.ReloadBouquets()
             except Exception as error:
                 trace_error()
+    '''
 
 
 class vavoo(Screen):
@@ -828,7 +825,7 @@ class vavoo(Screen):
         search_ok = False
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
-        self['green'] = Label(_('Export') + ' Fav')
+        # self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading ...')
@@ -843,7 +840,7 @@ class vavoo(Screen):
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
-            'green': self.message1,
+            # 'green': self.message1,
             'yellow': self.search_vavoo,
             'blue': self.arabic,
             'cancel': self.backhome,
@@ -1404,9 +1401,9 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 def convert_bouquet(service, name, url):
     from time import sleep
     sig = Sig()
-    app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
+    app = '?n=1&b=5&vavoo_auth={}#User-Agent=VAVOO/2.6'.format(str(sig))
     dir_enigma2 = '/etc/enigma2/'
-    files = '/tmp/' + name + '.m3u'
+    files = '/tmp/{}.m3u'.format(name)
     type = 'tv'
     if "radio" in name.lower():
         type = "radio"
@@ -1418,7 +1415,7 @@ def convert_bouquet(service, name, url):
     with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
         r.write(str(name_file) + '###' + str(url))
         r.close()
-    bouquetname = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), type.lower())
+    bouquetname = 'userbouquet.vavoo_{}.{}'.format(name_file.lower(), type.lower())
     if file_exists(str(files)):
         sleep(5)
         ch = 0
@@ -1431,10 +1428,11 @@ def convert_bouquet(service, name, url):
                     for line in open(files):
                         if line.startswith('http://') or line.startswith('https'):
                             line = str(line).strip('\n\r') + str(app) + '\n'
-                            outfile.write('#SERVICE %s:0:0:0:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
-                            outfile.write('#DESCRIPTION %s' % desk_tmp)
+                            outfile.write('#SERVICE {}:0:0:0:0:0:0:0:0:0:{}').format(service, line.replace(':', '%3a'))  # % (service, line.replace(':', '%3a')))
+                            outfile.write('#DESCRIPTION {}').format(desk_tmp)  # % desk_tmp
                         elif line.startswith('#EXTINF'):
-                            desk_tmp = '%s' % line.split(',')[-1]
+                            # desk_tmp = '%s' % line.split(',')[-1]
+                            desk_tmp = '{}'.format(line.split(',')[-1])  # % line.split(',')[-1]
                         ch += 1
                     outfile.close()
                 if os_path.isfile('/etc/enigma2/bouquets.tv'):
@@ -1444,9 +1442,12 @@ def convert_bouquet(service, name, url):
                     if in_bouquets == 0:
                         if os_path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os_path.isfile('/etc/enigma2/bouquets.tv'):
                             vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquetname)
-                            with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
-                                outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
-                                outfile.close()
+                            with open('/etc/enigma2/bouquets.tv', 'a+') as f:
+                                # outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
+                                line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\n'.format(bouquetname)
+                                if line not in f:
+                                    f.write(line)
+                                # outfile.close()
                                 in_bouquets = 1
                 vUtils.ReloadBouquets()
         except Exception as error:
@@ -1587,7 +1588,9 @@ def add_skin_back():
     bakk = str(BACKTYPE)
     # print('bakkk =', bakk)
     if file_exists(bakk):
-        cmd = 'cp -f %s %s/default.png' % (str(BACKTYPE), BackPath)
+        # cmd = 'cp -f %s %s/default.png' % (str(BACKTYPE), BackPath)
+        cmd = 'cp -f {} {}/default.png'.format(str(BACKTYPE), BackPath)
+        print('add_skin_back cmd= ', cmd)
         os.system(cmd)
         os.system('sync')
         print('cmd skin:\n', cmd)
@@ -1618,8 +1621,9 @@ def main(session, **kwargs):
 def Plugins(**kwargs):
     icon = os_path.join(PLUGIN_PATH, 'plugin.png')
     mainDescriptor = PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_MENU, icon=icon, fnc=cfgmain)
-    result = [PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
-              PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)]
+    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)
+              # PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
+              ]
     if cfg.stmain.value:
         result.append(mainDescriptor)
     return result

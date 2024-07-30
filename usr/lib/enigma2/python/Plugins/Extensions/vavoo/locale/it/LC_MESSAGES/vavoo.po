@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-07-28 16:52+0200\n"
+"POT-Creation-Date: 2024-07-30 10:50+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -13,26 +13,13 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:202
-msgid "interval"
-msgstr "intervallo"
-
-#: plugin.py:202
-msgid "fixed time"
-msgstr "orario predefinito"
-
-#: plugin.py:403 plugin.py:826
+#: plugin.py:406 plugin.py:829
 msgid "Back"
 msgstr "Torna"
 
-#: plugin.py:404
+#: plugin.py:407
 msgid "Save"
 msgstr "Salva"
-
-#: plugin.py:429
-#, python-format
-msgid "Last channel update: %s"
-msgstr "Ultimo aggiornamento canali: %s"
 
 #: plugin.py:439
 msgid "Server for Player Used"
@@ -73,8 +60,8 @@ msgid "Select Background"
 msgstr "Seleziona Sfondo"
 
 #: plugin.py:442
-msgid "Configure Main Background Image"
-msgstr "Configura Immagine di Background"
+msgid "Configure Main Background Image."
+msgstr "Configura Immagine di Background."
 
 #: plugin.py:443
 msgid "Select Fonts"
@@ -92,51 +79,19 @@ msgstr ""
 msgid "Link in Main Menu"
 msgstr "Mostra in Menu Principale"
 
-#: plugin.py:445
-msgid "Scheduled Bouquet Update:"
-msgstr "Aggiornamento Programmato Bouquet:"
-
-#: plugin.py:445
-msgid "Active Automatic Bouquet Update"
-msgstr "Attivare aggiornamento automatico del bouquet"
-
-#: plugin.py:447
-msgid "Schedule type:"
-msgstr "Tipo programmazione:"
-
-#: plugin.py:447
-msgid "At an interval of hours or at a fixed time"
-msgstr "A intervalli di ore o a un'ora fissa"
-
-#: plugin.py:449
-msgid "Update interval (minutes):"
-msgstr "Intervallo di aggiornamento (minuti):"
-
-#: plugin.py:449
-msgid "Configure every interval of minutes from now"
-msgstr "Configura ogni intervallo di minuti da ora in poi"
-
-#: plugin.py:451
-msgid "Time to start update:"
-msgstr "Ora inizio l'aggiornamento:"
-
-#: plugin.py:451
-msgid "Configure at a fixed time"
-msgstr "Configura a un'ora fissa"
-
-#: plugin.py:462
+#: plugin.py:464
 msgid "SELECT YOUR CHOICE"
 msgstr "SELEZIONA LA TUA SCELTA"
 
-#: plugin.py:469
+#: plugin.py:471
 msgid "Ipv6 [Off]?"
 msgstr ""
 
-#: plugin.py:471
+#: plugin.py:473
 msgid "Ipv6 [On]?"
 msgstr ""
 
-#: plugin.py:534
+#: plugin.py:536
 msgid ""
 "Settings saved successfully !\n"
 "you need to restart the GUI\n"
@@ -148,31 +103,27 @@ msgstr ""
 "per applicare la nuova configurazione!\n"
 "Vuoi riavviare adesso?"
 
-#: plugin.py:535
+#: plugin.py:537
 msgid "Restart GUI now?"
-msgstr "Riavvia Interfaccia Grafica adesso?"
+msgstr "Riavvia Enigma adesso?"
 
-#: plugin.py:547
+#: plugin.py:549
 msgid "Really close without saving settings?"
 msgstr "Chiudi davvero senza salvare le impostazioni?"
 
-#: plugin.py:630
+#: plugin.py:631
 msgid "Exit"
 msgstr "Esci"
 
-#: plugin.py:631
-msgid "Remove"
-msgstr "Rimuovi"
-
-#: plugin.py:632
+#: plugin.py:634
 msgid "Update Me"
 msgstr "Aggiornami"
 
-#: plugin.py:633 plugin.py:829
+#: plugin.py:635 plugin.py:832
 msgid "HALIGN"
 msgstr "Allinea"
 
-#: plugin.py:698
+#: plugin.py:700
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -187,20 +138,20 @@ msgstr ""
 "\n"
 "Vuoi installarla ora?"
 
-#: plugin.py:700
+#: plugin.py:702
 msgid "Congrats! You already have the latest version..."
 msgstr "Congratulazioni! Hai già l'ultima versione..."
 
-#: plugin.py:709
+#: plugin.py:711
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
 msgstr "Vuoi installare l'aggiornamento ( %s ) ora?"
 
-#: plugin.py:716
+#: plugin.py:718
 msgid "Update Aborted!"
 msgstr "Aggiornamento annullato!"
 
-#: plugin.py:726 plugin.py:876
+#: plugin.py:728 plugin.py:879
 #, python-format
 msgid ""
 "%s\n"
@@ -231,27 +182,15 @@ msgstr ""
 "nessuno stream è sul server\n"
 "ma solo canali liberi trovati in rete"
 
-#: plugin.py:727 plugin.py:877
+#: plugin.py:729 plugin.py:880
 msgid "Info Vavoo"
 msgstr ""
 
-#: plugin.py:788
-msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr "Rimuovere le liste canali favorite Vavoo?"
-
-#: plugin.py:808
-msgid "Vavoo Favorites List have been removed"
-msgstr "Le liste canali favorite Vavoo sono state rimosse"
-
-#: plugin.py:827
-msgid "Export"
-msgstr "Esporta"
-
-#: plugin.py:828
+#: plugin.py:831
 msgid "Search"
 msgstr "Cerca"
 
-#: plugin.py:973
+#: plugin.py:976
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -263,7 +202,7 @@ msgstr ""
 "Attenzione!! Potrebbe volerci un po' di tempo\n"
 "a seconda del numero di flussi contenuti !!!"
 
-#: plugin.py:992
+#: plugin.py:995
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -272,11 +211,11 @@ msgstr ""
 "bouquet riordinati\n"
 "con %s canali aggiunti"
 
-#: plugin.py:994
+#: plugin.py:997
 msgid "Download Error"
 msgstr ""
 
-#: plugin.py:1022
+#: plugin.py:1025
 msgid ""
 "Wait...\n"
 "Update List Bouquet...\n"
@@ -286,7 +225,7 @@ msgstr ""
 "Aggiornamento elenco Bouquet...\n"
 "bouqet aggiornato.."
 
-#: plugin.py:1026
+#: plugin.py:1029
 msgid ""
 "The favorite channel list exists.\n"
 "Want to update it with epg and picons?\n"
@@ -298,18 +237,64 @@ msgstr ""
 "\n"
 "SÌ per Aggiornare"
 
-#: plugin.py:1037
+#: plugin.py:1040
 msgid "Filter this category..."
 msgstr "Filtra questa categoria..."
 
-#: plugin.py:1055
+#: plugin.py:1058
 msgid "No channels found in search!!!"
 msgstr "Nessun canale trovato corrispondente alla ricerca!!!"
 
-#: plugin.py:1295
+#: plugin.py:1298
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:1590 plugin.py:1611 plugin.py:1613
+#: plugin.py:1604 plugin.py:1625 plugin.py:1626
 msgid "Vavoo Stream Live"
 msgstr ""
+
+#~ msgid "interval"
+#~ msgstr "intervallo"
+
+#~ msgid "fixed time"
+#~ msgstr "orario predefinito"
+
+#, python-format
+#~ msgid "Last channel update: %s"
+#~ msgstr "Ultimo aggiornamento canali: %s"
+
+#~ msgid "Scheduled Bouquet Update:"
+#~ msgstr "Aggiornamento Programmato Bouquet:"
+
+#~ msgid "Active Automatic Bouquet Update"
+#~ msgstr "Attivare aggiornamento automatico del bouquet"
+
+#~ msgid "Schedule type:"
+#~ msgstr "Tipo programmazione:"
+
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "A intervalli di ore o a un'ora fissa"
+
+#~ msgid "Update interval (minutes):"
+#~ msgstr "Intervallo di aggiornamento (minuti):"
+
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Configura ogni intervallo di minuti da ora in poi"
+
+#~ msgid "Time to start update:"
+#~ msgstr "Ora inizio l'aggiornamento:"
+
+#~ msgid "Configure at a fixed time"
+#~ msgstr "Configura a un'ora fissa"
+
+#~ msgid "Remove"
+#~ msgstr "Rimuovi"
+
+#~ msgid "Remove all Vavoo Favorite Bouquet?"
+#~ msgstr "Rimuovere le liste canali favorite Vavoo?"
+
+#~ msgid "Vavoo Favorites List have been removed"
+#~ msgstr "Le liste canali favorite Vavoo sono state rimosse"
+
+#~ msgid "Export"
+#~ msgstr "Esporta"
