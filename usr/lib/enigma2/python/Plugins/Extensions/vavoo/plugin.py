@@ -1597,14 +1597,16 @@ def add_skin_back():
 
 
 def cfgmain(menuid, **kwargs):
-    if menuid == 'mainmenu':
-        from Tools.BoundFunction import boundFunction
-        return [(_('Vavoo Stream Live'),
-                 boundFunction(main, showExtentionMenuOption=True),
-                 'Vavoo',
-                 -1)]
-    else:
-        return []
+    return [(_(''Vavoo Stream Live''), main, 'Vavoo', 44)] if menuid == "mainmenu" else []
+
+    # if menuid == 'mainmenu':
+        # from Tools.BoundFunction import boundFunction
+        # return [(_('Vavoo Stream Live'),
+                 # boundFunction(main, showExtentionMenuOption=True),
+                 # 'Vavoo',
+                 # -1)]
+    # else:
+        # return []
 
 
 def main(session, **kwargs):
