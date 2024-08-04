@@ -95,7 +95,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.23'
+currversion = '1.22'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -1597,16 +1597,7 @@ def add_skin_back():
 
 
 def cfgmain(menuid, **kwargs):
-    return [(_(''Vavoo Stream Live''), main, 'Vavoo', 44)] if menuid == "mainmenu" else []
-
-    # if menuid == 'mainmenu':
-        # from Tools.BoundFunction import boundFunction
-        # return [(_('Vavoo Stream Live'),
-                 # boundFunction(main, showExtentionMenuOption=True),
-                 # 'Vavoo',
-                 # -1)]
-    # else:
-        # return []
+    return [(_('Vavoo Stream Live'), main, 'Vavoo', 44)] if menuid == "mainmenu" else []
 
 
 def main(session, **kwargs):
