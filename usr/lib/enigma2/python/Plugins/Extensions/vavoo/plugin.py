@@ -826,6 +826,7 @@ class vavoo(Screen):
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
         # self['green'] = Label(_('Export') + ' Fav')
+        self['green'] = Label()
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading ...')
