@@ -95,7 +95,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.23'
+currversion = '1.24'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -610,7 +610,7 @@ class startVavoo(Screen):
         else:
             self.close()
 
-    def passe(self):
+    def passe(self, rest=None):
         global first
         first = False
         self.close()
