@@ -171,6 +171,8 @@ try:
         for backName in os.listdir(BackPath):
             backNamePath = os_path.join(BackPath, backName)
             if backName.endswith(".png"):
+                if backName.startswith("default"):
+                    continue
                 backName = backName[:-4]
                 BakP.append((backNamePath, backName))
 except Exception as error:
@@ -476,14 +478,12 @@ class vavoo_config(Screen, ConfigListScreen):
             if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
                 os.unlink('/etc/rc3.d/S99ipv6dis.sh')
                 cfg.ipv6.setValue(False)
-                # self['blue'].setText('IPV6 Off')
             else:
                 os.system("echo '#!/bin/bash")
                 os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
                 os.system("chmod 755 /etc/init.d/ipv6dis.sh")
                 os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
                 cfg.ipv6.setValue(True)
-                # self['blue'].setText('IPV6 On')
             cfg.ipv6.save()
 
     def changedEntry(self):
@@ -527,11 +527,11 @@ class vavoo_config(Screen, ConfigListScreen):
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
-            configfile.save()
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             add_skin_font()
             add_skin_back()
+            configfile.save()
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
