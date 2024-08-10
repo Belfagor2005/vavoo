@@ -28,9 +28,9 @@ from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
 from Components.config import (
     ConfigSelection,
     getConfigListEntry,
-    # ConfigSelectionNumber,
-    # ConfigClock,
-    # ConfigText,
+    ConfigSelectionNumber,
+    ConfigClock,
+    ConfigText,
     configfile,
     config,
     ConfigYesNo,
@@ -201,13 +201,13 @@ fonts = sorted(fonts, key=lambda x: x[1])
 # config section
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
-# cfg.autobouquetupdate = ConfigEnableDisable(default=False)
+cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
-# cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
-# cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
-# cfg.fixedtime = ConfigClock(default=46800)
-# cfg.last_update = ConfigText(default="Never")
+cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
+cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
+cfg.fixedtime = ConfigClock(default=46800)
+cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
@@ -417,18 +417,17 @@ class vavoo_config(Screen, ConfigListScreen):
             # "blue": self.Import,
             "ok": self.save,
         }, -1)
-        # self.update_status()
+        self.update_status()
         ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
         self.createSetup()
         self.v6 = cfg.ipv6.getValue()
         self.showhide()
         self.onLayoutFinish.append(self.layoutFinished)
 
-    '''
     def update_status(self):
         if cfg.autobouquetupdate:
             self['statusbar'].setText(_("Last channel update: %s") % cfg.last_update.value)
-    '''
+
     def layoutFinished(self):
         self.setTitle(self.setup_title)
         self['version'].setText('V.' + currversion)
@@ -436,14 +435,13 @@ class vavoo_config(Screen, ConfigListScreen):
     def createSetup(self):
         self.editListEntry = None
         self.list = []
-        # indent = "- "
+        indent = "- "
         self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
         self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
         self.list.append(getConfigListEntry(_("Select Background"), cfg.back, _("Configure Main Background Image.")))
         self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
         self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
-        '''
         self.list.append(getConfigListEntry(_("Scheduled Bouquet Update:"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + _("Schedule type:"), cfg.timetype, _("At an interval of hours or at a fixed time")))
@@ -451,7 +449,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 self.list.append(getConfigListEntry(2 * indent + _("Update interval (minutes):"), cfg.updateinterval, _("Configure every interval of minutes from now")))
             if cfg.timetype.value == "fixed time":
                 self.list.append(getConfigListEntry(2 * indent + _("Time to start update:"), cfg.fixedtime, _("Configure at a fixed time")))
-        '''
+
         self["config"].list = self.list
         self["config"].l.setList(self.list)
         self.setInfo()
@@ -627,8 +625,8 @@ class MainVavoo(Screen):
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
-        # self['green'] = Label(_('Remove') + ' Fav')
-        self['green'] = Label()
+        self['green'] = Label(_('Remove') + ' Fav')
+        # self['green'] = Label()
         self['yellow'] = Label(_('Update Me'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading...')
@@ -643,7 +641,7 @@ class MainVavoo(Screen):
             'nextBouquet': self.chUp,
             'ok': self.ok,
             'menu': self.goConfig,
-            # 'green': self.msgdeleteBouquets,
+            'green': self.msgdeleteBouquets,
             'blue': self.arabic,
             'cancel': self.close,
             'info': self.info,
@@ -783,9 +781,9 @@ class MainVavoo(Screen):
 
     def exit(self):
         self.close()
-    '''
-    # def msgdeleteBouquets(self):
-        # self.session.openWithCallback(self.deleteBouquets, MessageBox, _("Remove all Vavoo Favorite Bouquet?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
+
+    def msgdeleteBouquets(self):
+        self.session.openWithCallback(self.deleteBouquets, MessageBox, _("Remove all Vavoo Favorite Bouquet?"), MessageBox.TYPE_YESNO, timeout=5, default=True)
 
     def deleteBouquets(self, result):
         if result:
@@ -809,7 +807,6 @@ class MainVavoo(Screen):
                 vUtils.ReloadBouquets()
             except Exception as error:
                 trace_error()
-    '''
 
 
 class vavoo(Screen):
@@ -825,8 +822,7 @@ class vavoo(Screen):
         search_ok = False
         self['menulist'] = m2list([])
         self['red'] = Label(_('Back'))
-        # self['green'] = Label(_('Export') + ' Fav')
-        self['green'] = Label()
+        self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
         self["blue"] = Label(_("HALIGN"))
         self['name'] = Label('Loading ...')
