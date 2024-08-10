@@ -841,7 +841,7 @@ class vavoo(Screen):
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
-            # 'green': self.message1,
+            'green': self.message1,
             'yellow': self.search_vavoo,
             'blue': self.arabic,
             'cancel': self.backhome,
