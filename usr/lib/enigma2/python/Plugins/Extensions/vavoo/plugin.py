@@ -95,7 +95,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.24'
+currversion = '1.25'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -160,9 +160,11 @@ else:
 # back
 global BackPath
 BackPath = os_path.join(PLUGIN_PATH + "skin")
-if screenwidth.width() <= 2560:
+if screenwidth.width() == 2560:
     BackPath = BackPath + '/images_new'
-elif screenwidth.width() < 1920:
+elif screenwidth.width() == 1920:
+    BackPath = BackPath + '/images'
+elif screenwidth.width() == 1280:
     BackPath = BackPath + '/images'
 print('folder back: ', BackPath)
 BakP = []
@@ -1584,9 +1586,11 @@ def add_skin_font():
 def add_skin_back():
     bakk = str(BACKTYPE)
     # print('bakkk =', bakk)
+    #  cp -f /usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/kiddac.png /usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png
     if file_exists(bakk):
         # cmd = 'cp -f %s %s/default.png' % (str(BACKTYPE), BackPath)
-        cmd = 'cp -f {} {}/default.png'.format(str(BACKTYPE), BackPath)
+        # cmd = 'cp -f {} {}/default.png'.format(str(BACKTYPE), BackPath)
+        cmd = 'cp -f ' + str(BACKTYPE) + ' ' + BackPath + '/default.png'      
         print('add_skin_back cmd= ', cmd)
         os.system(cmd)
         os.system('sync')
