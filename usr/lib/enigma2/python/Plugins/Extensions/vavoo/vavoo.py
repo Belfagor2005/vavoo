@@ -482,7 +482,7 @@ def show2_(name, link):
     return res
 
 
-class vavoo_config(Screen, ConfigListScreen):
+class vavoo_configx(Screen, ConfigListScreen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
@@ -683,7 +683,7 @@ class MainVavoox(Screen):
         self.cat()
 
     def goConfig(self):
-        self.session.open(vavoo_config)
+        self.session.open(vavoo_configx)
 
     def info(self):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
@@ -831,7 +831,7 @@ class vavoox(Screen):
             self.close()
 
     def goConfig(self):
-        self.session.open(vavoo_config)
+        self.session.open(vavoo_configx)
 
     def info(self):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)

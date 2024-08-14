@@ -78,7 +78,7 @@ import ssl
 import sys
 import time
 import traceback
-
+import codecs
 global HALIGN
 tmlast = None
 now = None
@@ -130,39 +130,18 @@ if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "8193"))
 
 
-# set screen section
-if screenwidth.width() == 2560:
-    skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
-    skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
-    skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_wqhd.xml')
-    # if file_exists('/var/lib/dpkg/status'):
-        # skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
-
-elif screenwidth.width() == 1920:
-    skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
-    skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
-    skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_fhd.xml')
-    # if file_exists('/var/lib/dpkg/status'):
-        # skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
-
-else:
-    skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
-    skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
-    skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt.xml')
-    # if file_exists('/var/lib/dpkg/status'):
-        # skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
-# print('skin_path is:', skin_path)
-
-
 # back
 global BackPath
 BackPath = os_path.join(PLUGIN_PATH + "skin")
 if screenwidth.width() == 2560:
     BackPath = BackPath + '/images_new'
+    skin_path = os_path.join(PLUGIN_PATH, 'skin/wqhd')
 elif screenwidth.width() == 1920:
     BackPath = BackPath + '/images_new'
+    skin_path = os_path.join(PLUGIN_PATH, 'skin/fhd')
 elif screenwidth.width() == 1280:
     BackPath = BackPath + '/images'
+    skin_path = os_path.join(PLUGIN_PATH, 'skin/hd')
 print('folder back: ', BackPath)
 BakP = []
 try:
@@ -177,10 +156,7 @@ try:
 except Exception as error:
     trace_error()
 print('final folder back: ', BackPath)
-# cmd = 'cp %s%s %sdefault.png' % (BackPath, BACKTYPE, BackPath)
 # BakP = sorted(BakP, key=lambda x: x[1])
-
-
 # fonts
 FNTPath = os_path.join(PLUGIN_PATH + "/fonts")
 fonts = []
@@ -400,11 +376,10 @@ class vavoo_config(Screen, ConfigListScreen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        
+        skin = os.path.join(skin_path, 'vavoo_config.xml')
         if file_exists('/var/lib/dpkg/status'):
-            skin_config = skin_config.replace('.xml', '_cvs.xml')
-        
-        with open(skin_config, "r") as f:
+            skin = skin.replace('.xml', '_cvs.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('Vavoo Config')
         self.list = []
@@ -567,8 +542,11 @@ class startVavoo(Screen):
         _session = session
         first = True
         Screen.__init__(self, session)
-        with open(skin_strt, "r") as f:
+        skin = os.path.join(skin_path, 'Plgnstrt.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
+        # with open(skin_strt, "r") as f:
+            # self.skin = f.read()
         self["poster"] = Pixmap()
         self["version"] = Label()
         self['actions'] = ActionMap(['OkCancelActions'], {'ok': self.clsgo, 'cancel': self.clsgo}, -1)
@@ -628,8 +606,12 @@ class MainVavoo(Screen):
         global _session
         _session = session
         Screen.__init__(self, session)
-        with open(skin_path, "r") as f:
+
+        skin = os.path.join(skin_path, 'defaultListScreen.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
+        # with open(skin_path, "r") as f:
+            # self.skin = f.read()
         self.menulist = []
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
@@ -823,8 +805,11 @@ class vavoo(Screen):
         global _session
         _session = session
         Screen.__init__(self, session)
-        with open(skin_path, "r") as f:
+        skin = os.path.join(skin_path, 'defaultListScreen.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
+        # with open(skin_path, "r") as f:
+            # self.skin = f.read()
         self.menulist = []
         global search_ok
         search_ok = False
@@ -1590,17 +1575,12 @@ def add_skin_font():
 
 
 def add_skin_back():
-    bakk = str(BACKTYPE)
-    # print('bakkk =', bakk)
-    #  cp -f /usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/kiddac.png /usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png
-    if file_exists(bakk):
-        # cmd = 'cp -f %s %s/default.png' % (str(BACKTYPE), BackPath)
-        # cmd = 'cp -f {} {}/default.png'.format(str(BACKTYPE), BackPath)
-        cmd = 'cp -f ' + str(BACKTYPE) + ' ' + BackPath + '/default.png'      
+    bakk = BACKTYPE
+    if file_exists(BACKTYPE):
+        cmd = 'cp -f ' + str(BACKTYPE) + ' ' + BackPath + '/default.png'
         print('add_skin_back cmd= ', cmd)
         os.system(cmd)
         os.system('sync')
-        print('cmd skin:\n', cmd)
 
 
 def cfgmain(menuid, **kwargs):
