@@ -14,10 +14,12 @@
     <widget source="global.CurrentTime" render="Label" position="1420,70" size="316,117" font="xLcd; 84" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1080" alphatest="off" zPosition="-1" />
     <eLabel name="" position="0,0" size="1920,1080" backgroundColor="#30000000" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
     <eLabel name="" position="1844,1038" size="75,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="MENU" />
     <eLabel name="" position="1771,1038" size="75,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="INFO" />
     <eLabel name="" position="1705,1038" size="64,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="CH+" />
     <eLabel name="" position="1641,1038" size="64,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="CH-" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1080" alphatest="off" zPosition="-1" />
+
+    <!-- <ePixmap pixmap="%s" position="0,0" size="1920,1080" alphatest="off" zPosition="-1" /> % str(BACKTYPE) -->
 </screen>

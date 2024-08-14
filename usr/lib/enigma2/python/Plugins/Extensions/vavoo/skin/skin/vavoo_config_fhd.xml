@@ -13,4 +13,5 @@
     </widget>
     <eLabel backgroundColor="#30000000" position="0,0" size="1920,1080" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1080" alphatest="off" zPosition="-1" />
+    <!-- <ePixmap pixmap="%s" position="0,0" size="1920,1080" alphatest="off" zPosition="-1" />  % str(BACKTYPE)    -->
 </screen>

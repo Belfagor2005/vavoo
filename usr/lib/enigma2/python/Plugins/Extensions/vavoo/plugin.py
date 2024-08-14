@@ -135,25 +135,22 @@ if screenwidth.width() == 2560:
     skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_wqhd.xml')
     skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd.xml')
     skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_wqhd.xml')
-    skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/MpbWqhd.xml')
-    if file_exists('/var/lib/dpkg/status'):
-        skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
+    # if file_exists('/var/lib/dpkg/status'):
+        # skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_wqhd_cvs.xml')
 
 elif screenwidth.width() == 1920:
     skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen_fhd.xml')
     skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd.xml')
     skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt_fhd.xml')
-    skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/MpbFhd.xml')
-    if file_exists('/var/lib/dpkg/status'):
-        skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
+    # if file_exists('/var/lib/dpkg/status'):
+        # skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_fhd_cvs.xml')
 
 else:
     skin_path = os_path.join(PLUGIN_PATH, 'skin/skin/defaultListScreen.xml')
     skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config.xml')
     skin_strt = os_path.join(PLUGIN_PATH, 'skin/skin/Plgnstrt.xml')
-    skin_mb = os_path.join(PLUGIN_PATH, 'skin/skin/Mpb.xml')
-    if file_exists('/var/lib/dpkg/status'):
-        skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
+    # if file_exists('/var/lib/dpkg/status'):
+        # skin_config = os_path.join(PLUGIN_PATH, 'skin/skin/vavoo_config_cvs.xml')
 # print('skin_path is:', skin_path)
 
 
@@ -163,7 +160,7 @@ BackPath = os_path.join(PLUGIN_PATH + "skin")
 if screenwidth.width() == 2560:
     BackPath = BackPath + '/images_new'
 elif screenwidth.width() == 1920:
-    BackPath = BackPath + '/images'
+    BackPath = BackPath + '/images_new'
 elif screenwidth.width() == 1280:
     BackPath = BackPath + '/images'
 print('folder back: ', BackPath)
@@ -181,7 +178,7 @@ except Exception as error:
     trace_error()
 print('final folder back: ', BackPath)
 # cmd = 'cp %s%s %sdefault.png' % (BackPath, BACKTYPE, BackPath)
-BakP = sorted(BakP, key=lambda x: x[1])
+# BakP = sorted(BakP, key=lambda x: x[1])
 
 
 # fonts
@@ -223,11 +220,16 @@ if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.setValue(True)
     cfg.ipv6.save()
 
+
 # language
+locl = "ar", "ae", "bh", "dz", "eg", "in", "iq", "jo", "kw", "lb", "ly", "ma", "om", "qa", "sa", "sd", "ss", "sy", "tn", "ye"
+global lngx
+lngx = 'en'
 try:
+    from Components.config import config
     lng = config.osd.language.value
     lng = lng[:-3]
-    if lng.lower() == 'ar':
+    if any(s in lngx for s in locl):
         HALIGN = RT_HALIGN_RIGHT
 except:
     lng = 'en'
@@ -398,6 +400,10 @@ class vavoo_config(Screen, ConfigListScreen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
+        
+        if file_exists('/var/lib/dpkg/status'):
+            skin_config = skin_config.replace('.xml', '_cvs.xml')
+        
         with open(skin_config, "r") as f:
             self.skin = f.read()
         self.setup_title = ('Vavoo Config')
@@ -529,9 +535,9 @@ class vavoo_config(Screen, ConfigListScreen):
                 x[1].save()
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
+            configfile.save()
             add_skin_font()
             add_skin_back()
-            configfile.save()
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
@@ -1606,7 +1612,7 @@ def main(session, **kwargs):
         if file_exists('/tmp/vavoo.log'):
             os.remove('/tmp/vavoo.log')
         add_skin_font()
-        add_skin_back()
+        # add_skin_back()
         session.open(startVavoo)
     except Exception as error:
         trace_error()
