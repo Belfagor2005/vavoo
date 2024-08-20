@@ -645,7 +645,11 @@ class MainVavoox(Screen):
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove') + ' Fav')
         self['yellow'] = Label()
-        self["blue"] = Label(_("HALIGN"))
+        self["blue"] = Label()
+        if HALIGN == RT_HALIGN_RIGHT:
+            self['blue'].setText(_('Halign Left'))
+        else:
+            self['blue'].setText(_('Halign Right'))
         self['name'] = Label('Loading...')
         self['version'] = Label()
         self.currentList = 'menulist'
@@ -678,8 +682,10 @@ class MainVavoox(Screen):
         global HALIGN
         if HALIGN == RT_HALIGN_LEFT:
             HALIGN = RT_HALIGN_RIGHT
+            self['blue'].setText(_('Halign Left'))
         elif HALIGN == RT_HALIGN_RIGHT:
             HALIGN = RT_HALIGN_LEFT
+            self['blue'].setText(_('Halign Right'))
         self.cat()
 
     def goConfig(self):
@@ -787,7 +793,11 @@ class vavoox(Screen):
         self['red'] = Label(_('Back'))
         self['green'] = Label(_('Export') + ' Fav')
         self['yellow'] = Label(_('Search'))
-        self["blue"] = Label(_("HALIGN"))
+        self["blue"] = Label()
+        if HALIGN == RT_HALIGN_RIGHT:
+            self['blue'].setText(_('Halign Left'))
+        else:
+            self['blue'].setText(_('Halign Right'))
         self['name'] = Label('Loading ...')
         self['version'] = Label()
         self.currentList = 'menulist'
@@ -820,8 +830,10 @@ class vavoox(Screen):
         global HALIGN
         if HALIGN == RT_HALIGN_LEFT:
             HALIGN = RT_HALIGN_RIGHT
+            self['blue'].setText(_('Halign Left'))
         elif HALIGN == RT_HALIGN_RIGHT:
             HALIGN = RT_HALIGN_LEFT
+            self['blue'].setText(_('Halign Right'))
         self.cat()
 
     def backhome(self):
@@ -1359,61 +1371,141 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 
 def convert_bouquet(service, name, url):
-    from time import sleep
     sig = Sig()
-    app = '?n=1&b=5&vavoo_auth={}#User-Agent=VAVOO/2.6'.format(str(sig))
-    dir_enigma2 = '/etc/enigma2/'
-    files = '/tmp/{}.m3u'.format(name)
-    type = 'tv'
+    app = '?n=1&b=5&vavoo_auth=%s#User-Agent=VAVOO/2.6' % (str(sig))
+
+    files = '/tmp/%s.m3u' % name
+    bouquet_type = 'tv'
     if "radio" in name.lower():
-        type = "radio"
-    name_file = name.replace('/', '_').replace(',', '')
-    cleanName = re.sub(r'[\<\>\:\"\/\\\|\?\*]', '_', str(name_file))
-    cleanName = re.sub(r' ', '_', cleanName)
-    cleanName = re.sub(r'\d+:\d+:[\d.]+', '_', cleanName)
-    name_file = re.sub(r'_+', '_', cleanName)
+        bouquet_type = "radio"
+    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Replace spaces and commas with "_"
+    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Replace numeric patterns with "_"
+    name_file = re.sub(r'_+', '_', name_file)  # Replace sequences of "_" with a single "_"
+
+    with open(enigma_path + '/Favorite.txt', 'w') as r:
+        r.write(str(name_file) + '###' + str(url))
+
+    bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
+    print("Converting Bouquet %s" % name_file)
+    path1 = '/etc/enigma2/' + str(bouquet_name)
+    path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
+    ch = 0
+
+    if os.path.exists(files) and os.stat(files).st_size > 0:
+        try:
+            tplst = []
+            tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
+            tplst.append('#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS' % name_file)
+            tplst.append('#DESCRIPTION --- %s ---' % name_file)
+
+            namel = ''
+            svz = ''
+            dct = ''
+
+            with open(files, 'r') as f:  # 'r' is for universal newlines mode
+                for line in f:
+                    if line.startswith("#EXTINF"):
+                        namel = '%s' % line.split(',')[-1]
+                        dsna = ('#DESCRIPTION %s' % namel).splitlines()
+                        dct = ''.join(dsna)
+
+                    elif line.startswith('http'):
+                        line = str(line).strip('\n\r') + str(app)
+                        tag = '1'
+                        if bouquet_type.upper() == 'RADIO':
+                            tag = '2'
+
+                                                            
+                        svca = ('#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s' % (service, tag, line.replace(':', '%3a')))
+                        svz = (svca + ':' + namel).splitlines()
+                        svz = ''.join(svz)
+
+                    if svz not in tplst:
+                        tplst.append(svz)
+                        tplst.append(dct)
+                        ch += 1
+
+            with open(path1, 'w+') as f:
+                f_content = f.read()
+                for item in tplst:
+                    if item not in f_content:
+                        f.write("%s\n" % item)
+                        # print('item  -------- ', item)
+
+            in_bouquets = False
+
+            with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
+                for line in f:
+                    if bouquet_name in line:
+                        in_bouquets = True
+
+            if not in_bouquets:
+
+                with open(path2, 'a+') as f:
+                                                                                   
+                    bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
+                    f.write(bouquetTvString)
+
+            ReloadBouquets()
+        except Exception as error:
+            print(error)
+
+    return ch
+
+    '''
+    files = '/tmp/%s.m3u' % name
+    bouquet_type = 'tv'
+    if "radio" in name.lower():
+        bouquet_type = "radio"
+    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
+    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
+    name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
     with open(enigma_path + '/Favorite.txt', 'w') as r:
         r.write(str(name_file) + '###' + str(url))
         r.close()
-    bouquetname = 'userbouquet.vavoo_{}.{}'.format(name_file.lower(), type.lower())
     if file_exists(str(files)):
+        from time import sleep
         sleep(5)
         ch = 0
         try:
             if os_path.isfile(files) and os.stat(files).st_size > 0:
+                bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
+                in_bouquets = False
                 desk_tmp = ''
-                in_bouquets = 0
-                with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
+                with open('%s%s' % (dir_enigma2, bouquet_name), 'w') as outfile:
                     outfile.write('#NAME %s\r\n' % name_file.capitalize())
                     for line in open(files):
                         if line.startswith('http://') or line.startswith('https'):
                             line = str(line).strip('\n\r') + str(app) + '\n'
-                            outfile.write('#SERVICE {}:0:0:0:0:0:0:0:0:0:{}').format(service, line.replace(':', '%3a'))  # % (service, line.replace(':', '%3a')))
-                            outfile.write('#DESCRIPTION {}').format(desk_tmp)  # % desk_tmp
+                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
+                            outfile.write('#DESCRIPTION %s' % desk_tmp)
                         elif line.startswith('#EXTINF'):
-                            # desk_tmp = '%s' % line.split(',')[-1]
-                            desk_tmp = '{}'.format(line.split(',')[-1])  # % line.split(',')[-1]
+                            desk_tmp = '%s' % line.split(',')[-1]
+                        elif '<stream_url><![CDATA' in line:
+                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
+                            outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
+                        elif '<title>' in line:
+                            if '<![CDATA[' in line:
+                                desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
+                            else:
+                                desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
                         ch += 1
                     outfile.close()
                 if os_path.isfile('/etc/enigma2/bouquets.tv'):
                     for line in open('/etc/enigma2/bouquets.tv'):
-                        if bouquetname in line:
-                            in_bouquets = 1
-                    if in_bouquets == 0:
-                        if os_path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os_path.isfile('/etc/enigma2/bouquets.tv'):
-                            remove_line('/etc/enigma2/bouquets.tv', bouquetname)
-                            with open('/etc/enigma2/bouquets.tv', 'a+') as f:
-                                # outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
-                                line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\n'.format(bouquetname)
-                                if line not in f:
-                                    f.write(line)
-                                # outfile.close()
-                                in_bouquets = 1
+                        if bouquet_name in line:
+                            in_bouquets = True
+                    if in_bouquets is True:
+                        if os_path.isfile('%s%s' % (dir_enigma2, bouquet_name)) and os_path.isfile('/etc/enigma2/bouquets.tv'):
+                            vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquet_name)
+                            with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
+                                outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquet_name)
+                                outfile.close()
                 ReloadBouquets()
         except Exception as error:
             trace_error()
         return ch
-
+        '''
 
 # autostart
 _session = None
