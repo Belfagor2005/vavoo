@@ -59,6 +59,7 @@ class Console(Screen):
         if skin:
             self.skinName = [skin, 'Console']
         self.errorOcurred = False
+        lastpage = ''
         self['text'] = ScrollLabel('')
         # self['key_red'] = StaticText('Cancel')
         # self['key_green'] = StaticText('Hide')
@@ -79,7 +80,7 @@ class Console(Screen):
         self.container = eConsoleAppContainer()
         self.run = 0
         self.finished = False
-        try:  # DreamOS By RAED
+        try:
             self.container.appClosed.append(self.runFinished)
             self.container.dataAvail.append(self.dataAvail)
         except:
