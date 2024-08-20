@@ -1389,6 +1389,62 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 
 def convert_bouquet(service, name, url):
+    sig = Sig()  # Supponendo che Sig() sia definito altrove nel codice
+    app = f'?n=1&b=5&vavoo_auth={str(sig)}#User-Agent=VAVOO/2.6'
+    dir_enigma2 = '/etc/enigma2/'
+    files = f'/tmp/{name}.m3u'
+    type = 'tv'
+    if "radio" in name.lower():
+        type = "radio"
+
+    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
+    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
+    name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
+
+    with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
+        r.write(str(name_file) + '###' + str(url))
+        r.close()
+    bouquet_name = f'userbouquet.vavoo_{name_file.lower()}.{type.lower()}'
+    if file_exists(str(files)):
+        from time import sleep
+        sleep(5)
+        ch = 0
+        try:
+            if os_path.isfile(files) and os.stat(files).st_size > 0:
+                desk_tmp = ''
+                in_bouquets = 0
+                with open('%s%s' % (dir_enigma2, bouquet_name), 'w') as outfile:
+                    outfile.write('#NAME %s\r\n' % name_file.capitalize())
+
+                    for line in open(files):
+                        if line.startswith('http://') or line.startswith('https'):
+                            line = str(line).strip('\n\r') + str(app) + '\n'
+                            outfile.write('#SERVICE {}:0:0:0:0:0:0:0:0:0:{}').format(service, line.replace(':', '%3a'))  # % (service, line.replace(':', '%3a')))
+                            outfile.write('#DESCRIPTION {}').format(desk_tmp)  # % desk_tmp
+                        elif line.startswith('#EXTINF'):
+                            # desk_tmp = '%s' % line.split(',')[-1]
+                            desk_tmp = '{}'.format(line.split(',')[-1])  # % line.split(',')[-1]
+                        ch += 1
+                    outfile.close()
+                if os_path.isfile('/etc/enigma2/bouquets.tv'):
+                    for line in open('/etc/enigma2/bouquets.tv'):
+                        if bouquet_name in line:
+                            in_bouquets = 1
+                    if in_bouquets == 0:
+                        vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquet_name)
+                        with open('/etc/enigma2/bouquets.tv', 'a+') as f:
+                            line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\n'.format(bouquet_name)
+                            if line not in f:
+                                f.write(line)
+                            in_bouquets = 1
+                vUtils.ReloadBouquets()
+        except Exception as error:
+            trace_error()
+        return ch
+
+
+'''
+def convert_bouquet(service, name, url):
     from time import sleep
     sig = Sig()
     app = '?n=1&b=5&vavoo_auth={}#User-Agent=VAVOO/2.6'.format(str(sig))
@@ -1405,7 +1461,7 @@ def convert_bouquet(service, name, url):
     with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
         r.write(str(name_file) + '###' + str(url))
         r.close()
-    bouquetname = 'userbouquet.vavoo_{}.{}'.format(name_file.lower(), type.lower())
+    bouquet_name = 'userbouquet.vavoo_{}.{}'.format(name_file.lower(), type.lower())
     if file_exists(str(files)):
         sleep(5)
         ch = 0
@@ -1413,7 +1469,7 @@ def convert_bouquet(service, name, url):
             if os_path.isfile(files) and os.stat(files).st_size > 0:
                 desk_tmp = ''
                 in_bouquets = 0
-                with open('%s%s' % (dir_enigma2, bouquetname), 'w') as outfile:
+                with open('%s%s' % (dir_enigma2, bouquet_name), 'w') as outfile:
                     outfile.write('#NAME %s\r\n' % name_file.capitalize())
                     for line in open(files):
                         if line.startswith('http://') or line.startswith('https'):
@@ -1427,23 +1483,22 @@ def convert_bouquet(service, name, url):
                     outfile.close()
                 if os_path.isfile('/etc/enigma2/bouquets.tv'):
                     for line in open('/etc/enigma2/bouquets.tv'):
-                        if bouquetname in line:
+                        if bouquet_name in line:
                             in_bouquets = 1
                     if in_bouquets == 0:
-                        if os_path.isfile('%s%s' % (dir_enigma2, bouquetname)) and os_path.isfile('/etc/enigma2/bouquets.tv'):
-                            vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquetname)
-                            with open('/etc/enigma2/bouquets.tv', 'a+') as f:
-                                # outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquetname)
-                                line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\n'.format(bouquetname)
-                                if line not in f:
-                                    f.write(line)
-                                # outfile.close()
-                                in_bouquets = 1
+                        vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquet_name)
+                        with open('/etc/enigma2/bouquets.tv', 'a+') as f:
+                            # outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquet_name)
+                            line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\n'.format(bouquet_name)
+                            if line not in f:
+                                f.write(line)
+                            # outfile.close()
+                            in_bouquets = 1
                 vUtils.ReloadBouquets()
         except Exception as error:
             trace_error()
         return ch
-
+'''
 
 # autostart
 _session = None
@@ -1575,7 +1630,6 @@ def add_skin_font():
 
 
 def add_skin_back():
-    bakk = BACKTYPE
     if file_exists(BACKTYPE):
         cmd = 'cp -f ' + str(BACKTYPE) + ' ' + BackPath + '/default.png'
         print('add_skin_back cmd= ', cmd)
@@ -1599,9 +1653,9 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-    icon = os_path.join(PLUGIN_PATH, 'plugin.png')
-    mainDescriptor = PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_MENU, icon=icon, fnc=cfgmain)
-    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=icon, fnc=main)
+    # icon = os_path.join(PLUGIN_PATH, 'plugin.png')
+    mainDescriptor = PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_MENU, icon=pluglogo, fnc=cfgmain)
+    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=pluglogo, fnc=main)
               # PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
               ]
     if cfg.stmain.value:
