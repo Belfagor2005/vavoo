@@ -1416,6 +1416,7 @@ def convert_bouquet(service, name, url):
         r.close()
     bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
     if file_exists(str(files)):
+        '''
         from time import sleep
         sleep(5)
         ch = 0
@@ -1457,6 +1458,64 @@ def convert_bouquet(service, name, url):
         except Exception as error:
             trace_error()
         return ch
+        '''
+
+        print("Converting Bouquet %s" % name_file)
+        path1 = '/etc/enigma2/' + str(bouquet_name)
+        path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
+        ch = 0
+        if os.path.exists(files) and os.stat(files).st_size > 0:
+            try:
+                tplst = []
+                tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
+                tplst.append('#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS' % name_file)
+                tplst.append('#DESCRIPTION --- %s ---' % name_file)
+                namel = ''
+                svz = ''
+                dct = ''
+                for line in open(files):
+
+                    if line.startswith("#EXTINF"):
+                        namel = '%s' % line.split(',')[-1]
+                        dsna = ('#DESCRIPTION %s' % namel).splitlines()
+                        dct = ''.join(dsna)
+
+                    elif line.startswith('http'):
+                        line = str(line).strip('\n\r') + str(app)  # + '\n'
+                        tag = '1'
+                        if bouquet_type.upper() == 'RADIO':
+                            tag = '2'
+
+                        svca = ('#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s' % (service, tag, line.replace(':', '%3a')))
+                        svz = (svca + ':' + namel).splitlines()
+                        svz = ''.join(svz)
+
+                    if svz not in tplst:
+                        tplst.append(svz)
+                        tplst.append(dct)
+                        ch += 1
+
+                with open(path1, 'w+') as f:
+                    for item in tplst:
+                        if item not in f.read():
+                            f.write("%s\n" % item)
+                            print('item  -------- ', item)
+
+                in_bouquets = False
+                for line in open('/etc/enigma2/bouquets.%s' % bouquet_type.lower()):
+                    if bouquet_name in line:
+                        in_bouquets = True
+                if in_bouquets is True:
+                    '''
+                    Rename unlinked bouquet file /etc/enigma2/userbouquet.webcam.tv to /etc/enigma2/userbouquet.webcam.tv.del
+                    '''
+                    with open(path2, 'a+') as f:
+                        bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
+                        f.write(str(bouquetTvString).encode("utf-8"))
+                vUtils.ReloadBouquets()
+            except Exception as error:
+                print(error)
+            return ch
 
 
 # autostart
