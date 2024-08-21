@@ -1,7 +1,10 @@
 Vavoo stream
 
 Enigma2 project
+
+
 [![Python package](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml)
+
 
 <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png">
 
