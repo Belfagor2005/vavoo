@@ -34,16 +34,12 @@ if pythonVer == 3:
 
 
 if pythonVer:
-    string_types = str,
-    integer_types = int,
     class_types = type,
     text_type = str
     binary_type = bytes
-
     MAXSIZE = sys.maxsize
 else:
-    string_types = basestring,
-    integer_types = (int, long)
+    import unicode
     class_types = (type, types.ClassType)
     text_type = unicode
     binary_type = str
@@ -195,176 +191,6 @@ def ReloadBouquets():
     eDVBDB.getInstance().reloadBouquets()
 
 
-# def decodeHtml(text):
-    # charlist = []
-    # charlist.append(('&#034;', '"'))
-    # charlist.append(('&#038;', '&'))
-    # charlist.append(('&#039;', "'"))
-    # charlist.append(('&#060;', ' '))
-    # charlist.append(('&#062;', ' '))
-    # charlist.append(('&#160;', ' '))
-    # charlist.append(('&#174;', ''))
-    # charlist.append(('&#192;', '\xc3\x80'))
-    # charlist.append(('&#193;', '\xc3\x81'))
-    # charlist.append(('&#194;', '\xc3\x82'))
-    # charlist.append(('&#196;', '\xc3\x84'))
-    # charlist.append(('&#204;', '\xc3\x8c'))
-    # charlist.append(('&#205;', '\xc3\x8d'))
-    # charlist.append(('&#206;', '\xc3\x8e'))
-    # charlist.append(('&#207;', '\xc3\x8f'))
-    # charlist.append(('&#210;', '\xc3\x92'))
-    # charlist.append(('&#211;', '\xc3\x93'))
-    # charlist.append(('&#212;', '\xc3\x94'))
-    # charlist.append(('&#214;', '\xc3\x96'))
-    # charlist.append(('&#217;', '\xc3\x99'))
-    # charlist.append(('&#218;', '\xc3\x9a'))
-    # charlist.append(('&#219;', '\xc3\x9b'))
-    # charlist.append(('&#220;', '\xc3\x9c'))
-    # charlist.append(('&#223;', '\xc3\x9f'))
-    # charlist.append(('&#224;', '\xc3\xa0'))
-    # charlist.append(('&#225;', '\xc3\xa1'))
-    # charlist.append(('&#226;', '\xc3\xa2'))
-    # charlist.append(('&#228;', '\xc3\xa4'))
-    # charlist.append(('&#232;', '\xc3\xa8'))
-    # charlist.append(('&#233;', '\xc3\xa9'))
-    # charlist.append(('&#234;', '\xc3\xaa'))
-    # charlist.append(('&#235;', '\xc3\xab'))
-    # charlist.append(('&#236;', '\xc3\xac'))
-    # charlist.append(('&#237;', '\xc3\xad'))
-    # charlist.append(('&#238;', '\xc3\xae'))
-    # charlist.append(('&#239;', '\xc3\xaf'))
-    # charlist.append(('&#242;', '\xc3\xb2'))
-    # charlist.append(('&#243;', '\xc3\xb3'))
-    # charlist.append(('&#244;', '\xc3\xb4'))
-    # charlist.append(('&#246;', '\xc3\xb6'))
-    # charlist.append(('&#249;', '\xc3\xb9'))
-    # charlist.append(('&#250;', '\xc3\xba'))
-    # charlist.append(('&#251;', '\xc3\xbb'))
-    # charlist.append(('&#252;', '\xc3\xbc'))
-    # charlist.append(('&#8203;', ''))
-    # charlist.append(('&#8211;', '-'))
-    # charlist.append(('&#8211;', '-'))
-    # charlist.append(('&#8212;', ''))
-    # charlist.append(('&#8212;', '—'))
-    # charlist.append(('&#8216;', "'"))
-    # charlist.append(('&#8216;', "'"))
-    # charlist.append(('&#8217;', "'"))
-    # charlist.append(('&#8217;', "'"))
-    # charlist.append(('&#8220;', "'"))
-    # charlist.append(('&#8220;', ''))
-    # charlist.append(('&#8221;', '"'))
-    # charlist.append(('&#8222;', ''))
-    # charlist.append(('&#8222;', ', '))
-    # charlist.append(('&#8230;', '...'))
-    # charlist.append(('&#8230;', '...'))
-    # charlist.append(('&#8234;', ''))
-    # charlist.append(('&#x21;', '!'))
-    # charlist.append(('&#x26;', '&'))
-    # charlist.append(('&#x27;', "'"))
-    # charlist.append(('&#x3f;', '?'))
-    # charlist.append(('&#xB7;', '·'))
-    # charlist.append(('&#xC4;', 'Ä'))
-    # charlist.append(('&#xD6;', 'Ö'))
-    # charlist.append(('&#xDC;', 'Ü'))
-    # charlist.append(('&#xDF;', 'ß'))
-    # charlist.append(('&#xE4;', 'ä'))
-    # charlist.append(('&#xE9;', 'é'))
-    # charlist.append(('&#xF6;', 'ö'))
-    # charlist.append(('&#xF8;', 'ø'))
-    # charlist.append(('&#xFB;', 'û'))
-    # charlist.append(('&#xFC;', 'ü'))
-    # charlist.append(('&8221;', '\xe2\x80\x9d'))
-    # charlist.append(('&8482;', '\xe2\x84\xa2'))
-    # charlist.append(('&Aacute;', '\xc3\x81'))
-    # charlist.append(('&Acirc;', '\xc3\x82'))
-    # charlist.append(('&Agrave;', '\xc3\x80'))
-    # charlist.append(('&Auml;', '\xc3\x84'))
-    # charlist.append(('&Iacute;', '\xc3\x8d'))
-    # charlist.append(('&Icirc;', '\xc3\x8e'))
-    # charlist.append(('&Igrave;', '\xc3\x8c'))
-    # charlist.append(('&Iuml;', '\xc3\x8f'))
-    # charlist.append(('&Oacute;', '\xc3\x93'))
-    # charlist.append(('&Ocirc;', '\xc3\x94'))
-    # charlist.append(('&Ograve;', '\xc3\x92'))
-    # charlist.append(('&Ouml;', '\xc3\x96'))
-    # charlist.append(('&Uacute;', '\xc3\x9a'))
-    # charlist.append(('&Ucirc;', '\xc3\x9b'))
-    # charlist.append(('&Ugrave;', '\xc3\x99'))
-    # charlist.append(('&Uuml;', '\xc3\x9c'))
-    # charlist.append(('&aacute;', '\xc3\xa1'))
-    # charlist.append(('&acirc;', '\xc3\xa2'))
-    # charlist.append(('&acute;', '\''))
-    # charlist.append(('&agrave;', '\xc3\xa0'))
-    # charlist.append(('&amp;', '&'))
-    # charlist.append(('&apos;', "'"))
-    # charlist.append(('&auml;', '\xc3\xa4'))
-    # charlist.append(('&bdquo;', '"'))
-    # charlist.append(('&bdquo;', '"'))
-    # charlist.append(('&eacute;', '\xc3\xa9'))
-    # charlist.append(('&ecirc;', '\xc3\xaa'))
-    # charlist.append(('&egrave;', '\xc3\xa8'))
-    # charlist.append(('&euml;', '\xc3\xab'))
-    # charlist.append(('&gt;', '>'))
-    # charlist.append(('&hellip;', '...'))
-    # charlist.append(('&iacute;', '\xc3\xad'))
-    # charlist.append(('&icirc;', '\xc3\xae'))
-    # charlist.append(('&igrave;', '\xc3\xac'))
-    # charlist.append(('&iuml;', '\xc3\xaf'))
-    # charlist.append(('&laquo;', '"'))
-    # charlist.append(('&ldquo;', '"'))
-    # charlist.append(('&lsquo;', '\''))
-    # charlist.append(('&lt;', '<'))
-    # charlist.append(('&mdash;', '—'))
-    # charlist.append(('&nbsp;', ' '))
-    # charlist.append(('&ndash;', '-'))
-    # charlist.append(('&oacute;', '\xc3\xb3'))
-    # charlist.append(('&ocirc;', '\xc3\xb4'))
-    # charlist.append(('&ograve;', '\xc3\xb2'))
-    # charlist.append(('&ouml;', '\xc3\xb6'))
-    # charlist.append(('&quot;', '"'))
-    # charlist.append(('&raquo;', '"'))
-    # charlist.append(('&rsquo;', '\''))
-    # charlist.append(('&szlig;', '\xc3\x9f'))
-    # charlist.append(('&uacute;', '\xc3\xba'))
-    # charlist.append(('&ucirc;', '\xc3\xbb'))
-    # charlist.append(('&ugrave;', '\xc3\xb9'))
-    # charlist.append(('&uuml;', '\xc3\xbc'))
-    # charlist.append(('\u0026', '&'))
-    # charlist.append(('\u003d', '='))
-    # charlist.append(('\u00a0', ' '))
-    # charlist.append(('\u00b4', '\''))
-    # charlist.append(('\u00c1', 'Á'))
-    # charlist.append(('\u00c4', 'Ä'))
-    # charlist.append(('\u00c6', 'Æ'))
-    # charlist.append(('\u00d6', 'Ö'))
-    # charlist.append(('\u00dc', 'Ü'))
-    # charlist.append(('\u00df', 'ß'))
-    # charlist.append(('\u00e0', 'à'))
-    # charlist.append(('\u00e1', 'á'))
-    # charlist.append(('\u00e4', 'ä'))
-    # charlist.append(('\u00e7', 'ç'))
-    # charlist.append(('\u00e8', 'é'))
-    # charlist.append(('\u00e9', 'é'))
-    # charlist.append(('\u00f6', 'ö'))
-    # charlist.append(('\u00fc', 'ü'))
-    # charlist.append(('\u014d', 'ō'))
-    # charlist.append(('\u016b', 'ū'))
-    # charlist.append(('\u2013', '–'))
-    # charlist.append(('\u2018', '\"'))
-    # charlist.append(('\u2019s', '’'))
-    # charlist.append(('\u201a', '\"'))
-    # charlist.append(('\u201c', '\"'))
-    # charlist.append(('\u201d', '\''))
-    # charlist.append(('\u201e', '\"'))
-    # charlist.append(('\u2026', '...'))
-    # for repl in charlist:
-        # text = text.replace(repl[0], repl[1])
-    # from re import sub as re_sub
-    # text = re_sub('<[^>]+>', '', text)
-    # if pythonVer == 3:
-        # text = text.encode('utf-8').decode('unicode_escape')
-    # return str(text) # str needed for PLi
-
 def decodeHtml(text):
     if pythonVer == 3:
         import html
@@ -424,34 +250,13 @@ def getserviceinfo(sref):
     except:
         return None, None
 
-# {
-# "serverlist": [
-# {
-# "name":"Vavoo",
-# "mainUrl":"https://www2.vavoo.to",
-# "UserAgent": "VAVOO/2.6",
-# "StreamUrlType": "http",
-# "UpdateTime": 2,
-# "mediatype":"api",
-# "id":"vavooapi"
-# }
-# ]
-# }
 
-
-
-# std_headers = {
-               # 'User-Agent': 'VAVOO/2.6',
-               # 'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-               # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-               # 'Accept-Language': 'en-us,en;q=0.5',
-               # }
 std_headers = {
-               'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6',
-               'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-               'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-               'Accept-Language': 'en-us,en;q=0.5',
-               }
+    'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6',
+    'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en-us,en;q=0.5',
+}
 
 ListAgent = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
