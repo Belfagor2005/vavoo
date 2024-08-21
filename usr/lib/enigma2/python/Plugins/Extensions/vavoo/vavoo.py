@@ -209,10 +209,15 @@ if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.save()
 
 
+# language
+locl = "ar", "ae", "bh", "dz", "eg", "in", "iq", "jo", "kw", "lb", "ly", "ma", "om", "qa", "sa", "sd", "ss", "sy", "tn", "ye"
+global lngx
+lngx = 'en'
 try:
+    from Components.config import config
     lng = config.osd.language.value
     lng = lng[:-3]
-    if lng.lower() == 'ar':
+    if any(s in lngx for s in locl):
         HALIGN = RT_HALIGN_RIGHT
 except:
     lng = 'en'
@@ -1415,7 +1420,6 @@ def convert_bouquet(service, name, url):
                         if bouquet_type.upper() == 'RADIO':
                             tag = '2'
 
-                                                            
                         svca = ('#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s' % (service, tag, line.replace(':', '%3a')))
                         svz = (svca + ':' + namel).splitlines()
                         svz = ''.join(svz)
@@ -1442,7 +1446,7 @@ def convert_bouquet(service, name, url):
             if not in_bouquets:
 
                 with open(path2, 'a+') as f:
-                                                                                   
+
                     bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
                     f.write(bouquetTvString)
 
@@ -1452,63 +1456,7 @@ def convert_bouquet(service, name, url):
 
     return ch
 
-    '''
-    files = '/tmp/%s.m3u' % name
-    bouquet_type = 'tv'
-    if "radio" in name.lower():
-        bouquet_type = "radio"
-    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
-    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
-    name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
-    with open(enigma_path + '/Favorite.txt', 'w') as r:
-        r.write(str(name_file) + '###' + str(url))
-        r.close()
-    if file_exists(str(files)):
-        from time import sleep
-        sleep(5)
-        ch = 0
-        try:
-            if os_path.isfile(files) and os.stat(files).st_size > 0:
-                bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
-                in_bouquets = False
-                desk_tmp = ''
-                with open('%s%s' % (dir_enigma2, bouquet_name), 'w') as outfile:
-                    outfile.write('#NAME %s\r\n' % name_file.capitalize())
-                    for line in open(files):
-                        if line.startswith('http://') or line.startswith('https'):
-                            line = str(line).strip('\n\r') + str(app) + '\n'
-                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s' % (service, line.replace(':', '%3a')))
-                            outfile.write('#DESCRIPTION %s' % desk_tmp)
-                        elif line.startswith('#EXTINF'):
-                            desk_tmp = '%s' % line.split(',')[-1]
-                        elif '<stream_url><![CDATA' in line:
-                            outfile.write('#SERVICE %s:0:1:1:0:0:0:0:0:0:%s\r\n' % (service, line.split('[')[-1].split(']')[0].replace(':', '%3a')))
-                            outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
-                        elif '<title>' in line:
-                            if '<![CDATA[' in line:
-                                desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
-                            else:
-                                desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
-                        ch += 1
-                    outfile.close()
-                if os_path.isfile('/etc/enigma2/bouquets.tv'):
-                    for line in open('/etc/enigma2/bouquets.tv'):
-                        if bouquet_name in line:
-                            in_bouquets = True
-                    if in_bouquets is True:
-                        if os_path.isfile('%s%s' % (dir_enigma2, bouquet_name)) and os_path.isfile('/etc/enigma2/bouquets.tv'):
-                            vUtils.remove_line('/etc/enigma2/bouquets.tv', bouquet_name)
-                            with open('/etc/enigma2/bouquets.tv', 'a+') as outfile:
-                                outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % bouquet_name)
-                                outfile.close()
-                ReloadBouquets()
-        except Exception as error:
-            trace_error()
-        return ch
-        '''
 
-# autostart
-_session = None
 autoStartTimer = None
 
 
@@ -1645,99 +1593,41 @@ def Plugins(**kwargs):
 
 
 def decodeHtml(text):
-    text = text.replace('&auml;', 'ä')
-    text = text.replace('\u00e4', 'ä')
-    text = text.replace('&#228;', 'ä')
-    text = text.replace('&Auml;', 'Ä')
-    text = text.replace('\u00c4', 'Ä')
-    text = text.replace('&#196;', 'Ä')
-    text = text.replace('&ouml;', 'ö')
-    text = text.replace('\u00f6', 'ö')
-    text = text.replace('&#246;', 'ö')
-    text = text.replace('&ouml;', 'Ö')
-    text = text.replace('&Ouml;', 'Ö')
-    text = text.replace('\u00d6', 'Ö')
-    text = text.replace('&#214;', 'Ö')
-    text = text.replace('&uuml;', 'ü')
-    text = text.replace('\u00fc', 'ü')
-    text = text.replace('&#252;', 'ü')
-    text = text.replace('&Uuml;', 'Ü')
-    text = text.replace('\u00dc', 'Ü')
-    text = text.replace('&#220;', 'Ü')
-    text = text.replace('&szlig;', 'ß')
-    text = text.replace('\u00df', 'ß')
-    text = text.replace('&#223;', 'ß')
-    text = text.replace('&amp;', '&')
-    text = text.replace('&quot;', '\"')
-    text = text.replace('&gt;', '>')
-    text = text.replace('&apos;', "'")
-    text = text.replace('&acute;', '\'')
-    text = text.replace('&ndash;', '-')
-    text = text.replace('&bdquo;', '"')
-    text = text.replace('&rdquo;', '"')
-    text = text.replace('&ldquo;', '"')
-    text = text.replace('&lsquo;', '\'')
-    text = text.replace('&rsquo;', '\'')
-    text = text.replace('&#034;', '"')
-    text = text.replace('&#34;', '"')
-    text = text.replace('&#038;', '&')
-    text = text.replace('&#039;', '\'')
-    text = text.replace('&#39;', '\'')
-    text = text.replace('&#160;', ' ')
-    text = text.replace('\u00a0', ' ')
-    text = text.replace('\u00b4', '\'')
-    text = text.replace('\u003d', '=')
-    text = text.replace('\u0026', '&')
-    text = text.replace('&#174;', '')
-    text = text.replace('&#225;', 'a')
-    text = text.replace('&#233;', 'e')
-    text = text.replace('&#243;', 'o')
-    text = text.replace('&#8211;', '-')
-    text = text.replace('&#8212;', '—')
-    text = text.replace('&mdash;', '—')
-    text = text.replace('\u2013', '–')
-    text = text.replace('&#8216;', "'")
-    text = text.replace('&#8217;', "'")
-    text = text.replace('&#8220;', "'")
-    text = text.replace('&#8221;', '"')
-    text = text.replace('&#8222;', ', ')
-    text = text.replace('\u014d', 'ō')
-    text = text.replace('\u016b', 'ū')
-    text = text.replace('\u201a', '\"')
-    text = text.replace('\u2018', '\"')
-    text = text.replace('\u201e', '\"')
-    text = text.replace('\u201c', '\"')
-    text = text.replace('\u201d', '\'')
-    text = text.replace('\u2019s', '’')
-    text = text.replace('\u00e0', 'à')
-    text = text.replace('\u00e7', 'ç')
-    text = text.replace('\u00e8', 'é')
-    text = text.replace('\u00e9', 'é')
-    text = text.replace('\u00c1', 'Á')
-    text = text.replace('\u00c6', 'Æ')
-    text = text.replace('\u00e1', 'á')
-    text = text.replace('&#xC4;', 'Ä')
-    text = text.replace('&#xD6;', 'Ö')
-    text = text.replace('&#xDC;', 'Ü')
-    text = text.replace('&#xE4;', 'ä')
-    text = text.replace('&#xF6;', 'ö')
-    text = text.replace('&#xFC;', 'ü')
-    text = text.replace('&#xDF;', 'ß')
-    text = text.replace('&#xE9;', 'é')
-    text = text.replace('&#xB7;', '·')
-    text = text.replace('&#x27;', "'")
-    text = text.replace('&#x26;', '&')
-    text = text.replace('&#xFB;', 'û')
-    text = text.replace('&#xF8;', 'ø')
-    text = text.replace('&#x21;', '!')
-    text = text.replace('&#x3f;', '?')
-    text = text.replace('&#8230;', '...')
-    text = text.replace('\u2026', '...')
-    text = text.replace('&hellip;', '...')
-    text = text.replace('&#8234;', '')
     if PY3:
-        text = text.encode('utf-8').decode('unicode_escape')
-    return str(text)  # str needed for PLi
+        import html
+        text = html.unescape(text)
+    else:
+        from six.moves import (html_parser)
+        h = html_parser.HTMLParser()
+        text = h.unescape(text.decode('utf8')).encode('utf8')
+    text = text.replace('&amp;', '&')
+    text = text.replace('&apos;', "'")
+    text = text.replace('&lt;', '<')
+    text = text.replace('&gt;', '>')
+    text = text.replace('&ndash;', '-')
+    text = text.replace('&quot;', '"')
+    text = text.replace('&ntilde;', '~')
+    text = text.replace('&rsquo;', '\'')
+    text = text.replace('&nbsp;', ' ')
+    text = text.replace('&equals;', '=')
+    text = text.replace('&quest;', '?')
+    text = text.replace('&comma;', ',')
+    text = text.replace('&period;', '.')
+    text = text.replace('&colon;', ':')
+    text = text.replace('&lpar;', '(')
+    text = text.replace('&rpar;', ')')
+    text = text.replace('&excl;', '!')
+    text = text.replace('&dollar;', '$')
+    text = text.replace('&num;', '#')
+    text = text.replace('&ast;', '*')
+    text = text.replace('&lowbar;', '_')
+    text = text.replace('&lsqb;', '[')
+    text = text.replace('&rsqb;', ']')
+    text = text.replace('&half;', '1/2')
+    text = text.replace('&DiacriticalTilde;', '~')
+    text = text.replace('&OpenCurlyDoubleQuote;', '"')
+    text = text.replace('&CloseCurlyDoubleQuote;', '"')
+    return text.strip()
 
 
 ListAgent = [

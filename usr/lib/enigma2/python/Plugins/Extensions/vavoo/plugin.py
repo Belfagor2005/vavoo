@@ -1480,7 +1480,6 @@ def convert_bouquet(service, name, url):
 
 
 # autostart
-_session = None
 autoStartTimer = None
 
 
