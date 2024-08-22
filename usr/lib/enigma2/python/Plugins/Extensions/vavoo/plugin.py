@@ -526,9 +526,9 @@ class vavoo_config(Screen, ConfigListScreen):
             print('FONTSTYPE cfg = ', FONTSTYPE)
             add_skin_font()
 
-            # bakk = str(cfg.back.getValue()) + '.png'
+            bakk = str(cfg.back.getValue()) + '.png'
             # print('bakk= ', bakk)
-            add_skin_back()
+            add_skin_back(bakk)
 
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
