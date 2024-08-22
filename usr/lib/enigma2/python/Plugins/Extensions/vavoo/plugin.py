@@ -79,6 +79,7 @@ import sys
 import time
 import traceback
 import codecs
+
 global HALIGN
 tmlast = None
 now = None
@@ -155,8 +156,6 @@ try:
                     continue
                 backName = backName[:-4]
                 BakP.append((backName, backName))
-                # print('final backNamePath: ', backNamePath)
-                # print('final BakP: ', BakP)
 
 except Exception as error:
     trace_error()
@@ -177,9 +176,9 @@ try:
                 fontName = fontName[:-4]
                 # fonts.append((fontNamePath, fontName))
                 fonts.append((fontName, fontName))
-                print('final fontNamePath: ', fontNamePath)
-                print('final fonts: ', fonts)
-    fonts = sorted(fonts, key=lambda x: x[1])
+                # print('final fontNamePath: ', fontNamePath)
+                # print('final fonts: ', fonts)
+        fonts = sorted(fonts, key=lambda x: x[1])
 except Exception as error:
     trace_error()
 
@@ -527,9 +526,9 @@ class vavoo_config(Screen, ConfigListScreen):
             print('FONTSTYPE cfg = ', FONTSTYPE)
             add_skin_font()
 
-            bakk = str(cfg.back.getValue()) + '.png'
-            print('bakk= ', bakk)
-            add_skin_back(bakk)
+            # bakk = str(cfg.back.getValue()) + '.png'
+            # print('bakk= ', bakk)
+            add_skin_back()
 
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
@@ -645,7 +644,7 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
@@ -1420,7 +1419,6 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 def convert_bouquet(service, name, url):
     sig = Sig()
     app = '?n=1&b=5&vavoo_auth=%s#User-Agent=VAVOO/2.6' % (str(sig))
-
     files = '/tmp/%s.m3u' % name
     bouquet_type = 'tv'
     if "radio" in name.lower():
@@ -1428,27 +1426,22 @@ def convert_bouquet(service, name, url):
     name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
     name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
     name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
-
     with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
         r.write(str(name_file) + '###' + str(url))
-
     bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
     print("Converting Bouquet %s" % name_file)
     path1 = '/etc/enigma2/' + str(bouquet_name)
     path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
     ch = 0
-
     if os.path.exists(files) and os.stat(files).st_size > 0:
         try:
             tplst = []
             tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
             tplst.append('#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS' % name_file)
             tplst.append('#DESCRIPTION --- %s ---' % name_file)
-
             namel = ''
             svz = ''
             dct = ''
-
             with open(files, 'r') as f:  # 'r' is for universal newlines mode
                 for line in f:
                     if line.startswith("#EXTINF"):
@@ -1479,22 +1472,20 @@ def convert_bouquet(service, name, url):
                         # print('item  -------- ', item)
 
             in_bouquets = False
-
             with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
                 for line in f:
                     if bouquet_name in line:
                         in_bouquets = True
-
             if not in_bouquets:
-
+                '''
+                Rename unlinked bouquet file /etc/enigma2/userbouquet.webcam.tv to /etc/enigma2/userbouquet.webcam.tv.del
+                '''
                 with open(path2, 'a+') as f:
                     bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
                     f.write(bouquetTvString)
-
             vUtils.ReloadBouquets()
         except Exception as error:
             print(error)
-
     return ch
 
 
@@ -1623,7 +1614,7 @@ def add_skin_font():
     print('**********addFont')
     from enigma import addFont
 
-    print('str(FONTSTYPE):', str(FONTSTYPE))
+    # print('str(FONTSTYPE):', str(FONTSTYPE))
     # addFont(filename, name, scale, isReplacement, render)
     addFont(str(FONTSTYPE), 'cvfont', 100, 1)
     addFont((str(FNTPath) + '/vav.ttf'), 'Vav', 100, 1)  # lcd
@@ -1635,7 +1626,7 @@ def add_skin_back(bakk):
         # print('file_exists(str(BackPath) + / + str(bakk):', str(BackPath) + '/' + str(bakk))
         baknew = os_path.join(BackPath, str(bakk))
         cmd = 'cp -f ' + str(baknew) + ' ' + BackPath + '/default.png'
-        print('add_skin_back cmd= ', cmd)
+        # print('add_skin_back cmd= ', cmd)
         os.system(cmd)
         os.system('sync')
 
