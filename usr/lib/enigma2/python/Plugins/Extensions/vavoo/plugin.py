@@ -644,7 +644,7 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'DirectionActions', 'ShortcutActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
@@ -851,7 +851,7 @@ class vavoo(Screen):
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'HotkeyActions', 'DirectionActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ShortcutActions', 'HotkeyActions', 'DirectionActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
