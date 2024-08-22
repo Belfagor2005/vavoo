@@ -95,7 +95,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.25'
+currversion = '1.26'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -132,17 +132,19 @@ if file_exists('/var/lib/dpkg/info'):
 
 # back
 global BackPath
-BackPath = os_path.join(PLUGIN_PATH + "skin")
+BackfPath = os_path.join(PLUGIN_PATH + "/skin")
 if screenwidth.width() == 2560:
-    BackPath = BackPath + '/images_new'
-    skin_path = os_path.join(PLUGIN_PATH, 'skin/wqhd')
+    BackPath = BackfPath + '/images_new'
+    skin_path = BackfPath + '/wqhd'
 elif screenwidth.width() == 1920:
-    BackPath = BackPath + '/images_new'
-    skin_path = os_path.join(PLUGIN_PATH, 'skin/fhd')
+    BackPath = BackfPath + '/images_new'
+    skin_path = BackfPath + '/fhd'
 elif screenwidth.width() == 1280:
-    BackPath = BackPath + '/images'
-    skin_path = os_path.join(PLUGIN_PATH, 'skin/hd')
+    BackPath = BackfPath + '/images'
+    skin_path = BackfPath + '/hd'
 print('folder back: ', BackPath)
+
+
 BakP = []
 try:
     if file_exists(BackPath):
@@ -152,11 +154,18 @@ try:
                 if backName.startswith("default"):
                     continue
                 backName = backName[:-4]
-                BakP.append((backNamePath, backName))
+                BakP.append((backName, backName))
+                # print('final backNamePath: ', backNamePath)
+                # print('final BakP: ', BakP)
+
 except Exception as error:
     trace_error()
+
+
 print('final folder back: ', BackPath)
 # BakP = sorted(BakP, key=lambda x: x[1])
+
+
 # fonts
 FNTPath = os_path.join(PLUGIN_PATH + "/fonts")
 fonts = []
@@ -167,11 +176,10 @@ try:
             if fontName.endswith(".ttf") or fontName.endswith(".otf"):
                 fontName = fontName[:-4]
                 fonts.append((fontNamePath, fontName))
+    fonts = sorted(fonts, key=lambda x: x[1])
 except Exception as error:
     trace_error()
 
-
-fonts = sorted(fonts, key=lambda x: x[1])
 
 # config section
 config.plugins.vavoo = ConfigSubsection()
@@ -188,7 +196,6 @@ cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
 FONTSTYPE = cfg.fonts.value
-BACKTYPE = str(cfg.back.value)
 eserv = int(cfg.services.value)
 
 # ipv6
@@ -202,14 +209,11 @@ locl = "ar", "ae", "bh", "dz", "eg", "in", "iq", "jo", "kw", "lb", "ly", "ma", "
 global lngx
 lngx = 'en'
 try:
-    # global HALIGN
     from Components.config import config
     lng = config.osd.language.value
     lng = lng[:-3]
     if any(s in lngx for s in locl):
         HALIGN = RT_HALIGN_RIGHT
-    # else:
-        # HALIGN = RT_HALIGN_LEFT
 except:
     lng = 'en'
     pass
@@ -337,11 +341,12 @@ class m2list(MenuList):
             self.l.setItemHeight(60)
             textfont = int(38)
             self.l.setFont(0, gFont('Regular', textfont))
-        # elif file_exists('/var/lib/dpkg/status'):
+
         elif screenwidth.width() == 1920:
             self.l.setItemHeight(50)
             textfont = int(34)
             self.l.setFont(0, gFont('Regular', textfont))
+
         else:
             self.l.setItemHeight(50)
             textfont = int(28)
@@ -400,7 +405,6 @@ class vavoo_config(Screen, ConfigListScreen):
             "down": self.keyDown,
             "red": self.extnok,
             "green": self.save,
-            # "blue": self.Import,
             "ok": self.save,
         }, -1)
         self.update_status()
@@ -514,8 +518,13 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             configfile.save()
+
             add_skin_font()
-            add_skin_back()
+
+            bakk = str(cfg.back.getValue()) + '.png'
+            # print('bakk= ', bakk)
+            add_skin_back(bakk)
+
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
@@ -734,12 +743,7 @@ class MainVavoo(Screen):
         self['name'].setText(str(auswahl))
 
     def cat(self):
-        # if HALIGN == RT_HALIGN_RIGHT:
-            # self['blue'].setText(_('Halign Left'))
-        # else:
-            # self['blue'].setText(_('Halign Right'))
         print('halign=', HALIGN)
-        
         self.cat_list = []
         items = []
         self.items_tmp = []
@@ -899,10 +903,6 @@ class vavoo(Screen):
         self['name'].setText(str(auswahl))
 
     def cat(self):
-        # if HALIGN == RT_HALIGN_RIGHT:
-            # self['blue'].setText(_('Halign Left'))
-        # else:
-            # self['blue'].setText(_('Halign Right'))
         print('halign=', HALIGN)
         self.cat_list = []
         items = []
@@ -1620,9 +1620,12 @@ def add_skin_font():
     addFont((FNTPath + '/lcd.ttf'), 'xLcd', 100, 1)
 
 
-def add_skin_back():
-    if file_exists(BACKTYPE):
-        cmd = 'cp -f ' + str(BACKTYPE) + ' ' + BackPath + '/default.png'
+def add_skin_back(bakk):
+    print('**********addskinpath')
+    if file_exists(os_path.join(BackPath, str(bakk))):
+        # print('file_exists(str(BackPath) + / + str(bakk):', str(BackPath) + '/' + str(bakk))
+        baknew = os_path.join(BackPath, str(bakk))
+        cmd = 'cp -f ' + str(baknew) + ' ' + BackPath + '/default.png'
         print('add_skin_back cmd= ', cmd)
         os.system(cmd)
         os.system('sync')

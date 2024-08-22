@@ -2,8 +2,8 @@
 
 ##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 ######### Only This 2 lines to edit with new version ######
-version='1.25'
-changelog='\nAdd Language Locale\nFix Screen HD'
+version='1.26'
+changelog='\nFix Export Bouquet\nFix Crash on menu dreamOs(Thanks Titti)'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-main
