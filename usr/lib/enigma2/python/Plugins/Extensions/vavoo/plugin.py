@@ -202,11 +202,14 @@ locl = "ar", "ae", "bh", "dz", "eg", "in", "iq", "jo", "kw", "lb", "ly", "ma", "
 global lngx
 lngx = 'en'
 try:
+    # global HALIGN
     from Components.config import config
     lng = config.osd.language.value
     lng = lng[:-3]
     if any(s in lngx for s in locl):
         HALIGN = RT_HALIGN_RIGHT
+    # else:
+        # HALIGN = RT_HALIGN_LEFT
 except:
     lng = 'en'
     pass
@@ -545,8 +548,6 @@ class startVavoo(Screen):
         skin = os_path.join(skin_path, 'Plgnstrt.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
-        # with open(skin_strt, "r") as f:
-            # self.skin = f.read()
         self["poster"] = Pixmap()
         self["version"] = Label()
         self['actions'] = ActionMap(['OkCancelActions'], {'ok': self.clsgo, 'cancel': self.clsgo}, -1)
@@ -603,7 +604,7 @@ class startVavoo(Screen):
 class MainVavoo(Screen):
     def __init__(self, session):
         self.session = session
-        global _session
+        global _session, HALIGN
         _session = session
         Screen.__init__(self, session)
 
@@ -629,7 +630,7 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.url = vUtils.b64decoder(stripurl)
-        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
@@ -663,7 +664,8 @@ class MainVavoo(Screen):
         elif HALIGN == RT_HALIGN_RIGHT:
             HALIGN = RT_HALIGN_LEFT
             self['blue'].setText(_('Halign Right'))
-        self.cat()
+        # self.cat()
+        self.timer.start(200, True)
 
     def update_me(self):
         remote_version = '0.0'
@@ -732,6 +734,12 @@ class MainVavoo(Screen):
         self['name'].setText(str(auswahl))
 
     def cat(self):
+        # if HALIGN == RT_HALIGN_RIGHT:
+            # self['blue'].setText(_('Halign Left'))
+        # else:
+            # self['blue'].setText(_('Halign Right'))
+        print('halign=', HALIGN)
+        
         self.cat_list = []
         items = []
         self.items_tmp = []
@@ -807,7 +815,7 @@ class MainVavoo(Screen):
 class vavoo(Screen):
     def __init__(self, session, name, url):
         self.session = session
-        global _session
+        global _session, HALIGN
         _session = session
         Screen.__init__(self, session)
         skin = os_path.join(skin_path, 'defaultListScreen.xml')
@@ -834,7 +842,7 @@ class vavoo(Screen):
         self.loading = 0
         self.name = name
         self.url = url
-        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ColorActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+        self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'HotkeyActions', 'DirectionActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
@@ -862,7 +870,8 @@ class vavoo(Screen):
         elif HALIGN == RT_HALIGN_RIGHT:
             HALIGN = RT_HALIGN_LEFT
             self['blue'].setText(_('Halign Right'))
-        self.cat()
+        # self.cat()
+        self.timer.start(200, True)
 
     def backhome(self):
         if search_ok is True:
@@ -890,6 +899,11 @@ class vavoo(Screen):
         self['name'].setText(str(auswahl))
 
     def cat(self):
+        # if HALIGN == RT_HALIGN_RIGHT:
+            # self['blue'].setText(_('Halign Left'))
+        # else:
+            # self['blue'].setText(_('Halign Right'))
+        print('halign=', HALIGN)
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
@@ -930,7 +944,6 @@ class vavoo(Screen):
                     outfile.write(nname)
                     outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
                     outfile.write(str(url) + '\n')
-                outfile.close()
                 # make m3u end
                 if len(self.cat_list) < 1:
                     return
