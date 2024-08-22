@@ -108,7 +108,7 @@ enigma_path = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
-default_font = ''
+# default_font = ''
 
 
 # log
@@ -131,7 +131,7 @@ if file_exists('/var/lib/dpkg/info'):
 
 
 # back
-global BackPath
+global BackPath, FONTSTYPE, FNTPath  # maybe no..
 BackfPath = os_path.join(PLUGIN_PATH + "/skin")
 if screenwidth.width() == 2560:
     BackPath = BackfPath + '/images_new'
@@ -173,9 +173,12 @@ try:
     if file_exists(FNTPath):
         for fontName in os.listdir(FNTPath):
             fontNamePath = os_path.join(FNTPath, fontName)
-            if fontName.endswith(".ttf") or fontName.endswith(".otf"):
+            if fontName.endswith(".ttf"):
                 fontName = fontName[:-4]
-                fonts.append((fontNamePath, fontName))
+                # fonts.append((fontNamePath, fontName))
+                fonts.append((fontName, fontName))
+                print('final fontNamePath: ', fontNamePath)
+                print('final fonts: ', fonts)
     fonts = sorted(fonts, key=lambda x: x[1])
 except Exception as error:
     trace_error()
@@ -193,9 +196,9 @@ cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
-cfg.fonts = ConfigSelection(default=default_font, choices=fonts)
+cfg.fonts = ConfigSelection(default='vav', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
-FONTSTYPE = cfg.fonts.value
+FONTSTYPE = FNTPath + '/' + str(cfg.fonts.value) + '.ttf'
 eserv = int(cfg.services.value)
 
 # ipv6
@@ -518,11 +521,14 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             configfile.save()
-
+            global FONTSTYPE
+            FONTSE = str(cfg.fonts.getValue()) + '.ttf'
+            FONTSTYPE = os_path.join(str(FNTPath), str(FONTSE))
+            print('FONTSTYPE cfg = ', FONTSTYPE)
             add_skin_font()
 
             bakk = str(cfg.back.getValue()) + '.png'
-            # print('bakk= ', bakk)
+            print('bakk= ', bakk)
             add_skin_back(bakk)
 
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
@@ -1419,9 +1425,9 @@ def convert_bouquet(service, name, url):
     bouquet_type = 'tv'
     if "radio" in name.lower():
         bouquet_type = "radio"
-    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Replace spaces and commas with "_"
-    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Replace numeric patterns with "_"
-    name_file = re.sub(r'_+', '_', name_file)  # Replace sequences of "_" with a single "_"
+    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
+    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
+    name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
 
     with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
         r.write(str(name_file) + '###' + str(url))
@@ -1614,10 +1620,13 @@ def get_next_wakeup():
 
 
 def add_skin_font():
+    print('**********addFont')
     from enigma import addFont
+
+    print('str(FONTSTYPE):', str(FONTSTYPE))
     # addFont(filename, name, scale, isReplacement, render)
-    addFont((FONTSTYPE), 'cvfont', 100, 1)
-    addFont((FNTPath + '/lcd.ttf'), 'xLcd', 100, 1)
+    addFont(str(FONTSTYPE), 'cvfont', 100, 1)
+    addFont((str(FNTPath) + '/vav.ttf'), 'Vav', 100, 1)  # lcd
 
 
 def add_skin_back(bakk):
@@ -1640,7 +1649,6 @@ def main(session, **kwargs):
         if file_exists('/tmp/vavoo.log'):
             os.remove('/tmp/vavoo.log')
         add_skin_font()
-        # add_skin_back()
         session.open(startVavoo)
     except Exception as error:
         trace_error()
