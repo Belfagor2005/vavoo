@@ -49,6 +49,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
+from six.moves.urllib.parse import unquote
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (
     RT_VALIGN_CENTER,
@@ -110,7 +111,7 @@ json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 # default_font = ''
-
+regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
 
 # log
 def trace_error():
@@ -762,6 +763,7 @@ class MainVavoo(Screen):
             match = re.compile(regexcat, re.DOTALL).findall(content)
             for country in match:
                 if country not in self.items_tmp:
+                    country = unquote(country).strip("\r\n")
                     self.items_tmp.append(country)
                     item = country + "###" + self.url + '\n'
                     items.append(item)
@@ -940,9 +942,11 @@ class vavoo(Screen):
                 itemlist = items
                 # use for search end
                 for item in items:
-                    name = item.split('###')[0]
+                    name1 = item.split('###')[0]
                     url = item.split('###')[1]
-                    url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
+                    
+                    name = unquote(name1).strip("\r\n")
+
                     self.cat_list.append(show_list(name, url))
                     # make m3u
                     nname = '#EXTINF:-1,' + str(name) + '\n'
