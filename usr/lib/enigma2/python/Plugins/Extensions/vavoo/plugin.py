@@ -1477,9 +1477,6 @@ def convert_bouquet(service, name, url):
                     if bouquet_name in line:
                         in_bouquets = True
             if not in_bouquets:
-                '''
-                Rename unlinked bouquet file /etc/enigma2/userbouquet.webcam.tv to /etc/enigma2/userbouquet.webcam.tv.del
-                '''
                 with open(path2, 'a+') as f:
                     bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
                     f.write(bouquetTvString)
