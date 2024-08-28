@@ -97,7 +97,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.26'
+currversion = '1.27'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -112,6 +112,7 @@ HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 # default_font = ''
 regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
+
 
 # log
 def trace_error():
@@ -134,16 +135,22 @@ if file_exists('/var/lib/dpkg/info'):
 
 # back
 global BackPath, FONTSTYPE, FNTPath  # maybe no..
-BackfPath = os_path.join(PLUGIN_PATH + "/skin")
-if screenwidth.width() == 2560:
-    BackPath = BackfPath + '/images_new'
-    skin_path = BackfPath + '/wqhd'
-elif screenwidth.width() == 1920:
-    BackPath = BackfPath + '/images_new'
-    skin_path = BackfPath + '/fhd'
-elif screenwidth.width() == 1280:
-    BackPath = BackfPath + '/images'
-    skin_path = BackfPath + '/hd'
+BackfPath = os.path.join(PLUGIN_PATH, "skin")
+screen_width = screenwidth.width()
+
+if screen_width == 2560:
+    BackPath = os.path.join(BackfPath, 'images_new')
+    skin_path = os.path.join(BackfPath, 'wqhd')
+elif screen_width == 1920:
+    BackPath = os.path.join(BackfPath, 'images_new')
+    skin_path = os.path.join(BackfPath, 'fhd')
+elif screen_width <= 1280:
+    BackPath = os.path.join(BackfPath, 'images')
+    skin_path = os.path.join(BackfPath, 'hd')
+else:
+    BackPath = None
+    skin_path = None
+
 print('folder back: ', BackPath)
 
 
@@ -236,23 +243,26 @@ def Sig():
             vecs = json.load(f)
             vec = choice(vecs)
             # print('vec=', str(vec))
-            headers = {
-                # Already added when you pass json=
-                'Content-Type': 'application/json',
-            }
+        headers = {
+            # Already added when you pass json=
+            'Content-Type': 'application/json',
+        }
         json_data = '{"vec": "' + str(vec) + '"}'
-        if PY3:
-            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
-        else:
-            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
-        # print('req:', req)
-        if req.get('signed'):
-            sig = req['signed']
-        elif req.get('data', {}).get('signed'):
-            sig = req['data']['signed']
-        elif req.get('response', {}).get('signed'):
-            sig = req['response']['signed']
-        # print('res key:', str(sig))
+        try:
+            if PY3:
+                req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
+            else:
+                req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
+            # print('req:', req)
+            if req.get('signed'):
+                sig = req['signed']
+            elif req.get('data', {}).get('signed'):
+                sig = req['data']['signed']
+            elif req.get('response', {}).get('signed'):
+                sig = req['response']['signed']
+            # print('res key:', str(sig))
+        except requests.RequestException as e:
+            print("Request failed:", e)
     return sig
 
 
@@ -276,27 +286,24 @@ def loop_sig():
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
     IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
+    text = vUtils.html_unescape(text_clear)
     if file_exists(TMDB):
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
-            text = vUtils.html_unescape(text_clear)
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as e:
-            print("[XCF] Tmdb: ", e)
-        return True
+            print("[XCF] TMDB error:", e)
+            _session.open(MessageBox, "Error opening TMDB plugin: {}".format(e), MessageBox.TYPE_ERROR)
     elif file_exists(IMDb):
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
-            text = vUtils.html_unescape(text_clear)
             imdb(_session, text)
         except Exception as e:
-            print("[XCF] imdb: ", e)
-        return True
+            print("[XCF] IMDb error:", e)
+            _session.open(MessageBox, "Error opening IMDb plugin: {}".format(e), MessageBox.TYPE_ERROR)
     else:
-        text_clear = vUtils.html_unescape(text_clear)
-        _session.open(MessageBox, text_clear, MessageBox.TYPE_INFO)
-        return True
-    return False
+        _session.open(MessageBox, text, MessageBox.TYPE_INFO)
+    return True
 
 
 # check server
@@ -919,6 +926,8 @@ class vavoo(Screen):
         global search_ok
         search_ok = False
         try:
+            sig = Sig()
+            app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
@@ -944,15 +953,14 @@ class vavoo(Screen):
                 for item in items:
                     name1 = item.split('###')[0]
                     url = item.split('###')[1]
-                    
                     name = unquote(name1).strip("\r\n")
-
                     self.cat_list.append(show_list(name, url))
                     # make m3u
                     nname = '#EXTINF:-1,' + str(name) + '\n'
                     outfile.write(nname)
                     outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
                     outfile.write(str(url) + '\n')
+                    # outfile.write(str(url) + app + '\n')
                 # make m3u end
                 if len(self.cat_list) < 1:
                     return
