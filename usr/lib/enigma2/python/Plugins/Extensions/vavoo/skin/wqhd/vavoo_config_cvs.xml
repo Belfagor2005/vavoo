@@ -1,4 +1,5 @@
 <screen name="vavoo_config" position="center,center" size="2560,1440" backgroundColor="#ff000000" flags="wfNoBorder">
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="2560,1440" scale="stretch" alphatest="off" zPosition="-1" />
     <!-- <eLabel backgroundColor="#30000000" position="0,0" size="2560,1440" transparent="0" zPosition="-9" foregroundColor="#00ffffff" /> -->
     <widget name="description" position="150,1135" size="960,180" zPosition="1" transparent="1" font="cvfont;56" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
     <widget name="config" position="195,240" size="870,780" itemHeight="60" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
@@ -8,9 +9,7 @@
     <widget name="green" font="cvfont;40" halign="center" valign="center" position="681,1325" size="396,79" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <eLabel backgroundColor="#00ff0000" position="185,1409" size="400,8" zPosition="4" />
     <eLabel backgroundColor="#0000ff00" position="681,1409" size="400,8" zPosition="4" />
-    <widget source="global.CurrentTime" render="Label" position="1932,105" size="422,130" font="xLcd; 100" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
+    <widget source="global.CurrentTime" render="Label" position="1932,105" size="422,130" font="Vav; 100" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <!-- <eLabel backgroundColor="#00ffffff" position="0,1306" size="2560,4" zPosition="2" /> -->
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="2560,1440" scale="stretch" alphatest="off" zPosition="-1" />
 </screen>

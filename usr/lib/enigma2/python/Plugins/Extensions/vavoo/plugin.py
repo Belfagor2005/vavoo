@@ -69,7 +69,7 @@ from datetime import datetime
 from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
-from twisted.web.client import error
+# from twisted.web.client import error
 import json
 import os
 import re
@@ -164,9 +164,8 @@ try:
                     continue
                 backName = backName[:-4]
                 BakP.append((backName, backName))
-
-except Exception as error:
-    trace_error()
+except Exception as e:
+    print(e)
 
 
 print('final folder back: ', BackPath)
@@ -187,8 +186,8 @@ try:
                 # print('final fontNamePath: ', fontNamePath)
                 # print('final fonts: ', fonts)
         fonts = sorted(fonts, key=lambda x: x[1])
-except Exception as error:
-    trace_error()
+except Exception as e:
+    print(e)
 
 
 # config section
@@ -320,6 +319,7 @@ def raises(url):
         if r.status_code == requests.codes.ok:
             return True
     except Exception as error:
+        print(error)
         trace_error()
     return False
 
@@ -463,6 +463,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 self['description'].setText(_('SELECT YOUR CHOICE'))
             return
         except Exception as error:
+            print(error)
             trace_error()
 
     def ipv6(self):
@@ -788,6 +789,7 @@ class MainVavoo(Screen):
                 auswahl = self['menulist'].getCurrent()[0][0]
                 self['name'].setText(str(auswahl))
         except Exception as error:
+            print(error)
             trace_error()
             self['name'].setText('Error')
         self['version'].setText('V.' + currversion)
@@ -798,6 +800,7 @@ class MainVavoo(Screen):
         try:
             self.session.open(vavoo, name, url)
         except Exception as error:
+            print(error)
             trace_error()
 
     def exit(self):
@@ -827,6 +830,7 @@ class MainVavoo(Screen):
                 self.session.open(MessageBox, _('Vavoo Favorites List have been removed'), MessageBox.TYPE_INFO, timeout=5)
                 vUtils.ReloadBouquets()
             except Exception as error:
+                print(error)
                 trace_error()
 
 
@@ -926,8 +930,8 @@ class vavoo(Screen):
         global search_ok
         search_ok = False
         try:
-            sig = Sig()
-            app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
+            # sig = Sig()
+            # app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
@@ -970,6 +974,7 @@ class vavoo(Screen):
                     auswahl = self['menulist'].getCurrent()[0][0]
                     self['name'].setText(str(auswahl))
         except Exception as error:
+            print(error)
             trace_error()
             self['name'].setText('Error')
         self['version'].setText('V.' + currversion)
@@ -985,6 +990,7 @@ class vavoo(Screen):
                 url = item[1]
             self.play_that_shit(url, name, self.currentindex, item, self.cat_list)
         except Exception as error:
+            print(error)
             trace_error()
 
     def play_that_shit(self, url, name, index, item, cat_list):
@@ -1091,6 +1097,7 @@ class vavoo(Screen):
                     auswahl = self['menulist'].getCurrent()[0][0]
                     self['name'].setText(str(auswahl))
             except Exception as error:
+                print(error)
                 trace_error()
                 self['name'].setText('Error')
                 search_ok = False
@@ -1322,6 +1329,7 @@ class Playstream2(
             AVSwitch.getInstance().setAspectRatio(self.new_aspect)
             return VIDEO_ASPECT_RATIO_MAP[self.new_aspect]
         except Exception as error:
+            print(error)
             trace_error()
             return _("Resolution Change Failed")
 
@@ -1359,7 +1367,7 @@ class Playstream2(
                 print('show imdb/tmdb')
         except Exception as error:
             trace_error()
-            print("Error: can't find Playstream2 in live_to_stream")
+            print("Error: can't find Playstream2 in live_to_stream", str(error))
 
     def slinkPlay(self):
         url = self.url
@@ -1498,7 +1506,6 @@ def convert_bouquet(service, name, url):
     return ch
 
 
-# autostart
 autoStartTimer = None
 
 
@@ -1574,6 +1581,7 @@ class AutoStartTimer:
                 cfg.last_update.value = localtime
                 cfg.last_update.save()
             except Exception as error:
+                print(error)
                 trace_error()
         self.update(constant)
 
@@ -1619,29 +1627,36 @@ def get_next_wakeup():
     return -1
 
 
-def add_skin_font():
-    print('**********addFont')
-    from enigma import addFont
-
-    # print('str(FONTSTYPE):', str(FONTSTYPE))
-    # addFont(filename, name, scale, isReplacement, render)
-    addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-    addFont((str(FNTPath) + '/vav.ttf'), 'Vav', 100, 1)  # lcd
-
-
 def add_skin_back(bakk):
-    print('**********addskinpath')
-    if file_exists(os_path.join(BackPath, str(bakk))):
-        # print('file_exists(str(BackPath) + / + str(bakk):', str(BackPath) + '/' + str(bakk))
-        baknew = os_path.join(BackPath, str(bakk))
+    if os.path.exists(os.path.join(BackPath, str(bakk))):
+        baknew = os.path.join(BackPath, str(bakk))
         cmd = 'cp -f ' + str(baknew) + ' ' + BackPath + '/default.png'
-        # print('add_skin_back cmd= ', cmd)
         os.system(cmd)
         os.system('sync')
 
 
+def add_skin_font():
+    print('**********addFont')
+    from enigma import addFont
+    # addFont(filename, name, scale, isReplacement, render)
+    addFont(str(FONTSTYPE), 'cvfont', 100, 1)
+    addFont(os.path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
+
+
+# def add_skin_back(bakk):
+    # print('**********addskinpath')
+    # import os
+    # import subprocess
+    # if os.path.exists(os.path.join(BackPath, str(bakk))):
+        # baknew = os.path.join(BackPath, str(bakk))
+        # cmd = ['cp', '-f', baknew, os.path.join(BackPath, 'default.png')]
+        # # cmd = 'cp -f ' + str(baknew) + ' ' + BackPath + '/default.png'
+        # subprocess.call(cmd)
+        # subprocess.call(['sync'])
+
+
 def cfgmain(menuid, **kwargs):
-    return [(_('Vavoo Stream Live'), main, 'Vavoo', 44)] if menuid == "mainmenu" else []
+    return [(_('Vavoo Stream Live'), main, 'Vavoo', 55)] if menuid == "mainmenu" else []
 
 
 def main(session, **kwargs):
@@ -1651,14 +1666,14 @@ def main(session, **kwargs):
         add_skin_font()
         session.open(startVavoo)
     except Exception as error:
+        print(error)
         trace_error()
 
 
 def Plugins(**kwargs):
-    # icon = os_path.join(PLUGIN_PATH, 'plugin.png')
     mainDescriptor = PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_MENU, icon=pluglogo, fnc=cfgmain)
-    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=pluglogo, fnc=main)
-              # PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
+    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=pluglogo, fnc=main),
+              PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
               ]
     if cfg.stmain.value:
         result.append(mainDescriptor)
