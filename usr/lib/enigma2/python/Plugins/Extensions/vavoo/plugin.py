@@ -592,20 +592,15 @@ class startVavoo(Screen):
             size = self['poster'].instance.size()
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
-            # Configura i parametri per la decodifica dell'immagine
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-            # Controlla la presenza del file "/var/lib/dpkg/status" per determinare la modalità di decodifica
             if file_exists("/var/lib/dpkg/status"):
                 self.picload.startDecode(pixmapx, False)
             else:
                 self.picload.startDecode(pixmapx, 0, 0, False)
-            # Ottiene i dati dell'immagine decodificata
             ptr = self.picload.getData()
             if ptr is not None:
-                # Imposta l'immagine nel widget e la mostra
                 self['poster'].instance.setPixmap(ptr)
                 self['poster'].show()
-                # Aggiorna la versione visualizzata
                 self['version'].setText('V.' + currversion)
 
     def loadDefaultImage(self):
@@ -682,7 +677,7 @@ class MainVavoo(Screen):
             'infolong': self.update_dev,
             'showEventInfoPlugin': self.update_dev,
         }, -1)
-
+        '''
         # self.timer = eTimer()
         # try:
             # self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -690,6 +685,7 @@ class MainVavoo(Screen):
             # self.timer.callback.append(self.cat)
         # self.timer.start(500, True)
         # self.onShow.append(self.check)
+        '''
         self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
@@ -770,7 +766,6 @@ class MainVavoo(Screen):
         self['name'].setText(str(txtsream))
 
     def cat(self):
-        print('halign=', HALIGN)
         self.cat_list = []
         items = []
         self.items_tmp = []
@@ -889,13 +884,14 @@ class vavoo(Screen):
             'info': self.info,
             'red': self.backhome
         }, -1)
-
+        '''
         # self.timer = eTimer()
         # try:
             # self.timer_conn = self.timer.timeout.connect(self.cat)
         # except:
             # self.timer.callback.append(self.cat)
         # self.timer.start(500, True)
+        '''
         self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
@@ -935,7 +931,6 @@ class vavoo(Screen):
         self['name'].setText(str(txtsream))
 
     def cat(self):
-        # print('halign=', HALIGN)
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
@@ -944,8 +939,6 @@ class vavoo(Screen):
         global search_ok
         search_ok = False
         try:
-            # sig = Sig()
-            # app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
             with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
