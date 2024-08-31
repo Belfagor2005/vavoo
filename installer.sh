@@ -2,8 +2,8 @@
 
 ##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 ######### Only This 2 lines to edit with new version ######
-version='1.27'
-changelog='\nFix cath vec'
+version='1.28'
+changelog='\nFix Screen HD\nRecode MenuList'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-main

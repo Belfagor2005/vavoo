@@ -1,5 +1,5 @@
 <screen name="vavoo_config" position="0,0" size="1920,1080" backgroundColor="transparent" flags="wfNoBorder">
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1080" alphatest="off" zPosition="-1" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" />
     <widget name="description" position="118,878" size="707,90" zPosition="1" backgroundColor="#30000000" transparent="1" font="cvfont; 38" valign="center" halign="center" foregroundColor="#00ffffff" />
     <widget name="config" position="152,170" size="640,650" zPosition="1" font="cvfont; 32" itemHeight="50" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
     <widget name="version" position="1667,935" size="120,40" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 32" halign="center" foregroundColor="#ffffff" />

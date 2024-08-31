@@ -1,5 +1,5 @@
 <screen name="vavoo_config" position="0,0" size="1280,720" backgroundColor="transparent" flags="wfNoBorder">
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/default.png" position="0,0" size="1280,720" alphatest="off" zPosition="-1" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/default.png" position="0,0" size="1280,720" alphatest="blend" zPosition="-1" />
     <!-- 
     <eLabel backgroundColor="#30000000" position="0,0" size="1280,720" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
      -->

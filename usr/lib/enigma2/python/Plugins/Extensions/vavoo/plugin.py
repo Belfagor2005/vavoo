@@ -10,6 +10,8 @@
 # ---- thank's Kiddac for support ---- #
 # Info Linuxsat-support.com & corvoboys.org
 """
+from __future__ import print_function
+
 # Local application/library-specific imports
 from . import _
 from . import vUtils
@@ -69,7 +71,7 @@ from datetime import datetime
 from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
-# from twisted.web.client import error
+from requests.adapters import HTTPAdapter, Retry
 import json
 import os
 import re
@@ -97,7 +99,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.27'
+currversion = '1.28'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -117,10 +119,14 @@ regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
 # log
 def trace_error():
     try:
+        # Stampa la traccia dell'errore su stdout
         traceback.print_exc(file=sys.stdout)
-        traceback.print_exc(file=open("/tmp/vavoo.log", "a"))
-    except:
-        pass
+        # Scrive la traccia dell'errore su un file di log
+        with open("/tmp/vavoo.log", "a") as log_file:
+            traceback.print_exc(file=log_file)
+    except Exception as e:
+        # Gestisce qualsiasi eccezione che potrebbe verificarsi durante la registrazione dell'errore
+        print("Failed to log the error:", e, file=sys.stderr)
 
 
 myser = [("https://vavoo.to", "vavoo"), ("https://oha.to", "oha"), ("https://kool.to", "kool"), ("https://huhu.to", "huhu")]
@@ -308,7 +314,6 @@ def returnIMDB(text_clear):
 # check server
 def raises(url):
     try:
-        from requests.adapters import HTTPAdapter, Retry
         retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
         http = requests.Session()
@@ -344,23 +349,22 @@ def rimuovi_parentesi(testo):
 
 # menulist
 class m2list(MenuList):
-    def __init__(self, list):
-        MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-
-        if screenwidth.width() == 2560:
-            self.l.setItemHeight(60)
-            textfont = int(38)
-            self.l.setFont(0, gFont('Regular', textfont))
-
-        elif screenwidth.width() == 1920:
-            self.l.setItemHeight(50)
-            textfont = int(34)
-            self.l.setFont(0, gFont('Regular', textfont))
-
+    def __init__(self, items):
+        # Inizializzazione della classe base MenuList
+        super(m2list, self).__init__(items, False, eListboxPythonMultiContent)
+        # Imposta i parametri di altezza e font in base alla risoluzione dello schermo
+        if screen_width == 2560:
+            item_height = 60
+            text_font_size = 38
+        elif screen_width == 1920:
+            item_height = 50
+            text_font_size = 34
         else:
-            self.l.setItemHeight(50)
-            textfont = int(28)
-            self.l.setFont(0, gFont('Regular', textfont))
+            item_height = 50
+            text_font_size = 28
+        # Applica le impostazioni alla lista
+        self.l.setItemHeight(item_height)
+        self.l.setFont(0, gFont('Regular', text_font_size))
 
 
 Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
@@ -370,23 +374,31 @@ Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
 
 
 def show_list(name, link):
+    global HALIGN
+    HALIGN = HALIGN
+    # Inizializza la lista con il nome e il link
     res = [(name, link)]
-    pngx = PLUGIN_PATH + '/skin/pics/Internat.png'
-    if any(s in name for s in Panel_list):
-        pngx = PLUGIN_PATH + '/skin/pics/%s.png' % name
+    # Determina il percorso dell'icona
+    default_icon = os.path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
+    pngx = os.path.join(PLUGIN_PATH, 'skin/pics', f'{name}.png') if any(s in name for s in Panel_list) else default_icon
+    if not os.path.isfile(pngx):
+        pngx = default_icon
+    # Configura il layout in base alla risoluzione dello schermo
+    icon_pos = (10, 10) if screen_width == 2560 else (10, 5)
+    icon_size = (60, 40)
+    if screen_width == 2560:
+        text_pos = (90, 0)
+        text_size = (750, 60)
+    elif screen_width == 1920:
+        text_pos = (80, 0)
+        text_size = (540, 50)
     else:
-        pngx = PLUGIN_PATH + '/skin/pics/vavoo_ico.png'
-    if os_path.isfile(pngx):
-        if screenwidth.width() == 2560:
-            res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(90, 0), size=(750, 60), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
-        elif screenwidth.width() == 1920:
-            res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(80, 0), size=(540, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
-        else:
-            res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(60, 40), png=loadPNG(pngx)))
-            res.append(MultiContentEntryText(pos=(85, 0), size=(380, 50), font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
-        return res
+        text_pos = (85, 0)
+        text_size = (380, 50)
+    # Aggiunge l'icona e il testo alla lista di elementi
+    res.append(MultiContentEntryPixmapAlphaTest(pos=icon_pos, size=icon_size, png=loadPNG(pngx)))
+    res.append(MultiContentEntryText(pos=text_pos, size=text_size, font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
+    return res
 
 
 # config class
@@ -534,11 +546,9 @@ class vavoo_config(Screen, ConfigListScreen):
             FONTSTYPE = os_path.join(str(FNTPath), str(FONTSE))
             print('FONTSTYPE cfg = ', FONTSTYPE)
             add_skin_font()
-
             bakk = str(cfg.back.getValue()) + '.png'
             # print('bakk= ', bakk)
             add_skin_back(bakk)
-
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
@@ -582,19 +592,21 @@ class startVavoo(Screen):
             size = self['poster'].instance.size()
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
+            # Configura i parametri per la decodifica dell'immagine
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-            # _l = self.picload.PictureData.get()
-            # del self.picload
+            # Controlla la presenza del file "/var/lib/dpkg/status" per determinare la modalità di decodifica
             if file_exists("/var/lib/dpkg/status"):
                 self.picload.startDecode(pixmapx, False)
             else:
                 self.picload.startDecode(pixmapx, 0, 0, False)
+            # Ottiene i dati dell'immagine decodificata
             ptr = self.picload.getData()
             if ptr is not None:
+                # Imposta l'immagine nel widget e la mostra
                 self['poster'].instance.setPixmap(ptr)
                 self['poster'].show()
+                # Aggiorna la versione visualizzata
                 self['version'].setText('V.' + currversion)
-            # return
 
     def loadDefaultImage(self):
         self.fldpng = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/pics/presplash.png".format('vavoo'))
@@ -671,13 +683,14 @@ class MainVavoo(Screen):
             'showEventInfoPlugin': self.update_dev,
         }, -1)
 
-        self.timer = eTimer()
-        try:
-            self.timer_conn = self.timer.timeout.connect(self.cat)
-        except:
-            self.timer.callback.append(self.cat)
-        self.timer.start(500, True)
+        # self.timer = eTimer()
+        # try:
+            # self.timer_conn = self.timer.timeout.connect(self.cat)
+        # except:
+            # self.timer.callback.append(self.cat)
+        # self.timer.start(500, True)
         # self.onShow.append(self.check)
+        self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
         global HALIGN
@@ -687,8 +700,8 @@ class MainVavoo(Screen):
         elif HALIGN == RT_HALIGN_RIGHT:
             HALIGN = RT_HALIGN_LEFT
             self['blue'].setText(_('Halign Right'))
-        # self.cat()
-        self.timer.start(200, True)
+        self.cat()
+        # self.timer.start(200, True)
 
     def update_me(self):
         remote_version = '0.0'
@@ -747,14 +760,14 @@ class MainVavoo(Screen):
     def chUp(self):
         for x in range(5):
             self[self.currentList].pageUp()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
 
     def chDown(self):
         for x in range(5):
             self[self.currentList].pageDown()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
 
     def cat(self):
         print('halign=', HALIGN)
@@ -786,8 +799,8 @@ class MainVavoo(Screen):
             else:
                 self['menulist'].l.setList(self.cat_list)
                 self['menulist'].moveToIndex(0)
-                auswahl = self['menulist'].getCurrent()[0][0]
-                self['name'].setText(str(auswahl))
+                txtsream = self['menulist'].getCurrent()[0][0]
+                self['name'].setText(str(txtsream))
         except Exception as error:
             print(error)
             trace_error()
@@ -877,12 +890,13 @@ class vavoo(Screen):
             'red': self.backhome
         }, -1)
 
-        self.timer = eTimer()
-        try:
-            self.timer_conn = self.timer.timeout.connect(self.cat)
-        except:
-            self.timer.callback.append(self.cat)
-        self.timer.start(500, True)
+        # self.timer = eTimer()
+        # try:
+            # self.timer_conn = self.timer.timeout.connect(self.cat)
+        # except:
+            # self.timer.callback.append(self.cat)
+        # self.timer.start(500, True)
+        self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
         global HALIGN
@@ -892,8 +906,8 @@ class vavoo(Screen):
         elif HALIGN == RT_HALIGN_RIGHT:
             HALIGN = RT_HALIGN_LEFT
             self['blue'].setText(_('Halign Right'))
-        # self.cat()
-        self.timer.start(200, True)
+        self.cat()
+        # self.timer.start(200, True)
 
     def backhome(self):
         if search_ok is True:
@@ -911,17 +925,17 @@ class vavoo(Screen):
     def chUp(self):
         for x in range(5):
             self[self.currentList].pageUp()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
 
     def chDown(self):
         for x in range(5):
             self[self.currentList].pageDown()
-        auswahl = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(auswahl))
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
 
     def cat(self):
-        print('halign=', HALIGN)
+        # print('halign=', HALIGN)
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
@@ -971,8 +985,8 @@ class vavoo(Screen):
                 else:
                     self['menulist'].l.setList(self.cat_list)
                     self['menulist'].moveToIndex(0)
-                    auswahl = self['menulist'].getCurrent()[0][0]
-                    self['name'].setText(str(auswahl))
+                    txtsream = self['menulist'].getCurrent()[0][0]
+                    self['name'].setText(str(txtsream))
         except Exception as error:
             print(error)
             trace_error()
@@ -1094,8 +1108,8 @@ class vavoo(Screen):
                 else:
                     self['menulist'].l.setList(self.cat_list)
                     self['menulist'].moveToIndex(0)
-                    auswahl = self['menulist'].getCurrent()[0][0]
-                    self['name'].setText(str(auswahl))
+                    txtsream = self['menulist'].getCurrent()[0][0]
+                    self['name'].setText(str(txtsream))
             except Exception as error:
                 print(error)
                 trace_error()
@@ -1643,18 +1657,6 @@ def add_skin_font():
     addFont(os.path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
 
 
-# def add_skin_back(bakk):
-    # print('**********addskinpath')
-    # import os
-    # import subprocess
-    # if os.path.exists(os.path.join(BackPath, str(bakk))):
-        # baknew = os.path.join(BackPath, str(bakk))
-        # cmd = ['cp', '-f', baknew, os.path.join(BackPath, 'default.png')]
-        # # cmd = 'cp -f ' + str(baknew) + ' ' + BackPath + '/default.png'
-        # subprocess.call(cmd)
-        # subprocess.call(['sync'])
-
-
 def cfgmain(menuid, **kwargs):
     return [(_('Vavoo Stream Live'), main, 'Vavoo', 55)] if menuid == "mainmenu" else []
 
@@ -1671,10 +1673,37 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-    mainDescriptor = PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_MENU, icon=pluglogo, fnc=cfgmain)
-    result = [PluginDescriptor(name=title_plug, description=_('Vavoo Stream Live'), where=PluginDescriptor.WHERE_PLUGINMENU, icon=pluglogo, fnc=main),
-              PluginDescriptor(name=title_plug, description="Vavoo Stream Live", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
-              ]
+    plugin_name = title_plug
+    plugin_description = _('Vavoo Stream Live')
+    plugin_icon = pluglogo
+
+    main_descriptor = PluginDescriptor(
+        name=plugin_name,
+        description=plugin_description,
+        where=PluginDescriptor.WHERE_MENU,
+        icon=plugin_icon,
+        fnc=cfgmain
+    )
+
+    plugin_menu_descriptor = PluginDescriptor(
+        name=plugin_name,
+        description=plugin_description,
+        where=PluginDescriptor.WHERE_PLUGINMENU,
+        icon=plugin_icon,
+        fnc=main
+    )
+
+    autostart_descriptor = PluginDescriptor(
+        name=plugin_name,
+        description=plugin_description,
+        where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART],
+        fnc=autostart,
+        wakeupfnc=get_next_wakeup
+    )
+
+    result = [plugin_menu_descriptor, autostart_descriptor]
+
     if cfg.stmain.value:
-        result.append(mainDescriptor)
+        result.append(main_descriptor)
+
     return result
