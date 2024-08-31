@@ -380,7 +380,7 @@ def show_list(name, link):
     res = [(name, link)]
     # Determina il percorso dell'icona
     default_icon = os.path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
-    pngx = os.path.join(PLUGIN_PATH, 'skin/pics', f'{name}.png') if any(s in name for s in Panel_list) else default_icon
+    pngx = os.path.join(PLUGIN_PATH, 'skin/pics', '%s.png' % name) if any(s in name for s in Panel_list) else default_icon
     if not os.path.isfile(pngx):
         pngx = default_icon
     # Configura il layout in base alla risoluzione dello schermo
