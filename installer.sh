@@ -24,6 +24,18 @@ else
    OSTYPE=Dream
 fi
 echo ""
+
+if [ -f /usr/bin/wget ]; then
+    echo "wget exist"
+else
+	if [ $OSTYPE = "DreamOs" ]; then
+		echo "dreamos"
+		apt-get update && apt-get install wget
+	else
+		opkg update && opkg install wget
+	fi
+fi
+
 if python --version 2>&1 | grep -q '^Python 3\.'; then
 	echo "You have Python3 image"
 	PYTHON=PY3
@@ -72,7 +84,7 @@ echo ""
 mkdir -p $TMPPATH
 cd $TMPPATH
 set -e
-if [ -f /var/lib/dpkg/status ]; then
+if [ $OSTYPE = "DreamOs" ]; then
    echo "# Your image is OE2.5/2.6 #"
    echo ""
 else
