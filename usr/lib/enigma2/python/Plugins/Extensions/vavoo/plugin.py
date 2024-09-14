@@ -72,6 +72,7 @@ from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
 from requests.adapters import HTTPAdapter, Retry
+import codecs
 import json
 import os
 import re
@@ -81,7 +82,6 @@ import ssl
 import sys
 import time
 import traceback
-import codecs
 
 global HALIGN
 tmlast = None
@@ -187,10 +187,7 @@ try:
             fontNamePath = os_path.join(FNTPath, fontName)
             if fontName.endswith(".ttf"):
                 fontName = fontName[:-4]
-                # fonts.append((fontNamePath, fontName))
                 fonts.append((fontName, fontName))
-                # print('final fontNamePath: ', fontNamePath)
-                # print('final fonts: ', fonts)
         fonts = sorted(fonts, key=lambda x: x[1])
 except Exception as e:
     print(e)
@@ -253,21 +250,21 @@ def Sig():
             'Content-Type': 'application/json',
         }
         json_data = '{"vec": "' + str(vec) + '"}'
-        try:
-            if PY3:
-                req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
-            else:
-                req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
-            # print('req:', req)
-            if req.get('signed'):
-                sig = req['signed']
-            elif req.get('data', {}).get('signed'):
-                sig = req['data']['signed']
-            elif req.get('response', {}).get('signed'):
-                sig = req['response']['signed']
-            # print('res key:', str(sig))
-        except requests.RequestException as e:
-            print("Request failed:", e)
+        # try:
+        if PY3:
+            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
+        else:
+            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
+        # print('req:', req)
+        if req.get('signed'):
+            sig = req['signed']
+        elif req.get('data', {}).get('signed'):
+            sig = req['data']['signed']
+        elif req.get('response', {}).get('signed'):
+            sig = req['response']['signed']
+        # print('res key:', str(sig))
+        # except requests.RequestException as e:
+            # print("Request failed:", e)
     return sig
 
 
