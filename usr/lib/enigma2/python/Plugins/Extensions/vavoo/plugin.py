@@ -180,7 +180,7 @@ print('final folder back: ', BackPath)
 
 
 # fonts
-FNTPath = os_path.join(PLUGIN_PATH + "/fonts")
+FNTPath = os_path.join(PLUGIN_PATH, "fonts")
 fonts = []
 try:
     if file_exists(FNTPath):
@@ -232,6 +232,7 @@ except:
     lng = 'en'
     pass
 
+                                                                         
 
 def Sig():
     sig = ''
@@ -396,6 +397,7 @@ def show_list(name, link):
         text_size = (380, 50)
     # Aggiunge l'icona e il testo alla lista di elementi
     res.append(MultiContentEntryPixmapAlphaTest(pos=icon_pos, size=icon_size, png=loadPNG(pngx)))
+                                                                                                       
     res.append(MultiContentEntryText(pos=text_pos, size=text_size, font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
 
@@ -488,12 +490,14 @@ class vavoo_config(Screen, ConfigListScreen):
             if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
                 os.unlink('/etc/rc3.d/S99ipv6dis.sh')
                 cfg.ipv6.setValue(False)
+                                                  
             else:
                 os.system("echo '#!/bin/bash")
                 os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
                 os.system("chmod 755 /etc/init.d/ipv6dis.sh")
                 os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
                 cfg.ipv6.setValue(True)
+                                                 
             cfg.ipv6.save()
 
     def changedEntry(self):
@@ -633,6 +637,7 @@ class startVavoo(Screen):
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+                              
             if file_exists("/var/lib/dpkg/status"):
                 self.picload.startDecode(pixmapx, False)
             else:
@@ -651,7 +656,6 @@ class startVavoo(Screen):
         else:
             self.timer.callback.append(self.decodeImage)
         self.timer.start(500, True)
-
         self.timerx = eTimer()
         if file_exists('/var/lib/dpkg/status'):
             self.timerx_conn = self.timerx.timeout.connect(self.clsgo)
@@ -793,8 +797,10 @@ class MainVavoo(Screen):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
+                 
     def chUp(self):
         for x in range(5):
+                                     
             self[self.currentList].pageUp()
         txtsream = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(txtsream))
@@ -1431,7 +1437,6 @@ class Playstream2(
         # tmlast = int(time.time())
         sig = Sig()
         app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
-        # print('sig:', str(sig))
         name = self.name
         url = url + app
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
@@ -1643,7 +1648,6 @@ class AutoStartTimer:
             # try:'''
             print('session start convert time')
             vid2 = vavoo(_session, name, url)
-            # vid2.message2(name, url, False)
             vid2.message0(name, url, False)
             '''# except Exception as e:
                 # print('timeredit error vavoo', e)'''
