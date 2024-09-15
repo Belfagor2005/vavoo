@@ -99,7 +99,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.28'
+currversion = '1.29'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -130,6 +130,7 @@ def trace_error():
 
 
 myser = [("https://vavoo.to", "vavoo"), ("https://oha.to", "oha"), ("https://kool.to", "kool"), ("https://huhu.to", "huhu")]
+mydns = [("None", "Default"), ("google", "Google"), ("coudfire", "Coudfire"), ("quad9", "Quad9")]
 modemovie = [("4097", "4097")]
 if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "5001"))
@@ -205,6 +206,7 @@ cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
+cfg.dns = ConfigSelection(default="Default", choices=mydns)
 cfg.fonts = ConfigSelection(default='vav', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
 FONTSTYPE = FNTPath + '/' + str(cfg.fonts.value) + '.ttf'
@@ -446,11 +448,11 @@ class vavoo_config(Screen, ConfigListScreen):
         self.list = []
         indent = "- "
         self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
-        self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
+        self.list.append(getConfigListEntry(_("Select DNS Server"), cfg.dns, _("Configure Dns Server for Box.")))        
         self.list.append(getConfigListEntry(_("Select Background"), cfg.back, _("Configure Main Background Image.")))
         self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
-        self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
+        self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))        
         self.list.append(getConfigListEntry(_("Scheduled Bouquet Update:"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + _("Schedule type:"), cfg.timetype, _("At an interval of hours or at a fixed time")))
@@ -458,7 +460,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 self.list.append(getConfigListEntry(2 * indent + _("Update interval (minutes):"), cfg.updateinterval, _("Configure every interval of minutes from now")))
             if cfg.timetype.value == "fixed time":
                 self.list.append(getConfigListEntry(2 * indent + _("Time to start update:"), cfg.fixedtime, _("Configure at a fixed time")))
-
+        self.list.append(getConfigListEntry(_('Link in Main Menu'), cfg.stmain, _("Link in Main Menu")))
         self["config"].list = self.list
         self["config"].l.setList(self.list)
         self.setInfo()
@@ -538,18 +540,59 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             configfile.save()
+            print('DNS CHECK')
+            if self.dnsmy():
+                print('DNS CHECK')
+                # self.session.open(MessageBox, _('Dns Updated!\nRestart your device ...'), MessageBox.TYPE_INFO, timeout=5)
             global FONTSTYPE
             FONTSE = str(cfg.fonts.getValue()) + '.ttf'
             FONTSTYPE = os_path.join(str(FNTPath), str(FONTSE))
             print('FONTSTYPE cfg = ', FONTSTYPE)
             add_skin_font()
             bakk = str(cfg.back.getValue()) + '.png'
-            # print('bakk= ', bakk)
             add_skin_back(bakk)
             restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
             restartbox.setTitle(_('Restart GUI now?'))
         else:
             self.close()
+
+    def dnsmy(self):
+        valuedns = cfg.dns.value
+        print(valuedns)
+        valdns = False
+        if valuedns is not 'None':
+            '''
+            if 'google' in valuedns:
+                self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsGoogle.sh?inline=false" -qO - | bash'
+
+            if 'couldfire' in valuedns:
+                self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsCloudflare.sh?inline=false" -qO - | bash'
+
+            if 'quad9' in valuedns:
+                self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsQuad9.sh?inline=false" -qO - | bash'
+            
+            title = (_("Executing %s\nPlease Wait...") % self.namev)
+            self.session.open(Console, _(title), [self.url], closeOnSuccess=False)
+            '''
+            self.cmd1 = None
+            if 'google' in valuedns:
+                self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsGoogle.sh')               
+            elif 'couldfire' in valuedns:
+                self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsCloudflare.sh')            
+            elif 'quad9' in valuedns:            
+                self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsQuad9.sh')
+            if self.cmd1 is not None:
+                try:
+                    from os import access, X_OK
+                    if not access(self.cmd1, X_OK):
+                        os.chmod(self.cmd1, 493)
+                    import subprocess
+                    subprocess.check_output(['bash', self.cmd1])
+                    valdns = True
+                    print('Dns Updated!\nRestart your device ...')
+                except subprocess.CalledProcessError as e:
+                    print(e.output)
+        return valdns
 
     def restartGUI(self, answer):
         if answer is True:
