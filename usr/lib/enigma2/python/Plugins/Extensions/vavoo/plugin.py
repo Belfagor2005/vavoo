@@ -232,7 +232,6 @@ except:
     lng = 'en'
     pass
 
-                                                                         
 
 def Sig():
     sig = ''
@@ -397,7 +396,7 @@ def show_list(name, link):
         text_size = (380, 50)
     # Aggiunge l'icona e il testo alla lista di elementi
     res.append(MultiContentEntryPixmapAlphaTest(pos=icon_pos, size=icon_size, png=loadPNG(pngx)))
-                                                                                                       
+
     res.append(MultiContentEntryText(pos=text_pos, size=text_size, font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
 
@@ -451,10 +450,10 @@ class vavoo_config(Screen, ConfigListScreen):
         indent = "- "
         self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
-        self.list.append(getConfigListEntry(_("Select DNS Server"), cfg.dns, _("Configure Dns Server for Box.")))        
+        self.list.append(getConfigListEntry(_("Select DNS Server"), cfg.dns, _("Configure Dns Server for Box.")))
         self.list.append(getConfigListEntry(_("Select Background"), cfg.back, _("Configure Main Background Image.")))
         self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
-        self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))        
+        self.list.append(getConfigListEntry(_("Ipv6 State Of Lan (On/Off)"), cfg.ipv6, _("Active or Disactive lan Ipv6.\nNow %s") % cfg.ipv6.value))
         self.list.append(getConfigListEntry(_("Scheduled Bouquet Update:"), cfg.autobouquetupdate, _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + _("Schedule type:"), cfg.timetype, _("At an interval of hours or at a fixed time")))
@@ -490,14 +489,14 @@ class vavoo_config(Screen, ConfigListScreen):
             if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
                 os.unlink('/etc/rc3.d/S99ipv6dis.sh')
                 cfg.ipv6.setValue(False)
-                                                  
+
             else:
                 os.system("echo '#!/bin/bash")
                 os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
                 os.system("chmod 755 /etc/init.d/ipv6dis.sh")
                 os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
                 cfg.ipv6.setValue(True)
-                                                 
+
             cfg.ipv6.save()
 
     def changedEntry(self):
@@ -564,7 +563,7 @@ class vavoo_config(Screen, ConfigListScreen):
         valuedns = cfg.dns.value
         print(valuedns)
         valdns = False
-        if valuedns is not 'None':
+        if str(valuedns) != 'None':
             '''
             if 'google' in valuedns:
                 self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsGoogle.sh?inline=false" -qO - | bash'
@@ -574,16 +573,16 @@ class vavoo_config(Screen, ConfigListScreen):
 
             if 'quad9' in valuedns:
                 self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsQuad9.sh?inline=false" -qO - | bash'
-            
+
             title = (_("Executing %s\nPlease Wait...") % self.namev)
             self.session.open(Console, _(title), [self.url], closeOnSuccess=False)
             '''
             self.cmd1 = None
             if 'google' in valuedns:
-                self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsGoogle.sh')               
+                self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsGoogle.sh')
             elif 'couldfire' in valuedns:
-                self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsCloudflare.sh')            
-            elif 'quad9' in valuedns:            
+                self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsCloudflare.sh')
+            elif 'quad9' in valuedns:
                 self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsQuad9.sh')
             if self.cmd1 is not None:
                 try:
@@ -637,7 +636,7 @@ class startVavoo(Screen):
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-                              
+
             if file_exists("/var/lib/dpkg/status"):
                 self.picload.startDecode(pixmapx, False)
             else:
@@ -797,10 +796,9 @@ class MainVavoo(Screen):
         aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
         aboutbox.setTitle(_('Info Vavoo'))
 
-                 
     def chUp(self):
         for x in range(5):
-                                     
+
             self[self.currentList].pageUp()
         txtsream = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(txtsream))
