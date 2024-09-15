@@ -1686,6 +1686,7 @@ def add_skin_font():
     print('**********addFont')
     from enigma import addFont
     # addFont(filename, name, scale, isReplacement, render)
+    addFont(FNTPath + '/Lcdx.ttf', 'Lcdx', 100, 1)
     addFont(str(FONTSTYPE), 'cvfont', 100, 1)
     addFont(os.path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
 
