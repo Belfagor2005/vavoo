@@ -190,11 +190,10 @@ def ReloadBouquets():
     eDVBDB.getInstance().reloadServicelist()
     eDVBDB.getInstance().reloadBouquets()
 
-
 def decodeHtml(text):
     if pythonVer == 3:
         import html
-        text = html.unescape(text)
+        text = html.unescape(text.decode('utf8')).encode('utf8')
     else:
         from six.moves import (html_parser)
         h = html_parser.HTMLParser()
