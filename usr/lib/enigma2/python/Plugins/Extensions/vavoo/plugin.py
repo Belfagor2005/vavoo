@@ -99,7 +99,7 @@ if sys.version_info >= (2, 7, 9):
 
 
 # set plugin
-currversion = '1.29'
+currversion = '1.30'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -1286,7 +1286,7 @@ class Playstream2(
         self.new_aspect = self.init_aspect
         self.service = None
         self.url = url.replace('%0a', '').replace('%0A', '')
-        self.name = vUtils.decodeHtml(name)
+        self.name = name
         self.state = self.STATE_PLAYING
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
         self['actions'] = ActionMap(['MoviePlayerActions', 'MovieSelectionActions', 'MediaPlayerActions', 'EPGSelectActions', 'OkCancelActions',
