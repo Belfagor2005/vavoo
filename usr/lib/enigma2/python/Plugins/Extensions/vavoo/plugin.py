@@ -252,7 +252,6 @@ def Sig():
             'Content-Type': 'application/json',
         }
         json_data = '{"vec": "' + str(vec) + '"}'
-        # try:
         if PY3:
             req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
         else:
@@ -265,8 +264,6 @@ def Sig():
         elif req.get('response', {}).get('signed'):
             sig = req['response']['signed']
         # print('res key:', str(sig))
-        # except requests.RequestException as e:
-            # print("Request failed:", e)
     return sig
 
 
@@ -475,7 +472,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 self['description'].setText(_('SELECT YOUR CHOICE'))
             return
         except Exception as error:
-            print(error)
+            print('error as:', error)
             trace_error()
 
     def ipv6(self):
@@ -489,14 +486,12 @@ class vavoo_config(Screen, ConfigListScreen):
             if os_path.islink('/etc/rc3.d/S99ipv6dis.sh'):
                 os.unlink('/etc/rc3.d/S99ipv6dis.sh')
                 cfg.ipv6.setValue(False)
-
             else:
                 os.system("echo '#!/bin/bash")
                 os.system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
                 os.system("chmod 755 /etc/init.d/ipv6dis.sh")
                 os.system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
                 cfg.ipv6.setValue(True)
-
             cfg.ipv6.save()
 
     def changedEntry(self):
@@ -720,16 +715,15 @@ class MainVavoo(Screen):
             'infolong': self.update_dev,
             'showEventInfoPlugin': self.update_dev,
         }, -1)
-        '''
-        # self.timer = eTimer()
-        # try:
-            # self.timer_conn = self.timer.timeout.connect(self.cat)
-        # except:
-            # self.timer.callback.append(self.cat)
-        # self.timer.start(500, True)
+
+        self.timer = eTimer()
+        try:
+            self.timer_conn = self.timer.timeout.connect(self.cat)
+        except:
+            self.timer.callback.append(self.cat)
+        self.timer.start(500, True)
         # self.onShow.append(self.check)
-        '''
-        self.onLayoutFinish.append(self.cat)
+        # self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
         global HALIGN
@@ -841,7 +835,7 @@ class MainVavoo(Screen):
                 txtsream = self['menulist'].getCurrent()[0][0]
                 self['name'].setText(str(txtsream))
         except Exception as error:
-            print(error)
+            print('error as:', error)
             trace_error()
             self['name'].setText('Error')
         self['version'].setText('V.' + currversion)
@@ -852,7 +846,7 @@ class MainVavoo(Screen):
         try:
             self.session.open(vavoo, name, url)
         except Exception as error:
-            print(error)
+            print('error as:', error)
             trace_error()
 
     def exit(self):
@@ -928,15 +922,14 @@ class vavoo(Screen):
             'info': self.info,
             'red': self.backhome
         }, -1)
-        '''
-        # self.timer = eTimer()
-        # try:
-            # self.timer_conn = self.timer.timeout.connect(self.cat)
-        # except:
-            # self.timer.callback.append(self.cat)
-        # self.timer.start(500, True)
-        '''
-        self.onLayoutFinish.append(self.cat)
+
+        self.timer = eTimer()
+        try:
+            self.timer_conn = self.timer.timeout.connect(self.cat)
+        except:
+            self.timer.callback.append(self.cat)
+        self.timer.start(500, True)
+        # self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
         global HALIGN
@@ -1041,7 +1034,7 @@ class vavoo(Screen):
                 url = item[1]
             self.play_that_shit(url, name, self.currentindex, item, self.cat_list)
         except Exception as error:
-            print(error)
+            print('error as:', error)
             trace_error()
 
     def play_that_shit(self, url, name, index, item, cat_list):
@@ -1496,7 +1489,7 @@ def convert_bouquet(service, name, url):
     name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
     name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
     name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
-    with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
+    with open(PLUGIN_PATH + '/Favorite.txt', 'w', encoding='utf-8') as r:
         r.write(str(name_file) + '###' + str(url))
     bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
     print("Converting Bouquet %s" % name_file)
@@ -1534,7 +1527,7 @@ def convert_bouquet(service, name, url):
                         tplst.append(dct)
                         ch += 1
 
-            with open(path1, 'w+') as f:
+            with open(path1, 'w+', encoding='utf-8') as f:
                 f_content = f.read()
                 for item in tplst:
                     if item not in f_content:
@@ -1547,7 +1540,7 @@ def convert_bouquet(service, name, url):
                     if bouquet_name in line:
                         in_bouquets = True
             if not in_bouquets:
-                with open(path2, 'a+') as f:
+                with open(path2, 'a+', encoding='utf-8') as f:
                     bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
                     f.write(bouquetTvString)
             vUtils.ReloadBouquets()
@@ -1637,8 +1630,9 @@ class AutoStartTimer:
 
     def startMain(self):
         name = url = ''
-        if file_exists(PLUGIN_PATH + '/Favorite.txt'):
-            with open(PLUGIN_PATH + '/Favorite.txt', 'r') as f:
+        favorite_channel = os.path.join(PLUGIN_PATH, 'Favorite.txt')
+        if file_exists(favorite_channel):
+            with open(favorite_channel, 'r') as f:
                 line = f.readline()
                 name = line.split('###')[0]
                 url = line.split('###')[1]
