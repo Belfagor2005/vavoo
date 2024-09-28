@@ -146,7 +146,7 @@ enigma_path = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
-# default_font = ''
+screen_width = screenwidth.width()
 regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
 
 
@@ -177,7 +177,6 @@ if file_exists('/var/lib/dpkg/info'):
 # back
 global BackPath, FONTSTYPE, FNTPath  # maybe no..
 BackfPath = os_path.join(PLUGIN_PATH, "skin")
-screen_width = screenwidth.width()
 
 if screen_width == 2560:
     BackPath = os_path.join(BackfPath, 'images_new')
@@ -1565,7 +1564,7 @@ def convert_bouquet(service, name, url):
                     f.write(bouquetTvString)
             vUtils.ReloadBouquets()
         except Exception as error:
-            print(error)
+            print('error as:', error)
     return ch
 
 
