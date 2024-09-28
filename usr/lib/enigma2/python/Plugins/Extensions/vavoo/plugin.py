@@ -51,7 +51,6 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from six.moves.urllib.parse import unquote
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (
     RT_VALIGN_CENTER,
@@ -77,7 +76,6 @@ import json
 import os
 import re
 import requests
-import six
 import ssl
 import sys
 import time
@@ -87,6 +85,8 @@ global HALIGN
 tmlast = None
 now = None
 _session = None
+
+
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
@@ -98,7 +98,41 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
+# if sys.version_info[0] < 3:
+    # unicode = unicode  # Python 2
+# else:
+    # unicode = str  # Python 3
+if PY3:
+    unicode = str
+
+
+try:
+    from urllib import unquote
+except ImportError:
+    from urllib.parse import unquote
+
+
+def ensure_str(text, encoding='utf-8', errors='strict'):
+    if type(text) is str:
+        return text
+    if PY2:
+        if isinstance(text, unicode):
+            try:
+                return text.encode(encoding, errors)
+            except Exception:
+                return text.encode(encoding, 'ignore')
+    else:
+        if isinstance(text, bytes):
+            try:
+                return text.decode(encoding, errors)
+            except Exception:
+                return text.decode(encoding, 'ignore')
+    return text
+
+
 # set plugin
+
+
 currversion = '1.30'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
@@ -142,18 +176,18 @@ if file_exists('/var/lib/dpkg/info'):
 
 # back
 global BackPath, FONTSTYPE, FNTPath  # maybe no..
-BackfPath = os.path.join(PLUGIN_PATH, "skin")
+BackfPath = os_path.join(PLUGIN_PATH, "skin")
 screen_width = screenwidth.width()
 
 if screen_width == 2560:
-    BackPath = os.path.join(BackfPath, 'images_new')
-    skin_path = os.path.join(BackfPath, 'wqhd')
+    BackPath = os_path.join(BackfPath, 'images_new')
+    skin_path = os_path.join(BackfPath, 'wqhd')
 elif screen_width == 1920:
-    BackPath = os.path.join(BackfPath, 'images_new')
-    skin_path = os.path.join(BackfPath, 'fhd')
+    BackPath = os_path.join(BackfPath, 'images_new')
+    skin_path = os_path.join(BackfPath, 'fhd')
 elif screen_width <= 1280:
-    BackPath = os.path.join(BackfPath, 'images')
-    skin_path = os.path.join(BackfPath, 'hd')
+    BackPath = os_path.join(BackfPath, 'images')
+    skin_path = os_path.join(BackfPath, 'hd')
 else:
     BackPath = None
     skin_path = None
@@ -231,6 +265,11 @@ try:
 except:
     lng = 'en'
     pass
+
+
+def clearCache():
+    with open("/proc/sys/vm/drop_caches", "w") as f:
+        f.write("1\n")
 
 
 def Sig():
@@ -375,9 +414,9 @@ def show_list(name, link):
     # Inizializza la lista con il nome e il link
     res = [(name, link)]
     # Determina il percorso dell'icona
-    default_icon = os.path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
-    pngx = os.path.join(PLUGIN_PATH, 'skin/pics', '%s.png' % name) if any(s in name for s in Panel_list) else default_icon
-    if not os.path.isfile(pngx):
+    default_icon = os_path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
+    pngx = os_path.join(PLUGIN_PATH, 'skin/pics', '%s.png' % name) if any(s in name for s in Panel_list) else default_icon
+    if not os_path.isfile(pngx):
         pngx = default_icon
     # Configura il layout in base alla risoluzione dello schermo
     icon_pos = (10, 10) if screen_width == 2560 else (10, 5)
@@ -393,7 +432,6 @@ def show_list(name, link):
         text_size = (380, 50)
     # Aggiunge l'icona e il testo alla lista di elementi
     res.append(MultiContentEntryPixmapAlphaTest(pos=icon_pos, size=icon_size, png=loadPNG(pngx)))
-
     res.append(MultiContentEntryText(pos=text_pos, size=text_size, font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
 
@@ -559,19 +597,6 @@ class vavoo_config(Screen, ConfigListScreen):
         print(valuedns)
         valdns = False
         if str(valuedns) != 'None':
-            '''
-            if 'google' in valuedns:
-                self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsGoogle.sh?inline=false" -qO - | bash'
-
-            if 'couldfire' in valuedns:
-                self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsCloudflare.sh?inline=false" -qO - | bash'
-
-            if 'quad9' in valuedns:
-                self.url = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/LinuxsatPanel/main/usr/lib/enigma2/python/Plugins/Extensions/LinuxsatPanel/sh/DnsQuad9.sh?inline=false" -qO - | bash'
-
-            title = (_("Executing %s\nPlease Wait...") % self.namev)
-            self.session.open(Console, _(title), [self.url], closeOnSuccess=False)
-            '''
             self.cmd1 = None
             if 'google' in valuedns:
                 self.cmd1 = os_path.join(PLUGIN_PATH + 'resolver/', 'DnsGoogle.sh')
@@ -684,7 +709,6 @@ class MainVavoo(Screen):
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove') + ' Fav')
-        # self['green'] = Label()
         self['yellow'] = Label(_('Update Me'))
         self["blue"] = Label()
         if HALIGN == RT_HALIGN_RIGHT:
@@ -722,8 +746,6 @@ class MainVavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
-        # self.onShow.append(self.check)
-        # self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
         global HALIGN
@@ -734,7 +756,6 @@ class MainVavoo(Screen):
             HALIGN = RT_HALIGN_LEFT
             self['blue'].setText(_('Halign Right'))
         self.cat()
-        # self.timer.start(200, True)
 
     def update_me(self):
         remote_version = '0.0'
@@ -812,7 +833,7 @@ class MainVavoo(Screen):
         try:
             content = vUtils.getUrl(self.url)
             if PY3:
-                content = six.ensure_str(content)
+                content = ensure_str(content)
             regexcat = '"country".*?"(.*?)".*?"id".*?"name".*?".*?"'
             match = re.compile(regexcat, re.DOTALL).findall(content)
             for country in match:
@@ -850,6 +871,7 @@ class MainVavoo(Screen):
             trace_error()
 
     def exit(self):
+        clearCache()
         self.close()
 
     def msgdeleteBouquets(self):
@@ -929,7 +951,6 @@ class vavoo(Screen):
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
-        # self.onLayoutFinish.append(self.cat)
 
     def arabic(self):
         global HALIGN
@@ -940,7 +961,6 @@ class vavoo(Screen):
             HALIGN = RT_HALIGN_LEFT
             self['blue'].setText(_('Halign Right'))
         self.cat()
-        # self.timer.start(200, True)
 
     def backhome(self):
         if search_ok is True:
@@ -980,7 +1000,7 @@ class vavoo(Screen):
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
                 if PY3:
-                    content = six.ensure_str(content)
+                    content = ensure_str(content)
                 names = self.name
                 regexcat = '"country".*?"(.*?)".*?"id"(.*?)"name".*?"(.*?)"'
                 match = re.compile(regexcat, re.DOTALL).findall(content)
@@ -999,16 +1019,16 @@ class vavoo(Screen):
                 itemlist = items
                 # use for search end
                 for item in items:
-                    name1 = item.split('###')[0]
+                    name = item.split('###')[0]
                     url = item.split('###')[1]
-                    name = unquote(name1).strip("\r\n")
+                    url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
+                    name = unquote(name).strip("\r\n")
                     self.cat_list.append(show_list(name, url))
                     # make m3u
                     nname = '#EXTINF:-1,' + str(name) + '\n'
                     outfile.write(nname)
                     outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
                     outfile.write(str(url) + '\n')
-                    # outfile.write(str(url) + app + '\n')
                 # make m3u end
                 if len(self.cat_list) < 1:
                     return
@@ -1018,7 +1038,7 @@ class vavoo(Screen):
                     txtsream = self['menulist'].getCurrent()[0][0]
                     self['name'].setText(str(txtsream))
         except Exception as error:
-            print(error)
+            print('error as:', error)
             trace_error()
             self['name'].setText('Error')
         self['version'].setText('V.' + currversion)
@@ -1496,7 +1516,7 @@ def convert_bouquet(service, name, url):
     path1 = '/etc/enigma2/' + str(bouquet_name)
     path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
     ch = 0
-    if os.path.exists(files) and os.stat(files).st_size > 0:
+    if file_exists(files) and os.stat(files).st_size > 0:
         try:
             tplst = []
             tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
@@ -1630,7 +1650,7 @@ class AutoStartTimer:
 
     def startMain(self):
         name = url = ''
-        favorite_channel = os.path.join(PLUGIN_PATH, 'Favorite.txt')
+        favorite_channel = os_path.join(PLUGIN_PATH, 'Favorite.txt')
         if file_exists(favorite_channel):
             with open(favorite_channel, 'r') as f:
                 line = f.readline()
@@ -1671,8 +1691,8 @@ def get_next_wakeup():
 
 
 def add_skin_back(bakk):
-    if os.path.exists(os.path.join(BackPath, str(bakk))):
-        baknew = os.path.join(BackPath, str(bakk))
+    if file_exists(os_path.join(BackPath, str(bakk))):
+        baknew = os_path.join(BackPath, str(bakk))
         cmd = 'cp -f ' + str(baknew) + ' ' + BackPath + '/default.png'
         os.system(cmd)
         os.system('sync')
@@ -1684,7 +1704,7 @@ def add_skin_font():
     # addFont(filename, name, scale, isReplacement, render)
     addFont(FNTPath + '/Lcdx.ttf', 'Lcdx', 100, 1)
     addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-    addFont(os.path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
+    addFont(os_path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
 
 
 def cfgmain(menuid, **kwargs):
@@ -1698,7 +1718,7 @@ def main(session, **kwargs):
         add_skin_font()
         session.open(startVavoo)
     except Exception as error:
-        print(error)
+        print('error as:', error)
         trace_error()
 
 
