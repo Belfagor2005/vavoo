@@ -71,6 +71,7 @@ from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
 from requests.adapters import HTTPAdapter, Retry
+from six import text_type as unicode
 import codecs
 import json
 import os
@@ -97,15 +98,11 @@ if sys.version_info >= (2, 7, 9):
     except:
         sslContext = None
 
-
 if PY2:
-    import codecs
-    open_func = codecs.open
-    str_type = unicode
+    str = unicode
 else:
     unicode = str
-    open_func = open
-    str_type = str
+
 
 if PY2:
     import io
