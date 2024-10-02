@@ -98,9 +98,20 @@ if sys.version_info >= (2, 7, 9):
         sslContext = None
 
 
-if PY3:
+if PY2:
+    import codecs
+    open_func = codecs.open
+    str_type = unicode
+else:
     unicode = str
+    open_func = open
+    str_type = str
 
+if PY2:
+    import io
+    open_func = io.open
+else:
+    open_func = open
 
 try:
     from urllib import unquote
@@ -153,7 +164,7 @@ def trace_error():
         # Stampa la traccia dell'errore su stdout
         traceback.print_exc(file=sys.stdout)
         # Scrive la traccia dell'errore su un file di log
-        with open("/tmp/vavoo.log", "a") as log_file:
+        with open_func("/tmp/vavoo.log", "a") as log_file:
             traceback.print_exc(file=log_file)
     except Exception as e:
         # Gestisce qualsiasi eccezione che potrebbe verificarsi durante la registrazione dell'errore
@@ -267,7 +278,7 @@ except:
 
 
 def clearCache():
-    with open("/proc/sys/vm/drop_caches", "w") as f:
+    with open_func("/proc/sys/vm/drop_caches", "w") as f:
         f.write("1\n")
 
 
@@ -299,7 +310,7 @@ def set_cache(key, value, timeout=300):
     """Imposta il valore nella cache."""
     data = {"sigValidUntil": int(time.time()) + timeout, "ip": get_external_ip(), "value": value}
     file_path = os.path.join(PLUGIN_PATH, key + '.json')
-    with open(file_path, "w") as cache_file:
+    with open_func(file_path, "w") as cache_file:
         json.dump(data, cache_file, indent=4)
 
 
@@ -307,7 +318,7 @@ def get_cache(key):
     """Ritorna il valore dalla cache se valido."""
     file_path = os.path.join(PLUGIN_PATH, key + '.json')
     if os.path.exists(file_path):
-        with open(file_path) as cache_file:
+        with open_func(file_path) as cache_file:
             data = json.load(cache_file)
             if data.get('sigValidUntil', 0) > int(time.time()):
                 if data.get('ip', "") == get_external_ip():
@@ -365,10 +376,10 @@ def Sig():
         except ValueError:
             print("Errore nella decodifica JSON, risposta non valida:", response.text)
             return None
-        with open(json_file, "w") as f:
+        with open_func(json_file, "w") as f:
             json.dump(vecKeylist, f, indent=2)
     elif file_exists(json_file):
-        with open(json_file) as f:
+        with open_func(json_file) as f:
             vecs = json.load(f)
             vec = choice(vecs)
         headers = {'Content-Type': 'application/json'}
@@ -1102,7 +1113,7 @@ class vavoo(Screen):
         global search_ok
         search_ok = False
         try:
-            with open(xxxname, 'w') as outfile:
+            with open_func(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
                 if PY3:
@@ -1209,7 +1220,7 @@ class vavoo(Screen):
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         key = None
         ch = 0
-        with open(filename, "rt") as fin:
+        with open_func(filename, "rt") as fin:
             data = fin.read()
             regexcat = '#SERVICE.*?vavoo_auth=(.+?)#User'
             match = re.compile(regexcat, re.DOTALL).findall(data)
@@ -1217,12 +1228,12 @@ class vavoo(Screen):
                 key = str(key)
                 ch += 1
 
-        with open(filename, 'r') as f:
+        with open_func(filename, 'r') as f:
             newlines = []
             for line in f.readlines():
                 newlines.append(line.replace(key, app))
 
-        with open(filenameout, 'w') as f:
+        with open_func(filenameout, 'w') as f:
             for line in newlines:
                 f.write(line)
         vUtils.ReloadBouquets()
@@ -1604,7 +1615,8 @@ def convert_bouquet(service, name, url):
     name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
     name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
     name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
-    with open(PLUGIN_PATH + '/Favorite.txt', 'w', encoding='utf-8') as r:
+
+    with open_func(PLUGIN_PATH + '/Favorite.txt', 'w', encoding='utf-8') as r:
         r.write(str(name_file) + '###' + str(url))
     bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
     print("Converting Bouquet %s" % name_file)
@@ -1620,7 +1632,7 @@ def convert_bouquet(service, name, url):
             namel = ''
             svz = ''
             dct = ''
-            with open(files, 'r') as f:  # 'r' is for universal newlines mode
+            with open_func(files, 'r', encoding='utf-8') as f:  # 'r' is for universal newlines mode
                 for line in f:
                     if line.startswith("#EXTINF"):
                         namel = '%s' % line.split(',')[-1]
@@ -1642,20 +1654,20 @@ def convert_bouquet(service, name, url):
                         tplst.append(dct)
                         ch += 1
 
-            with open(path1, 'w+', encoding='utf-8') as f:
+            with open_func(path1, 'w+', encoding='utf-8') as f:
                 f_content = f.read()
                 for item in tplst:
                     if item not in f_content:
-                        f.write("%s\n" % item)
+                        f.write("%s\n" % str(item))
                         # print('item  -------- ', item)
 
             in_bouquets = False
-            with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
+            with open_func('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
                 for line in f:
                     if bouquet_name in line:
                         in_bouquets = True
             if not in_bouquets:
-                with open(path2, 'a+', encoding='utf-8') as f:
+                with open_func(path2, 'a+', encoding='utf-8') as f:
                     bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
                     f.write(bouquetTvString)
             vUtils.ReloadBouquets()
@@ -1747,7 +1759,7 @@ class AutoStartTimer:
         name = url = ''
         favorite_channel = os_path.join(PLUGIN_PATH, 'Favorite.txt')
         if file_exists(favorite_channel):
-            with open(favorite_channel, 'r') as f:
+            with open_func(favorite_channel, 'r') as f:
                 line = f.readline()
                 name = line.split('###')[0]
                 url = line.split('###')[1]
