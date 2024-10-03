@@ -71,6 +71,7 @@ from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
 from requests.adapters import HTTPAdapter, Retry
+from six import text_type
 import codecs
 import json
 import os
@@ -108,7 +109,7 @@ def ensure_str(text, encoding='utf-8', errors='strict'):
     if type(text) is str:
         return text
     if PY2:
-        if isinstance(text, unicode):
+        if isinstance(text, text_type)::
             try:
                 return text.encode(encoding, errors)
             except Exception:
