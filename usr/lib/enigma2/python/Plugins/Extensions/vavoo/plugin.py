@@ -71,7 +71,6 @@ from os import path as os_path
 from os.path import exists as file_exists
 from random import choice
 from requests.adapters import HTTPAdapter, Retry
-from six import text_type as unicode
 import codecs
 import json
 import os
@@ -82,23 +81,14 @@ import sys
 import time
 import traceback
 
-global HALIGN, tmlast
+global HALIGN
 tmlast = None
 now = None
 _session = None
-
 PY2 = False
 PY3 = False
-
-if sys.version_info[0] == 3:
-    PY2 = False
-    PY3 = True
-    unicode = str
-    open_func = open
-else:
-    # str = unicode
-    import io
-    open_func = io.open
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
 
 if sys.version_info >= (2, 7, 9):
@@ -133,9 +123,7 @@ def ensure_str(text, encoding='utf-8', errors='strict'):
 
 
 # set plugin
-
-
-currversion = '1.31'
+currversion = '1.32'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -159,7 +147,7 @@ def trace_error():
         # Stampa la traccia dell'errore su stdout
         traceback.print_exc(file=sys.stdout)
         # Scrive la traccia dell'errore su un file di log
-        with open_func("/tmp/vavoo.log", "a") as log_file:
+        with open("/tmp/vavoo.log", "a", encoding='utf-8') as log_file:
             traceback.print_exc(file=log_file)
     except Exception as e:
         # Gestisce qualsiasi eccezione che potrebbe verificarsi durante la registrazione dell'errore
@@ -168,9 +156,6 @@ def trace_error():
 
 myser = [("https://vavoo.to", "vavoo"), ("https://oha.to", "oha"), ("https://kool.to", "kool"), ("https://huhu.to", "huhu")]
 mydns = [("None", "Default"), ("google", "Google"), ("coudfire", "Coudfire"), ("quad9", "Quad9")]
-
-# signfile = os_path.join(PLUGIN_PATH, "signfile.json")
-
 modemovie = [("4097", "4097")]
 if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "5001"))
@@ -183,7 +168,6 @@ if file_exists('/var/lib/dpkg/info'):
 # back
 global BackPath, FONTSTYPE, FNTPath  # maybe no..
 BackfPath = os_path.join(PLUGIN_PATH, "skin")
-
 if screen_width == 2560:
     BackPath = os_path.join(BackfPath, 'images_new')
     skin_path = os_path.join(BackfPath, 'wqhd')
@@ -272,7 +256,7 @@ except:
 
 
 def clearCache():
-    with open_func("/proc/sys/vm/drop_caches", "w") as f:
+    with open("/proc/sys/vm/drop_caches", "w", encoding='utf-8') as f:
         f.write("1\n")
 
 
@@ -300,24 +284,30 @@ def get_external_ip():
     return None
 
 
-def set_cache(key, value, timeout=300):
-    """Imposta il valore nella cache."""
-    data = {"sigValidUntil": int(time.time()) + timeout, "ip": get_external_ip(), "value": value}
-    file_path = os.path.join(PLUGIN_PATH, key + '.json')
-    with open_func(file_path, "w") as cache_file:
-        json.dump(data, cache_file, indent=4)
+def set_cache(key, data, timeout):
+    """Salva i dati nella cache."""
+    file_path = os_path.join(PLUGIN_PATH, key + '.json')
+    try:
+        with open(file_path, 'w') as cache_file:
+            json.dump(convert_to_unicode(data), cache_file, indent=4)
+    except Exception as e:
+        print("Error saving cache: ", e)
 
 
 def get_cache(key):
-    """Ritorna il valore dalla cache se valido."""
-    file_path = os.path.join(PLUGIN_PATH, key + '.json')
-    if os.path.exists(file_path):
-        with open_func(file_path) as cache_file:
-            data = json.load(cache_file)
-            if data.get('sigValidUntil', 0) > int(time.time()):
-                if data.get('ip', "") == get_external_ip():
-                    return data.get('value')
-            os.remove(file_path)
+    file_path = os_path.join(PLUGIN_PATH, key + '.json')
+    if os_path.exists(file_path) and os_path.getsize(file_path) > 0:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as cache_file:
+                data = json.load(cache_file)
+                if data.get('sigValidUntil', 0) > int(time.time()):
+                    if data.get('ip', "") == get_external_ip():
+                        return data.get('value')
+        except ValueError as e:
+            print("Error decoding JSON from :", e)
+        except Exception as e:
+            print("Unexpected error reading cache file {file_path}:", e)
+        os.remove(file_path)
     return None
 
 
@@ -331,25 +321,30 @@ def getAuthSignature():
         set_cache("veclist", veclist, timeout=3600)
     sig = None
     i = 0
-    while (not sig and i < 50):
+    while not sig and i < 50:
         i += 1
         vec = {"vec": choice(veclist)}
         req = requests.post('https://www.vavoo.tv/api/box/ping2', data=vec).json()
-        if req.get('signed'):
-            sig = req['signed']
-        elif req.get('data', {}).get('signed'):
-            sig = req['data']['signed']
-        elif req.get('response', {}).get('signed'):
-            sig = req['response']['signed']
-    set_cache('signfile', sig)
+        sig = req.get('signed') or req.get('data', {}).get('signed') or req.get('response', {}).get('signed')
+    if sig:
+        set_cache('signfile', convert_to_unicode(sig), timeout=3600)  # Assicurati che sig sia in formato Unicode
     return sig
 
 
+def convert_to_unicode(data):
+    if isinstance(data, str):
+        return data.decode('utf-8')
+    elif isinstance(data, dict):
+        return {convert_to_unicode(k): convert_to_unicode(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [convert_to_unicode(item) for item in data]
+    return data
+
+
 def Sig():
-    """Ottiene il token per Watched."""
-    watchedsignfile = get_cache('signfile')
-    if watchedsignfile:
-        return watchedsignfile
+    # watchedsignfile = get_cache('signfile')
+    # if watchedsignfile:
+        # return watchedsignfile
     sig = None
     xlist = [
         "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",
@@ -361,7 +356,6 @@ def Sig():
         "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"]
-
     if not file_exists(json_file):
         myUrl = vUtils.b64decoder(keyurl)
         response = requests.get(myUrl)
@@ -370,50 +364,51 @@ def Sig():
         except ValueError:
             print("Errore nella decodifica JSON, risposta non valida:", response.text)
             return None
-        with open_func(json_file, "w") as f:
+        with open(json_file, "w") as f:
+            if sys.version_info[0] < 3:
+                vecKeylist = vecKeylist
             json.dump(vecKeylist, f, indent=2)
-    elif file_exists(json_file):
-        with open_func(json_file) as f:
-            vecs = json.load(f)
-            vec = choice(vecs)
-        headers = {'Content-Type': 'application/json'}
-        json_data = '{"vec": "' + str(vec) + '"}'
 
-        if PY3:
-            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
-        else:
-            req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
-        sig = req.get('signed') or req.get('data', {}).get('signed') or req.get('response', {}).get('signed')
-
-    # if not sig:
+    elif os_path.exists(json_file) and os_path.getsize(json_file) > 0:
+        with open(json_file, 'r') as f:
+            try:
+                vecs = json.load(f)
+                vec = choice(vecs)
+                headers = {'Content-Type': 'application/json'}
+                json_data = '{"vec": "' + str(vec) + '"}'
+                if PY3:
+                    req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, data=json_data).json()
+                else:
+                    req = requests.post('https://www.vavoo.tv/api/box/ping2', headers=headers, verify=False, data=json_data).json()
+                sig = req.get('signed') or req.get('data', {}).get('signed') or req.get('response', {}).get('signed')
+            except ValueError as e:
+                print("Error decoding JSON: ", e)
+                vecs = []
     elif not sig:
         print('getWatchedSig')
-        while not sig:
-            data = {"x": choice(xlist)}
-            headers = {
-                "user-agent": "Rokkr/1.8.3 (android)",
-                "accept": "application/json",
-                "content-type": "application/json; charset=utf-8",
-                "accept-encoding": "gzip",
-                "cookie": "lng=en"
-            }
-            if PY3:
-                req = requests.post('https://www.rokkr.net/api/box/ping', json=data, headers=headers).json()
-            else:
-                req = requests.post('https://www.rokkr.net/api/box/ping', json=data, headers=headers, verify=False).json()
+        # while not sig:
+        data = {"x": choice(xlist)}
+        headers = {
+            "user-agent": "Rokkr/1.8.3 (android)",
+            "accept": "application/json",
+            "content-type": "application/json; charset=utf-8",
+            "accept-encoding": "gzip",
+            "cookie": "lng=en"
+        }
+        if PY3:
+            req = requests.post('https://www.rokkr.net/api/box/ping', json=data, headers=headers).json()
+        else:
+            req = requests.post('https://www.rokkr.net/api/box/ping', json=data, headers=headers, verify=False).json()
+        # if PY3:
+            # req = requests.post('https://www.vavoo.tv/api/box/ping2', json=data headers=headers).json()
+        # else:
+            # req = requests.post('https://www.vavoo.tv/api/box/ping2', json=data headers=headers, verify=False).json()
         if req.get('signed'):
             sig = req['signed']
         elif req.get('data', {}).get('signed'):
             sig = req['data']['signed']
         elif req.get('response', {}).get('signed'):
             sig = req['response']['signed']
-
-    else:
-        if getAuthSignature:
-            return getAuthSignature()
-    # global tmlast
-    # tmlast = int(time.time())
-    set_cache('signfile', sig)
     return sig
 
 
@@ -850,7 +845,6 @@ class MainVavoo(Screen):
             'infolong': self.update_dev,
             'showEventInfoPlugin': self.update_dev,
         }, -1)
-
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -1055,7 +1049,6 @@ class vavoo(Screen):
             'info': self.info,
             'red': self.backhome
         }, -1)
-
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -1107,7 +1100,7 @@ class vavoo(Screen):
         global search_ok
         search_ok = False
         try:
-            with open_func(xxxname, 'w') as outfile:
+            with open(xxxname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % self.name.capitalize())
                 content = vUtils.getUrl(self.url)
                 if PY3:
@@ -1130,16 +1123,17 @@ class vavoo(Screen):
                 itemlist = items
                 # use for search end
                 for item in items:
-                    name = item.split('###')[0]
+                    name1 = item.split('###')[0]
                     url = item.split('###')[1]
                     url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
-                    name = unquote(name).strip("\r\n")
+                    name = unquote(name1).strip("\r\n")
                     self.cat_list.append(show_list(name, url))
                     # make m3u
                     nname = '#EXTINF:-1,' + str(name) + '\n'
                     outfile.write(nname)
                     outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
                     outfile.write(str(url) + '\n')
+                    # outfile.write(str(url) + app + '\n')
                 # make m3u end
                 if len(self.cat_list) < 1:
                     return
@@ -1214,7 +1208,7 @@ class vavoo(Screen):
         filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
         key = None
         ch = 0
-        with open_func(filename, "rt") as fin:
+        with open(filename, "rt") as fin:
             data = fin.read()
             regexcat = '#SERVICE.*?vavoo_auth=(.+?)#User'
             match = re.compile(regexcat, re.DOTALL).findall(data)
@@ -1222,12 +1216,12 @@ class vavoo(Screen):
                 key = str(key)
                 ch += 1
 
-        with open_func(filename, 'r') as f:
+        with open(filename, 'r') as f:
             newlines = []
             for line in f.readlines():
                 newlines.append(line.replace(key, app))
 
-        with open_func(filenameout, 'w') as f:
+        with open(filenameout, 'w') as f:
             for line in newlines:
                 f.write(line)
         vUtils.ReloadBouquets()
@@ -1543,10 +1537,8 @@ class Playstream2(
             print("Error: can't find Playstream2 in live_to_stream", str(error))
 
     def openTest(self, servicetype, url):
-        # global tmlast
         # tmlast = int(time.time())
         sig = Sig()
-        # sig = loop_sig()
         app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
         name = self.name
         url = url + app
@@ -1609,15 +1601,14 @@ def convert_bouquet(service, name, url):
     name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
     name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
     name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
-
-    with open_func(PLUGIN_PATH + '/Favorite.txt', 'w', encoding='utf-8') as r:
+    with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
         r.write(str(name_file) + '###' + str(url))
     bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
     print("Converting Bouquet %s" % name_file)
     path1 = '/etc/enigma2/' + str(bouquet_name)
     path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
     ch = 0
-    if file_exists(files) and os.stat(files).st_size > 0:
+    if os_path.exists(files) and os.stat(files).st_size > 0:
         try:
             tplst = []
             tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
@@ -1626,15 +1617,16 @@ def convert_bouquet(service, name, url):
             namel = ''
             svz = ''
             dct = ''
-            with open_func(files, 'r', encoding='utf-8') as f:  # 'r' is for universal newlines mode
+            with open(files, 'r') as f:  # 'r' is for universal newlines mode
                 for line in f:
+                    line = str(line)
                     if line.startswith("#EXTINF"):
                         namel = '%s' % line.split(',')[-1]
                         dsna = ('#DESCRIPTION %s' % namel).splitlines()
                         dct = ''.join(dsna)
 
                     elif line.startswith('http'):
-                        line = str(line).strip('\n\r') + str(app)
+                        line = line.strip('\n\r') + str(app)
                         tag = '1'
                         if bouquet_type.upper() == 'RADIO':
                             tag = '2'
@@ -1648,20 +1640,20 @@ def convert_bouquet(service, name, url):
                         tplst.append(dct)
                         ch += 1
 
-            with open_func(path1, 'w+', encoding='utf-8') as f:
+            with open(path1, 'w+') as f:
                 f_content = f.read()
                 for item in tplst:
                     if item not in f_content:
-                        f.write("%s\n" % str(item))
+                        f.write("%s\n" % item)
                         # print('item  -------- ', item)
 
             in_bouquets = False
-            with open_func('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
+            with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
                 for line in f:
                     if bouquet_name in line:
                         in_bouquets = True
             if not in_bouquets:
-                with open_func(path2, 'a+', encoding='utf-8') as f:
+                with open(path2, 'a+') as f:
                     bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
                     f.write(bouquetTvString)
             vUtils.ReloadBouquets()
@@ -1753,7 +1745,7 @@ class AutoStartTimer:
         name = url = ''
         favorite_channel = os_path.join(PLUGIN_PATH, 'Favorite.txt')
         if file_exists(favorite_channel):
-            with open_func(favorite_channel, 'r') as f:
+            with open(favorite_channel, 'r') as f:
                 line = f.readline()
                 name = line.split('###')[0]
                 url = line.split('###')[1]
@@ -1802,16 +1794,10 @@ def add_skin_back(bakk):
 def add_skin_font():
     print('**********addFont')
     from enigma import addFont
-    global FONTSTYPE 
-    if sys.version_info[0] < 3:
-        if isinstance(FONTSTYPE, unicode):
-            FONTSTYPE = FONTSTYPE.encode('utf-8')
-    else:
-        if isinstance(FONTSTYPE, str):
-            FONTSTYPE = FONTSTYPE.encode('utf-8')
+    global FONTSTYPE
     addFont(FNTPath + '/Lcdx.ttf', 'Lcdx', 100, 1)
-    addFont(FONTSTYPE, 'cvfont', 100, 1)
-    addFont(os_path.join(FNTPath, 'vav.ttf'), 'Vav', 100, 1)
+    addFont(str(FONTSTYPE), 'cvfont', 100, 1)
+    addFont(os_path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
 
 
 def cfgmain(menuid, **kwargs):
