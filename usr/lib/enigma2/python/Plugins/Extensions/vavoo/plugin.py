@@ -109,7 +109,7 @@ def ensure_str(text, encoding='utf-8', errors='strict'):
     if type(text) is str:
         return text
     if PY2:
-        if isinstance(text, text_type)::
+        if isinstance(text, text_type):
             try:
                 return text.encode(encoding, errors)
             except Exception:
