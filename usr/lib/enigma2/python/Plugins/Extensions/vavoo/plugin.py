@@ -87,9 +87,18 @@ tmlast = None
 now = None
 _session = None
 
+PY2 = False
+PY3 = False
 
-PY2 = sys.version_info[0] == 2
-PY3 = sys.version_info[0] == 3
+if sys.version_info[0] == 3:
+    PY2 = False
+    PY3 = True
+    unicode = str
+    open_func = open
+else:
+    # str = unicode
+    import io
+    open_func = io.open
 
 
 if sys.version_info >= (2, 7, 9):
@@ -98,17 +107,6 @@ if sys.version_info >= (2, 7, 9):
     except:
         sslContext = None
 
-if PY2:
-    str = unicode
-else:
-    unicode = str
-
-
-if PY2:
-    import io
-    open_func = io.open
-else:
-    open_func = open
 
 try:
     from urllib import unquote
@@ -234,7 +232,6 @@ try:
 except Exception as e:
     print(e)
 
-
 # config section
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
@@ -250,7 +247,7 @@ cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.dns = ConfigSelection(default="Default", choices=mydns)
 cfg.fonts = ConfigSelection(default='vav', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
-FONTSTYPE = FNTPath + '/' + str(cfg.fonts.value) + '.ttf'
+FONTSTYPE = FNTPath + '/' + cfg.fonts.value + '.ttf'
 eserv = int(cfg.services.value)
 
 # ipv6
@@ -1805,10 +1802,16 @@ def add_skin_back(bakk):
 def add_skin_font():
     print('**********addFont')
     from enigma import addFont
-    # addFont(filename, name, scale, isReplacement, render)
+    global FONTSTYPE 
+    if sys.version_info[0] < 3:
+        if isinstance(FONTSTYPE, unicode):
+            FONTSTYPE = FONTSTYPE.encode('utf-8')
+    else:
+        if isinstance(FONTSTYPE, str):
+            FONTSTYPE = FONTSTYPE.encode('utf-8')
     addFont(FNTPath + '/Lcdx.ttf', 'Lcdx', 100, 1)
-    addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-    addFont(os_path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
+    addFont(FONTSTYPE, 'cvfont', 100, 1)
+    addFont(os_path.join(FNTPath, 'vav.ttf'), 'Vav', 100, 1)
 
 
 def cfgmain(menuid, **kwargs):
