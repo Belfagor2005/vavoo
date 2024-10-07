@@ -492,9 +492,7 @@ def rimuovi_parentesi(testo):
 # menulist
 class m2list(MenuList):
     def __init__(self, items):
-        # Inizializzazione della classe base MenuList
         super(m2list, self).__init__(items, False, eListboxPythonMultiContent)
-        # Imposta i parametri di altezza e font in base alla risoluzione dello schermo
         if screen_width == 2560:
             item_height = 60
             text_font_size = 38
@@ -504,28 +502,42 @@ class m2list(MenuList):
         else:
             item_height = 50
             text_font_size = 28
-        # Applica le impostazioni alla lista
         self.l.setItemHeight(item_height)
         self.l.setFont(0, gFont('Regular', text_font_size))
 
 
-Panel_list = ("Albania", "Arabia", "Balkans", "Bulgaria",
-              "France", "Germany", "Italy", "Netherlands",
-              "Poland", "Portugal", "Romania", "Russia",
-              "Spain", "Turkey", "United Kingdom")
+country_codes = {
+    "Albania": "al",
+    "Arabia": "sa",
+    "Balkans": "bk",
+    "Bulgaria": "bg",
+    "France": "fr",
+    "Germany": "de",
+    "Italy": "it",
+    "Netherlands": "nl",
+    "Poland": "pl",
+    "Portugal": "pt",
+    "Romania": "ro",
+    "Russia": "ru",
+    "Spain": "es",
+    "Turkey": "tr",
+    "United Kingdom": "gb"
+}
 
 
 def show_list(name, link):
     global HALIGN
     HALIGN = HALIGN
-    # Inizializza la lista con il nome e il link
     res = [(name, link)]
-    # Determina il percorso dell'icona
-    default_icon = os_path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
-    pngx = os_path.join(PLUGIN_PATH, 'skin/pics', '%s.png' % name) if any(s in name for s in Panel_list) else default_icon
+    default_icon = os_path.join(PLUGIN_PATH, 'skin/cowntry/Internat.png')
+    country_code = country_codes.get(name, None)
+    if country_code:
+        country_code = country_code + '.png'
+        pngx = os_path.join(PLUGIN_PATH, 'skin/cowntry', country_code)
+    else:
+        pngx = default_icon
     if not os_path.isfile(pngx):
         pngx = default_icon
-    # Configura il layout in base alla risoluzione dello schermo
     icon_pos = (10, 10) if screen_width == 2560 else (10, 5)
     icon_size = (60, 40)
     if screen_width == 2560:
@@ -537,7 +549,6 @@ def show_list(name, link):
     else:
         text_pos = (85, 0)
         text_size = (380, 50)
-    # Aggiunge l'icona e il testo alla lista di elementi
     res.append(MultiContentEntryPixmapAlphaTest(pos=icon_pos, size=icon_size, png=loadPNG(pngx)))
     res.append(MultiContentEntryText(pos=text_pos, size=text_size, font=0, text=name, flags=HALIGN | RT_VALIGN_CENTER))
     return res
@@ -683,7 +694,6 @@ class vavoo_config(Screen, ConfigListScreen):
             if self.v6 != cfg.ipv6.value:
                 self.ipv6()
             configfile.save()
-            print('DNS CHECK')
             if self.dnsmy():
                 print('DNS CHECK')
                 # self.session.open(MessageBox, _('Dns Updated!\nRestart your device ...'), MessageBox.TYPE_INFO, timeout=5)
