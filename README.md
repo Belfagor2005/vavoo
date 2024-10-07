@@ -8,6 +8,7 @@ Enigma2 project
 
 [![Github All Releases](https://img.shields.io/github/downloads/Belfagor2005/vavoo/total.svg)]()
 
+curl -u git:[token] https://api.github.com/repos/Belfagor2005/vavoo 2> /dev/null | grep size
 
 <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png">
 
