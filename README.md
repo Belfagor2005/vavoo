@@ -6,6 +6,9 @@ Enigma2 project
 [![Python package](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml)
 
 
+[![Github All Releases](https://img.shields.io/github/downloads/Belfagor2005/vavoo/total.svg)]()
+
+
 <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png">
 
 <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.png">
