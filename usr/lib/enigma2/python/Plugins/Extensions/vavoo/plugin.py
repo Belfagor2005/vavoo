@@ -83,9 +83,9 @@ import time
 import traceback
 
 global HALIGN
+_session = None
 tmlast = None
 now = None
-_session = None
 PY2 = False
 PY3 = False
 PY2 = sys.version_info[0] == 2
@@ -145,13 +145,10 @@ regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
 # log
 def trace_error():
     try:
-        # Stampa la traccia dell'errore su stdout
         traceback.print_exc(file=sys.stdout)
-        # Scrive la traccia dell'errore su un file di log
         with open("/tmp/vavoo.log", "a", encoding='utf-8') as log_file:
             traceback.print_exc(file=log_file)
     except Exception as e:
-        # Gestisce qualsiasi eccezione che potrebbe verificarsi durante la registrazione dell'errore
         print("Failed to log the error:", e, file=sys.stderr)
 
 
@@ -343,9 +340,11 @@ def convert_to_unicode(data):
 
 
 def Sig():
-    # watchedsignfile = get_cache('signfile')
-    # if watchedsignfile:
-        # return watchedsignfile
+    '''
+    watchedsignfile = get_cache('signfile')
+    if watchedsignfile:
+        return watchedsignfile
+    '''
     sig = None
     xlist = [
         "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",
@@ -387,7 +386,6 @@ def Sig():
                 vecs = []
     elif not sig:
         print('getWatchedSig')
-        # while not sig:
         data = {"x": choice(xlist)}
         headers = {
             "user-agent": "Rokkr/1.8.3 (android)",
@@ -529,7 +527,7 @@ def show_list(name, link):
     global HALIGN
     HALIGN = HALIGN
     res = [(name, link)]
-    default_icon = os_path.join(PLUGIN_PATH, 'skin/cowntry/Internat.png')
+    default_icon = os_path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
     country_code = country_codes.get(name, None)
     if country_code:
         country_code = country_code + '.png'
@@ -696,7 +694,6 @@ class vavoo_config(Screen, ConfigListScreen):
             configfile.save()
             if self.dnsmy():
                 print('DNS CHECK')
-                # self.session.open(MessageBox, _('Dns Updated!\nRestart your device ...'), MessageBox.TYPE_INFO, timeout=5)
             global FONTSTYPE
             FONTSE = str(cfg.fonts.getValue()) + '.ttf'
             FONTSTYPE = os_path.join(str(FNTPath), str(FONTSE))
@@ -856,12 +853,15 @@ class MainVavoo(Screen):
             'infolong': self.update_dev,
             'showEventInfoPlugin': self.update_dev,
         }, -1)
+        self.cat()
+        '''
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.cat)
         except:
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
+        '''
 
     def arabic(self):
         global HALIGN
@@ -911,7 +911,6 @@ class MainVavoo(Screen):
 
     def install_update(self, answer=False):
         if answer:
-            # def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None
             self.session.open(Console, 'Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False)
         else:
             self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
@@ -950,11 +949,18 @@ class MainVavoo(Screen):
             content = vUtils.getUrl(self.url)
             if PY3:
                 content = ensure_str(content)
-            regexcat = '"country".*?"(.*?)".*?"id".*?"name".*?".*?"'
-            match = re.compile(regexcat, re.DOTALL).findall(content)
-            for country in match:
+            try:
+                data = json.loads(content)
+            except ValueError:
+                print('Error parsing JSON data')
+                self['name'].setText('Error parsing data')
+                return
+            # data = sorted(data, key=lambda x: x["country"])
+            for entry in data:
+                country = unquote(entry["country"]).strip("\r\n")
+                name = unquote(entry["name"]).strip("\r\n")
+                # id = entry["id"]
                 if country not in self.items_tmp:
-                    country = unquote(country).strip("\r\n")
                     self.items_tmp.append(country)
                     item = country + "###" + self.url + '\n'
                     items.append(item)
@@ -1108,22 +1114,29 @@ class vavoo(Screen):
         xxxname = '/tmp/' + self.name + '.m3u'
         svr = cfg.server.value
         server = zServer(0, svr, None)
+        data = None
         global search_ok
         search_ok = False
         try:
-            with open(xxxname, 'w') as outfile:
-                outfile.write('#NAME %s\r\n' % self.name.capitalize())
-                content = vUtils.getUrl(self.url)
-                if PY3:
-                    content = ensure_str(content)
-                names = self.name
-                regexcat = '"country".*?"(.*?)".*?"id"(.*?)"name".*?"(.*?)"'
-                match = re.compile(regexcat, re.DOTALL).findall(content)
-                for country, ids, name in match:
-                    if country != names:
+            content = vUtils.getUrl(self.url)
+            if PY3:
+                content = ensure_str(content)
+            data = json.loads(content)
+        except ValueError:
+            print('Error parsing JSON data')
+            self['name'].setText('Error parsing data')
+            return
+        # data = sorted(data, key=lambda x: x["country"])
+        try:
+            if data is not None:
+                for entry in data:
+                    country = unquote(entry["country"]).strip("\r\n")
+                    name = unquote(entry["name"]).strip("\r\n")
+                    ids = entry["id"]
+                    if country != self.name:
                         continue
-                    ids = ids.replace(':', '').replace(' ', '').replace(',', '')
-                    url = str(server) + '/live2/play/' + str(ids) + '.ts'  # + app
+                    ids = str(ids).replace(':', '').replace(' ', '').replace(',', '')
+                    url = str(server) + '/live2/play/' + ids + '.ts'
                     name = vUtils.decodeHtml(name)
                     name = rimuovi_parentesi(name)
                     item = name + "###" + url + '\n'
@@ -1133,18 +1146,19 @@ class vavoo(Screen):
                 global itemlist
                 itemlist = items
                 # use for search end
-                for item in items:
-                    name1 = item.split('###')[0]
-                    url = item.split('###')[1]
-                    url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
-                    name = unquote(name1).strip("\r\n")
-                    self.cat_list.append(show_list(name, url))
-                    # make m3u
-                    nname = '#EXTINF:-1,' + str(name) + '\n'
-                    outfile.write(nname)
-                    outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
-                    outfile.write(str(url) + '\n')
-                    # outfile.write(str(url) + app + '\n')
+                with open(xxxname, 'w') as outfile:
+                    for item in items:
+                        name1 = item.split('###')[0]
+                        url = item.split('###')[1]
+                        url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
+                        name = unquote(name1).strip("\r\n")
+                        self.cat_list.append(show_list(name, url))
+                        # make m3u
+                        outfile.write('#NAME %s\r\n' % self.name.capitalize())
+                        nname = '#EXTINF:-1,' + str(name) + '\n'
+                        outfile.write(nname)
+                        outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
+                        outfile.write(str(url) + '\n')
                 # make m3u end
                 if len(self.cat_list) < 1:
                     return
@@ -1248,7 +1262,6 @@ class vavoo(Screen):
         elif answer:
             name = self.name
             url = self.url
-            # filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
             self.message3(name, url, True)
 
     def search_vavoo(self):
@@ -1548,7 +1561,6 @@ class Playstream2(
             print("Error: can't find Playstream2 in live_to_stream", str(error))
 
     def openTest(self, servicetype, url):
-        # tmlast = int(time.time())
         sig = Sig()
         app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
         name = self.name
@@ -1609,9 +1621,9 @@ def convert_bouquet(service, name, url):
     bouquet_type = 'tv'
     if "radio" in name.lower():
         bouquet_type = "radio"
-    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))  # Sostituisce anche gli spazi e le virgole con "_"
-    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)  # Sostituisce i pattern numerici con "_"
-    name_file = re.sub(r'_+', '_', name_file)  # Sostituisce sequenze di "_" con un singolo "_"
+    name_file = re.sub(r'[<>:"/\\|?*, ]', '_', str(name))
+    name_file = re.sub(r'\d+:\d+:[\d.]+', '_', name_file)
+    name_file = re.sub(r'_+', '_', name_file)
     with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
         r.write(str(name_file) + '###' + str(url))
     bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
@@ -1628,7 +1640,7 @@ def convert_bouquet(service, name, url):
             namel = ''
             svz = ''
             dct = ''
-            with open(files, 'r') as f:  # 'r' is for universal newlines mode
+            with open(files, 'r') as f:
                 for line in f:
                     line = str(line)
                     if line.startswith("#EXTINF"):
@@ -1656,7 +1668,6 @@ def convert_bouquet(service, name, url):
                 for item in tplst:
                     if item not in f_content:
                         f.write("%s\n" % item)
-                        # print('item  -------- ', item)
 
             in_bouquets = False
             with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
