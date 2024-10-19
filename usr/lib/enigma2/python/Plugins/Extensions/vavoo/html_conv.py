@@ -1,6 +1,7 @@
 import re
 from six import (unichr, iteritems)  # ensure_str
 from six.moves import html_entities
+from six import text_type
 import sys
 import functools
 import itertools
@@ -21,7 +22,7 @@ else:
     string_types = basestring,
     integer_types = (int, long)
     class_types = (type, types.ClassType)
-    text_type = unicode
+    text_type = text_type
     binary_type = str
 
     if sys.platform.startswith("java"):
