@@ -16,7 +16,7 @@ from __future__ import print_function
 from . import _
 from . import vUtils
 from .Console import Console
-
+from . import html_conv
 # Standard library imports
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
@@ -1146,8 +1146,8 @@ class vavoo(Screen):
                     ids = entry["id"]
                     if country != self.name:
                         continue
-                    ids = str(ids).replace(':', '').replace(' ', '').replace(',', '')
-                    url = str(server) + '/live2/play/' + ids + '.ts'
+                    ids = ids.replace(':', '').replace(' ', '').replace(',', '')
+                    url = str(server) + '/live2/play/' + str(ids) + '.ts'
                     name = vUtils.decodeHtml(name)
                     name = rimuovi_parentesi(name)
                     item = name + "###" + url + '\n'
