@@ -16,7 +16,6 @@ from __future__ import print_function
 from . import _
 from . import vUtils
 from .Console import Console
-from . import html_conv
 # Standard library imports
 # Enigma2 components
 from Components.AVSwitch import AVSwitch
@@ -194,8 +193,6 @@ try:
                 BakP.append((backName, backName))
 except Exception as e:
     print(e)
-
-
 print('final folder back: ', BackPath)
 # BakP = sorted(BakP, key=lambda x: x[1])
 
@@ -426,40 +423,6 @@ def loop_sig():
             time.sleep(int(last + 1200 - now))
         return sig
     pass
-
-
-def returnIMDB(text_clear):
-    TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
-    tmdb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
-    IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
-    text = html_conv.html_unescape(text_clear)
-    if os.path.exists(TMDB):
-        try:
-            from Plugins.Extensions.TMBD.plugin import TMBD
-            _session.open(TMBD.tmdbScreen, text, 0)
-        except Exception as e:
-            print("[XCF] Tmdb: ", str(e))
-        return True
-
-    elif os.path.exists(tmdb):
-        try:
-            from Plugins.Extensions.tmdb.plugin import tmdb
-            _session.open(tmdb.tmdbScreen, text, 0)
-        except Exception as e:
-            print("[XCF] Tmdb: ", str(e))
-        return True
-
-    elif os.path.exists(IMDb):
-        try:
-            from Plugins.Extensions.IMDb.plugin import main as imdb
-            imdb(_session, text)
-        except Exception as e:
-            print("[XCF] imdb: ", str(e))
-        return True
-    else:
-        _session.open(MessageBox, text, MessageBox.TYPE_INFO)
-        return True
-    return False
 
 
 # check server
@@ -1448,8 +1411,8 @@ class Playstream2(
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
         self['actions'] = ActionMap(['MoviePlayerActions', 'MovieSelectionActions', 'MediaPlayerActions', 'EPGSelectActions', 'OkCancelActions',
                                     'InfobarShowHideActions', 'InfobarActions', 'DirectionActions', 'InfobarSeekActions'], {
-            'epg': self.showIMDB,
-            'info': self.showIMDB,
+            # 'epg': self.showIMDB,
+            # 'info': self.showIMDB,
             'tv': self.cicleStreamType,
             'stop': self.leavePlayer,
             'cancel': self.cancel,
@@ -1561,15 +1524,6 @@ class Playstream2(
         except:
             pass
         return
-
-    def showIMDB(self):
-        try:
-            text_clear = self.name
-            if returnIMDB(text_clear):
-                print('show imdb/tmdb')
-        except Exception as error:
-            trace_error()
-            print("Error: can't find Playstream2 in live_to_stream", str(error))
 
     def openTest(self, servicetype, url):
         sig = Sig()
