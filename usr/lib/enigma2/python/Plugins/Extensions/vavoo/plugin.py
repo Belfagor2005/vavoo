@@ -1109,8 +1109,8 @@ class vavoo(Screen):
                     ids = entry["id"]
                     if country != self.name:
                         continue
-                    ids = ids.replace(':', '').replace(' ', '').replace(',', '')
-                    url = str(server) + '/live2/play/' + str(ids) + '.ts'
+                    ids = str(ids).replace(':', '').replace(' ', '').replace(',', '')
+                    url = str(server) + '/live2/play/' + ids + '.ts'
                     name = vUtils.decodeHtml(name)
                     name = rimuovi_parentesi(name)
                     item = name + "###" + url + '\n'
