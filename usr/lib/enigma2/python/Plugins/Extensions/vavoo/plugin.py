@@ -714,10 +714,10 @@ class vavoo_config(Screen, ConfigListScreen):
 
     def extnok(self, answer=None):
         if answer is None:
-            # if self.changedEntry():
-            self.session.openWithCallback(self.extnok, MessageBox, _("Really close without saving settings?"))
-            # else:
-                # self.close()
+            if self['config'].isChanged():
+                self.session.openWithCallback(self.extnok, MessageBox, _("Really close without saving settings?"))
+            else:
+                self.close()
         elif answer:
             for x in self["config"].list:
                 x[1].cancel()
