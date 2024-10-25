@@ -543,7 +543,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self['statusbar'] = Label()
         self["description"] = Label("")
         self["red"] = Label(_("Back"))
-        self["green"] = Label(_("Save"))
+        self["green"] = Label(_("- - - -"))
         self['actions'] = ActionMap(['OkCancelActions', 'ColorActions', 'DirectionActions'], {
             "cancel": self.extnok,
             "left": self.keyLeft,
@@ -625,6 +625,7 @@ class vavoo_config(Screen, ConfigListScreen):
     def changedEntry(self):
         for x in self.onChangedEntry:
             x()
+        self['green'].instance.setText(_('Save') if self['config'].isChanged() else '- - - -')
 
     def getCurrentEntry(self):
         return self["config"].getCurrent()[0]
@@ -713,7 +714,10 @@ class vavoo_config(Screen, ConfigListScreen):
 
     def extnok(self, answer=None):
         if answer is None:
+            # if self.changedEntry():
             self.session.openWithCallback(self.extnok, MessageBox, _("Really close without saving settings?"))
+            # else:
+                # self.close()
         elif answer:
             for x in self["config"].list:
                 x[1].cancel()
@@ -936,7 +940,7 @@ class MainVavoo(Screen):
                 # id = entry["id"]
                 if country not in self.items_tmp:
                     self.items_tmp.append(country)
-                    item = country + "###" + self.url + '\n'
+                    item = str(country) + "###" + self.url + '\n'
                     items.append(item)
             items.sort()
             for item in items:
