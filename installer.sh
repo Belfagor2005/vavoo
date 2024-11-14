@@ -1,6 +1,8 @@
 #!/bin/bash
 
 ##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
+exec > >(tee -a /tmp/vavoo_debug.txt) 2>&1
+set -x
 ######### Only This 2 lines to edit with new version ######
 version='1.32'
 changelog='\nFix Crash on DreamOs'
@@ -112,16 +114,25 @@ fi
 
 rm -rf $TMPPATH > /dev/null 2>&1
 sync
-echo ""
-echo ""
-echo "#########################################################"
-echo "#        Vavoo Stream Live INSTALLED SUCCESSFULLY       #"
-echo "#                developed by LULULLA                   #"
-echo "#                                                       #"
-echo "#                  https://corvoboys.org                #"
-echo "#########################################################"
-echo "#           your Device will RESTART Now                #"
-echo "#########################################################"
+# # Identify the box type from the hostname file
+FILE="/etc/image-version"
+box_type=$(head -n 1 /etc/hostname)
+distro_value=$(grep '^distro=' "$FILE" | awk -F '=' '{print $2}')
+distro_version=$(grep '^version=' "$FILE" | awk -F '=' '{print $2}')
+python_vers=$(python --version 2>&1)
+echo "#########################################################
+#               INSTALLED SUCCESSFULLY                  #
+#                developed by LULULLA                   #
+#               https://corvoboys.org                   #
+#########################################################
+#           your Device will RESTART Now                #
+#########################################################
+^^^^^^^^^^Debug information:
+BOX MODEL: $box_type
+OO SYSTEM: $OSTYPE
+PYTHON: $python_vers
+IMAGE NAME: $distro_value
+IMAGE VERSION: $distro_version" >> /tmp/vavoo_debug.txt
 sleep 5
 killall -9 enigma2
 exit 0
