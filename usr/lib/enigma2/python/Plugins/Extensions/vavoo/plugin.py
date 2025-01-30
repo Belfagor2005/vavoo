@@ -37,6 +37,7 @@ from Components.config import (
     ConfigYesNo,
     ConfigEnableDisable,
     ConfigSubsection,
+    NoSave,
 )
 from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (
@@ -123,7 +124,7 @@ def ensure_str(text, encoding='utf-8', errors='strict'):
 
 
 # set plugin
-currversion = '1.32'
+currversion = '1.33'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -139,6 +140,13 @@ HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 screen_width = screenwidth.width()
 regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
+
+try:
+    from Components.UsageConfig import defaultMoviePath
+    downloadfree = defaultMoviePath()
+except:
+    if os.path.exists("/usr/bin/apt-get"):
+        downloadfree = ('/media/hdd/movie/')
 
 
 # log
@@ -215,6 +223,7 @@ except Exception as e:
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
+cfg.genm3u = NoSave(ConfigYesNo(default=False))
 cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
@@ -248,11 +257,6 @@ try:
 except:
     lng = 'en'
     pass
-
-
-def clearCache():
-    with open("/proc/sys/vm/drop_caches", "w", encoding='utf-8') as f:
-        f.write("1\n")
 
 
 def get_external_ip():
@@ -552,7 +556,7 @@ class vavoo_config(Screen, ConfigListScreen):
             "down": self.keyDown,
             "red": self.extnok,
             "green": self.save,
-            "ok": self.save,
+            "ok": self.gnm3u,
         }, -1)
         self.update_status()
         ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
@@ -573,6 +577,7 @@ class vavoo_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
+        self.list.append(getConfigListEntry(_("Generate .m3u files (Ok for Exec)"), cfg.genm3u, _("Generate .m3u files and save to device %s.") % downloadfree))
         self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
         self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
         self.list.append(getConfigListEntry(_("Select DNS Server"), cfg.dns, _("Configure Dns Server for Box.")))
@@ -590,6 +595,33 @@ class vavoo_config(Screen, ConfigListScreen):
         self["config"].list = self.list
         self["config"].l.setList(self.list)
         self.setInfo()
+
+    def gnm3u(self):
+        sel = self["config"].getCurrent()[1]
+        if sel and sel == cfg.genm3u:
+            self.session.openWithCallback(self.generate_m3u, MessageBox, _("Generate .m3u files and save to device %s?") % downloadfree, MessageBox.TYPE_YESNO, timeout=10, default=True)
+
+    def generate_m3u(self, result):
+        if result:
+            if not os.path.exists(downloadfree):
+                os.makedirs(downloadfree)
+            cmd = "python {} {}".format(os_path.join(PLUGIN_PATH, 'Vavoo_m3u.py'), downloadfree)
+            from enigma import eConsoleAppContainer
+            self.container = eConsoleAppContainer()
+            try:
+                self.container.appClosed.append(self.runFinished)
+            except:
+                self.container.appClosed_conn = self.container.appClosed.connect(self.runFinished)
+
+            self.container.execute(cmd)
+
+            cfg.genm3u.setValue(0)
+            cfg.genm3u.save()
+
+            self.session.open(MessageBox, _("All .m3u files have been generated!"),  MessageBox.TYPE_INFO, timeout=4)
+
+    def runFinished(self, retval):
+        self["description"].setText("Generation completed. Files saved to %s." % downloadfree)
 
     def setInfo(self):
         try:
@@ -642,11 +674,17 @@ class vavoo_config(Screen, ConfigListScreen):
 
     def keyLeft(self):
         ConfigListScreen.keyLeft(self)
+        sel = self["config"].getCurrent()[1]
+        if sel and sel == cfg.genm3u:
+            self.gnm3u()
         self.createSetup()
         self.showhide()
 
     def keyRight(self):
         ConfigListScreen.keyRight(self)
+        sel = self["config"].getCurrent()[1]
+        if sel and sel == cfg.genm3u:
+            self.gnm3u()
         self.createSetup()
         self.showhide()
 
@@ -906,7 +944,6 @@ class MainVavoo(Screen):
 
     def chUp(self):
         for x in range(5):
-
             self[self.currentList].pageUp()
         txtsream = self['menulist'].getCurrent()[0][0]
         self['name'].setText(str(txtsream))
@@ -971,7 +1008,6 @@ class MainVavoo(Screen):
             trace_error()
 
     def exit(self):
-        clearCache()
         self.close()
 
     def msgdeleteBouquets(self):
@@ -1543,7 +1579,7 @@ class Playstream2(
         self.session.nav.playService(self.sref)
 
     def cicleStreamType(self):
-        self.servicetype = cfg.services.value
+        self.servicetype = '4097'
         if not self.url.startswith('http'):
             self.url = 'http://' + self.url
         url = str(self.url)
