@@ -212,7 +212,7 @@ try:
     if file_exists(FNTPath):
         for fontName in os.listdir(FNTPath):
             fontNamePath = os_path.join(FNTPath, fontName)
-            if fontName.endswith(".ttf"):
+            if fontName.endswith(".ttf") or fontName.endswith(".otf"):
                 fontName = fontName[:-4]
                 fonts.append((fontName, fontName))
         fonts = sorted(fonts, key=lambda x: x[1])
