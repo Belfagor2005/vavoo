@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2024-09-29 16:41+0200\n"
+"POT-Creation-Date: 2025-01-30 14:55+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: giorbak\n"
@@ -16,32 +16,41 @@ msgstr ""
 "X-Poedit-SearchPath-0: plugin.py\n"
 "X-Poedit-SearchPath-1: Console.py\n"
 
-#: plugin.py:236
+#: plugin.py:229
 msgid "interval"
 msgstr "διάστημα"
 
-#: plugin.py:236
+#: plugin.py:229
 msgid "fixed time"
 msgstr "καθορισμένη ώρα"
 
-#: plugin.py:561 plugin.py:1025
+#: plugin.py:549 plugin.py:1055
 msgid "Back"
 msgstr "Πίσω"
 
-#: plugin.py:562
-msgid "Save"
-msgstr "Αποθήκευση"
+#: plugin.py:550
+msgid "- - - -"
+msgstr ""
 
-#: plugin.py:582
+#: plugin.py:570
 #, python-format
 msgid "Last channel update: %s"
 msgstr "Τελευταία ενημέρωση καναλιών: %s"
 
-#: plugin.py:592
+#: plugin.py:580
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr "Δημιουργία αρχείων .m3u (κουμπί OK)"
+
+#: plugin.py:580
+#, python-format
+msgid "Generate .m3u files and save to device %s."
+msgstr "Δημιουργία αρχείων .m3u και αποθήκευση στο %s."
+
+#: plugin.py:581
 msgid "Server for Player Used"
 msgstr "Διακομιστής για αναπαραγωγή"
 
-#: plugin.py:592
+#: plugin.py:581
 #, python-format
 msgid ""
 "Server for player.\n"
@@ -50,35 +59,35 @@ msgstr ""
 "Διακομιστής για αναπαραγωγή.\n"
 "Τώρα %s"
 
-#: plugin.py:593
+#: plugin.py:582
 msgid "Movie Services Reference"
 msgstr "Αναφορά υπηρεσιών ταινιών"
 
-#: plugin.py:593
+#: plugin.py:582
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Ρύθμιση αναφοράς υπηρεσιών Iptv-Gstreamer-Exteplayer3"
 
-#: plugin.py:594
+#: plugin.py:583
 msgid "Select DNS Server"
 msgstr "Επιλογή διακομιστή DNS"
 
-#: plugin.py:594
+#: plugin.py:583
 msgid "Configure Dns Server for Box."
 msgstr "Ρύθμιση διακομιστή Dns για τον δέκτη."
 
-#: plugin.py:595
+#: plugin.py:584
 msgid "Select Background"
 msgstr "Επιλογή φόντου"
 
-#: plugin.py:595
+#: plugin.py:584
 msgid "Configure Main Background Image."
 msgstr "Ρύθμιση της κύριας εικόνας φόντου."
 
-#: plugin.py:596
+#: plugin.py:585
 msgid "Select Fonts"
 msgstr "Επιλογή γραμματοσειρών"
 
-#: plugin.py:596
+#: plugin.py:585
 msgid ""
 "Configure Fonts.\n"
 "Eg:Arabic or other language."
@@ -86,11 +95,11 @@ msgstr ""
 "Ρύθμιση γραμματοσειρών.\n"
 "Π.χ.: Αραβικά ή άλλη γλώσσα."
 
-#: plugin.py:597
+#: plugin.py:586
 msgid "Ipv6 State Of Lan (On/Off)"
 msgstr "Κατάσταση Lan Ipv6 (On/Off)"
 
-#: plugin.py:597
+#: plugin.py:586
 #, python-format
 msgid ""
 "Active or Disactive lan Ipv6.\n"
@@ -99,55 +108,68 @@ msgstr ""
 "Ενεργοποίηση/απενεργοποίηση Lan Ipv6.\n"
 "Τώρα %s"
 
-#: plugin.py:598
+#: plugin.py:587
 msgid "Scheduled Bouquet Update:"
 msgstr "Πρόγραμμα ενημέρωσης μπουκέτου:"
 
-#: plugin.py:598
+#: plugin.py:587
 msgid "Active Automatic Bouquet Update"
 msgstr "Ενεργοποίηση αυτόματης ενημέρωσης μπουκέτου"
 
-#: plugin.py:600
+#: plugin.py:589
 msgid "Schedule type:"
 msgstr "Τύπος προγράμματος:"
 
-#: plugin.py:600
+#: plugin.py:589
 msgid "At an interval of hours or at a fixed time"
 msgstr "Σε διάστημα ωρών ή σε καθορισμένη ώρα"
 
-#: plugin.py:602
+#: plugin.py:591
 msgid "Update interval (minutes):"
 msgstr "Διάστημα ενημέρωσης (λεπτά)"
 
-#: plugin.py:602
+#: plugin.py:591
 msgid "Configure every interval of minutes from now"
 msgstr "Ρύθμιση διαστήματος λεπτών από τώρα"
 
-#: plugin.py:604
+#: plugin.py:593
 msgid "Time to start update:"
 msgstr "Ώρα έναρξης ενημέρωσης:"
 
-#: plugin.py:604
+#: plugin.py:593
 msgid "Configure at a fixed time"
 msgstr "Ρύθμιση σε καθορισμένη ώρα"
 
-#: plugin.py:605
+#: plugin.py:594
 msgid "Link in Main Menu"
 msgstr "Σύνδεσμος στο κύριο μενού"
 
-#: plugin.py:616
+#: plugin.py:602
+#, python-format
+msgid "Generate .m3u files and save to device %s?"
+msgstr "Να γίνει δημιουργία αρχείων .m3u και να αποθηκευτούν στη συσκευή %s;"
+
+#: plugin.py:621
+msgid "All .m3u files have been generated!"
+msgstr "Όλα τα αρχεία .m3u έχουν δημιουργηθεί!"
+
+#: plugin.py:632
 msgid "SELECT YOUR CHOICE"
 msgstr "ΕΠΙΛΕΞΤΕ ΤΗΝ ΕΠΙΛΟΓΗ ΣΑΣ"
 
-#: plugin.py:624
+#: plugin.py:640
 msgid "Ipv6 [Off]?"
 msgstr "Απενεργοποίηση Ipv6;"
 
-#: plugin.py:626
+#: plugin.py:642
 msgid "Ipv6 [On]?"
 msgstr "Ενεργοποίηση Ipv6;"
 
-#: plugin.py:696
+#: plugin.py:660
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: plugin.py:717
 msgid ""
 "Settings saved successfully !\n"
 "you need to restart the GUI\n"
@@ -159,35 +181,35 @@ msgstr ""
 "εφαρμόσετε τη νέα διαμόρφωση!\n"
 "Θέλετε να κάνετε επανεκκίνηση του GUI τώρα;"
 
-#: plugin.py:697
+#: plugin.py:718
 msgid "Restart GUI now?"
 msgstr "Επανεκκίνηση του GUI τώρα;"
 
-#: plugin.py:734
+#: plugin.py:756
 msgid "Really close without saving settings?"
 msgstr "Θέλετε πραγματικά να κλείσετε χωρίς αποθήκευση των ρυθμίσεων;"
 
-#: plugin.py:816
+#: plugin.py:840
 msgid "Exit"
 msgstr "Έξοδος"
 
-#: plugin.py:817
+#: plugin.py:841
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: plugin.py:818
+#: plugin.py:842
 msgid "Update Me"
 msgstr "Ενημέρωση Vavoo"
 
-#: plugin.py:821 plugin.py:860 plugin.py:1030 plugin.py:1065
+#: plugin.py:845 plugin.py:886 plugin.py:1060 plugin.py:1094
 msgid "Halign Left"
 msgstr "Στοίχιση αριστερά"
 
-#: plugin.py:823 plugin.py:863 plugin.py:1032 plugin.py:1068
+#: plugin.py:847 plugin.py:889 plugin.py:1062 plugin.py:1097
 msgid "Halign Right"
 msgstr "Στοίχιση δεξιά"
 
-#: plugin.py:889
+#: plugin.py:915
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -202,20 +224,20 @@ msgstr ""
 "\n"
 "Θέλετε να την εγκαταστήσετε τώρα;"
 
-#: plugin.py:891
+#: plugin.py:917
 msgid "Congrats! You already have the latest version..."
 msgstr "Συγχαρητήρια! Έχετε ήδη την πιο πρόσφατη έκδοση..."
 
-#: plugin.py:900
+#: plugin.py:926
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
 msgstr "Θέλετε να εγκαταστήσετε την ενημέρωση ( %s ) τώρα;"
 
-#: plugin.py:907
+#: plugin.py:932
 msgid "Update Aborted!"
 msgstr "Η ενημέρωση ακυρώθηκε!"
 
-#: plugin.py:917 plugin.py:1081
+#: plugin.py:942 plugin.py:1110
 #, python-format
 msgid ""
 "%s\n"
@@ -246,27 +268,27 @@ msgstr ""
 "Δεν υπάρχει άμεση ροή σε διακομιστές, αλλά μόνο\n"
 "ελεύθερα κανάλια που βρέθηκαν στο διαδίκτυο"
 
-#: plugin.py:918 plugin.py:1082
+#: plugin.py:943 plugin.py:1111
 msgid "Info Vavoo"
 msgstr "Πληροφορίες Vavoo"
 
-#: plugin.py:984
+#: plugin.py:1014
 msgid "Remove all Vavoo Favorite Bouquet?"
 msgstr "Να αφαιρεθούν όλα τα αγαπημένα μπουκέτα Vavoo;"
 
-#: plugin.py:1004
+#: plugin.py:1034
 msgid "Vavoo Favorites List have been removed"
 msgstr "Η λίστα των αγαπημένων Vavoo αφαιρέθηκε"
 
-#: plugin.py:1026
+#: plugin.py:1056
 msgid "Export"
 msgstr "Εξαγωγή"
 
-#: plugin.py:1027
+#: plugin.py:1057
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: plugin.py:1180
+#: plugin.py:1218
 msgid ""
 "Do you want to Convert to favorite .tv ?\n"
 "\n"
@@ -278,7 +300,7 @@ msgstr ""
 "Προσοχή!! Μπορεί να χρειαστεί λίγος χρόνος,\n"
 "ανάλογα με τον αριθμό των ροών που περιέχονται !!!"
 
-#: plugin.py:1199
+#: plugin.py:1237
 #, python-format
 msgid ""
 "bouquets reloaded..\n"
@@ -287,11 +309,11 @@ msgstr ""
 "τα μπουκέτα επαναφορτώθηκαν..\n"
 "Με %s κανάλια"
 
-#: plugin.py:1201
+#: plugin.py:1239
 msgid "Download Error"
 msgstr "Σφάλμα λήψης"
 
-#: plugin.py:1233
+#: plugin.py:1271
 #, python-format
 msgid ""
 "Wait...\n"
@@ -304,7 +326,7 @@ msgstr ""
 "τα μπουκέτα επαναφορτώθηκαν..\n"
 "Με %s κανάλια"
 
-#: plugin.py:1237
+#: plugin.py:1275
 msgid ""
 "The favorite channel list exists.\n"
 "Want to update it with epg and picons?\n"
@@ -318,18 +340,18 @@ msgstr ""
 "Πατήστε ΝΑΙ για ενημέρωση\n"
 "αλλιώς αφαιρέστε πρώτα τη λίστα αγαπημένων!"
 
-#: plugin.py:1248
+#: plugin.py:1285
 msgid "Filter this category..."
 msgstr "Φιλτράρισμα αυτής της κατηγορίας..."
 
-#: plugin.py:1266
+#: plugin.py:1303
 msgid "No channels found in search!!!"
 msgstr "Δεν βρέθηκαν κανάλια στην αναζήτηση!!!"
 
-#: plugin.py:1502
+#: plugin.py:1539
 msgid "Resolution Change Failed"
 msgstr "Η αλλαγή ανάλυσης απέτυχε"
 
-#: plugin.py:1806 plugin.py:1822
+#: plugin.py:1831 plugin.py:1847
 msgid "Vavoo Stream Live"
 msgstr ""
