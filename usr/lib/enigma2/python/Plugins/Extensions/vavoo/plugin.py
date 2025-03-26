@@ -842,7 +842,7 @@ class MainVavoo(Screen):
 			from enigma import eDVBDB
 			try:
 				for fname in listdir(enigma_path):
-					if 'userbouquet.vavoo_' in fname:
+					if 'userbouquet.vavoo' in fname:
 						bouquet_path = os_path.join("/etc/enigma2", fname)
 						print("[vavoo plugin] Removing bouquet:", bouquet_path)
 						eDVBDB.getInstance().removeBouquet(bouquet_path)
