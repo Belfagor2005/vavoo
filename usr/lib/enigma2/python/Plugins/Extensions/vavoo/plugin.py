@@ -13,7 +13,7 @@
 from __future__ import print_function
 
 # Local application/library-specific imports
-from . import _
+from . import _, country_codes
 from . import vUtils
 from .Console import Console
 
@@ -304,25 +304,6 @@ class m2list(MenuList):
 			text_font_size = 28
 		self.l.setItemHeight(item_height)
 		self.l.setFont(0, gFont('Regular', text_font_size))
-
-
-country_codes = {
-	"Albania": "al",
-	"Arabia": "sa",
-	"Balkans": "bk",
-	"Bulgaria": "bg",
-	"France": "fr",
-	"Germany": "de",
-	"Italy": "it",
-	"Netherlands": "nl",
-	"Poland": "pl",
-	"Portugal": "pt",
-	"Romania": "ro",
-	"Russia": "ru",
-	"Spain": "es",
-	"Turkey": "tr",
-	"United Kingdom": "gb"
-}
 
 
 def show_list(name, link):
@@ -1157,7 +1138,8 @@ class TvInfoBarShowHide():
 	def __init__(self):
 		self["ShowHideActions"] = ActionMap(["InfobarShowHideActions"],
 											{"toggleShow": self.OkPressed,
-											 "hide": self.hide}, 0)
+											 "hide": self.hide
+											 }, 0)
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evStart: self.serviceStarted})
 		self.__state = self.STATE_SHOWN
 		self.__locked = 0
@@ -1491,14 +1473,14 @@ class AutoStartTimer:
 		except:
 			self.timer_conn = self.timer.timeout.connect(self.on_timer)
 		self.timer.start(100, True)
-		self.update()  # issue loop
+		self.update()
 
 	def get_wake_time(self):
 		if cfg.autobouquetupdate.value is True:
 			if cfg.timetype.value == "interval":
 				interval = int(cfg.updateinterval.value)
 				nowt = time.time()
-				return int(nowt) + interval * 60  # * 60
+				return int(nowt) + interval * 60
 			if cfg.timetype.value == "fixed time":
 				ftc = cfg.fixedtime.value
 				now = time.localtime(time.time())
@@ -1510,7 +1492,9 @@ class AutoStartTimer:
 									   now.tm_sec,
 									   now.tm_wday,
 									   now.tm_yday,
-									   now.tm_isdst)))
+									   now.tm_isdst)
+									  )
+						  )
 				return fwt
 		else:
 			return -1
