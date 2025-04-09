@@ -71,19 +71,19 @@ def getLastPTS(data, rpid, type="video"):
             bytes = data[currentpost:currentpost + 188]
 
             bits = bitstring.ConstBitStream(bytes=bytes)
-            sign = bits.read(8).uint
-            tei = bits.read(1).uint
+            # sign = bits.read(8).uint
+            # tei = bits.read(1).uint
             pusi = bits.read(1).uint
-            transportpri = bits.read(1).uint
+            transportprivate = bits.read(1).uint
             pid = bits.read(13).uint
             if pid == rpid or rpid == 0:
                 try:
                     packet = bits.read((packsize - 3) * 8)
-                    scramblecontrol = packet.read(2).uint
+                    # scramblecontrol = packet.read(2).uint
                     adapt = packet.read(2).uint
                     concounter = packet.read(4).uint
-                except:
-                    return None
+                except Exception as e:
+                    print(e)
                 decodedpts = None
                 av = ""
                 if adapt == 3:
@@ -135,7 +135,7 @@ def getLastPTS(data, rpid, type="video"):
                                 dts.pos += 1
                                 thirdpartdts = dts.read(15)
                                 # decodeddts = bitstring.ConstBitArray().join([firstpartdts.bin, secondpartdts.bin, thirdpartdts.bin]).uint
-                                decodeddts = int(''.join([firstpartdts.bin, secondpartdts.bin, thirdpartdts.bin]), 2)
+                                # decodeddts = int(''.join([firstpartdts.bin, secondpartdts.bin, thirdpartdts.bin]), 2)
                 elif adapt == 2:
                     # if adapt is 2 the packet is only an adaptation field
                     adaptation_size = packet.read(8).uint
@@ -185,7 +185,7 @@ def getLastPTS(data, rpid, type="video"):
                             dts.pos += 1
                             thirdpartdts = dts.read(15)
                             # decodeddts = bitstring.ConstBitArray().join([firstpartdts.bin, secondpartdts.bin, thirdpartdts.bin]).uint
-                            decodeddts = int(''.join([firstpartdts.bin, secondpartdts.bin, thirdpartdts.bin]), 2)
+                            # decodeddts = int(''.join([firstpartdts.bin, secondpartdts.bin, thirdpartdts.bin]), 2)
                 if decodedpts and (type == "" or av == type) and len(av) > 0:
                     return decodedpts
 
@@ -219,19 +219,19 @@ def getFirstPTSFrom(data, rpid, initpts, type="video"):
         if len(data) - currentpost >= 188:
             bytes = data[currentpost:currentpost + 188]
             bits = bitstring.ConstBitStream(bytes=bytes)
-            sign = bits.read(8).uint
-            tei = bits.read(1).uint
+            # sign = bits.read(8).uint
+            # tei = bits.read(1).uint
             pusi = bits.read(1).uint
-            transportpri = bits.read(1).uint
+            transportprivate = bits.read(1).uint
             pid = bits.read(13).uint
             if rpid == pid or rpid == 0:
                 try:
                     packet = bits.read((packsize - 3) * 8)
-                    scramblecontrol = packet.read(2).uint
+                    # scramblecontrol = packet.read(2).uint
                     adapt = packet.read(2).uint
                     concounter = packet.read(4).uint
-                except:
-                    return None
+                except Exception as e:
+                    print(e)
                 decodedpts = None
                 av = ""
                 if adapt == 3:
