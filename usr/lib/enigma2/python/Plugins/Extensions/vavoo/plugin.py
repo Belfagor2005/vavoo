@@ -632,7 +632,7 @@ class startVavoo(Screen):
 class MainVavoo(Screen):
 	def __init__(self, session):
 		self.session = session
-		global _session, HALIGN
+		global _session
 		_session = session
 		Screen.__init__(self, session)
 
@@ -844,7 +844,7 @@ class MainVavoo(Screen):
 class vavoo(Screen):
 	def __init__(self, session, name, url):
 		self.session = session
-		global _session, HALIGN
+		global _session
 		_session = session
 		Screen.__init__(self, session)
 		skin = os_path.join(skin_path, 'defaultListScreen.xml')
@@ -1562,7 +1562,7 @@ def check_configuring():
 	if cfg.autobouquetupdate.value is True:
 		"""Check for new config values for auto start
 		"""
-		global autoStartTimer
+		# global autoStartTimer
 		if autoStartTimer is not None:
 			autoStartTimer.update()
 		return
@@ -1594,7 +1594,7 @@ def add_skin_back(bakk):
 def add_skin_font():
 	print('**********addFont')
 	from enigma import addFont
-	global FONTSTYPE
+	# global FONTSTYPE
 	addFont(FNTPath + '/Lcdx.ttf', 'Lcdx', 100, 1)
 	addFont(str(FONTSTYPE), 'cvfont', 100, 1)
 	addFont(os_path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
