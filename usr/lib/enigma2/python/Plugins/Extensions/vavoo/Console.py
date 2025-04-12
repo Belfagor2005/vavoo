@@ -109,31 +109,33 @@ class Console(Screen):
 		if retval:
 			self.errorOcurred = True
 			self.show()
+
 		self.run += 1
-		if self.run != len(self.cmdlist):
+
+		if self.run < len(self.cmdlist):
 			if self.container.execute(self.cmdlist[self.run]):
 				self.runFinished(-1)
+			return  # Exit early, evita ulteriori controlli
+
+		# All commands have finished
+		self.show()
+		self.finished = True
+
+		if self.cancel_msg:
+			self.cancel_msg.close()
+
+		if self.showStartStopText:
+			self['text'].appendText('Execution finished!!')
+
+		if self.finishedCallback:
+			self.finishedCallback()
+
+		if self.errorOcurred or not self.closeOnSuccess:
+			self['text'].appendText('\nPress OK or Exit to abort!')
+			self['key_red'].setText('Exit')
+			self['key_green'].setText('')
 		else:
-			self.show()
-			self.finished = True
-			"""
-			try:
-				lastpage = self['text'].isAtLastPage()
-			except:
-				lastpage = self['text']
-			"""
-			if self.cancel_msg:
-				self.cancel_msg.close()
-			if self.showStartStopText:
-				self['text'].appendText('Execution finished!!')
-			if self.finishedCallback is not None:
-				self.finishedCallback()
-			if not self.errorOcurred and self.closeOnSuccess:
-				self.closeConsole()
-			else:
-				self['text'].appendText('\nPress OK or Exit to abort!')
-				self['key_red'].setText('Exit')
-				self['key_green'].setText('')
+			self.closeConsole()
 
 	def toggleHideShow(self):
 		if self.finished:

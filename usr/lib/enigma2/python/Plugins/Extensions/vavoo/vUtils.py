@@ -220,35 +220,54 @@ def set_cache(key, data, timeout):
 
 
 def get_cache(key):
-	file_path = os_path.join(PLUGIN_PATH, key + '.json')
-	if os_path.exists(file_path) and os_path.getsize(file_path) > 0:
-		try:
-			if pythonVer < 3:
-				import io
-				with io.open(file_path, 'r', encoding='utf-8') as cache_file:
-					data = json.load(cache_file)
-			else:
-				with open(file_path, 'r', encoding='utf-8') as cache_file:
-					data = json.load(cache_file)
+    file_path = os_path.join(PLUGIN_PATH, key + '.json')
+    if not (os_path.exists(file_path) and os_path.getsize(file_path) > 0):
+        return None
 
-			if isinstance(data, str):
-				data = {"value": data}
-				with open(file_path, 'w', encoding='utf-8') as cache_file:
-					json.dump(data, cache_file, indent=4, ensure_ascii=False)
+    try:
+        data = _read_json_file(file_path)
 
-			if isinstance(data, dict):
-				if data.get('sigValidUntil', 0) > int(time()):
-					if data.get('ip', "") == get_external_ip():
-						return data.get('value')
-			else:
-				print("Unexpected data format in {}: Expected a dict, got {}".format(file_path, type(data)))
-				os_remove(file_path)
-		except ValueError as e:
-			print("Error decoding JSON from", file_path, ":", e)
-		except Exception as e:
-			print("Unexpected error reading cache file {}:".format(file_path), e)
-			os_remove(file_path)
-	return None
+        if isinstance(data, str):
+            data = {"value": data}
+            _write_json_file(file_path, data)
+
+        if not isinstance(data, dict):
+            print("Unexpected data format in {}: Expected a dict, got {}".format(file_path, type(data)))
+            os_remove(file_path)
+            return None
+
+        if _is_cache_valid(data):
+            return data.get('value')
+
+    except ValueError as e:
+        print("Error decoding JSON from", file_path, ":", e)
+    except Exception as e:
+        print("Unexpected error reading cache file {}:".format(file_path), e)
+        os_remove(file_path)
+
+    return None
+
+
+def _read_json_file(file_path):
+    if pythonVer < 3:
+        import io
+        with io.open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    else:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+
+
+def _write_json_file(file_path, data):
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+
+def _is_cache_valid(data):
+    return (
+        data.get('sigValidUntil', 0) > int(time())
+        and data.get('ip', "") == get_external_ip()
+    )
 
 
 def getAuthSignature():
@@ -320,49 +339,53 @@ def ReloadBouquets():
 
 
 def sanitizeFilename(filename):
-	"""Return a fairly safe version of the filename.
+    filename = _remove_unsafe_chars(filename)
+    filename = _handle_reserved_and_empty(filename)
+    filename = _truncate_if_too_long(filename)
+    return filename
 
-	We don't limit ourselves to ascii, because we want to keep municipality
-	names, etc, but we do want to get rid of anything potentially harmful,
-	and make sure we do not exceed Windows filename length limits.
-	Hence a less safe blacklist, rather than a whitelist.
-	"""
-	blacklist = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0", "(", ")", " "]
-	reserved = [
-		"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
-		"COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
-		"LPT6", "LPT7", "LPT8", "LPT9",
-	]  # Reserved words on Windows
-	filename = "".join(c for c in filename if c not in blacklist)
-	# Remove all charcters below code point 32
-	filename = "".join(c for c in filename if 31 < ord(c))
-	filename = normalize("NFKD", filename)
-	filename = filename.rstrip(". ")  # Windows does not allow these at end
-	filename = filename.strip()
-	if all([x == "." for x in filename]):
-		filename = "__" + filename
-	if filename in reserved:
-		filename = "__" + filename
-	if len(filename) == 0:
-		filename = "__"
-	if len(filename) > 255:
-		parts = split(r"/|\\", filename)[-1].split(".")
-		if len(parts) > 1:
-			ext = "." + parts.pop()
-			filename = filename[:-len(ext)]
-		else:
-			ext = ""
-		if filename == "":
-			filename = "__"
-		if len(ext) > 254:
-			ext = ext[254:]
-		maxl = 255 - len(ext)
-		filename = filename[:maxl]
-		filename = filename + ext
-		filename = filename.rstrip(". ")
-		if len(filename) == 0:
-			filename = "__"
-	return filename
+
+def _remove_unsafe_chars(filename):
+    blacklist = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0", "(", ")", " "]
+    filename = "".join(c for c in filename if c not in blacklist)
+    filename = "".join(c for c in filename if 31 < ord(c))  # Remove control chars
+    filename = normalize("NFKD", filename)
+    filename = filename.rstrip(". ")  # Windows does not allow trailing dot or space
+    return filename.strip()
+
+
+def _handle_reserved_and_empty(filename):
+    reserved = [
+        "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
+        "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
+        "LPT6", "LPT7", "LPT8", "LPT9"
+    ]
+    if all(c == "." for c in filename) or filename in reserved:
+        return "__" + filename
+    if not filename:
+        return "__"
+    return filename
+
+
+def _truncate_if_too_long(filename):
+    if len(filename) <= 255:
+        return filename
+
+    parts = split(r"/|\\", filename)[-1].split(".")
+    if len(parts) > 1:
+        ext = "." + parts.pop()
+        filename = filename[:-len(ext)]
+    else:
+        ext = ""
+    if not filename:
+        filename = "__"
+    if len(ext) > 254:
+        ext = ext[:254]
+    maxl = 255 - len(ext)
+    filename = filename[:maxl] + ext
+    filename = filename.rstrip(". ")
+    return filename or "__"
+
 
 
 def decodeHtml(text):

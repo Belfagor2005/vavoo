@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -634,55 +634,68 @@ class MainVavoo(Screen):
 		self.session = session
 		global _session
 		_session = session
+
 		Screen.__init__(self, session)
 
+		self._load_skin()
+		self._initialize_labels()
+		self._initialize_actions()
+
+		self.url = vUtils.b64decoder(stripurl)
+		self.currentList = 'menulist'
+		self.loading_ok = False
+		self.count = 0
+		self.loading = 0
+
+		self.cat()
+
+	def _load_skin(self):
+		"""Load the skin file."""
 		skin = os_path.join(skin_path, 'defaultListScreen.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			self.skin = f.read()
 
+	def _initialize_labels(self):
+		"""Initialize the labels on the screen."""
 		self.menulist = []
 		self['menulist'] = m2list([])
 		self['red'] = Label(_('Exit'))
 		self['green'] = Label(_('Remove') + ' Fav')
 		self['yellow'] = Label(_('Update Me'))
 		self["blue"] = Label()
+		self['name'] = Label('Loading...')
+		self['version'] = Label()
+
+		self._set_alignment_text()
+
+	def _set_alignment_text(self):
+		"""Set text for blue label based on horizontal alignment."""
 		if HALIGN == RT_HALIGN_RIGHT:
 			self['blue'].setText(_('Halign Left'))
 		else:
 			self['blue'].setText(_('Halign Right'))
-		self['name'] = Label('Loading...')
-		self['version'] = Label()
-		self.currentList = 'menulist'
-		self.loading_ok = False
-		self.count = 0
-		self.loading = 0
-		self.url = vUtils.b64decoder(stripurl)
-		self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'DirectionActions', 'ShortcutActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
-			'prevBouquet': self.chDown,
-			'nextBouquet': self.chUp,
-			'ok': self.ok,
-			'menu': self.goConfig,
-			'green': self.msgdeleteBouquets,
-			'blue': self.arabic,
-			'cancel': self.close,
-			'info': self.info,
-			'showEventInfo': self.info,
-			'red': self.close,
-			'yellow': self.update_me,
-			'yellow_long': self.update_dev,
-			'info_long': self.update_dev,
-			'infolong': self.update_dev,
-			'showEventInfoPlugin': self.update_dev,
-		}, -1)
-		self.cat()
-		'''
-		self.timer = eTimer()
-		try:
-			self.timer_conn = self.timer.timeout.connect(self.cat)
-		except:
-			self.timer.callback.append(self.cat)
-		self.timer.start(500, True)
-		'''
+
+	def _initialize_actions(self):
+		"""Initialize the actions for buttons."""
+		self['actions'] = ActionMap(
+			['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'DirectionActions', 'ShortcutActions', 'HotkeyActions',
+			 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+				'prevBouquet': self.chDown,
+				'nextBouquet': self.chUp,
+				'ok': self.ok,
+				'menu': self.goConfig,
+				'green': self.msgdeleteBouquets,
+				'blue': self.arabic,
+				'cancel': self.close,
+				'info': self.info,
+				'showEventInfo': self.info,
+				'red': self.close,
+				'yellow': self.update_me,
+				'yellow_long': self.update_dev,
+				'info_long': self.update_dev,
+				'infolong': self.update_dev,
+				'showEventInfoPlugin': self.update_dev,
+			}, -1)
 
 	def arabic(self):
 		global HALIGN
@@ -761,47 +774,111 @@ class MainVavoo(Screen):
 
 	def cat(self):
 		self.cat_list = []
-		items = []
 		self.items_tmp = []
-		name = ''
-		country = ''
+
 		try:
-			content = vUtils.getUrl(self.url)
-			if PY3:
-				content = vUtils.ensure_str(content)
-			try:
-				data = json.loads(content)
-			except ValueError:
-				print('Error parsing JSON data')
-				self['name'].setText('Error parsing data')
+			content = self._get_content()
+			data = self._parse_json(content)
+			if data is None:
 				return
-			# data = sorted(data, key=lambda x: x["country"])
-			for entry in data:
-				country = unquote(entry["country"]).strip("\r\n")
-				name = unquote(entry["name"]).strip("\r\n")
-				# id = entry["id"]
-				if country not in self.items_tmp:
-					self.items_tmp.append(country)
-					item = str(country) + "###" + self.url + '\n'
-					items.append(item)
-			items.sort()
-			for item in items:
-				name = item.split('###')[0]
-				url = item.split('###')[1]
-				if name not in self.cat_list:
-					self.cat_list.append(show_list(name, url))
-			if len(self.cat_list) < 1:
+
+			items = self._build_country_items(data)
+			self._build_cat_list(items)
+
+			if not self.cat_list:
 				return
-			else:
-				self['menulist'].l.setList(self.cat_list)
-				self['menulist'].moveToIndex(0)
-				txtsream = self['menulist'].getCurrent()[0][0]
-				self['name'].setText(str(txtsream))
+
+			self._update_ui()
 		except Exception as error:
-			print('error as:', error)
+			print("error as:", error)
 			trace_error()
-			self['name'].setText('Error')
-		self['version'].setText('V.' + currversion)
+			self["name"].setText("Error")
+
+		self["version"].setText("V." + currversion)
+
+	def _get_content(self):
+		content = vUtils.getUrl(self.url)
+		if PY3:
+			content = vUtils.ensure_str(content)
+		return content
+
+	def _parse_json(self, content):
+		try:
+			return json.loads(content)
+		except ValueError:
+			print("Error parsing JSON data")
+			self["name"].setText("Error parsing data")
+			return None
+
+	def _build_country_items(self, data):
+		items = []
+		for entry in data:
+			country = unquote(entry["country"]).strip("\r\n")
+			if country not in self.items_tmp:
+				self.items_tmp.append(country)
+				item = str(country) + "###" + self.url + "\n"
+				items.append(item)
+		items.sort()
+		return items
+
+	def _build_cat_list(self, items):
+		for item in items:
+			parts = item.split("###")
+			if len(parts) != 2:
+				continue
+			name, url = parts
+			if name not in self.cat_list:
+				self.cat_list.append(show_list(name, url))
+
+	def _update_ui(self):
+		self["menulist"].l.setList(self.cat_list)
+		self["menulist"].moveToIndex(0)
+		txtsream = self["menulist"].getCurrent()[0][0]
+		self["name"].setText(str(txtsream))
+
+	# def cat(self):
+		# self.cat_list = []
+		# items = []
+		# self.items_tmp = []
+		# name = ''
+		# country = ''
+		# try:
+			# content = vUtils.getUrl(self.url)
+			# if PY3:
+				# content = vUtils.ensure_str(content)
+			# try:
+				# data = json.loads(content)
+			# except ValueError:
+				# print('Error parsing JSON data')
+				# self['name'].setText('Error parsing data')
+				# return
+			# # data = sorted(data, key=lambda x: x["country"])
+			# for entry in data:
+				# country = unquote(entry["country"]).strip("\r\n")
+				# name = unquote(entry["name"]).strip("\r\n")
+				# # id = entry["id"]
+				# if country not in self.items_tmp:
+					# self.items_tmp.append(country)
+					# item = str(country) + "###" + self.url + '\n'
+					# items.append(item)
+			# items.sort()
+			# for item in items:
+				# name = item.split('###')[0]
+				# url = item.split('###')[1]
+				# if name not in self.cat_list:
+					# self.cat_list.append(show_list(name, url))
+			# if len(self.cat_list) < 1:
+				# return
+			# else:
+				# self['menulist'].l.setList(self.cat_list)
+				# self['menulist'].moveToIndex(0)
+				# txtsream = self['menulist'].getCurrent()[0][0]
+				# self['name'].setText(str(txtsream))
+		# except Exception as error:
+			# print('error as:', error)
+			# trace_error()
+			# self['name'].setText('Error')
+		# self['version'].setText('V.' + currversion)
 
 	def ok(self):
 		name = self['menulist'].getCurrent()[0][0]
@@ -846,11 +923,26 @@ class vavoo(Screen):
 		self.session = session
 		global _session
 		_session = session
+
 		Screen.__init__(self, session)
+
+		self._load_skin()
+		self._initialize_labels()
+		self._initialize_actions()
+
+		self.name = name
+		self.url = url
+
+		self._initialize_timer()
+
+	def _load_skin(self):
+		"""Load the skin file."""
 		skin = os_path.join(skin_path, 'defaultListScreen.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			self.skin = f.read()
 
+	def _initialize_labels(self):
+		"""Initialize the labels on the screen."""
 		self.menulist = []
 		global search_ok
 		search_ok = False
@@ -859,30 +951,37 @@ class vavoo(Screen):
 		self['green'] = Label(_('Export') + ' Fav')
 		self['yellow'] = Label(_('Search'))
 		self["blue"] = Label()
+		self['name'] = Label('Loading ...')
+		self['version'] = Label()
+
+		self._set_alignment_text()
+
+	def _set_alignment_text(self):
+		"""Set text for blue label based on horizontal alignment."""
 		if HALIGN == RT_HALIGN_RIGHT:
 			self['blue'].setText(_('Halign Left'))
 		else:
 			self['blue'].setText(_('Halign Right'))
-		self['name'] = Label('Loading ...')
-		self['version'] = Label()
-		self.currentList = 'menulist'
-		self.loading_ok = False
-		self.count = 0
-		self.loading = 0
-		self.name = name
-		self.url = url
-		self['actions'] = ActionMap(['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ShortcutActions', 'HotkeyActions', 'DirectionActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
-			'prevBouquet': self.chDown,
-			'nextBouquet': self.chUp,
-			'ok': self.ok,
-			'green': self.message1,
-			'yellow': self.search_vavoo,
-			'blue': self.arabic,
-			'cancel': self.backhome,
-			'menu': self.goConfig,
-			'info': self.info,
-			'red': self.backhome
-		}, -1)
+
+	def _initialize_actions(self):
+		"""Initialize the actions for buttons."""
+		self['actions'] = ActionMap(
+			['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ShortcutActions', 'HotkeyActions', 'DirectionActions',
+			 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
+				'prevBouquet': self.chDown,
+				'nextBouquet': self.chUp,
+				'ok': self.ok,
+				'green': self.message1,
+				'yellow': self.search_vavoo,
+				'blue': self.arabic,
+				'cancel': self.backhome,
+				'menu': self.goConfig,
+				'info': self.info,
+				'red': self.backhome
+			}, -1)
+
+	def _initialize_timer(self):
+		"""Initialize the timer."""
 		self.timer = eTimer()
 		try:
 			self.timer_conn = self.timer.timeout.connect(self.cat)
@@ -1235,29 +1334,36 @@ class Playstream2(
 	screen_timeout = 5000
 
 	def __init__(self, session, name, url, index, item, cat_list):
-		global streaml, _session
-		Screen.__init__(self, session)
 		self.session = session
-		_session = session
-		self.skinName = 'MoviePlayer'
+		self.name = name
+		self.url = self._clean_url(url)
 		self.currentindex = index
 		self.item = item
 		self.itemscount = len(cat_list)
 		self.list = cat_list
-		streaml = False
-		for x in InfoBarBase, \
-				InfoBarMenu, \
-				InfoBarSeek, \
-				InfoBarAudioSelection, \
-				InfoBarSubtitleSupport, \
-				InfoBarNotifications, \
-				TvInfoBarShowHide:
-			x.__init__(self)
-
-		self.url = url.replace('%0a', '').replace('%0A', '')
-		self.name = name
 		self.state = self.STATE_PLAYING
 		self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
+
+		Screen.__init__(self, session)
+		self._initialize_infobars()
+		self._initialize_actions()
+
+		self.onFirstExecBegin.append(self.cicleStreamType)
+		self.onClose.append(self.cancel)
+
+	def _clean_url(self, url):
+		"""Clean up the URL by removing unwanted characters."""
+		return url.replace('%0a', '').replace('%0A', '')
+
+	def _initialize_infobars(self):
+		"""Initialize infobar components."""
+		global streaml
+		streaml = False
+		for x in InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide:
+			x.__init__(self)
+
+	def _initialize_actions(self):
+		"""Initialize the actions for buttons."""
 		self['actions'] = ActionMap(
 			[
 				'MoviePlayerActions',
@@ -1282,9 +1388,6 @@ class Playstream2(
 			},
 			-1
 		)
-
-		self.onFirstExecBegin.append(self.cicleStreamType)
-		self.onClose.append(self.cancel)
 
 	def nextitem(self):
 		currentindex = int(self.currentindex) + 1
@@ -1392,72 +1495,158 @@ class Playstream2(
 
 def convert_bouquet(service, name, url):
 	sig = vUtils.getAuthSignature()
-	app = '?n=1&b=5&vavoo_auth=%s#User-Agent=VAVOO/2.6' % (str(sig))
-	files = '/tmp/%s.m3u' % name
-	bouquet_type = 'tv'
-	if "radio" in name.lower():
-		bouquet_type = "radio"
+	app = "?n=1&b=5&vavoo_auth=%s#User-Agent=VAVOO/2.6" % str(sig)
+	files = "/tmp/%s.m3u" % name
+	bouquet_type = "radio" if "radio" in name.lower() else "tv"
+	name_file, bouquet_name, path1, path2 = _prepare_bouquet_filenames(name, bouquet_type)
+
+	with open(PLUGIN_PATH + "/Favorite.txt", "w") as r:
+		r.write(str(name_file) + "###" + str(url))
+
+	print("Converting Bouquet %s" % name_file)
+	ch = 0
+
+	if file_exists(files) and stat(files).st_size > 0:
+		try:
+			tplst, ch = _parse_m3u_file(files, name_file, bouquet_type, service, app)
+			_write_bouquet_files(path1, tplst)
+			_ensure_bouquet_listed(path2, bouquet_name, bouquet_type)
+			vUtils.ReloadBouquets()
+		except Exception as error:
+			print("error as:", error)
+	return ch
+
+
+def _prepare_bouquet_filenames(name, bouquet_type):
 	name_file = sub(r'[<>:"/\\|?*, ]', '_', str(name))
 	name_file = sub(r'\d+:\d+:[\d.]+', '_', name_file)
 	name_file = sub(r'_+', '_', name_file)
-	with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
-		r.write(str(name_file) + '###' + str(url))
-	bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
-	print("Converting Bouquet %s" % name_file)
-	path1 = '/etc/enigma2/' + str(bouquet_name)
-	path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
+	bouquet_name = "userbouquet.vavoo_%s.%s" % (name_file.lower(), bouquet_type.lower())
+	path1 = "/etc/enigma2/" + bouquet_name
+	path2 = "/etc/enigma2/bouquets." + bouquet_type.lower()
+	return name_file, bouquet_name, path1, path2
+
+
+def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
+	tplst = [
+		"#NAME %s (%s)" % (name_file.capitalize(), bouquet_type.upper()),
+		"#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS" % name_file,
+		"#DESCRIPTION --- %s ---" % name_file
+	]
 	ch = 0
-	if file_exists(files) and stat(files).st_size > 0:
-		try:
-			tplst = []
-			tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
-			tplst.append('#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS' % name_file)
-			tplst.append('#DESCRIPTION --- %s ---' % name_file)
-			namel = ''
-			svz = ''
-			dct = ''
-			with open(files, 'r') as f:
-				for line in f:
-					line = str(line)
-					if line.startswith("#EXTINF"):
-						namel = '%s' % line.split(',')[-1]
-						dsna = ('#DESCRIPTION %s' % namel).splitlines()
-						dct = ''.join(dsna)
+	namel, svz, dct = '', '', ''
+	with open(filepath, "r") as f:
+		for line in f:
+			line = str(line)
+			if line.startswith("#EXTINF"):
+				namel = line.split(",")[-1]
+				dct = "#DESCRIPTION %s" % namel
+			elif line.startswith("http"):
+				line = line.strip("\n\r") + app
+				tag = "2" if bouquet_type.upper() == "RADIO" else "1"
+				svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, line.replace(":", "%3a"))
+				svz = svca + ":" + namel
+			if svz and svz not in tplst:
+				tplst.append(svz)
+				tplst.append(dct)
+				ch += 1
+	return tplst, ch
 
-					elif line.startswith('http'):
-						line = line.strip('\n\r') + str(app)
-						tag = '1'
-						if bouquet_type.upper() == 'RADIO':
-							tag = '2'
 
-						svca = ('#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s' % (service, tag, line.replace(':', '%3a')))
-						svz = (svca + ':' + namel).splitlines()
-						svz = ''.join(svz)
+def _write_bouquet_files(path1, tplst):
+	try:
+		with open(path1, "r") as f:
+			f_content = f.read()
+	except FileNotFoundError:
+		f_content = ""
+	with open(path1, "a+") as f:
+		for item in tplst:
+			if item not in f_content:
+				f.write("%s\n" % item)
 
-					if svz not in tplst:
-						tplst.append(svz)
-						tplst.append(dct)
-						ch += 1
 
-			with open(path1, 'w+') as f:
-				f_content = f.read()
-				for item in tplst:
-					if item not in f_content:
-						f.write("%s\n" % item)
+def _ensure_bouquet_listed(path2, bouquet_name, bouquet_type):
+	in_bouquets = False
+	try:
+		with open("/etc/enigma2/bouquets.%s" % bouquet_type.lower(), "r") as f:
+			for line in f:
+				if bouquet_name in line:
+					in_bouquets = True
+	except FileNotFoundError:
+		pass
+	if not in_bouquets:
+		with open(path2, "a+") as f:
+			f.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\n' % bouquet_name)
 
-			in_bouquets = False
-			with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
-				for line in f:
-					if bouquet_name in line:
-						in_bouquets = True
-			if not in_bouquets:
-				with open(path2, 'a+') as f:
-					bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
-					f.write(bouquetTvString)
-			vUtils.ReloadBouquets()
-		except Exception as error:
-			print('error as:', error)
-	return ch
+
+# def convert_bouquet(service, name, url):
+	# sig = vUtils.getAuthSignature()
+	# app = '?n=1&b=5&vavoo_auth=%s#User-Agent=VAVOO/2.6' % (str(sig))
+	# files = '/tmp/%s.m3u' % name
+	# bouquet_type = 'tv'
+	# if "radio" in name.lower():
+		# bouquet_type = "radio"
+	# name_file = sub(r'[<>:"/\\|?*, ]', '_', str(name))
+	# name_file = sub(r'\d+:\d+:[\d.]+', '_', name_file)
+	# name_file = sub(r'_+', '_', name_file)
+	# with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
+		# r.write(str(name_file) + '###' + str(url))
+	# bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
+	# print("Converting Bouquet %s" % name_file)
+	# path1 = '/etc/enigma2/' + str(bouquet_name)
+	# path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
+	# ch = 0
+	# if file_exists(files) and stat(files).st_size > 0:
+		# try:
+			# tplst = []
+			# tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
+			# tplst.append('#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS' % name_file)
+			# tplst.append('#DESCRIPTION --- %s ---' % name_file)
+			# namel = ''
+			# svz = ''
+			# dct = ''
+			# with open(files, 'r') as f:
+				# for line in f:
+					# line = str(line)
+					# if line.startswith("#EXTINF"):
+						# namel = '%s' % line.split(',')[-1]
+						# dsna = ('#DESCRIPTION %s' % namel).splitlines()
+						# dct = ''.join(dsna)
+
+					# elif line.startswith('http'):
+						# line = line.strip('\n\r') + str(app)
+						# tag = '1'
+						# if bouquet_type.upper() == 'RADIO':
+							# tag = '2'
+
+						# svca = ('#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s' % (service, tag, line.replace(':', '%3a')))
+						# svz = (svca + ':' + namel).splitlines()
+						# svz = ''.join(svz)
+
+					# if svz not in tplst:
+						# tplst.append(svz)
+						# tplst.append(dct)
+						# ch += 1
+
+			# with open(path1, 'w+') as f:
+				# f_content = f.read()
+				# for item in tplst:
+					# if item not in f_content:
+						# f.write("%s\n" % item)
+
+			# in_bouquets = False
+			# with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
+				# for line in f:
+					# if bouquet_name in line:
+						# in_bouquets = True
+			# if not in_bouquets:
+				# with open(path2, 'a+') as f:
+					# bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
+					# f.write(bouquetTvString)
+			# vUtils.ReloadBouquets()
+		# except Exception as error:
+			# print('error as:', error)
+	# return ch
 
 
 autoStartTimer = None
