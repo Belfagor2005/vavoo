@@ -66,17 +66,17 @@ class Console(Screen):
 		self['key_red'] = Label('Cancel')
 		self['key_green'] = Label('Hide/Show')
 		self['key_blue'] = Label('Restart')
-
-		self["actions"] = ActionMap(["WizardActions", "DirectionActions", 'ColorActions'],
-									{
-									"ok": self.cancel,
-									"up": self["text"].pageUp,
-									"down": self["text"].pageDown,
-									"red": self.cancel,
-									"green": self.toggleHideShow,
-									"blue": self.restartenigma,
-									"exit": self.cancel,
-									}, -1)
+		self["actions"] = ActionMap(
+			["WizardActions", "DirectionActions", 'ColorActions'],
+			{
+				"ok": self.cancel,
+				"up": self["text"].pageUp,
+				"down": self["text"].pageDown,
+				"red": self.cancel,
+				"green": self.toggleHideShow,
+				"blue": self.restartenigma,
+				"exit": self.cancel,
+			}, -1)
 
 		self.newtitle = title == 'Console' and 'Console' or title
 		self.cmdlist = isinstance(cmdlist, list) and cmdlist or [cmdlist]

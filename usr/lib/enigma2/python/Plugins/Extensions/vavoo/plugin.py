@@ -100,9 +100,9 @@ PY3 = sys.version_info[0] == 3
 
 if sys.version_info >= (2, 7, 9):
 	try:
-		sslContext = ssl._create_unverified_context()
+		ssl_context = ssl._create_unverified_context()
 	except:
-		sslContext = None
+		ssl_context = None
 
 
 try:
@@ -112,7 +112,7 @@ except ImportError:
 
 
 # set plugin
-currversion = '1.33'
+currversion = '1.34'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -131,8 +131,8 @@ regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
 
 
 try:
-	aspectmanager = vUtils.AspectManager()
-	aspectmanager()
+	aspect_manager = vUtils.AspectManager()
+	current_aspect = aspect_manager.get_current_aspect()
 except:
 	pass
 
@@ -190,32 +190,34 @@ print('folder back: ', BackPath)
 BakP = []
 try:
 	if file_exists(BackPath):
-		for backName in listdir(BackPath):
-			backNamePath = os_path.join(BackPath, backName)
-			if backName.endswith(".png"):
-				if backName.startswith("default"):
+		for back_name in listdir(BackPath):
+			back_name_path = os_path.join(BackPath, back_name)
+			if back_name.endswith(".png"):
+				if back_name.startswith("default"):
 					continue
-				backName = backName[:-4]
-				BakP.append((backName, backName))
+				back_name = back_name[:-4]
+				BakP.append((back_name, back_name))
 except Exception as e:
 	print(e)
+
 print('final folder back: ', BackPath)
 # BakP = sorted(BakP, key=lambda x: x[1])
 
 
 # fonts
-FNTPath = os_path.join(PLUGIN_PATH, "fonts")
+FNT_Path = os_path.join(PLUGIN_PATH, "fonts")
 fonts = []
 try:
-	if file_exists(FNTPath):
-		for fontName in listdir(FNTPath):
-			fontNamePath = os_path.join(FNTPath, fontName)
-			if fontName.endswith(".ttf") or fontName.endswith(".otf"):
-				fontName = fontName[:-4]
-				fonts.append((fontName, fontName))
+	if file_exists(FNT_Path):
+		for font_name in listdir(FNT_Path):
+			font_name_path = os_path.join(FNT_Path, font_name)
+			if font_name.endswith(".ttf") or font_name.endswith(".otf"):
+				font_name = font_name[:-4]
+				fonts.append((font_name, font_name))
 		fonts = sorted(fonts, key=lambda x: x[1])
 except Exception as e:
 	print(e)
+
 
 # config section
 config.plugins.vavoo = ConfigSubsection()
@@ -233,7 +235,7 @@ cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.dns = ConfigSelection(default="Default", choices=mydns)
 cfg.fonts = ConfigSelection(default='vav', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
-FONTSTYPE = FNTPath + '/' + cfg.fonts.value + '.ttf'
+FONTSTYPE = FNT_Path + '/' + cfg.fonts.value + '.ttf'
 eserv = int(cfg.services.value)
 
 # ipv6
@@ -514,12 +516,20 @@ class vavoo_config(Screen, ConfigListScreen):
 				print('DNS CHECK')
 			global FONTSTYPE
 			FONTSE = str(cfg.fonts.getValue()) + '.ttf'
-			FONTSTYPE = os_path.join(str(FNTPath), str(FONTSE))
+			FONTSTYPE = os_path.join(str(FNT_Path), str(FONTSE))
 			print('FONTSTYPE cfg = ', FONTSTYPE)
 			add_skin_font()
 			bakk = str(cfg.back.getValue()) + '.png'
 			add_skin_back(bakk)
-			restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Settings saved successfully !\nyou need to restart the GUI\nto apply the new configuration!\nDo you want to Restart the GUI now?'), MessageBox.TYPE_YESNO)
+			restartbox = self.session.openWithCallback(
+				self.restartGUI,
+				MessageBox,
+				_('Settings saved successfully !\n'
+				  'you need to restart the GUI\n'
+				  'to apply the new configuration!\n'
+				  'Do you want to Restart the GUI now?'),
+				MessageBox.TYPE_YESNO
+			)
 			restartbox.setTitle(_('Restart GUI now?'))
 		else:
 			self.close()
@@ -677,25 +687,28 @@ class MainVavoo(Screen):
 
 	def _initialize_actions(self):
 		"""Initialize the actions for buttons."""
-		self['actions'] = ActionMap(
-			['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'DirectionActions', 'ShortcutActions', 'HotkeyActions',
-			 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
-				'prevBouquet': self.chDown,
-				'nextBouquet': self.chUp,
-				'ok': self.ok,
-				'menu': self.goConfig,
-				'green': self.msgdeleteBouquets,
-				'blue': self.arabic,
-				'cancel': self.close,
-				'info': self.info,
-				'showEventInfo': self.info,
-				'red': self.close,
-				'yellow': self.update_me,
-				'yellow_long': self.update_dev,
-				'info_long': self.update_dev,
-				'infolong': self.update_dev,
-				'showEventInfoPlugin': self.update_dev,
-			}, -1)
+		actions = {
+			'prevBouquet': self.chDown,
+			'nextBouquet': self.chUp,
+			'ok': self.ok,
+			'menu': self.goConfig,
+			'green': self.msgdeleteBouquets,
+			'blue': self.arabic,
+			'cancel': self.close,
+			'info': self.info,
+			'showEventInfo': self.info,
+			'red': self.close,
+			'yellow': self.update_me,
+			'yellow_long': self.update_dev,
+			'info_long': self.update_dev,
+			'infolong': self.update_dev,
+			'showEventInfoPlugin': self.update_dev,
+		}
+		actions_list = [
+			'ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'DirectionActions',
+			'ShortcutActions', 'HotkeyActions', 'InfobarEPGActions', 'ChannelSelectBaseActions'
+		]
+		self['actions'] = ActionMap(actions_list, actions, -1)
 
 	def arabic(self):
 		global HALIGN
@@ -730,7 +743,14 @@ class MainVavoo(Screen):
 		if float(currversion) < float(remote_version):
 			new_version = remote_version
 			new_changelog = remote_changelog
-			self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (new_version, new_changelog), MessageBox.TYPE_YESNO)
+			self.session.openWithCallback(
+				self.install_update,
+				MessageBox,
+				_("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (
+					new_version, new_changelog
+				),
+				MessageBox.TYPE_YESNO
+			)
 		else:
 			self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
 
@@ -757,7 +777,13 @@ class MainVavoo(Screen):
 		self.session.open(vavoo_config)
 
 	def info(self):
-		aboutbox = self.session.open(MessageBox, _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') % desc_plugin, MessageBox.TYPE_INFO)
+		aboutbox = self.session.open(
+			MessageBox,
+			_('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\n'
+			  'Corvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\n'
+			  'but only free channel found on the net') % desc_plugin,
+			MessageBox.TYPE_INFO
+		)
 		aboutbox.setTitle(_('Info Vavoo'))
 
 	def chUp(self):
@@ -835,50 +861,6 @@ class MainVavoo(Screen):
 		self["menulist"].moveToIndex(0)
 		txtsream = self["menulist"].getCurrent()[0][0]
 		self["name"].setText(str(txtsream))
-
-	# def cat(self):
-		# self.cat_list = []
-		# items = []
-		# self.items_tmp = []
-		# name = ''
-		# country = ''
-		# try:
-			# content = vUtils.getUrl(self.url)
-			# if PY3:
-				# content = vUtils.ensure_str(content)
-			# try:
-				# data = json.loads(content)
-			# except ValueError:
-				# print('Error parsing JSON data')
-				# self['name'].setText('Error parsing data')
-				# return
-			# # data = sorted(data, key=lambda x: x["country"])
-			# for entry in data:
-				# country = unquote(entry["country"]).strip("\r\n")
-				# name = unquote(entry["name"]).strip("\r\n")
-				# # id = entry["id"]
-				# if country not in self.items_tmp:
-					# self.items_tmp.append(country)
-					# item = str(country) + "###" + self.url + '\n'
-					# items.append(item)
-			# items.sort()
-			# for item in items:
-				# name = item.split('###')[0]
-				# url = item.split('###')[1]
-				# if name not in self.cat_list:
-					# self.cat_list.append(show_list(name, url))
-			# if len(self.cat_list) < 1:
-				# return
-			# else:
-				# self['menulist'].l.setList(self.cat_list)
-				# self['menulist'].moveToIndex(0)
-				# txtsream = self['menulist'].getCurrent()[0][0]
-				# self['name'].setText(str(txtsream))
-		# except Exception as error:
-			# print('error as:', error)
-			# trace_error()
-			# self['name'].setText('Error')
-		# self['version'].setText('V.' + currversion)
 
 	def ok(self):
 		name = self['menulist'].getCurrent()[0][0]
@@ -1031,8 +1013,8 @@ class vavoo(Screen):
 		svr = cfg.server.value
 		server = zServer(0, svr, None)
 		data = None
-		global search_ok
-		search_ok = False
+		# search_ok = False
+		# Retrieve and parse data
 		try:
 			content = vUtils.getUrl(self.url)
 			if PY3:
@@ -1042,56 +1024,70 @@ class vavoo(Screen):
 			print('Error parsing JSON data')
 			self['name'].setText('Error parsing data')
 			return
-		# data = sorted(data, key=lambda x: x["country"])
+
+		# Process the data
 		try:
 			if data is not None:
 				for entry in data:
 					country = unquote(entry["country"]).strip("\r\n")
 					name = unquote(entry["name"]).strip("\r\n")
 					ids = entry["id"]
+
 					if country != self.name:
 						continue
+
 					ids = str(ids).replace(':', '').replace(' ', '').replace(',', '')
 					url = str(server) + '/live2/play/' + ids + '.ts'
 					name = vUtils.decodeHtml(name)
 					name = vUtils.rimuovi_parentesi(name)
+
 					item = name + "###" + url + '\n'
 					items.append(item)
+
+				# Sort items and use them for search
 				items.sort()
-				# use for search
-				global itemlist
-				itemlist = items
-				# use for search end
-				with open(xxxname, 'w') as outfile:
-					for item in items:
-						name1 = item.split('###')[0]
-						url = item.split('###')[1]
-						url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
-						name = unquote(name1).strip("\r\n")
-						self.cat_list.append(show_list(name, url))
-						# make m3u
-						outfile.write('#NAME %s\r\n' % self.name.capitalize())
-						nname = '#EXTINF:-1,' + str(name) + '\n'
-						outfile.write(nname)
-						outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
-						outfile.write('#EXTVLCOPT:http-referrer=https://vavoo.to/' + '\n')
-						outfile.write('#KODIPROP:http-user-agent=VAVOO/2.6' + '\n')
-						outfile.write('#KODIPROP:http-referrer=https://vavoo.to/' + '\n')
-						outfile.write('#EXTHTTP:{"User-Agent":"VAVOO/1.0","Referer":"https://vavoo.to/"}' + '\n')
-						outfile.write(str(url) + '\n')
-				# make m3u end
+				self.itemlist = items  # Use for search
+
+				# Create M3U file
+				self.create_m3u_file(xxxname, items)
+
 				if len(self.cat_list) < 1:
 					return
 				else:
-					self['menulist'].l.setList(self.cat_list)
-					self['menulist'].moveToIndex(0)
-					txtsream = self['menulist'].getCurrent()[0][0]
-					self['name'].setText(str(txtsream))
+					self.update_menu()
+
 		except Exception as error:
-			print('error as:', error)
+			print('Error:', error)
 			trace_error()
 			self['name'].setText('Error')
+
 		self['version'].setText('V.' + currversion)
+
+	def create_m3u_file(self, filename, items):
+		"""Creates an M3U file with the provided items."""
+		with open(filename, 'w') as outfile:
+			for item in items:
+				name1, url = item.split('###')
+				url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
+				name = unquote(name1).strip("\r\n")
+				self.cat_list.append(show_list(name, url))
+
+				# Write M3U file content
+				outfile.write('#NAME %s\r\n' % self.name.capitalize())
+				outfile.write('#EXTINF:-1,' + str(name) + '\n')
+				outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
+				outfile.write('#EXTVLCOPT:http-referrer=https://vavoo.to/' + '\n')
+				outfile.write('#KODIPROP:http-user-agent=VAVOO/2.6' + '\n')
+				outfile.write('#KODIPROP:http-referrer=https://vavoo.to/' + '\n')
+				outfile.write('#EXTHTTP:{"User-Agent":"VAVOO/1.0","Referer":"https://vavoo.to/"}' + '\n')
+				outfile.write(str(url) + '\n')
+
+	def update_menu(self):
+		"""Update the menu list."""
+		self['menulist'].l.setList(self.cat_list)
+		self['menulist'].moveToIndex(0)
+		txtstream = self['menulist'].getCurrent()[0][0]
+		self['name'].setText(str(txtstream))
 
 	def ok(self):
 		try:
@@ -1124,7 +1120,13 @@ class vavoo(Screen):
 
 	def message1(self, answer=None):
 		if answer is None:
-			self.session.openWithCallback(self.message1, MessageBox, _('Do you want to Convert to favorite .tv ?\n\nAttention!! It may take some time\ndepending on the number of streams contained !!!'))
+			self.session.openWithCallback(
+				self.message1,
+				MessageBox,
+				_('Do you want to Convert to favorite .tv ?\n\n'
+				  'Attention!! It may take some time\n'
+				  'depending on the number of streams contained !!!')
+			)
 		elif answer:
 			name = self.name
 			url = self.url
@@ -1183,7 +1185,12 @@ class vavoo(Screen):
 
 	def message4(self, answer=None):
 		if answer is None:
-			self.session.openWithCallback(self.message4, MessageBox, _('The favorite channel list exists.\nWant to update it with epg and picons?\n\nYES for Update\nelse remove List Favorite first!'))
+			self.session.openWithCallback(
+				self.message4,
+				MessageBox,
+				_('The favorite channel list exists.\nWant to update it with epg and picons?\n\n'
+				  'YES for Update\nelse remove List Favorite first!')
+			)
 		elif answer:
 			name = self.name
 			url = self.url
@@ -1203,7 +1210,7 @@ class vavoo(Screen):
 			try:
 				self.cat_list = []
 				search = result
-				for item in itemlist:
+				for item in self.itemlist:
 					name = item.split('###')[0]
 					url = item.split('###')[1]
 					if search.lower() in str(name).lower():
@@ -1357,8 +1364,6 @@ class Playstream2(
 
 	def _initialize_infobars(self):
 		"""Initialize infobar components."""
-		global streaml
-		streaml = False
 		for x in InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide:
 			x.__init__(self)
 
@@ -1440,7 +1445,13 @@ class Playstream2(
 			sTagCodec = currPlay.info().getInfoString(iServiceInformation.sTagCodec)
 			sTagVideoCodec = currPlay.info().getInfoString(iServiceInformation.sTagVideoCodec)
 			sTagAudioCodec = currPlay.info().getInfoString(iServiceInformation.sTagAudioCodec)
-			message = 'stitle:' + str(sTitle) + '\n' + 'sServiceref:' + str(sServiceref) + '\n' + 'sTagCodec:' + str(sTagCodec) + '\n' + 'sTagVideoCodec:' + str(sTagVideoCodec) + '\n' + 'sTagAudioCodec : ' + str(sTagAudioCodec)
+			message = (
+				f"stitle: {sTitle}\n"
+				f"sServiceref: {sServiceref}\n"
+				f"sTagCodec: {sTagCodec}\n"
+				f"sTagVideoCodec: {sTagVideoCodec}\n"
+				f"sTagAudioCodec: {sTagAudioCodec}"
+			)
 			self.mbox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 		except:
 			pass
@@ -1486,7 +1497,7 @@ class Playstream2(
 		self.session.nav.stopService()
 		self.session.nav.playService(self.srefInit)
 
-		vUtils.aspect_manager.restore_aspect()  # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def leavePlayer(self):
@@ -1579,77 +1590,7 @@ def _ensure_bouquet_listed(path2, bouquet_name, bouquet_type):
 			f.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\n' % bouquet_name)
 
 
-# def convert_bouquet(service, name, url):
-	# sig = vUtils.getAuthSignature()
-	# app = '?n=1&b=5&vavoo_auth=%s#User-Agent=VAVOO/2.6' % (str(sig))
-	# files = '/tmp/%s.m3u' % name
-	# bouquet_type = 'tv'
-	# if "radio" in name.lower():
-		# bouquet_type = "radio"
-	# name_file = sub(r'[<>:"/\\|?*, ]', '_', str(name))
-	# name_file = sub(r'\d+:\d+:[\d.]+', '_', name_file)
-	# name_file = sub(r'_+', '_', name_file)
-	# with open(PLUGIN_PATH + '/Favorite.txt', 'w') as r:
-		# r.write(str(name_file) + '###' + str(url))
-	# bouquet_name = 'userbouquet.vavoo_%s.%s' % (name_file.lower(), bouquet_type.lower())
-	# print("Converting Bouquet %s" % name_file)
-	# path1 = '/etc/enigma2/' + str(bouquet_name)
-	# path2 = '/etc/enigma2/bouquets.' + str(bouquet_type.lower())
-	# ch = 0
-	# if file_exists(files) and stat(files).st_size > 0:
-		# try:
-			# tplst = []
-			# tplst.append('#NAME %s (%s)' % (name_file.capitalize(), bouquet_type.upper()))
-			# tplst.append('#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS' % name_file)
-			# tplst.append('#DESCRIPTION --- %s ---' % name_file)
-			# namel = ''
-			# svz = ''
-			# dct = ''
-			# with open(files, 'r') as f:
-				# for line in f:
-					# line = str(line)
-					# if line.startswith("#EXTINF"):
-						# namel = '%s' % line.split(',')[-1]
-						# dsna = ('#DESCRIPTION %s' % namel).splitlines()
-						# dct = ''.join(dsna)
-
-					# elif line.startswith('http'):
-						# line = line.strip('\n\r') + str(app)
-						# tag = '1'
-						# if bouquet_type.upper() == 'RADIO':
-							# tag = '2'
-
-						# svca = ('#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s' % (service, tag, line.replace(':', '%3a')))
-						# svz = (svca + ':' + namel).splitlines()
-						# svz = ''.join(svz)
-
-					# if svz not in tplst:
-						# tplst.append(svz)
-						# tplst.append(dct)
-						# ch += 1
-
-			# with open(path1, 'w+') as f:
-				# f_content = f.read()
-				# for item in tplst:
-					# if item not in f_content:
-						# f.write("%s\n" % item)
-
-			# in_bouquets = False
-			# with open('/etc/enigma2/bouquets.%s' % bouquet_type.lower(), 'r') as f:
-				# for line in f:
-					# if bouquet_name in line:
-						# in_bouquets = True
-			# if not in_bouquets:
-				# with open(path2, 'a+') as f:
-					# bouquetTvString = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + str(bouquet_name) + '" ORDER BY bouquet\n'
-					# f.write(bouquetTvString)
-			# vUtils.ReloadBouquets()
-		# except Exception as error:
-			# print('error as:', error)
-	# return ch
-
-
-autoStartTimer = None
+auto_start_timer = None
 
 
 class AutoStartTimer:
@@ -1699,12 +1640,12 @@ class AutoStartTimer:
 					wake += interval * 60  # * 60
 				elif cfg.timetype.value == "fixed time":
 					wake += 86400
-			next = wake - int(nowt)
-			if next > 3600:
-				next = 3600
-			if next <= 0:
-				next = 60
-			self.timer.startLongTimer(next)
+			next_time = wake - int(nowt)
+			if next_time > 3600:
+				next_time = 3600
+			if next_time <= 0:
+				next_time = 60
+			self.timer.startLongTimer(next_time)
 		else:
 			wake = -1
 		return wake
@@ -1749,22 +1690,21 @@ class AutoStartTimer:
 
 def check_configuring():
 	if cfg.autobouquetupdate.value is True:
-		"""Check for new config values for auto start
-		"""
+		"""Check for new config values for auto start"""
 		# global autoStartTimer
-		if autoStartTimer is not None:
-			autoStartTimer.update()
+		if auto_start_timer is not None:
+			AutoStartTimer.update()
 		return
 
 
 def autostart(reason, session=None, **kwargs):
-	global autoStartTimer
+	global auto_start_timer
 	global _session
 	if reason == 0 and _session is None:
 		if session is not None:
 			_session = session
-			if autoStartTimer is None:
-				autoStartTimer = AutoStartTimer(session)
+			if auto_start_timer is None:
+				auto_start_timer = AutoStartTimer(session)
 	return
 
 
@@ -1784,9 +1724,9 @@ def add_skin_font():
 	print('**********addFont')
 	from enigma import addFont
 	# global FONTSTYPE
-	addFont(FNTPath + '/Lcdx.ttf', 'Lcdx', 100, 1)
+	addFont(FNT_Path + '/Lcdx.ttf', 'Lcdx', 100, 1)
 	addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-	addFont(os_path.join(str(FNTPath), 'vav.ttf'), 'Vav', 100, 1)  # lcd
+	addFont(os_path.join(str(FNT_Path), 'vav.ttf'), 'Vav', 100, 1)  # lcd
 
 
 def cfgmain(menuid, **kwargs):

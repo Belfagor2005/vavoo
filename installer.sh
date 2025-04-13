@@ -3,8 +3,8 @@
 ##setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
 ######### Only This 2 lines to edit with new version ######
-version='1.33'
-changelog='\nGenerate m3u file from config'
+version='1.34'
+changelog='\nPEP Aggressive - fix code'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-main
