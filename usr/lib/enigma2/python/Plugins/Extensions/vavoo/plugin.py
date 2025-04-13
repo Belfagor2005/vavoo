@@ -1691,15 +1691,15 @@ class AutoStartTimer:
 def check_configuring():
 	if cfg.autobouquetupdate.value is True:
 		"""Check for new config values for auto start"""
-		# global autoStartTimer
 		if auto_start_timer is not None:
-			AutoStartTimer.update()
+			auto_start_timer.update()  # Call update on the instance
 		return
 
 
 def autostart(reason, session=None, **kwargs):
 	global auto_start_timer
 	global _session
+
 	if reason == 0 and _session is None:
 		if session is not None:
 			_session = session
