@@ -1689,8 +1689,8 @@ class AutoStartTimer:
 
 
 def check_configuring():
+	"""Check for new config values for auto start"""
 	if cfg.autobouquetupdate.value is True:
-		"""Check for new config values for auto start"""
 		if auto_start_timer is not None:
 			auto_start_timer.update()  # Call update on the instance
 		return
