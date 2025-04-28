@@ -524,10 +524,12 @@ class vavoo_config(Screen, ConfigListScreen):
 			restartbox = self.session.openWithCallback(
 				self.restartGUI,
 				MessageBox,
-				_('Settings saved successfully !\n'
-				  'you need to restart the GUI\n'
-				  'to apply the new configuration!\n'
-				  'Do you want to Restart the GUI now?'),
+				_(
+					"Settings saved successfully!\n"
+					"You need to restart the GUI\n"
+					"to apply the new configuration!\n"
+					"Do you want to Restart the GUI now?"
+				),
 				MessageBox.TYPE_YESNO
 			)
 			restartbox.setTitle(_('Restart GUI now?'))
@@ -779,9 +781,11 @@ class MainVavoo(Screen):
 	def info(self):
 		aboutbox = self.session.open(
 			MessageBox,
-			_('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\n'
-			  'Corvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\n'
-			  'but only free channel found on the net') % desc_plugin,
+			_(
+				"%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\n"
+				"Corvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\n"
+				"but only free channel found on the net"
+			) % desc_plugin,
 			MessageBox.TYPE_INFO
 		)
 		aboutbox.setTitle(_('Info Vavoo'))
@@ -947,20 +951,31 @@ class vavoo(Screen):
 
 	def _initialize_actions(self):
 		"""Initialize the actions for buttons."""
-		self['actions'] = ActionMap(
-			['ButtonSetupActions', 'MenuActions', 'OkCancelActions', 'ShortcutActions', 'HotkeyActions', 'DirectionActions',
-			 'InfobarEPGActions', 'ChannelSelectBaseActions'], {
-				'prevBouquet': self.chDown,
-				'nextBouquet': self.chUp,
-				'ok': self.ok,
-				'green': self.message1,
-				'yellow': self.search_vavoo,
-				'blue': self.arabic,
-				'cancel': self.backhome,
-				'menu': self.goConfig,
-				'info': self.info,
-				'red': self.backhome
-			}, -1)
+		self["actions"] = ActionMap(
+			[
+				"ButtonSetupActions",
+				"MenuActions",
+				"OkCancelActions",
+				"ShortcutActions",
+				"HotkeyActions",
+				"DirectionActions",
+				"InfobarEPGActions",
+				"ChannelSelectBaseActions"
+			],
+			{
+				"prevBouquet": self.chDown,
+				"nextBouquet": self.chUp,
+				"ok": self.ok,
+				"green": self.message1,
+				"yellow": self.search_vavoo,
+				"blue": self.arabic,
+				"cancel": self.backhome,
+				"menu": self.goConfig,
+				"info": self.info,
+				"red": self.backhome
+			},
+			-1
+		)
 
 	def _initialize_timer(self):
 		"""Initialize the timer."""
@@ -1123,9 +1138,11 @@ class vavoo(Screen):
 			self.session.openWithCallback(
 				self.message1,
 				MessageBox,
-				_('Do you want to Convert to favorite .tv ?\n\n'
-				  'Attention!! It may take some time\n'
-				  'depending on the number of streams contained !!!')
+				_(
+					'Do you want to Convert to favorite .tv?\n\n'
+					'Attention!! It may take some time\n'
+					'depending on the number of streams contained !!!'
+				)
 			)
 		elif answer:
 			name = self.name
@@ -1150,52 +1167,6 @@ class vavoo(Screen):
 				_session.open(MessageBox, _('bouquets reloaded..\nWith %s channel') % str(ch), MessageBox.TYPE_INFO, timeout=5)
 		else:
 			_session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
-
-	"""
-	def message3(self, name, url, response):
-		sig = getAuthSignature()
-		app = str(sig)
-		if app:
-			filename = PLUGIN_PATH + '/list/userbouquet.vavoo_%s.tv' % name.lower()
-			filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
-			key = None
-			ch = 0
-			with open(filename, "rt") as fin:
-				data = fin.read()
-				regexcat = '#SERVICE.*?vavoo_auth=(.+?)#User'
-				match = compile(regexcat, DOTALL).findall(data)
-				for key in match:
-					key = str(key)
-					ch += 1
-
-			with open(filename, 'r') as f:
-				newlines = []
-				for line in f.readlines():
-					newlines.append(line.replace(key, app))
-
-			with open(filenameout, 'w') as f:
-				for line in newlines:
-					f.write(line)
-			vUtils.ReloadBouquets()
-			if response is True:
-				localtime = time.asctime(time.localtime(time.time()))
-				cfg.last_update.value = localtime
-				cfg.last_update.save()
-				_session.open(MessageBox, _('Wait...\nUpdate List Bouquet...\nbouquets reloaded..\nWith %s channel') % str(ch), MessageBox.TYPE_INFO, timeout=5)
-
-	def message4(self, answer=None):
-		if answer is None:
-			self.session.openWithCallback(
-				self.message4,
-				MessageBox,
-				_('The favorite channel list exists.\nWant to update it with epg and picons?\n\n'
-				  'YES for Update\nelse remove List Favorite first!')
-			)
-		elif answer:
-			name = self.name
-			url = self.url
-			self.message3(name, url, True)
-	"""
 
 	def search_vavoo(self):
 		self.session.openWithCallback(
@@ -1242,10 +1213,14 @@ class TvInfoBarShowHide():
 	skipToggleShow = False
 
 	def __init__(self):
-		self["ShowHideActions"] = ActionMap(["InfobarShowHideActions"],
-											{"toggleShow": self.OkPressed,
-											 "hide": self.hide
-											 }, 0)
+		self["ShowHideActions"] = ActionMap(
+			["InfobarShowHideActions"],
+			{
+				"toggleShow": self.OkPressed,
+				"hide": self.hide
+			},
+			0
+		)
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evStart: self.serviceStarted})
 		self.__state = self.STATE_SHOWN
 		self.__locked = 0
@@ -1446,11 +1421,11 @@ class Playstream2(
 			sTagVideoCodec = currPlay.info().getInfoString(iServiceInformation.sTagVideoCodec)
 			sTagAudioCodec = currPlay.info().getInfoString(iServiceInformation.sTagAudioCodec)
 			message = (
-				f"stitle: {sTitle}\n"
-				f"sServiceref: {sServiceref}\n"
-				f"sTagCodec: {sTagCodec}\n"
-				f"sTagVideoCodec: {sTagVideoCodec}\n"
-				f"sTagAudioCodec: {sTagAudioCodec}"
+				"stitle: " + str(sTitle) + "\n"
+				"sServiceref: " + str(sServiceref) + "\n"
+				"sTagCodec: " + str(sTagCodec) + "\n"
+				"sTagVideoCodec: " + str(sTagVideoCodec) + "\n"
+				"sTagAudioCodec: " + str(sTagAudioCodec)
 			)
 			self.mbox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 		except:
@@ -1614,17 +1589,17 @@ class AutoStartTimer:
 			if cfg.timetype.value == "fixed time":
 				ftc = cfg.fixedtime.value
 				now = time.localtime(time.time())
-				fwt = int(time.mktime((now.tm_year,
-									   now.tm_mon,
-									   now.tm_mday,
-									   ftc[0],
-									   ftc[1],
-									   now.tm_sec,
-									   now.tm_wday,
-									   now.tm_yday,
-									   now.tm_isdst)
-									  )
-						  )
+				fwt = int(time.mktime((
+					now.tm_year,
+					now.tm_mon,
+					now.tm_mday,
+					ftc[0],
+					ftc[1],
+					now.tm_sec,
+					now.tm_wday,
+					now.tm_yday,
+					now.tm_isdst
+				)))
 				return fwt
 		else:
 			return -1
