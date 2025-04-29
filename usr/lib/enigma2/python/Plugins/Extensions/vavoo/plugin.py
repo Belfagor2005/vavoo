@@ -915,7 +915,7 @@ class vavoo(Screen):
 		self._load_skin()
 		self._initialize_labels()
 		self._initialize_actions()
-
+		self.currentList = 'menulist'
 		self.name = name
 		self.url = url
 
