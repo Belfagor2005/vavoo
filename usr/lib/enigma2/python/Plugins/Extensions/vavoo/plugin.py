@@ -112,7 +112,7 @@ except ImportError:
 
 
 # set plugin
-currversion = '1.34'
+currversion = '1.35'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -1523,18 +1523,17 @@ def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
 	namel, svz, dct = '', '', ''
 	with open(filepath, "r") as f:
 		for line in f:
-			line = str(line)
+			line = str(line).strip()
 			if line.startswith("#EXTINF"):
-				namel = line.split(",")[-1]
+				namel = line.split(",")[-1].strip()
 				dct = "#DESCRIPTION %s" % namel
 			elif line.startswith("http"):
-				line = line.strip("\n\r") + app
+				full_url = line.strip() + app
 				tag = "2" if bouquet_type.upper() == "RADIO" else "1"
-				svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, line.replace(":", "%3a"))
+				svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, full_url.replace(":", "%3a"))
 				svz = svca + ":" + namel
-			if svz and svz not in tplst:
-				tplst.append(svz)
-				tplst.append(dct)
+				tplst.append(svca.strip())
+				tplst.append(dct.strip())
 				ch += 1
 	return tplst, ch
 
