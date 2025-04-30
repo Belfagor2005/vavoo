@@ -1,22 +1,61 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
+from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import getDesktop
-from six import unichr, iteritems  # ensure_str
+from os.path import join, isfile
+from os import listdir, path as os_path, popen, remove as os_remove, system
+from random import choice
+from re import split
+from re import sub
+from six import unichr, iteritems
 from six.moves import html_entities
+from time import time
+from unicodedata import normalize
 import base64
-# import functools
-# import itertools
-# import operator
-import os
+import json
 import re
+import requests
+import ssl
 import sys
 import types
+import six
 
+PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
 
 screenwidth = getDesktop(0).size()
 pythonVer = sys.version_info.major
+
+
+try:
+	from Components.AVSwitch import AVSwitch
+except ImportError:
+	from Components.AVSwitch import eAVControl as AVSwitch
+
+
+class AspectManager:
+	def __init__(self):
+		self.init_aspect = self.get_current_aspect()
+		print("[INFO] Initial aspect ratio:", self.init_aspect)
+
+	def get_current_aspect(self):
+		"""Restituisce l'aspect ratio attuale del dispositivo."""
+		try:
+			return int(AVSwitch().getAspectRatioSetting())
+		except Exception as e:
+			print("[ERROR] Failed to get aspect ratio:", str(e))
+			return 0
+
+	def restore_aspect(self):
+		"""Ripristina l'aspect ratio originale all'uscita del plugin."""
+		try:
+			print("[INFO] Restoring aspect ratio to:", self.init_aspect)
+			AVSwitch().setAspectRatio(self.init_aspect)
+		except Exception as e:
+			print("[ERROR] Failed to restore aspect ratio:", str(e))
+
+
+aspect_manager = AspectManager()
 
 
 if pythonVer == 3:
@@ -27,69 +66,42 @@ else:
 
 if pythonVer == 3:
 	try:
-		import ssl
 		sslContext = ssl._create_unverified_context()
 	except:
 		sslContext = None
 
-
-if pythonVer:
-	class_types = type,
-	text_type = str
-	binary_type = bytes
-	MAXSIZE = sys.maxsize
-else:
-	import unicode
-	class_types = (type, types.ClassType)
-	text_type = unicode
-	binary_type = str
-
-	if sys.platform.startswith("java"):
-		# Jython always uses 32 bits.
-		MAXSIZE = int((1 << 31) - 1)
-	else:
-		# It's possible to have sizeof(long) != sizeof(Py_ssize_t).
-		class X(object):
-
-			def __len__(self):
-				return 1 << 31
-		try:
-			len(X())
-		except OverflowError:
-			# 32-bit
-			MAXSIZE = int((1 << 31) - 1)
-		else:
-			# 64-bit
-			MAXSIZE = int((1 << 63) - 1)
-		del X
+class_types = (type,) if six.PY3 else (type, types.ClassType)
+text_type = six.text_type  # unicode in Py2, str in Py3
+binary_type = six.binary_type  # str in Py2, bytes in Py3
+MAXSIZE = sys.maxsize  # Compatibile con entrambe le versioni
 
 _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
 _ESCAPE_RE = re.compile("[&<>\"']")
-_UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")  # Whitespace handling added due to "hand-assed" parsers of html pages
-_ESCAPE_DICT = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}
+_UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")
+_ESCAPE_DICT = {
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	'"': "&quot;",
+	"'": "&apos;",
+}
 
 
-def ensure_str(s, encoding='utf-8', errors='strict'):
+def ensure_str(s, encoding="utf-8", errors="strict"):
 	"""Coerce *s* to `str`.
 
-	For Python 2:
+	- In Python 2:
 	  - `unicode` -> encoded to `str`
 	  - `str` -> `str`
-
-	For Python 3:
+	- In Python 3:
 	  - `str` -> `str`
 	  - `bytes` -> decoded to `str`
 	"""
-	# Optimization: Fast return for the common case.
-	if type(s) is str:
+	if isinstance(s, str):
 		return s
-	if pythonVer == 3 and isinstance(s, text_type):
-		return s.encode(encoding, errors)
-	elif pythonVer and isinstance(s, binary_type):
+	if isinstance(s, binary_type):
 		return s.decode(encoding, errors)
-	elif not isinstance(s, (text_type, binary_type)):
-		raise TypeError("not expecting type '%s'" % type(s))
-	return s
+	raise TypeError("not expecting type '%s'" % type(s))
 
 
 def html_escape(value):
@@ -150,9 +162,8 @@ def getUrl(url):
 		return link
 
 	except Exception as e:
-		print(e)
+		print("Error in first attempt:", e)
 		try:
-			import ssl
 			gcontext = ssl._create_unverified_context()
 			response = urlopen(req, timeout=20, context=gcontext)
 			if pythonVer == 3:
@@ -163,24 +174,161 @@ def getUrl(url):
 			return link
 
 		except Exception as e:
-			print(e)
+			print("Error in second attempt:", e)
 			return ""
 
 
-def purge(dir, pattern):
-	for f in os.listdir(dir):
-		file_path = os.path.join(dir, f)
-		if os.path.isfile(file_path):
+def get_external_ip():
+	try:
+		return popen('curl -s ifconfig.me').readline()
+	except:
+		pass
+	try:
+		return requests.get('https://v4.ident.me').text
+	except:
+		pass
+	try:
+		return requests.get('https://api.ipify.org').text
+	except:
+		pass
+	try:
+		return requests.get('https://api.myip.com/').json()["ip"]
+	except:
+		pass
+	try:
+		return requests.get('https://checkip.amazonaws.com').text.strip()
+	except:
+		pass
+	return None
+
+
+def set_cache(key, data, timeout):
+	"""Salva i dati nella cache."""
+	file_path = os_path.join(PLUGIN_PATH, key + '.json')
+	try:
+		if not isinstance(data, dict):
+			data = {"value": data}
+
+		if pythonVer < 3:
+			import io
+			with io.open(file_path, 'w', encoding='utf-8') as cache_file:
+				json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
+		else:
+			with open(file_path, 'w', encoding='utf-8') as cache_file:
+				json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
+	except Exception as e:
+		print("Error saving cache:", e)
+
+
+def get_cache(key):
+	file_path = os_path.join(PLUGIN_PATH, key + '.json')
+	if not (os_path.exists(file_path) and os_path.getsize(file_path) > 0):
+		return None
+
+	try:
+		data = _read_json_file(file_path)
+
+		if isinstance(data, str):
+			data = {"value": data}
+			_write_json_file(file_path, data)
+
+		if not isinstance(data, dict):
+			print("Unexpected data format in {}: Expected a dict, got {}".format(file_path, type(data)))
+			os_remove(file_path)
+			return None
+
+		if _is_cache_valid(data):
+			return data.get('value')
+
+	except ValueError as e:
+		print("Error decoding JSON from", file_path, ":", e)
+	except Exception as e:
+		print("Unexpected error reading cache file {}:".format(file_path), e)
+		os_remove(file_path)
+
+	return None
+
+
+def _read_json_file(file_path):
+	if pythonVer < 3:
+		import io
+		with io.open(file_path, 'r', encoding='utf-8') as f:
+			return json.load(f)
+	else:
+		with open(file_path, 'r', encoding='utf-8') as f:
+			return json.load(f)
+
+
+def _write_json_file(file_path, data):
+	with open(file_path, 'w', encoding='utf-8') as f:
+		json.dump(data, f, indent=4, ensure_ascii=False)
+
+
+def _is_cache_valid(data):
+	return (
+		data.get('sigValidUntil', 0) > int(time())
+		and data.get('ip', "") == get_external_ip()
+	)
+
+
+def getAuthSignature():
+	signfile = get_cache('signfile')
+	if signfile:
+		return signfile
+
+	veclist = get_cache("veclist")
+	if not veclist:
+		veclist = requests.get("https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json").json()
+		set_cache("veclist", veclist, timeout=3600)
+
+	sig = None
+	i = 0
+	while not sig and i < 50:
+		i += 1
+		vec = {"vec": choice(veclist)}
+		req = requests.post('https://www.vavoo.tv/api/box/ping2', data=vec).json()
+		sig = req.get('signed') or req.get('data', {}).get('signed') or req.get('response', {}).get('signed')
+
+	if sig:
+		set_cache('signfile', convert_to_unicode(sig), timeout=3600)
+	return sig
+
+
+def convert_to_unicode(data):
+	"""
+	In Python 3 le stringhe sono già Unicode, quindi:
+	- Se data è bytes, decodificalo.
+	- Se è str, restituiscilo così com'è.
+	"""
+	if isinstance(data, bytes):
+		return data.decode('utf-8')
+	elif isinstance(data, str):
+		return data  # Già Unicode in Python 3
+	elif isinstance(data, dict):
+		return {convert_to_unicode(k): convert_to_unicode(v) for k, v in data.items()}
+	elif isinstance(data, list):
+		return [convert_to_unicode(item) for item in data]
+	return data
+
+
+def rimuovi_parentesi(testo):
+	return sub(r'\s*\([^)]*\)\s*', ' ', testo).strip()
+
+
+def purge(directory, pattern):
+	for f in listdir(directory):
+		file_path = join(directory, f)
+		if isfile(file_path):
 			if re.search(pattern, f):
-				os.remove(file_path)
+				os_remove(file_path)
 
 
 def MemClean():
 	try:
-		os.system('sync')
-		os.system('echo 1 > /proc/sys/vm/drop_caches')
-		os.system('echo 2 > /proc/sys/vm/drop_caches')
-		os.system('echo 3 > /proc/sys/vm/drop_caches')
+		system('sync')
+		system('echo 1 > /proc/sys/vm/drop_caches')
+		system('echo 2 > /proc/sys/vm/drop_caches')
+		system('echo 3 > /proc/sys/vm/drop_caches')
 	except:
 		pass
 
@@ -191,46 +339,81 @@ def ReloadBouquets():
 	eDVBDB.getInstance().reloadBouquets()
 
 
+def sanitizeFilename(filename):
+	filename = _remove_unsafe_chars(filename)
+	filename = _handle_reserved_and_empty(filename)
+	filename = _truncate_if_too_long(filename)
+	return filename
+
+
+def _remove_unsafe_chars(filename):
+	blacklist = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0", "(", ")", " "]
+	filename = "".join(c for c in filename if c not in blacklist)
+	filename = "".join(c for c in filename if 31 < ord(c))  # Remove control chars
+	filename = normalize("NFKD", filename)
+	filename = filename.rstrip(". ")  # Windows does not allow trailing dot or space
+	return filename.strip()
+
+
+def _handle_reserved_and_empty(filename):
+	reserved = [
+		"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
+		"COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
+		"LPT6", "LPT7", "LPT8", "LPT9"
+	]
+	if all(c == "." for c in filename) or filename in reserved:
+		return "__" + filename
+	if not filename:
+		return "__"
+	return filename
+
+
+def _truncate_if_too_long(filename):
+	if len(filename) <= 255:
+		return filename
+
+	parts = split(r"/|\\", filename)[-1].split(".")
+	if len(parts) > 1:
+		ext = "." + parts.pop()
+		filename = filename[:-len(ext)]
+	else:
+		ext = ""
+	if not filename:
+		filename = "__"
+	if len(ext) > 254:
+		ext = ext[:254]
+	maxl = 255 - len(ext)
+	filename = filename[:maxl] + ext
+	filename = filename.rstrip(". ")
+	return filename or "__"
+
+
 def decodeHtml(text):
 	if pythonVer == 3:
 		import html
 		text = html.unescape(text)
 	else:
-		from six.moves import (html_parser)
+		from six.moves import html_parser
 		h = html_parser.HTMLParser()
 		text = h.unescape(text.decode('utf8')).encode('utf8')
-	text = text.replace('&amp;', '&')
-	text = text.replace('&apos;', "'")
-	text = text.replace('&lt;', '<')
-	text = text.replace('&gt;', '>')
-	text = text.replace('&ndash;', '-')
-	text = text.replace('&quot;', '"')
-	text = text.replace('&ntilde;', '~')
-	text = text.replace('&rsquo;', '\'')
-	text = text.replace('&nbsp;', ' ')
-	text = text.replace('&equals;', '=')
-	text = text.replace('&quest;', '?')
-	text = text.replace('&comma;', ',')
-	text = text.replace('&period;', '.')
-	text = text.replace('&colon;', ':')
-	text = text.replace('&lpar;', '(')
-	text = text.replace('&rpar;', ')')
-	text = text.replace('&excl;', '!')
-	text = text.replace('&dollar;', '$')
-	text = text.replace('&num;', '#')
-	text = text.replace('&ast;', '*')
-	text = text.replace('&lowbar;', '_')
-	text = text.replace('&lsqb;', '[')
-	text = text.replace('&rsqb;', ']')
-	text = text.replace('&half;', '1/2')
-	text = text.replace('&DiacriticalTilde;', '~')
-	text = text.replace('&OpenCurlyDoubleQuote;', '"')
-	text = text.replace('&CloseCurlyDoubleQuote;', '"')
+
+	html_replacements = {
+		'&amp;': '&', '&apos;': "'", '&lt;': '<', '&gt;': '>', '&ndash;': '-',
+		'&quot;': '"', '&ntilde;': '~', '&rsquo;': "'", '&nbsp;': ' ',
+		'&equals;': '=', '&quest;': '?', '&comma;': ',', '&period;': '.',
+		'&colon;': ':', '&lpar;': '(', '&rpar;': ')', '&excl;': '!',
+		'&dollar;': '$', '&num;': '#', '&ast;': '*', '&lowbar;': '_',
+		'&lsqb;': '[', '&rsqb;': ']', '&half;': '1/2', '&DiacriticalTilde;': '~',
+		'&OpenCurlyDoubleQuote;': '"', '&CloseCurlyDoubleQuote;': '"'
+	}
+
+	for key, val in html_replacements.items():
+		text = text.replace(key, val)
 	return text.strip()
 
 
 def remove_line(filename, what):
-	if os.path.isfile(filename):
+	if os_path.isfile(filename):
 		file_read = open(filename).readlines()
 		file_write = open(filename, 'w')
 		for line in file_read:
