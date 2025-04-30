@@ -56,7 +56,7 @@ from enigma import (
 )
 from os import listdir, makedirs, unlink, stat, remove, system, path as os_path
 from os.path import exists as file_exists
-from re import sub
+from re import sub, compile, DOTALL
 from requests.adapters import HTTPAdapter, Retry
 from Plugins.Plugin import PluginDescriptor
 from Screens.InfoBarGenerics import (
