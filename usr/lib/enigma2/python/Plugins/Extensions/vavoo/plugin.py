@@ -3,8 +3,8 @@
 
 """
 ****************************************
-*        coded by Lululla              *
-*             26/04/2024               *
+*		 coded by Lululla			   *
+*			  26/04/2024			   *
 * thank's to @oktus for image screen   *
 ****************************************
 # ---- thank's Kiddac for support ---- #
@@ -421,7 +421,7 @@ class vavoo_config(Screen, ConfigListScreen):
 			cfg.genm3u.setValue(0)
 			cfg.genm3u.save()
 
-			self.session.open(MessageBox, _("All .m3u files have been generated!"),  MessageBox.TYPE_INFO, timeout=4)
+			self.session.open(MessageBox, _("All .m3u files have been generated!"),	 MessageBox.TYPE_INFO, timeout=4)
 
 	def runFinished(self, retval):
 		self["description"].setText("Generation completed. Files saved to %s." % downloadfree)
@@ -765,7 +765,7 @@ class MainVavoo(Screen):
 		if answer:
 			self.session.open(Console, 'Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False)
 		else:
-			self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+			self.session.open(MessageBox, _("Update Aborted!"),	 MessageBox.TYPE_INFO, timeout=3)
 
 	def myCallback(self, result=None):
 		print('result:', result)
@@ -1349,15 +1349,24 @@ class Playstream2(
 	def __init__(self, session, name, url, index, item, cat_list):
 		Screen.__init__(self, session)
 		self.session = session
-		self.name = name
-		self.url = url.replace('%0a', '').replace('%0A', '')
+		# _session = session
+		self.skinName = 'MoviePlayer'
+		"""Initialize infobar components."""
+		for x in InfoBarBase, \
+				InfoBarMenu, \
+				InfoBarSeek, \
+				InfoBarAudioSelection, \
+				InfoBarSubtitleSupport, \
+				InfoBarNotifications, \
+				TvInfoBarShowHide:
+			x.__init__(self)
+
 		self.currentindex = index
 		self.item = item
 		self.itemscount = len(cat_list)
 		self.list = cat_list
-		"""Initialize infobar components."""
-		for x in InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide:
-			x.__init__(self)
+		self.name = name
+		self.url = url.replace('%0a', '').replace('%0A', '')
 		self.state = self.STATE_PLAYING
 		self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
 		"""Initialize the actions for buttons."""
@@ -1385,8 +1394,7 @@ class Playstream2(
 			},
 			-1
 		)
-
-		self.onFirstExecBegin.append(self.cicleStreamType)
+		self.onFirstExecBegin.append(self.startStream)
 		self.onClose.append(self.cancel)
 
 	def nextitem(self):
@@ -1398,7 +1406,7 @@ class Playstream2(
 		item = self.list[i][0]
 		self.name = item[0]
 		self.url = item[1]
-		self.cicleStreamType()
+		self.startStream()
 
 	def previousitem(self):
 		currentindex = int(self.currentindex) - 1
@@ -1409,19 +1417,19 @@ class Playstream2(
 		item = self.list[i][0]
 		self.name = item[0]
 		self.url = item[1]
-		self.cicleStreamType()
+		self.startStream()
 
 	def doEofInternal(self, playing):
 		print('doEofInternal', playing)
 		vUtils.MemClean()
 		if self.execing and playing:
-			self.cicleStreamType()
+			self.startStream()
 
 	def __evEOF(self):
 		print('__evEOF')
 		self.end = True
 		vUtils.MemClean()
-		self.cicleStreamType()
+		self.startStream()
 
 	def showinfo(self):
 		sTitle = ''
@@ -1452,28 +1460,60 @@ class Playstream2(
 			pass
 		return
 
+	def startStream(self):
+		self.cicleStreamType()
+		self.startAutoRefresh()
+
+	def startAutoRefresh(self):
+		if hasattr(self, "refreshTimer"):
+			self.refreshTimer.stop()
+		self.refreshTimer = eTimer()
+		try:
+			self.refreshTimer_conn = self.refreshTimer.timeout.connect(self.refreshStream)
+		except:
+			self.refreshTimer.callback.append(self.refreshStream)
+		self.refreshTimer.start(600000)	 # 5 minuti
+
+	def refreshStream(self):
+		# Get updated token
+		sig = vUtils.getAuthSignature()
+		app = "?n=1&b=5&vavoo_auth=" + str(sig) + "#User-Agent=VAVOO/2.6"
+		url = self.url
+		if not url.startswith("http"):
+			url = "http://" + url
+		full_url = url + app
+		ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(
+			self.servicetype,
+			full_url.replace(":", "%3a"),
+			self.name.replace(":", "%3a")
+		)
+		print("finalreference:	 ", ref)
+		sref = eServiceReference(ref)
+		sref.setName(self.name)
+		self.sref = sref
+		self.session.nav.playService(self.sref)
+
+	def cicleStreamType(self):
+		self.servicetype = "4097"
+		if not self.url.startswith("http"):
+			self.url = "http://" + self.url
+		if str(os_path.splitext(self.url)[-1]) == ".m3u8":
+			if self.servicetype == "1":
+				self.servicetype = "4097"
+		self.refreshStream()
+
 	def openTest(self, servicetype, url):
 		sig = vUtils.getAuthSignature()
 		app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
 		name = self.name
 		url = url + app
 		ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-		print('final reference:   ', ref)
+		print('final reference:	  ', ref)
 		sref = eServiceReference(ref)
 		self.sref = sref
 		self.sref.setName(name)
 		self.session.nav.stopService()
 		self.session.nav.playService(self.sref)
-
-	def cicleStreamType(self):
-		self.servicetype = '4097'
-		if not self.url.startswith('http'):
-			self.url = 'http://' + self.url
-		url = str(self.url)
-		if str(os_path.splitext(self.url)[-1]) == ".m3u8":
-			if self.servicetype == "1":
-				self.servicetype = "4097"
-		self.openTest(self.servicetype, url)
 
 	def showVideoInfo(self):
 		if self.shown:
@@ -1487,16 +1527,20 @@ class Playstream2(
 			self.doShow()
 
 	def cancel(self):
-		if os_path.isfile('/tmp/hls.avi'):
-			remove('/tmp/hls.avi')
+		if hasattr(self, "refreshTimer") and self.refreshTimer:
+			self.refreshTimer.stop()
+			self.refreshTimer = None
+
+		if os_path.isfile("/tmp/hls.avi"):
+			remove("/tmp/hls.avi")
 		self.session.nav.stopService()
 		self.session.nav.playService(self.srefInit)
 
-		aspect_manager.restore_aspect()  # Restore aspect on exit
+		aspect_manager.restore_aspect()	 # Restore aspect on exit
 		self.close()
 
 	def leavePlayer(self):
-		self.close()
+		self.cancel()
 
 
 def convert_bouquet(service, name, url):
@@ -1720,7 +1764,7 @@ def add_skin_font():
 	# global FONTSTYPE
 	addFont(FNT_Path + '/Lcdx.ttf', 'Lcdx', 100, 1)
 	addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-	addFont(os_path.join(str(FNT_Path), 'vav.ttf'), 'Vav', 100, 1)  # lcd
+	addFont(os_path.join(str(FNT_Path), 'vav.ttf'), 'Vav', 100, 1)	# lcd
 
 
 def cfgmain(menuid, **kwargs):
