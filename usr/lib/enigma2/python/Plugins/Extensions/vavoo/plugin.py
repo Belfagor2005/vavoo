@@ -1466,7 +1466,7 @@ class Playstream2(
 		self.startAutoRefresh()
 
 	def startAutoRefresh(self):
-		update_refresh = int(cfg.timerupdate)
+		update_refresh = int(cfg.timerupdate.value)
 		if hasattr(self, "refreshTimer"):
 			self.refreshTimer.stop()
 		self.refreshTimer = eTimer()
