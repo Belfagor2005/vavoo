@@ -1400,6 +1400,7 @@ class Playstream2(
 		self.onClose.append(self.cancel)
 
 	def nextitem(self):
+		self.stopStream()
 		currentindex = int(self.currentindex) + 1
 		if currentindex == self.itemscount:
 			currentindex = 0
@@ -1411,6 +1412,7 @@ class Playstream2(
 		self.startStream()
 
 	def previousitem(self):
+		self.stopStream()
 		currentindex = int(self.currentindex) - 1
 		if currentindex < 0:
 			currentindex = self.itemscount - 1
@@ -1463,10 +1465,11 @@ class Playstream2(
 		return
 
 	def startStream(self):
+		# Controlla se lo stream è già in corso
 		if self.is_streaming:
 			print("Stream is already running, skipping startStream.")
 			return
-		self.is_streaming = True
+		self.is_streaming = True  # Imposta la flag di stato
 		self.cicleStreamType()
 		self.startAutoRefresh()
 
@@ -1482,7 +1485,7 @@ class Playstream2(
 		self.refreshTimer.start(update_refresh)
 
 	def refreshStream(self):
-		if self.is_streaming:  # Controlla se lo stream è già attivo
+		if self.is_streaming:
 			print("Stream already in progress, skipping refreshStream.")
 			return
 
@@ -1539,6 +1542,14 @@ class Playstream2(
 		if isinstance(self, TvInfoBarShowHide):
 			self.doShow()
 
+	def stopStream(self):
+		if self.is_streaming:
+			self.is_streaming = False
+			print("Stopping stream and resetting state.")
+			self.session.nav.stopService()
+			self.session.nav.playService(self.srefInit)
+			print("Stream stopped.")
+
 	def cancel(self):
 		if hasattr(self, "refreshTimer") and self.refreshTimer:
 			self.refreshTimer.stop()
@@ -1555,6 +1566,7 @@ class Playstream2(
 		self.close()
 
 	def leavePlayer(self):
+		self.stopStream()
 		self.cancel()
 
 
