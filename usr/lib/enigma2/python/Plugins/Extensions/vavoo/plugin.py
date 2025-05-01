@@ -108,7 +108,7 @@ except ImportError:
 
 
 # set plugin
-currversion = '1.36'
+currversion = '1.37'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -1351,9 +1351,9 @@ class Playstream2(
 	def __init__(self, session, name, url, index, item, cat_list):
 		Screen.__init__(self, session)
 		self.session = session
-		_session = session
 		self.skinName = 'MoviePlayer'
-		self.is_streaming = False
+		self.stream_running = False
+		self.is_streaming = False  # Added here
 		self.currentindex = index
 		self.item = item
 		self.itemscount = len(cat_list)
@@ -1396,7 +1396,7 @@ class Playstream2(
 			},
 			-1
 		)
-		self.onFirstExecBegin.append(self.startStream)
+		self.onFirstExecBegin.append(lambda: self.startStream(force=True))
 		self.onClose.append(self.cancel)
 
 	def nextitem(self):
@@ -1464,12 +1464,13 @@ class Playstream2(
 			pass
 		return
 
-	def startStream(self):
-		# Controlla se lo stream è già in corso
-		if self.is_streaming:
-			print("Stream is already running, skipping startStream.")
+	def startStream(self, force=False):
+		if self.stream_running and not force:
+			self._log_debug("Stream is already running, skipping startStream.")
 			return
-		self.is_streaming = True  # Imposta la flag di stato
+
+		self.stream_running = True
+		self.is_streaming = True  # Added here
 		self.cicleStreamType()
 		self.startAutoRefresh()
 
@@ -1488,15 +1489,13 @@ class Playstream2(
 		self.refreshTimer.start(update_refresh * 60 * 1000)
 
 	def refreshStream(self):
-		if self.is_streaming:
-			print("Stream already in progress, skipping refreshStream.")
-			return
-
+		print("Starting new stream...")
+		self.stream_running = True
 		self.is_streaming = True
 
-		# Get updated token
+		# Obtain a new authentication token
 		sig = vUtils.getAuthSignature()
-		app = "?n=1&b=5&vavoo_auth=" + str(sig) + "#User-Agent=VAVOO/2.6"
+		app = '?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
 		url = self.url
 		if not url.startswith("http"):
 			url = "http://" + url
@@ -1506,11 +1505,25 @@ class Playstream2(
 			full_url.replace(":", "%3a"),
 			self.name.replace(":", "%3a")
 		)
-		print("finalreference:   ", ref)
+		print("final reference:", ref)
 		sref = eServiceReference(ref)
 		sref.setName(self.name)
 		self.sref = sref
+		self.session.nav.stopService()
 		self.session.nav.playService(self.sref)
+
+	def stopStream(self):
+		if self.stream_running:
+			self.stream_running = False
+			self.is_streaming = False  # Reset here as well
+			print("Stream stopped and state reset.")
+			self.session.nav.stopService()
+			self.session.nav.playService(self.srefInit)
+			# Stop the refresh timer when the stream is stopped
+			if hasattr(self, "refreshTimer") and self.refreshTimer:
+				self.refreshTimer.stop()
+		else:
+			print("No active stream to stop.")
 
 	def cicleStreamType(self):
 		self.servicetype = "4097"
@@ -1527,7 +1540,7 @@ class Playstream2(
 		name = self.name
 		url = url + app
 		ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-		print('final reference:   ', ref)
+		print('final reference:', ref)
 		sref = eServiceReference(ref)
 		self.sref = sref
 		self.sref.setName(name)
@@ -1545,20 +1558,13 @@ class Playstream2(
 		if isinstance(self, TvInfoBarShowHide):
 			self.doShow()
 
-	def stopStream(self):
-		if self.is_streaming:
-			self.is_streaming = False
-			print("Stopping stream and resetting state.")
-			self.session.nav.stopService()
-			self.session.nav.playService(self.srefInit)
-			print("Stream stopped.")
-
 	def cancel(self):
 		if hasattr(self, "refreshTimer") and self.refreshTimer:
 			self.refreshTimer.stop()
 			self.refreshTimer = None
 
-		self.is_streaming = False  # Ripristina la flag quando lo stream è terminato
+		self.stream_running = False
+		self.is_streaming = False  # Reset here
 
 		if os_path.isfile("/tmp/hls.avi"):
 			remove("/tmp/hls.avi")
