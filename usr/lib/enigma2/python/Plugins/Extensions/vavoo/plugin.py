@@ -222,6 +222,7 @@ cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.genm3u = NoSave(ConfigYesNo(default=False))
 cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
+cfg.timerupdate = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
 cfg.fixedtime = ConfigClock(default=46800)
@@ -383,6 +384,7 @@ class vavoo_config(Screen, ConfigListScreen):
 		self.list.append(getConfigListEntry(_("Generate .m3u files (Ok for Exec)"), cfg.genm3u, _("Generate .m3u files and save to device %s.") % downloadfree))
 		self.list.append(getConfigListEntry(_("Server for Player Used"), cfg.server, _("Server for player.\nNow %s") % cfg.server.value))
 		self.list.append(getConfigListEntry(_("Movie Services Reference"), cfg.services, _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
+		self.list.append(getConfigListEntry(_("Refresh Player"), cfg.timerupdate, _("Configure Update Timer for player refresh")))
 		self.list.append(getConfigListEntry(_("Select DNS Server"), cfg.dns, _("Configure Dns Server for Box.")))
 		self.list.append(getConfigListEntry(_("Select Background"), cfg.back, _("Configure Main Background Image.")))
 		self.list.append(getConfigListEntry(_("Select Fonts"), cfg.fonts, _("Configure Fonts.\nEg:Arabic or other language.")))
@@ -1465,6 +1467,7 @@ class Playstream2(
 		self.startAutoRefresh()
 
 	def startAutoRefresh(self):
+		update_refresh = int(cfg.timerupdate)
 		if hasattr(self, "refreshTimer"):
 			self.refreshTimer.stop()
 		self.refreshTimer = eTimer()
@@ -1472,7 +1475,7 @@ class Playstream2(
 			self.refreshTimer_conn = self.refreshTimer.timeout.connect(self.refreshStream)
 		except:
 			self.refreshTimer.callback.append(self.refreshStream)
-		self.refreshTimer.start(600000)	 # 5 minuti
+		self.refreshTimer.start(update_refresh)
 
 	def refreshStream(self):
 		# Get updated token
