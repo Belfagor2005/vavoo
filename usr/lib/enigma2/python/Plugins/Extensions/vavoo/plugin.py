@@ -222,7 +222,7 @@ cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.genm3u = NoSave(ConfigYesNo(default=False))
 cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
-cfg.timerupdate = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
+cfg.timerupdate = ConfigSelectionNumber(default=10, min=1, max=60, stepwidth=1)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.updateinterval = ConfigSelectionNumber(default=10, min=5, max=3600, stepwidth=5)
 cfg.fixedtime = ConfigClock(default=46800)
@@ -1475,6 +1475,9 @@ class Playstream2(
 
 	def startAutoRefresh(self):
 		update_refresh = int(cfg.timerupdate.value)
+		if update_refresh < 1:
+			update_refresh = 10
+
 		if hasattr(self, "refreshTimer"):
 			self.refreshTimer.stop()
 		self.refreshTimer = eTimer()
@@ -1482,7 +1485,7 @@ class Playstream2(
 			self.refreshTimer_conn = self.refreshTimer.timeout.connect(self.refreshStream)
 		except:
 			self.refreshTimer.callback.append(self.refreshStream)
-		self.refreshTimer.start(update_refresh)
+		self.refreshTimer.start(update_refresh * 60 * 1000)
 
 	def refreshStream(self):
 		if self.is_streaming:
