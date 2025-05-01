@@ -3,8 +3,8 @@
 
 """
 ****************************************
-*		 coded by Lululla			   *
-*			  26/04/2024			   *
+*        coded by Lululla              *
+*             26/04/2024               *
 * thank's to @oktus for image screen   *
 ****************************************
 # ---- thank's Kiddac for support ---- #
@@ -423,7 +423,7 @@ class vavoo_config(Screen, ConfigListScreen):
 			cfg.genm3u.setValue(0)
 			cfg.genm3u.save()
 
-			self.session.open(MessageBox, _("All .m3u files have been generated!"),	 MessageBox.TYPE_INFO, timeout=4)
+			self.session.open(MessageBox, _("All .m3u files have been generated!"),  MessageBox.TYPE_INFO, timeout=4)
 
 	def runFinished(self, retval):
 		self["description"].setText("Generation completed. Files saved to %s." % downloadfree)
@@ -767,7 +767,7 @@ class MainVavoo(Screen):
 		if answer:
 			self.session.open(Console, 'Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False)
 		else:
-			self.session.open(MessageBox, _("Update Aborted!"),	 MessageBox.TYPE_INFO, timeout=3)
+			self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
 
 	def myCallback(self, result=None):
 		print('result:', result)
@@ -1351,8 +1351,16 @@ class Playstream2(
 	def __init__(self, session, name, url, index, item, cat_list):
 		Screen.__init__(self, session)
 		self.session = session
-		# _session = session
+		_session = session
 		self.skinName = 'MoviePlayer'
+		self.currentindex = index
+		self.item = item
+		self.itemscount = len(cat_list)
+		self.list = cat_list
+		self.name = name
+		self.url = url.replace('%0a', '').replace('%0A', '')
+		self.state = self.STATE_PLAYING
+		self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
 		"""Initialize infobar components."""
 		for x in InfoBarBase, \
 				InfoBarMenu, \
@@ -1362,15 +1370,6 @@ class Playstream2(
 				InfoBarNotifications, \
 				TvInfoBarShowHide:
 			x.__init__(self)
-
-		self.currentindex = index
-		self.item = item
-		self.itemscount = len(cat_list)
-		self.list = cat_list
-		self.name = name
-		self.url = url.replace('%0a', '').replace('%0A', '')
-		self.state = self.STATE_PLAYING
-		self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
 		"""Initialize the actions for buttons."""
 		self['actions'] = ActionMap(
 			[
@@ -1490,7 +1489,7 @@ class Playstream2(
 			full_url.replace(":", "%3a"),
 			self.name.replace(":", "%3a")
 		)
-		print("finalreference:	 ", ref)
+		print("finalreference:   ", ref)
 		sref = eServiceReference(ref)
 		sref.setName(self.name)
 		self.sref = sref
@@ -1511,7 +1510,7 @@ class Playstream2(
 		name = self.name
 		url = url + app
 		ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-		print('final reference:	  ', ref)
+		print('final reference:   ', ref)
 		sref = eServiceReference(ref)
 		self.sref = sref
 		self.sref.setName(name)
@@ -1539,7 +1538,7 @@ class Playstream2(
 		self.session.nav.stopService()
 		self.session.nav.playService(self.srefInit)
 
-		aspect_manager.restore_aspect()	 # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def leavePlayer(self):
@@ -1767,7 +1766,7 @@ def add_skin_font():
 	# global FONTSTYPE
 	addFont(FNT_Path + '/Lcdx.ttf', 'Lcdx', 100, 1)
 	addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-	addFont(os_path.join(str(FNT_Path), 'vav.ttf'), 'Vav', 100, 1)	# lcd
+	addFont(os_path.join(str(FNT_Path), 'vav.ttf'), 'Vav', 100, 1)  # lcd
 
 
 def cfgmain(menuid, **kwargs):
