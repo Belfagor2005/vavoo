@@ -1353,6 +1353,7 @@ class Playstream2(
 		self.session = session
 		_session = session
 		self.skinName = 'MoviePlayer'
+		self.is_streaming = False
 		self.currentindex = index
 		self.item = item
 		self.itemscount = len(cat_list)
@@ -1462,6 +1463,10 @@ class Playstream2(
 		return
 
 	def startStream(self):
+		if self.is_streaming:
+			print("Stream is already running, skipping startStream.")
+			return
+		self.is_streaming = True
 		self.cicleStreamType()
 		self.startAutoRefresh()
 
@@ -1477,6 +1482,12 @@ class Playstream2(
 		self.refreshTimer.start(update_refresh)
 
 	def refreshStream(self):
+		if self.is_streaming:  # Controlla se lo stream è già attivo
+			print("Stream already in progress, skipping refreshStream.")
+			return
+
+		self.is_streaming = True
+
 		# Get updated token
 		sig = vUtils.getAuthSignature()
 		app = "?n=1&b=5&vavoo_auth=" + str(sig) + "#User-Agent=VAVOO/2.6"
@@ -1532,6 +1543,8 @@ class Playstream2(
 		if hasattr(self, "refreshTimer") and self.refreshTimer:
 			self.refreshTimer.stop()
 			self.refreshTimer = None
+
+		self.is_streaming = False  # Ripristina la flag quando lo stream è terminato
 
 		if os_path.isfile("/tmp/hls.avi"):
 			remove("/tmp/hls.avi")
