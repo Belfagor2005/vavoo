@@ -1466,7 +1466,7 @@ class Playstream2(
 
 	def startStream(self, force=False):
 		if self.stream_running and not force:
-			self._log_debug("Stream is already running, skipping startStream.")
+			trace_error()
 			return
 
 		self.stream_running = True
