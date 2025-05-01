@@ -3,8 +3,8 @@
 
 """
 ****************************************
-*		 coded by Lululla			   *
-*			  26/04/2024			   *
+*        coded by Lululla              *
+*             26/04/2024               *
 * thank's to @oktus for image screen   *
 ****************************************
 # ---- thank's Kiddac for support ---- #
@@ -108,7 +108,7 @@ except ImportError:
 
 
 # set plugin
-currversion = '1.35'
+currversion = '1.36'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -421,7 +421,7 @@ class vavoo_config(Screen, ConfigListScreen):
 			cfg.genm3u.setValue(0)
 			cfg.genm3u.save()
 
-			self.session.open(MessageBox, _("All .m3u files have been generated!"),	 MessageBox.TYPE_INFO, timeout=4)
+			self.session.open(MessageBox, _("All .m3u files have been generated!"),  MessageBox.TYPE_INFO, timeout=4)
 
 	def runFinished(self, retval):
 		self["description"].setText("Generation completed. Files saved to %s." % downloadfree)
@@ -765,7 +765,7 @@ class MainVavoo(Screen):
 		if answer:
 			self.session.open(Console, 'Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + vUtils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False)
 		else:
-			self.session.open(MessageBox, _("Update Aborted!"),	 MessageBox.TYPE_INFO, timeout=3)
+			self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
 
 	def myCallback(self, result=None):
 		print('result:', result)
@@ -1347,33 +1347,19 @@ class Playstream2(
 	screen_timeout = 5000
 
 	def __init__(self, session, name, url, index, item, cat_list):
+		Screen.__init__(self, session)
 		self.session = session
 		self.name = name
-		self.url = self._clean_url(url)
+		self.url = url.replace('%0a', '').replace('%0A', '')
 		self.currentindex = index
 		self.item = item
 		self.itemscount = len(cat_list)
 		self.list = cat_list
-		self.state = self.STATE_PLAYING
-		self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
-
-		Screen.__init__(self, session)
-		self._initialize_infobars()
-		self._initialize_actions()
-
-		self.onFirstExecBegin.append(self.cicleStreamType)
-		self.onClose.append(self.cancel)
-
-	def _clean_url(self, url):
-		"""Clean up the URL by removing unwanted characters."""
-		return url.replace('%0a', '').replace('%0A', '')
-
-	def _initialize_infobars(self):
 		"""Initialize infobar components."""
 		for x in InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide:
 			x.__init__(self)
-
-	def _initialize_actions(self):
+		self.state = self.STATE_PLAYING
+		self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
 		"""Initialize the actions for buttons."""
 		self['actions'] = ActionMap(
 			[
@@ -1399,6 +1385,9 @@ class Playstream2(
 			},
 			-1
 		)
+
+		self.onFirstExecBegin.append(self.cicleStreamType)
+		self.onClose.append(self.cancel)
 
 	def nextitem(self):
 		currentindex = int(self.currentindex) + 1
@@ -1469,7 +1458,7 @@ class Playstream2(
 		name = self.name
 		url = url + app
 		ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-		print('final reference:	  ', ref)
+		print('final reference:   ', ref)
 		sref = eServiceReference(ref)
 		self.sref = sref
 		self.sref.setName(name)
@@ -1503,7 +1492,7 @@ class Playstream2(
 		self.session.nav.stopService()
 		self.session.nav.playService(self.srefInit)
 
-		aspect_manager.restore_aspect()	 # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def leavePlayer(self):
@@ -1562,8 +1551,8 @@ def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
 				full_url = line.strip() + app
 				tag = "2" if bouquet_type.upper() == "RADIO" else "1"
 				svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, full_url.replace(":", "%3a"))
-				# svz = svca + ":" + namel
-				tplst.append(svca.strip())
+				svz = svca + ":" + namel
+				tplst.append(svz.strip())
 				tplst.append(dct.strip())
 				ch += 1
 	return tplst, ch
@@ -1731,7 +1720,7 @@ def add_skin_font():
 	# global FONTSTYPE
 	addFont(FNT_Path + '/Lcdx.ttf', 'Lcdx', 100, 1)
 	addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-	addFont(os_path.join(str(FNT_Path), 'vav.ttf'), 'Vav', 100, 1)	# lcd
+	addFont(os_path.join(str(FNT_Path), 'vav.ttf'), 'Vav', 100, 1)  # lcd
 
 
 def cfgmain(menuid, **kwargs):
