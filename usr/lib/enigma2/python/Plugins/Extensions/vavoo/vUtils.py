@@ -88,15 +88,6 @@ _ESCAPE_DICT = {
 
 
 def ensure_str(s, encoding="utf-8", errors="strict"):
-	"""Coerce *s* to `str`.
-
-	- In Python 2:
-	  - `unicode` -> encoded to `str`
-	  - `str` -> `str`
-	- In Python 3:
-	  - `str` -> `str`
-	  - `bytes` -> decoded to `str`
-	"""
 	if isinstance(s, str):
 		return s
 	if isinstance(s, binary_type):
@@ -434,10 +425,12 @@ def getserviceinfo(sref):
 		return None, None
 
 
-std_headers = {'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6',
-			   'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-			   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-			   'Accept-Language': 'en-us,en;q=0.5'}
+std_headers = {
+	'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6',
+	'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+	'Accept-Language': 'en-us,en;q=0.5'
+}
 
 ListAgent = [
 	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",

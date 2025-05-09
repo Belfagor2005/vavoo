@@ -1385,14 +1385,14 @@ class Playstream2(
 				'InfobarSeekActions'
 			],
 			{
-				'tv': self.cicleStreamType,
-				'stop': self.leavePlayer,
-				'cancel': self.cancel,
-				'channelDown': self.previousitem,
-				'channelUp': self.nextitem,
-				'down': self.previousitem,
-				'up': self.nextitem,
-				'back': self.cancel
+				"tv": self.cicleStreamType,
+				"stop": self.leavePlayer,
+				"cancel": self.cancel,
+				"channelDown": self.previousitem,
+				"channelUp": self.nextitem,
+				"down": self.previousitem,
+				"up": self.nextitem,
+				"back": self.cancel
 			},
 			-1
 		)
@@ -1576,7 +1576,7 @@ class Playstream2(
 
 	def leavePlayer(self):
 		self.stopStream()
-		self.cancel()
+		self.close()
 
 
 def convert_bouquet(service, name, url):
