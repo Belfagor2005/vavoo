@@ -994,12 +994,6 @@ class vavoo(Screen):
 			self['blue'].setText(_('Halign Right'))
 		self.cat()
 
-	def backhome(self):
-		if search_ok is True:
-			self.cat()
-		else:
-			self.close()
-
 	def goConfig(self):
 		self.session.open(vavoo_config)
 
@@ -1235,6 +1229,22 @@ class vavoo(Screen):
 				trace_error()
 				self['name'].setText('Error')
 				search_ok = False
+
+	def close(self, *args, **kwargs):
+		try:
+			self.timer.stop()
+			if hasattr(self.timer, 'callback'):
+				self.timer.callback.remove(self.cat)
+			elif hasattr(self.timer, 'timeout'):
+				self.timer.timeout.disconnect(self.cat)
+		except Exception as e:
+			print("Error stopping timer:", str(e))
+		return Screen.close(self, *args, **kwargs)
+
+	def backhome(self):
+		if search_ok:
+			self.cat()
+		self.close()
 
 
 class TvInfoBarShowHide():
