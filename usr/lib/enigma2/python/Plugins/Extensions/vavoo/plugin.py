@@ -108,7 +108,7 @@ except ImportError:
 
 
 # set plugin
-currversion = '1.37'
+currversion = '1.38'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
