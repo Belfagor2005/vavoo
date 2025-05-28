@@ -1,30 +1,28 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from enigma import getDesktop
-from os.path import join, isfile
-from os import listdir, path as os_path, popen, remove as os_remove, system
-from random import choice
-from re import split
-from re import sub
-from six import unichr, iteritems
-from six.moves import html_entities
-from time import time
-from unicodedata import normalize
+# Standard library imports
 import base64
 import json
 import re
-import requests
 import ssl
 import sys
 import types
+from os import listdir, popen, remove, system
+from os.path import exists, getsize, isfile, join, splitext
+from random import choice
+from time import time
+from unicodedata import normalize
+
+# Third-party imports
+import requests
 import six
+from six import unichr, iteritems
+from six.moves import html_entities
 
-PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
-
-screenwidth = getDesktop(0).size()
-pythonVer = sys.version_info.major
+# Project-specific imports
+from Tools.Directories import SCOPE_PLUGINS, resolveFilename
+from re import search
 
 
 try:
@@ -33,13 +31,27 @@ except ImportError:
 	from Components.AVSwitch import eAVControl as AVSwitch
 
 
+PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/vavoo")
+PYTHON_VER = sys.version_info.major
+
+if PYTHON_VER == 3:
+	from urllib.request import urlopen, Request
+	ssl_context = ssl._create_unverified_context()
+	unichr_func = unichr
+else:
+	from urllib2 import urlopen, Request
+	ssl_context = None
+	unichr_func = chr
+
+
 class AspectManager:
+	"""Manages aspect ratio settings for the plugin"""
 	def __init__(self):
 		self.init_aspect = self.get_current_aspect()
 		print("[INFO] Initial aspect ratio:", self.init_aspect)
 
 	def get_current_aspect(self):
-		"""Restituisce l'aspect ratio attuale del dispositivo."""
+		"""Get current aspect ratio setting"""
 		try:
 			return int(AVSwitch().getAspectRatioSetting())
 		except Exception as e:
@@ -47,7 +59,7 @@ class AspectManager:
 			return 0
 
 	def restore_aspect(self):
-		"""Ripristina l'aspect ratio originale all'uscita del plugin."""
+		"""Restore original aspect ratio"""
 		try:
 			print("[INFO] Restoring aspect ratio to:", self.init_aspect)
 			AVSwitch().setAspectRatio(self.init_aspect)
@@ -58,25 +70,13 @@ class AspectManager:
 aspect_manager = AspectManager()
 
 
-if pythonVer == 3:
-	from urllib.request import urlopen, Request
-else:
-	from urllib2 import urlopen, Request
-
-
-if pythonVer == 3:
-	try:
-		sslContext = ssl._create_unverified_context()
-	except:
-		sslContext = None
-
 class_types = (type,) if six.PY3 else (type, types.ClassType)
 text_type = six.text_type  # unicode in Py2, str in Py3
 binary_type = six.binary_type  # str in Py2, bytes in Py3
 MAXSIZE = sys.maxsize  # Compatibile con entrambe le versioni
 
 _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
-_ESCAPE_RE = re.compile("[&<>\"']")
+_ESCAPE_RE = re.compile(r"[&<>\"']")
 _UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")
 _ESCAPE_DICT = {
 	"&": "&amp;",
@@ -96,14 +96,17 @@ def ensure_str(s, encoding="utf-8", errors="strict"):
 
 
 def html_escape(value):
-	return _ESCAPE_RE.sub(lambda match: _ESCAPE_DICT[match.group(0)], ensure_str(value).strip())
+	"""Escape HTML special characters"""
+	return _ESCAPE_RE.sub(lambda m: _ESCAPE_DICT[m.group(0)], value.strip())
 
 
 def html_unescape(value):
+	"""Unescape HTML entities"""
 	return _UNESCAPE_RE.sub(_convert_entity, ensure_str(value).strip())
 
 
 def _convert_entity(m):
+	"""Helper for HTML entity conversion, compatible with Python 2 and 3"""
 	if m.group(1) == "#":
 		try:
 			return unichr(int(m.group(2)[1:], 16)) if m.group(2)[:1].lower() == "x" else unichr(int(m.group(2)))
@@ -112,95 +115,66 @@ def _convert_entity(m):
 	return _UNICODE_MAP.get(m.group(2), "&%s;" % m.group(2))
 
 
-def b64decoder(s):
-	s = str(s).strip()
+def b64decoder(data):
+	"""Robust base64 decoding with padding correction"""
+	data = data.strip()
+	pad = len(data) % 4
+	if pad == 1:  # Invalid base64 length
+		return ""
+	if pad:
+		data += "=" * (4 - pad)
+
 	try:
-		output = base64.b64decode(s)
-		if pythonVer == 3:
-			output = output.decode('utf-8')
-		return output
-
-	except Exception:
-		padding = len(s) % 4
-		if padding == 1:
-			print('Invalid base64 string: {}'.format(s))
-			return ""
-		elif padding == 2:
-			s += b'=='
-		elif padding == 3:
-			s += b'='
-		else:
-			return ""
-
-		output = base64.b64decode(s)
-		if pythonVer == 3:
-			output = output.decode('utf-8')
-
-		return output
+		decoded = base64.b64decode(data)
+		return decoded.decode('utf-8') if PYTHON_VER == 3 else decoded
+	except Exception as e:
+		print(f"Base64 decoding error: {e}")
+		return ""
 
 
 def getUrl(url):
-	req = Request(url)
-	req.add_header('User-Agent', RequestAgent())
+	"""Fetch URL content with fallback SSL handling"""
+	headers = {'User-Agent': get_user_agent()}
 
 	try:
-		response = urlopen(req, timeout=20)
-		if pythonVer == 3:
-			link = response.read().decode(errors='ignore')
+		if PYTHON_VER == 3:
+			response = urlopen(Request(url, headers=headers), timeout=20, context=ssl_context)
+			return response.read().decode('utf-8', errors='ignore')
 		else:
-			link = response.read()
-		response.close()
-		return link
-
+			response = urlopen(Request(url, headers=headers), timeout=20)
+			return response.read()
 	except Exception as e:
-		print("Error in first attempt:", e)
-		try:
-			gcontext = ssl._create_unverified_context()
-			response = urlopen(req, timeout=20, context=gcontext)
-			if pythonVer == 3:
-				link = response.read().decode(errors='ignore')
-			else:
-				link = response.read()
-			response.close()
-			return link
-
-		except Exception as e:
-			print("Error in second attempt:", e)
-			return ""
+		print(f"URL fetch error: {e}")
+		return ""
 
 
 def get_external_ip():
-	try:
-		return popen('curl -s ifconfig.me').readline()
-	except:
-		pass
-	try:
-		return requests.get('https://v4.ident.me').text
-	except:
-		pass
-	try:
-		return requests.get('https://api.ipify.org').text
-	except:
-		pass
-	try:
-		return requests.get('https://api.myip.com/').json()["ip"]
-	except:
-		pass
-	try:
-		return requests.get('https://checkip.amazonaws.com').text.strip()
-	except:
-		pass
+	"""Get external IP using multiple fallback services"""
+	services = [
+		lambda: popen('curl -s ifconfig.me').read().strip(),
+		lambda: requests.get('https://v4.ident.me', timeout=5).text.strip(),
+		lambda: requests.get('https://api.ipify.org', timeout=5).text.strip(),
+		lambda: requests.get('https://api.myip.com', timeout=5).json().get("ip", "").strip(),
+		lambda: requests.get('https://checkip.amazonaws.com', timeout=5).text.strip(),
+	]
+
+	for service in services:
+		try:
+			if ip := service():
+				return ip
+		except Exception:
+			continue
 	return None
 
 
 def set_cache(key, data, timeout):
 	"""Salva i dati nella cache."""
-	file_path = os_path.join(PLUGIN_PATH, key + '.json')
+	file_path = join(PLUGIN_PATH, key + '.json')
 	try:
 		if not isinstance(data, dict):
 			data = {"value": data}
 
-		if pythonVer < 3:
+		if PYTHON_VER < 3:
 			import io
 			with io.open(file_path, 'w', encoding='utf-8') as cache_file:
 				json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
@@ -212,8 +186,8 @@ def set_cache(key, data, timeout):
 
 
 def get_cache(key):
-	file_path = os_path.join(PLUGIN_PATH, key + '.json')
-	if not (os_path.exists(file_path) and os_path.getsize(file_path) > 0):
+	file_path = join(PLUGIN_PATH, key + '.json')
+	if not (exists(file_path) and getsize(file_path) > 0):
 		return None
 
 	try:
@@ -225,7 +199,7 @@ def get_cache(key):
 
 		if not isinstance(data, dict):
 			print("Unexpected data format in {}: Expected a dict, got {}".format(file_path, type(data)))
-			os_remove(file_path)
+			remove(file_path)
 			return None
 
 		if _is_cache_valid(data):
@@ -235,13 +209,13 @@ def get_cache(key):
 		print("Error decoding JSON from", file_path, ":", e)
 	except Exception as e:
 		print("Unexpected error reading cache file {}:".format(file_path), e)
-		os_remove(file_path)
+		remove(file_path)
 
 	return None
 
 
 def _read_json_file(file_path):
-	if pythonVer < 3:
+	if PYTHON_VER == 3:
 		import io
 		with io.open(file_path, 'r', encoding='utf-8') as f:
 			return json.load(f)
@@ -285,6 +259,20 @@ def getAuthSignature():
 	return sig
 
 
+def fetch_vec_list():
+	"""Fetch vector list from GitHub"""
+	try:
+		vec_list = requests.get(
+			"https://raw.githubusercontent.com/Belfagor2005/vavoo/main/data.json",
+			timeout=10
+		).json()
+		set_cache("vec_list", vec_list, 3600)
+		return vec_list
+	except Exception as e:
+		print("Vector list fetch error: " + str(e))
+		return None
+
+
 def convert_to_unicode(data):
 	"""
 	In Python 3 le stringhe sono già Unicode, quindi:
@@ -302,126 +290,99 @@ def convert_to_unicode(data):
 	return data
 
 
-def rimuovi_parentesi(testo):
-	return sub(r'\s*\([^)]*\)\s*', ' ', testo).strip()
+def rimuovi_parentesi(text):
+	"""Remove parentheses and their content from text"""
+	return re.sub(r'\s*\([^)]*\)\s*', ' ', text).strip()
 
 
-def purge(directory, pattern):
+def purge_directory(directory, pattern):
+	"""Delete files matching pattern in directory"""
 	for f in listdir(directory):
 		file_path = join(directory, f)
-		if isfile(file_path):
-			if re.search(pattern, f):
-				os_remove(file_path)
+		if isfile(file_path) and search(pattern, f):
+			remove(file_path)
 
 
 def MemClean():
+	"""Clear system memory cache"""
 	try:
 		system('sync')
-		system('echo 1 > /proc/sys/vm/drop_caches')
-		system('echo 2 > /proc/sys/vm/drop_caches')
-		system('echo 3 > /proc/sys/vm/drop_caches')
-	except:
+		for i in range(1, 4):
+			system("echo " + str(i) + " > /proc/sys/vm/drop_caches")
+	except Exception:
 		pass
 
 
 def ReloadBouquets():
+	"""Reload Enigma2 bouquets and service lists"""
 	from enigma import eDVBDB
-	eDVBDB.getInstance().reloadServicelist()
-	eDVBDB.getInstance().reloadBouquets()
+	db = eDVBDB.getInstance()
+	db.reloadServicelist()
+	db.reloadBouquets()
 
 
 def sanitizeFilename(filename):
-	filename = _remove_unsafe_chars(filename)
-	filename = _handle_reserved_and_empty(filename)
-	filename = _truncate_if_too_long(filename)
-	return filename
-
-
-def _remove_unsafe_chars(filename):
-	blacklist = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0", "(", ")", " "]
-	filename = "".join(c for c in filename if c not in blacklist)
-	filename = "".join(c for c in filename if 31 < ord(c))  # Remove control chars
-	filename = normalize("NFKD", filename)
-	filename = filename.rstrip(". ")  # Windows does not allow trailing dot or space
-	return filename.strip()
-
-
-def _handle_reserved_and_empty(filename):
-	reserved = [
-		"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
-		"COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
-		"LPT6", "LPT7", "LPT8", "LPT9"
-	]
-	if all(c == "." for c in filename) or filename in reserved:
-		return "__" + filename
-	if not filename:
-		return "__"
-	return filename
-
-
-def _truncate_if_too_long(filename):
-	if len(filename) <= 255:
-		return filename
-
-	parts = split(r"/|\\", filename)[-1].split(".")
-	if len(parts) > 1:
-		ext = "." + parts.pop()
-		filename = filename[:-len(ext)]
-	else:
-		ext = ""
-	if not filename:
-		filename = "__"
-	if len(ext) > 254:
+	"""Sanitize filename for safe filesystem use"""
+	# Remove unsafe characters
+	filename = re.sub(r'[\\/:*?"<>|\0]', '', filename)
+	filename = ''.join(c for c in filename if ord(c) > 31)
+	# Normalize and strip trailing characters
+	filename = normalize('NFKD', filename).encode('ascii', 'ignore').decode()
+	filename = filename.rstrip('. ').strip()
+	# Handle reserved names
+	reserved = ["CON", "PRN", "AUX", "NUL"] + ["COM" + str(i) for i in range(1, 10)] + ["LPT" + str(i) for i in range(1, 10)]
+	if filename.upper() in reserved or not filename:
+		if filename:
+			filename = "__" + filename
+		else:
+			filename = "__"
+	# Truncate if necessary
+	if len(filename) > 255:
+		base, ext = splitext(filename)
 		ext = ext[:254]
-	maxl = 255 - len(ext)
-	filename = filename[:maxl] + ext
-	filename = filename.rstrip(". ")
+		filename = base[:255 - len(ext)] + ext
 	return filename or "__"
 
 
 def decodeHtml(text):
-	if pythonVer == 3:
+	"""Decode HTML entities to text"""
+	if PYTHON_VER == 3:
 		import html
 		text = html.unescape(text)
 	else:
 		from six.moves import html_parser
-		h = html_parser.HTMLParser()
-		text = h.unescape(text.decode('utf8')).encode('utf8')
-
-	html_replacements = {
-		'&amp;': '&', '&apos;': "'", '&lt;': '<', '&gt;': '>', '&ndash;': '-',
-		'&quot;': '"', '&ntilde;': '~', '&rsquo;': "'", '&nbsp;': ' ',
+		text = html_parser.HTMLParser().unescape(text)
+	# Additional replacements
+	replacements = {
+		'&ndash;': '-', '&ntilde;': 'ñ', '&rsquo;': "'", '&nbsp;': ' ',
 		'&equals;': '=', '&quest;': '?', '&comma;': ',', '&period;': '.',
 		'&colon;': ':', '&lpar;': '(', '&rpar;': ')', '&excl;': '!',
 		'&dollar;': '$', '&num;': '#', '&ast;': '*', '&lowbar;': '_',
-		'&lsqb;': '[', '&rsqb;': ']', '&half;': '1/2', '&DiacriticalTilde;': '~',
+		'&lsqb;': '[', '&rsqb;': ']', '&half;': '½', '&DiacriticalTilde;': '~',
 		'&OpenCurlyDoubleQuote;': '"', '&CloseCurlyDoubleQuote;': '"'
 	}
-
-	for key, val in html_replacements.items():
-		text = text.replace(key, val)
+	for entity, char in replacements.items():
+		text = text.replace(entity, char)
 	return text.strip()
 
 
-def remove_line(filename, what):
-	if os_path.isfile(filename):
-		file_read = open(filename).readlines()
-		file_write = open(filename, 'w')
-		for line in file_read:
-			if what not in line:
-				file_write.write(line)
-		file_write.close()
+def remove_line(filename, pattern):
+	"""Remove lines containing pattern from file"""
+	if not isfile(filename):
+		return
+	with open(filename, 'r') as f:
+		lines = [line for line in f if pattern not in line]
+	with open(filename, 'w') as f:
+		f.writelines(lines)
 
 
-# this def returns the current playing service name and stream_url from give sref
-def getserviceinfo(sref):
+def getserviceinfo(service_ref):
+	"""Get service name and URL from service reference"""
 	try:
 		from ServiceReference import ServiceReference
-		p = ServiceReference(sref)
-		servicename = str(p.getServiceName())
-		serviceurl = str(p.getPath())
-		return servicename, serviceurl
-	except:
+		ref = ServiceReference(service_ref)
+		return ref.getServiceName(), ref.getPath()
+	except Exception:
 		return None, None
 
 
@@ -432,67 +393,17 @@ std_headers = {
 	'Accept-Language': 'en-us,en;q=0.5'
 }
 
-ListAgent = [
+USER_AGENTS = [
 	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
 	"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
-	'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
-	'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36',
-	'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.15 (KHTML, like Gecko) Chrome/24.0.1295.0 Safari/537.15',
-	'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.14 (KHTML, like Gecko) Chrome/24.0.1292.0 Safari/537.14',
-	'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1290.1 Safari/537.13',
-	'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1290.1 Safari/537.13',
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1290.1 Safari/537.13',
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1290.1 Safari/537.13',
-	'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1284.0 Safari/537.13',
-	'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.8 (KHTML, like Gecko) Chrome/17.0.940.0 Safari/535.8',
-	'Mozilla/6.0 (Windows NT 6.2; WOW64; rv:16.0.1) Gecko/20121011 Firefox/16.0.1',
-	'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:16.0.1) Gecko/20121011 Firefox/16.0.1',
-	'Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:16.0.1) Gecko/20121011 Firefox/16.0.1',
-	'Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2',
-	'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.16) Gecko/20120427 Firefox/15.0a1',
-	'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1',
-	'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:15.0) Gecko/20120910144328 Firefox/15.0.2',
-	'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1',
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:9.0a2) Gecko/20111101 Firefox/9.0a2',
-	'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0a2) Gecko/20110613 Firefox/6.0a2',
-	'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0a2) Gecko/20110612 Firefox/6.0a2',
-	'Mozilla/5.0 (Windows NT 6.1; rv:6.0) Gecko/20110814 Firefox/6.0',
-	'Mozilla/5.0 (compatible; MSIE 10.6; Windows NT 6.1; Trident/5.0; InfoPath.2; SLCC1; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET CLR 2.0.50727) 3gpp-gba UNTRUSTED/1.0',
-	'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)',
-	'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)',
-	'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/5.0)',
-	'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/4.0; InfoPath.2; SV1; .NET CLR 2.0.50727; WOW64)',
-	'Mozilla/4.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/5.0)',
-	'Mozilla/5.0 (compatible; MSIE 10.0; Macintosh; Intel Mac OS X 10_7_3; Trident/6.0)',
-	'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0;  it-IT)',
-	'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US)'
-	'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; chromeframe/13.0.782.215)',
-	'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; chromeframe/11.0.696.57)',
-	'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0) chromeframe/10.0.648.205',
-	'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/4.0; GTB7.4; InfoPath.1; SV1; .NET CLR 2.8.52393; WOW64; en-US)',
-	'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0; Trident/5.0; chromeframe/11.0.696.57)',
-	'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0; Trident/4.0; GTB7.4; InfoPath.3; SV1; .NET CLR 3.1.76908; WOW64; en-US)',
-	'Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; GTB7.4; InfoPath.2; SV1; .NET CLR 3.3.69573; WOW64; en-US)',
-	'Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 1.0.3705; .NET CLR 1.1.4322)',
-	'Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; InfoPath.1; SV1; .NET CLR 3.8.36217; WOW64; en-US)',
-	'Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)',
-	'Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; it-IT)',
-	'Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; en-US)',
-	'Opera/9.80 (X11; Linux i686; Ubuntu/14.10) Presto/2.12.388 Version/12.16.2',
-	'Opera/12.80 (Windows NT 5.1; U; en) Presto/2.10.289 Version/12.02',
-	'Opera/9.80 (Windows NT 6.1; U; es-ES) Presto/2.9.181 Version/12.00',
-	'Opera/9.80 (Windows NT 5.1; U; zh-sg) Presto/2.9.181 Version/12.00',
-	'Opera/12.0(Windows NT 5.2;U;en)Presto/22.9.168 Version/12.00',
-	'Opera/12.0(Windows NT 5.1;U;en)Presto/22.9.168 Version/12.00',
-	'Mozilla/5.0 (Windows NT 5.1) Gecko/20100101 Firefox/14.0 Opera/12.0',
-	'Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5355d Safari/8536.25',
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.13+ (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2',
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/534.55.3 (KHTML, like Gecko) Version/5.1.3 Safari/534.53.10',
-	'Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko ) Version/5.1 Mobile/9B176 Safari/7534.48.3'
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.88 Safari/537.36",
+	"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+	"Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+
 ]
 
 
-def RequestAgent():
-	from random import choice
-	RandomAgent = choice(ListAgent)
-	return RandomAgent
+def get_user_agent():
+	"""Get random user agent from list"""
+	return choice(USER_AGENTS)
