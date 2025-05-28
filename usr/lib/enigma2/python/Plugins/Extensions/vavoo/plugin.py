@@ -264,10 +264,24 @@ def raises(url):
 		http = requests.Session()
 		http.mount("http://", adapter)
 		http.mount("https://", adapter)
-		r = http.get(url, headers={'User-Agent': vUtils.RequestAgent()}, timeout=10, verify=False, stream=True, allow_redirects=False)
+
+		r = http.get(
+			url,
+			headers={'User-Agent': vUtils.RequestAgent()},
+			timeout=10,
+			verify=True,
+			stream=True,
+			allow_redirects=False
+		)
 		r.raise_for_status()
+
 		if r.status_code == requests.codes.ok:
+			# Consume il contenuto per chiudere correttamente la connessione
+			for xc in r.iter_content(1024):
+				pass
+			r.close()
 			return True
+
 	except Exception as error:
 		print(error)
 		trace_error()
@@ -454,7 +468,8 @@ class vavoo_config(Screen, ConfigListScreen):
 			else:
 				system("echo '#!/bin/bash")
 				system("echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
-				system("chmod 755 /etc/init.d/ipv6dis.sh")
+				from os import chmod
+				chmod("/etc/init.d/ipv6dis.sh", 0o755)
 				system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
 				cfg.ipv6.setValue(True)
 			cfg.ipv6.save()
@@ -550,7 +565,7 @@ class vavoo_config(Screen, ConfigListScreen):
 				try:
 					from os import access, X_OK, chmod
 					if not access(self.cmd1, X_OK):
-						chmod(self.cmd1, 493)
+						chmod(self.cmd1, 0o755)
 					import subprocess
 					subprocess.check_output(['bash', self.cmd1])
 					valdns = True
@@ -1248,6 +1263,8 @@ class vavoo(Screen):
 
 
 class TvInfoBarShowHide():
+	""" InfoBar show/hide control, accepts toggleShow and hide actions, might start
+	fancy animations. """
 	STATE_HIDDEN = 0
 	STATE_HIDING = 1
 	STATE_SHOWING = 2

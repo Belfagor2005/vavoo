@@ -292,7 +292,7 @@ def convert_to_unicode(data):
 
 def rimuovi_parentesi(text):
 	"""Remove parentheses and their content from text"""
-	return re.sub(r'\s*\([^)]*\)\s*', ' ', text).strip()
+	return re.sub(r'\s*\([^()]*\)\s*', ' ', text).strip()
 
 
 def purge_directory(directory, pattern):
