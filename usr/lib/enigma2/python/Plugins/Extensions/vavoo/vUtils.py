@@ -36,7 +36,7 @@ PYTHON_VER = sys.version_info.major
 
 if PYTHON_VER == 3:
 	from urllib.request import urlopen, Request
-	ssl_context = ssl._create_unverified_context()
+	ssl_context = ssl.create_default_context()
 	unichr_func = unichr
 else:
 	from urllib2 import urlopen, Request
