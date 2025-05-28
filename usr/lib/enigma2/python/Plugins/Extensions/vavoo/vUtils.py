@@ -22,7 +22,7 @@ from six.moves import html_entities
 
 # Project-specific imports
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
-from re import search
+from re import search, sub
 
 
 try:
@@ -133,7 +133,7 @@ def b64decoder(data):
 		decoded = base64.b64decode(data)
 		return decoded.decode('utf-8') if PYTHON_VER == 3 else decoded
 	except Exception as e:
-		print(f"Base64 decoding error: {e}")
+		print("Base64 decoding error: %s" % e)
 		return ""
 
 
@@ -149,7 +149,7 @@ def getUrl(url):
 			response = urlopen(Request(url, headers=headers), timeout=20)
 			return response.read()
 	except Exception as e:
-		print(f"URL fetch error: {e}")
+		print("URL fetch error: %s" % e)
 		return ""
 
 
@@ -220,7 +220,7 @@ def get_cache(key):
 
 
 def _read_json_file(file_path):
-	if PYTHON_VER == 3:
+	if PYTHON_VER < 3:
 		import io
 		with io.open(file_path, 'r', encoding='utf-8') as f:
 			return json.load(f)
@@ -297,10 +297,10 @@ def convert_to_unicode(data):
 
 def rimuovi_parentesi(text):
 	"""Remove parentheses and their content from text"""
-	return re.sub(r'\s*\([^()]*\)\s*', ' ', text).strip()
+	return sub(r'\s*\([^()]*\)\s*', ' ', text).strip()
 
 
-def purge_directory(directory, pattern):
+def purge(directory, pattern):
 	"""Delete files matching pattern in directory"""
 	for f in listdir(directory):
 		file_path = join(directory, f)
