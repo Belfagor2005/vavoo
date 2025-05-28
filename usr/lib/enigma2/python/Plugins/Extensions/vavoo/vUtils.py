@@ -37,6 +37,11 @@ PYTHON_VER = sys.version_info.major
 if PYTHON_VER == 3:
 	from urllib.request import urlopen, Request
 	ssl_context = ssl.create_default_context()
+	# Disabilita SSLv2, SSLv3, TLS1.0 e TLS1.1 esplicitamente
+	ssl_context.options |= ssl.OP_NO_SSLv2
+	ssl_context.options |= ssl.OP_NO_SSLv3
+	ssl_context.options |= ssl.OP_NO_TLSv1
+	ssl_context.options |= ssl.OP_NO_TLSv1_1
 	unichr_func = unichr
 else:
 	from urllib2 import urlopen, Request
