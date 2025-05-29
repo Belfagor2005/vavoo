@@ -1,28 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Standard library imports
 import base64
 import json
-import re
 import ssl
-import sys
+from sys import version_info, maxsize
 import types
-from os import listdir, popen, remove, system
+from os import listdir, remove, system
 from os.path import exists, getsize, isfile, join, splitext
 from random import choice
+from re import search, sub, compile
 from time import time
 from unicodedata import normalize
 
-# Third-party imports
 import requests
 import six
 from six import unichr, iteritems
-from six.moves import html_entities
+from six.moves import html_entities, html_parser
 
 # Project-specific imports
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
-from re import search, sub
 
 
 try:
@@ -32,7 +29,7 @@ except ImportError:
 
 
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/vavoo")
-PYTHON_VER = sys.version_info.major
+PYTHON_VER = version_info.major
 
 if PYTHON_VER == 3:
 	from urllib.request import urlopen, Request
@@ -75,14 +72,14 @@ class AspectManager:
 aspect_manager = AspectManager()
 
 
-class_types = (type,) if six.PY3 else (type, types.ClassType)
+class_types = (type,) if PYTHON_VER == 3 else (type, types.ClassType)
 text_type = six.text_type  # unicode in Py2, str in Py3
 binary_type = six.binary_type  # str in Py2, bytes in Py3
-MAXSIZE = sys.maxsize  # Compatibile con entrambe le versioni
+MAXSIZE = maxsize  # Compatibile con entrambe le versioni
 
 _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
-_ESCAPE_RE = re.compile(r"[&<>\"']")
-_UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")
+_ESCAPE_RE = compile(r"[&<>\"']")
+_UNESCAPE_RE = compile(r"&\s*(#?)(\w+?)\s*;")
 _ESCAPE_DICT = {
 	"&": "&amp;",
 	"<": "&lt;",
@@ -139,7 +136,7 @@ def b64decoder(data):
 
 def getUrl(url):
 	"""Fetch URL content with fallback SSL handling"""
-	headers = {'User-Agent': get_user_agent()}
+	headers = {'User-Agent': RequestAgent()}
 
 	try:
 		if PYTHON_VER == 3:
@@ -155,8 +152,11 @@ def getUrl(url):
 
 def get_external_ip():
 	"""Get external IP using multiple fallback services"""
+	import requests
+	from subprocess import Popen, PIPE
+
 	services = [
-		lambda: popen('curl -s ifconfig.me').read().strip(),
+		lambda: Popen(['curl', '-s', 'ifconfig.me'], stdout=PIPE).communicate()[0].decode('utf-8').strip(),
 		lambda: requests.get('https://v4.ident.me', timeout=5).text.strip(),
 		lambda: requests.get('https://api.ipify.org', timeout=5).text.strip(),
 		lambda: requests.get('https://api.myip.com', timeout=5).json().get("ip", "").strip(),
@@ -165,39 +165,83 @@ def get_external_ip():
 
 	for service in services:
 		try:
-			if ip := service():
+			ip = service()
+			if ip:
 				return ip
 		except Exception:
 			continue
 	return None
 
 
+"""
+# def set_cache(key, data, timeout):
+	# file_path = join(PLUGIN_PATH, key + '.json')
+	# try:
+		# if not isinstance(data, dict):
+			# data = {"value": data}
+
+		# if PYTHON_VER < 3:
+			# import io
+			# with io.open(file_path, 'w', encoding='utf-8') as cache_file:
+				# json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
+		# else:
+			# with open(file_path, 'w', encoding='utf-8') as cache_file:
+				# json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
+	# except Exception as e:
+		# print("Error saving cache:", e)
+
+
+# def convert_to_unicode(data):
+	# if isinstance(data, bytes):
+		# return data.decode('utf-8')
+	# elif isinstance(data, str):
+		# return data  # Già Unicode in Python 3
+	# elif isinstance(data, dict):
+		# return {convert_to_unicode(k): convert_to_unicode(v) for k, v in data.items()}
+	# elif isinstance(data, list):
+		# return [convert_to_unicode(item) for item in data]
+	# return data
+
+"""
+
+
 def set_cache(key, data, timeout):
-	"""Salva i dati nella cache."""
 	file_path = join(PLUGIN_PATH, key + '.json')
 	try:
 		if not isinstance(data, dict):
 			data = {"value": data}
-
 		if PYTHON_VER < 3:
 			import io
+			converted_data = convert_to_unicode(data)
 			with io.open(file_path, 'w', encoding='utf-8') as cache_file:
-				json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
+				json.dump(converted_data, cache_file, indent=4, ensure_ascii=False)
 		else:
 			with open(file_path, 'w', encoding='utf-8') as cache_file:
-				json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
+				json.dump(data, cache_file, indent=4, ensure_ascii=False)
 	except Exception as e:
 		print("Error saving cache:", e)
+
+
+def convert_to_unicode(data):
+	if isinstance(data, dict):
+		return {convert_to_unicode(key): convert_to_unicode(value) for key, value in data.items()}
+	elif isinstance(data, list):
+		return [convert_to_unicode(element) for element in data]
+	elif PYTHON_VER < 3 and isinstance(data, str):
+		# Decodifica le stringhe in Unicode per Python 2
+		return data.decode('utf-8')
+	elif PYTHON_VER < 3 and isinstance(data, unicode):
+		return data
+	else:
+		return data
 
 
 def get_cache(key):
 	file_path = join(PLUGIN_PATH, key + '.json')
 	if not (exists(file_path) and getsize(file_path) > 0):
 		return None
-
 	try:
 		data = _read_json_file(file_path)
-
 		if isinstance(data, str):
 			data = {"value": data}
 			_write_json_file(file_path, data)
@@ -274,31 +318,6 @@ def getAuthSignature():
 	return sig
 
 
-"""
-def getAuthSignature():
-	signfile = get_cache('signfile')
-	if signfile:
-		return signfile
-
-	veclist = get_cache("veclist")
-	if not veclist:
-		veclist = requests.get("https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json").json()
-		set_cache("veclist", veclist, timeout=3600)
-
-	sig = None
-	i = 0
-	while not sig and i < 50:
-		i += 1
-		vec = {"vec": choice(veclist)}
-		req = requests.post('https://www.vavoo.tv/api/box/ping2', data=vec).json()
-		sig = req.get('signed') or req.get('data', {}).get('signed') or req.get('response', {}).get('signed')
-
-	if sig:
-		set_cache('signfile', convert_to_unicode(sig), timeout=3600)
-	return sig
-"""
-
-
 def fetch_vec_list():
 	"""Fetch vector list from GitHub"""
 	try:
@@ -311,23 +330,6 @@ def fetch_vec_list():
 	except Exception as e:
 		print("Vector list fetch error: " + str(e))
 		return None
-
-
-def convert_to_unicode(data):
-	"""
-	In Python 3 le stringhe sono già Unicode, quindi:
-	- Se data è bytes, decodificalo.
-	- Se è str, restituiscilo così com'è.
-	"""
-	if isinstance(data, bytes):
-		return data.decode('utf-8')
-	elif isinstance(data, str):
-		return data  # Già Unicode in Python 3
-	elif isinstance(data, dict):
-		return {convert_to_unicode(k): convert_to_unicode(v) for k, v in data.items()}
-	elif isinstance(data, list):
-		return [convert_to_unicode(item) for item in data]
-	return data
 
 
 def rimuovi_parentesi(text):
@@ -364,7 +366,7 @@ def ReloadBouquets():
 def sanitizeFilename(filename):
 	"""Sanitize filename for safe filesystem use"""
 	# Remove unsafe characters
-	filename = re.sub(r'[\\/:*?"<>|\0]', '', filename)
+	filename = sub(r'[\\/:*?"<>|\0]', '', filename)
 	filename = ''.join(c for c in filename if ord(c) > 31)
 	# Normalize and strip trailing characters
 	filename = normalize('NFKD', filename).encode('ascii', 'ignore').decode()
@@ -385,24 +387,25 @@ def sanitizeFilename(filename):
 
 
 def decodeHtml(text):
-	"""Decode HTML entities to text"""
 	if PYTHON_VER == 3:
 		import html
 		text = html.unescape(text)
 	else:
-		from six.moves import html_parser
-		text = html_parser.HTMLParser().unescape(text)
-	# Additional replacements
+		h = html_parser.HTMLParser()
+		text = h.unescape(text.decode('utf8')).encode('utf8')
+
 	replacements = {
-		'&ndash;': '-', '&ntilde;': 'ñ', '&rsquo;': "'", '&nbsp;': ' ',
+		'&amp;': '&', '&apos;': "'", '&lt;': '<', '&gt;': '>', '&ndash;': '-',
+		'&quot;': '"', '&ntilde;': '~', '&rsquo;': "'", '&nbsp;': ' ',
 		'&equals;': '=', '&quest;': '?', '&comma;': ',', '&period;': '.',
 		'&colon;': ':', '&lpar;': '(', '&rpar;': ')', '&excl;': '!',
 		'&dollar;': '$', '&num;': '#', '&ast;': '*', '&lowbar;': '_',
-		'&lsqb;': '[', '&rsqb;': ']', '&half;': '½', '&DiacriticalTilde;': '~',
+		'&lsqb;': '[', '&rsqb;': ']', '&half;': '1/2', '&DiacriticalTilde;': '~',
 		'&OpenCurlyDoubleQuote;': '"', '&CloseCurlyDoubleQuote;': '"'
 	}
 	for entity, char in replacements.items():
 		text = text.replace(entity, char)
+
 	return text.strip()
 
 
@@ -416,6 +419,7 @@ def remove_line(filename, pattern):
 		f.writelines(lines)
 
 
+# this def returns the current playing service name and stream_url from give sref
 def getserviceinfo(service_ref):
 	"""Get service name and URL from service reference"""
 	try:
@@ -444,6 +448,6 @@ USER_AGENTS = [
 ]
 
 
-def get_user_agent():
+def RequestAgent():
 	"""Get random user agent from list"""
 	return choice(USER_AGENTS)
