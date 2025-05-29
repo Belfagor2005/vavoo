@@ -248,6 +248,40 @@ def getAuthSignature():
 
 	veclist = get_cache("veclist")
 	if not veclist:
+		try:
+			if ssl_context:
+				req = Request("https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json")
+				with urlopen(req, context=ssl_context) as r:
+					veclist = json.load(r)
+			else:
+				response = requests.get("https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json", verify=False)
+				veclist = response.json()
+		except Exception as e:
+			print("[vUtils] Failed to fetch veclist:", e)
+			return None
+
+		set_cache("veclist", veclist, timeout=3600)
+	sig = None
+	i = 0
+	while not sig and i < 50:
+		i += 1
+		vec = {"vec": choice(veclist)}
+		req = requests.post('https://www.vavoo.tv/api/box/ping2', data=vec).json()
+		sig = req.get('signed') or req.get('data', {}).get('signed') or req.get('response', {}).get('signed')
+
+	if sig:
+		set_cache('signfile', convert_to_unicode(sig), timeout=3600)
+	return sig
+
+
+"""
+def getAuthSignature():
+	signfile = get_cache('signfile')
+	if signfile:
+		return signfile
+
+	veclist = get_cache("veclist")
+	if not veclist:
 		veclist = requests.get("https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json").json()
 		set_cache("veclist", veclist, timeout=3600)
 
@@ -262,6 +296,7 @@ def getAuthSignature():
 	if sig:
 		set_cache('signfile', convert_to_unicode(sig), timeout=3600)
 	return sig
+"""
 
 
 def fetch_vec_list():
