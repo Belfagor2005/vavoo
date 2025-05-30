@@ -173,38 +173,6 @@ def get_external_ip():
 	return None
 
 
-"""
-# def set_cache(key, data, timeout):
-	# file_path = join(PLUGIN_PATH, key + '.json')
-	# try:
-		# if not isinstance(data, dict):
-			# data = {"value": data}
-
-		# if PYTHON_VER < 3:
-			# import io
-			# with io.open(file_path, 'w', encoding='utf-8') as cache_file:
-				# json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
-		# else:
-			# with open(file_path, 'w', encoding='utf-8') as cache_file:
-				# json.dump(convert_to_unicode(data), cache_file, indent=4, ensure_ascii=False)
-	# except Exception as e:
-		# print("Error saving cache:", e)
-
-
-# def convert_to_unicode(data):
-	# if isinstance(data, bytes):
-		# return data.decode('utf-8')
-	# elif isinstance(data, str):
-		# return data  # Già Unicode in Python 3
-	# elif isinstance(data, dict):
-		# return {convert_to_unicode(k): convert_to_unicode(v) for k, v in data.items()}
-	# elif isinstance(data, list):
-		# return [convert_to_unicode(item) for item in data]
-	# return data
-
-"""
-
-
 def set_cache(key, data, timeout):
 	file_path = join(PLUGIN_PATH, key + '.json')
 	try:

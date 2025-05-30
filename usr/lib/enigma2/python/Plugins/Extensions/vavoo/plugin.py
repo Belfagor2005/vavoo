@@ -82,7 +82,7 @@ import sys
 import time
 
 # Local application/library-specific imports
-from . import _, country_codes
+from . import _
 from . import vUtils
 from .Console import Console
 
@@ -118,12 +118,31 @@ keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 keyurl2 = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleTI='
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS92YXZvby9tYWluL2luc3RhbGxlci5zaA=='
 developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvdmF2b28='
-enigma_path = '/etc/enigma2/'
+# ENIGMA_PATH = '/etc/enigma2/'
 json_file = '/tmp/vavookey'
 HALIGN = RT_HALIGN_LEFT
 screenwidth = getDesktop(0).size()
 screen_width = screenwidth.width()
 regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
+
+
+country_codes = {
+	"Albania": "al",
+	"Arabia": "sa",
+	"Balkans": "bk",
+	"Bulgaria": "bg",
+	"France": "fr",
+	"Germany": "de",
+	"Italy": "it",
+	"Netherlands": "nl",
+	"Poland": "pl",
+	"Portugal": "pt",
+	"Romania": "ro",
+	"Russia": "ru",
+	"Spain": "es",
+	"Turkey": "tr",
+	"United Kingdom": "gb"
+}
 
 
 try:
@@ -213,6 +232,27 @@ try:
 		fonts = sorted(fonts, key=lambda x: x[1])
 except Exception as e:
 	print(e)
+
+
+def get_enigma2_path():
+	barry_active = '/media/ba/active/etc/enigma2'
+	if os_path.exists(barry_active):
+		return barry_active.rstrip('/')  # Rimuovi eventuale slash finale
+
+	possible_paths = [
+		'/autofs/sda1/etc/enigma2',
+		'/autofs/sda2/etc/enigma2',
+		'/etc/enigma2'
+	]
+
+	for path in possible_paths:
+		if os_path.exists(path):
+			return path.rstrip('/')  # Rimuovi eventuale slash finale
+
+	return '/etc/enigma2'
+
+
+ENIGMA_PATH = get_enigma2_path()
 
 
 # config section
@@ -321,7 +361,11 @@ class m2list(MenuList):
 
 def show_list(name, link):
 	global HALIGN
-	HALIGN = HALIGN
+	if any(s in lng for s in locl):  # Se lingua RTL (arabo)
+		HALIGN = RT_HALIGN_RIGHT
+	else:
+		HALIGN = RT_HALIGN_LEFT
+
 	res = [(name, link)]
 	default_icon = os_path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
 	country_code = country_codes.get(name, None)
@@ -898,20 +942,17 @@ class MainVavoo(Screen):
 		if result:
 			from enigma import eDVBDB
 			try:
-				for fname in listdir(enigma_path):
+				for fname in listdir(ENIGMA_PATH):
 					if 'userbouquet.vavoo' in fname:
-						bouquet_path = os_path.join("/etc/enigma2", fname)
-						print("[vavoo plugin] Removing bouquet:", bouquet_path)
+						bouquet_path = os_path.join(ENIGMA_PATH, fname)
+						print("[vavoo] Removing bouquet:", bouquet_path)
 						eDVBDB.getInstance().removeBouquet(bouquet_path)
-						# If needed, also remove the physical bouquet
-						# vUtils.purge(enigma_path, fname)
 
-				if os.path.exists(os_path.join(PLUGIN_PATH, 'Favorite.txt')):
-					favorite_path = os_path.join(PLUGIN_PATH, 'Favorite.txt')
-					remove(favorite_path)
+				favorite_path = os_path.join(PLUGIN_PATH, 'Favorite.txt')
+				if os_path.exists(favorite_path):
+					os.remove(favorite_path)
 
-				self.session.open(MessageBox, _('Vavoo Favorites List has been removed'), MessageBox.TYPE_INFO, timeout=5)
-
+				self.session.open(MessageBox, _('Vavoo Favorites removed'), MessageBox.TYPE_INFO, timeout=5)
 			except Exception as error:
 				print(error)
 				trace_error()
@@ -1053,6 +1094,7 @@ class vavoo(Screen):
 				for entry in data:
 					country = unquote(entry["country"]).strip("\r\n")
 					name = unquote(entry["name"]).strip("\r\n")
+					name = name.decode('utf-8').encode('ascii', 'ignore')
 					ids = entry["id"]
 
 					if country != self.name:
@@ -1131,7 +1173,7 @@ class vavoo(Screen):
 	def message0(self, name, url, response):
 		name = self.name
 		self.url = url
-		filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+		filenameout = ENIGMA_PATH + '/userbouquet.vavoo_%s.tv' % name.lower()
 		if file_exists(filenameout):
 			self.message3(name, self.url, False)
 		else:
@@ -1151,7 +1193,7 @@ class vavoo(Screen):
 		elif answer:
 			name = self.name
 			url = self.url
-			filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+			filenameout = ENIGMA_PATH + '/userbouquet.vavoo_%s.tv' % name.lower()
 			if file_exists(filenameout):
 				self.message4()
 			else:
@@ -1174,8 +1216,9 @@ class vavoo(Screen):
 		sig = vUtils.getAuthSignature()
 		app = str(sig)
 		if app:
+			ENIGMA_PATH = get_enigma2_path()
 			filename = PLUGIN_PATH + '/list/userbouquet.vavoo_%s.tv' % name.lower()
-			filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+			filenameout = ENIGMA_PATH + '/userbouquet.vavoo_%s.tv' % name.lower()
 			key = None
 			ch = 0
 			with open(filename, "rt") as fin:
@@ -1207,7 +1250,7 @@ class vavoo(Screen):
 		elif answer:
 			name = self.name
 			url = self.url
-			# filenameout = enigma_path + '/userbouquet.vavoo_%s.tv' % name.lower()
+			# filenameout = ENIGMA_PATH + '/userbouquet.vavoo_%s.tv' % name.lower()
 			self.message3(name, url, True)
 
 	def search_vavoo(self):
@@ -1248,10 +1291,16 @@ class vavoo(Screen):
 	def close(self, *args, **kwargs):
 		try:
 			self.timer.stop()
-			if hasattr(self.timer, 'callback'):
-				self.timer.callback.remove(self.cat)
-			elif hasattr(self.timer, 'timeout'):
-				self.timer.timeout.disconnect(self.cat)
+			try:
+				if hasattr(self.timer, 'callback'):
+					self.timer.callback.remove(self.cat)
+			except AttributeError:
+				pass
+			try:
+				if hasattr(self.timer, 'timeout'):
+					self.timer.timeout.disconnect(self.cat)
+			except AttributeError:
+				pass
 		except Exception as e:
 			print("Error stopping timer:", str(e))
 		return Screen.close(self, *args, **kwargs)
@@ -1390,14 +1439,17 @@ class Playstream2(
 		self.state = self.STATE_PLAYING
 		self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
 		"""Initialize infobar components."""
-		for x in InfoBarBase, \
-				InfoBarMenu, \
-				InfoBarSeek, \
-				InfoBarAudioSelection, \
-				InfoBarSubtitleSupport, \
-				InfoBarNotifications, \
-				TvInfoBarShowHide:
+		for x in (
+			InfoBarBase,
+			InfoBarMenu,
+			InfoBarSeek,
+			InfoBarAudioSelection,
+			InfoBarSubtitleSupport,
+			InfoBarNotifications,
+			TvInfoBarShowHide
+		):
 			x.__init__(self)
+
 		"""Initialize the actions for buttons."""
 		self['actions'] = ActionMap(
 			[
@@ -1611,7 +1663,9 @@ def convert_bouquet(service, name, url):
 	app = "?n=1&b=5&vavoo_auth=%s#User-Agent=VAVOO/2.6" % str(sig)
 	files = "/tmp/%s.m3u" % name
 	bouquet_type = "radio" if "radio" in name.lower() else "tv"
-	name_file, bouquet_name, path1, path2 = _prepare_bouquet_filenames(name, bouquet_type)
+	name_file, bouquet_name = _prepare_bouquet_filenames(name, bouquet_type)
+	path1 = os_path.join(ENIGMA_PATH, bouquet_name)
+	path2 = os_path.join(ENIGMA_PATH, "bouquets." + bouquet_type.lower())
 
 	with open(PLUGIN_PATH + "/Favorite.txt", "w") as r:
 		r.write(str(name_file) + "###" + str(url))
@@ -1635,41 +1689,80 @@ def _prepare_bouquet_filenames(name, bouquet_type):
 	name_file = sub(r'\d+:\d+:[\d.]+', '_', name_file)
 	name_file = sub(r'_+', '_', name_file)
 	bouquet_name = "userbouquet.vavoo_%s.%s" % (name_file.lower(), bouquet_type.lower())
-	path1 = "/etc/enigma2/" + bouquet_name
-	path2 = "/etc/enigma2/bouquets." + bouquet_type.lower()
-	return name_file, bouquet_name, path1, path2
+	return name_file, bouquet_name
 
 
 def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
 	tplst = [
-		"#NAME %s (%s)" % (name_file.capitalize(), bouquet_type.upper()),
-		"#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS" % name_file,
-		"#DESCRIPTION --- %s ---" % name_file
+		u"#NAME %s (%s)" % (name_file.capitalize(), bouquet_type.upper()),
+		u"#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS" % name_file,
+		u"#DESCRIPTION --- %s ---" % name_file
 	]
 	ch = 0
-	namel, svz, dct = '', '', ''
-	with open(filepath, "r") as f:
+	namel, svz, dct = u'', u'', u''
+	with codecs.open(filepath, "r", encoding='utf-8') as f:
 		for line in f:
-			line = str(line).strip()
-			if line.startswith("#EXTINF"):
-				namel = line.split(",")[-1].strip()
-				dct = "#DESCRIPTION %s" % namel
-			elif line.startswith("http"):
+			if PY2:
+				line = line.decode('utf-8').strip()
+			else:
+				line = line.strip()
+
+			if line.startswith(u"#EXTINF"):
+				parts = line.split(u",", 1)
+				if len(parts) > 1:
+					namel = parts[-1].strip()
+					dct = u"#DESCRIPTION %s" % namel
+				else:
+					namel = line.replace(u"#EXTINF:", u"").strip()
+					dct = u"#DESCRIPTION %s" % namel
+
+			elif line.startswith(u"http"):
 				full_url = line.strip() + app
-				tag = "2" if bouquet_type.upper() == "RADIO" else "1"
-				svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, full_url.replace(":", "%3a"))
-				svz = svca + ":" + namel
+				tag = u"2" if bouquet_type.upper() == u"RADIO" else u"1"
+
+				url_encoded = full_url.replace(u":", u"%3a")
+				svca = u"#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, url_encoded)
+				svz = svca + u":" + namel
+
 				tplst.append(svz.strip())
 				tplst.append(dct.strip())
 				ch += 1
+
 	return tplst, ch
+
+
+"""
+# def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
+	# tplst = [
+		# "#NAME %s (%s)" % (name_file.capitalize(), bouquet_type.upper()),
+		# "#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS" % name_file,
+		# "#DESCRIPTION --- %s ---" % name_file
+	# ]
+	# ch = 0
+	# namel, svz, dct = '', '', ''
+	# with open(filepath, "r") as f:
+		# for line in f:
+			# line = str(line).strip()
+			# if line.startswith("#EXTINF"):
+				# namel = line.split(",")[-1].strip()
+				# dct = "#DESCRIPTION %s" % namel
+			# elif line.startswith("http"):
+				# full_url = line.strip() + app
+				# tag = "2" if bouquet_type.upper() == "RADIO" else "1"
+				# svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, full_url.replace(":", "%3a"))
+				# svz = svca + ":" + namel
+				# tplst.append(svz.strip())
+				# tplst.append(dct.strip())
+				# ch += 1
+	# return tplst, ch
+"""
 
 
 def _write_bouquet_files(path1, tplst):
 	try:
 		with open(path1, "r") as f:
 			f_content = f.read()
-	except FileNotFoundError:
+	except (IOError, OSError):
 		f_content = ""
 	with open(path1, "a+") as f:
 		for item in tplst:
@@ -1684,7 +1777,7 @@ def _ensure_bouquet_listed(path2, bouquet_name, bouquet_type):
 			for line in f:
 				if bouquet_name in line:
 					in_bouquets = True
-	except FileNotFoundError:
+	except (IOError, OSError):
 		pass
 	if not in_bouquets:
 		with open(path2, "a+") as f:
