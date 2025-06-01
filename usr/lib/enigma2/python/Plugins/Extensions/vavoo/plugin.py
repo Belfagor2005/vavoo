@@ -1094,7 +1094,8 @@ class vavoo(Screen):
 				for entry in data:
 					country = unquote(entry["country"]).strip("\r\n")
 					name = unquote(entry["name"]).strip("\r\n")
-					name = name.decode('utf-8').encode('ascii', 'ignore')
+					# name = name.decode('utf-8').encode('ascii', 'ignore')
+					name = name.encode('ascii', 'ignore').decode('ascii')
 					ids = entry["id"]
 
 					if country != self.name:
