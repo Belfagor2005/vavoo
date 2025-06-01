@@ -23,6 +23,11 @@ from Tools.Directories import SCOPE_PLUGINS, resolveFilename
 
 
 try:
+	unicode
+except NameError:
+	unicode = str
+
+try:
 	from Components.AVSwitch import AVSwitch
 except ImportError:
 	from Components.AVSwitch import eAVControl as AVSwitch
