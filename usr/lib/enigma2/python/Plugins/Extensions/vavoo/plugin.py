@@ -94,6 +94,12 @@ PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
+
 if sys.version_info >= (2, 7, 9):
 	try:
 		ssl_context = ssl._create_unverified_context()
