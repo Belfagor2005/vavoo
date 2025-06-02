@@ -33,6 +33,9 @@ jobs:
       - name: Run autopep8 aggressive fix
         run: |
           autopep8 --in-place --aggressive --aggressive --recursive .
+    - name: Replace tabs with spaces
+      run: |
+        find . -name "*.py" -exec sed -i 's/\t/    /g' {} +
 
       - name: Commit and push fixes
         run: |
