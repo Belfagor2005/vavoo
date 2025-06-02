@@ -2,7 +2,7 @@
 Simple HTTP Live Streaming client.
 
 References:
-	http://tools.ietf.org/html/draft-pantos-http-live-streaming-08
+    http://tools.ietf.org/html/draft-pantos-http-live-streaming-08
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it
@@ -13,7 +13,7 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 Last updated: July 22, 2012
 
 Original Code From:
-	http://nneonneo.blogspot.gr/2010/08/http-live-streaming-client.html
+    http://nneonneo.blogspot.gr/2010/08/http-live-streaming-client.html
 
 Depends on python-crypto (for secure stream)
 Modified for OpenPli enigma2 usage by athoik

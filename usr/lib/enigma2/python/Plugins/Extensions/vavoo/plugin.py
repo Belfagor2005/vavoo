@@ -1942,28 +1942,28 @@ def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
 
 """
 # def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
-	# tplst = [
-		# "#NAME %s (%s)" % (name_file.capitalize(), bouquet_type.upper()),
-		# "#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS" % name_file,
-		# "#DESCRIPTION --- %s ---" % name_file
-	# ]
-	# ch = 0
-	# namel, svz, dct = '', '', ''
-	# with open(filepath, "r") as f:
-		# for line in f:
-			# line = str(line).strip()
-			# if line.startswith("#EXTINF"):
-				# namel = line.split(",")[-1].strip()
-				# dct = "#DESCRIPTION %s" % namel
-			# elif line.startswith("http"):
-				# full_url = line.strip() + app
-				# tag = "2" if bouquet_type.upper() == "RADIO" else "1"
-				# svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, full_url.replace(":", "%3a"))
-				# svz = svca + ":" + namel
-				# tplst.append(svz.strip())
-				# tplst.append(dct.strip())
-				# ch += 1
-	# return tplst, ch
+    # tplst = [
+        # "#NAME %s (%s)" % (name_file.capitalize(), bouquet_type.upper()),
+        # "#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS" % name_file,
+        # "#DESCRIPTION --- %s ---" % name_file
+    # ]
+    # ch = 0
+    # namel, svz, dct = '', '', ''
+    # with open(filepath, "r") as f:
+        # for line in f:
+            # line = str(line).strip()
+            # if line.startswith("#EXTINF"):
+                # namel = line.split(",")[-1].strip()
+                # dct = "#DESCRIPTION %s" % namel
+            # elif line.startswith("http"):
+                # full_url = line.strip() + app
+                # tag = "2" if bouquet_type.upper() == "RADIO" else "1"
+                # svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, full_url.replace(":", "%3a"))
+                # svz = svca + ":" + namel
+                # tplst.append(svz.strip())
+                # tplst.append(dct.strip())
+                # ch += 1
+    # return tplst, ch
 """
 
 
@@ -2085,12 +2085,12 @@ class AutoStartTimer:
                 name = line.split('###')[0]
                 url = line.split('###')[1]
                 '''# print('name %s and url %s:' % (name, url))
-			# try:'''
+            # try:'''
             print('session start convert time')
             vid2 = vavoo(_session, name, url)
             vid2.message0(name, url, False)
             '''# except Exception as e:
-				# print('timeredit error vavoo', e)'''
+                # print('timeredit error vavoo', e)'''
 
 
 def check_configuring():
