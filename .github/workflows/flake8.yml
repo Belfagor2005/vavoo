@@ -1,4 +1,4 @@
-name: PEP8 Aggressive Check
+name: PEP8 Aggressive Check with Auto Commit
 
 on:
   pull_request:
@@ -33,6 +33,18 @@ jobs:
       - name: Run autopep8 aggressive fix
         run: |
           autopep8 --in-place --aggressive --aggressive --recursive .
+
+      - name: Commit and push fixes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "Autopep8 fixes from GitHub Actions"
+            git push
+          else
+            echo "No changes to commit"
+          fi
 
       - name: Check again after autopep8 fix
         run: |
