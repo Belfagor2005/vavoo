@@ -1,6 +1,7 @@
 name: PEP8 Aggressive Check with Auto Commit
 
 on:
+  workflow_dispatch:   # permette l’esecuzione manuale da GitHub UI
   pull_request:
     branches:
       - main
@@ -11,7 +12,6 @@ on:
 jobs:
   pep8-check:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
