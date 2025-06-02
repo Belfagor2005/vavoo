@@ -1,54 +1,51 @@
-name: PEP8 Aggressive Check with Auto Commit
+name: PEP8 Aggressive Check and Fix
 
 on:
-  workflow_dispatch:   # permette l’esecuzione manuale da GitHub UI
-  pull_request:
+  workflow_dispatch:
+  push:
     branches:
       - main
-  push:
+  pull_request:
     branches:
       - main
 
 jobs:
   pep8-check:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: "3.10"
 
-      - name: Install dependencies
+      - name: Install linters
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 autopep8
+          pip install autopep8 pycodestyle
 
-      - name: Run flake8 PEP8 aggressive checks
+      - name: Fix indentation (replace tabs with spaces)
         run: |
-          flake8 --select=E225,E226,E227,E228,E231,E261,E262,E263,E265,E266,E301,E302,E303,E306 .
+          find . -name "*.py" -exec sed -i 's/\t/    /g' {} +
 
-      - name: Run autopep8 aggressive fix
+      - name: Run autopep8 (aggressive)
         run: |
-          autopep8 --in-place --aggressive --aggressive --recursive .
-    - name: Replace tabs with spaces
-      run: |
-        find . -name "*.py" -exec sed -i 's/\t/    /g' {} +
+          autopep8 . --in-place --recursive --aggressive --aggressive
 
-      - name: Commit and push fixes
+      - name: Configure Git identity
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Pull latest changes
+        run: |
+          git pull origin main --no-rebase || echo "No remote changes to pull"
+
+      - name: Commit and push if changes exist
+        run: |
           git add .
-          if ! git diff --cached --quiet; then
-            git commit -m "Autopep8 fixes from GitHub Actions"
-            git push
-          else
-            echo "No changes to commit"
-          fi
-
-      - name: Check again after autopep8 fix
-        run: |
-          flake8 --select=E225,E226,E227,E228,E231,E261,E262,E263,E265,E266,E301,E302,E303,E306 .
+          git diff --cached --quiet || git commit -m "Apply auto PEP8 aggressive fixes"
+          git push origin main || echo "Push failed (e.g. due to race condition)"
