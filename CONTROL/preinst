@@ -1,20 +1,36 @@
 #!/bin/sh
 
+# Check that opkg exists
+command -v opkg >/dev/null 2>&1 || {
+    echo "ERROR: opkg not found. Aborting installation."
+    exit 1
+}
+
+# Print header
 echo "****************************************"
-echo "*Please .. Restart Enigma2 *"
+echo "* Please .. Restart Enigma2           *"
 echo "****************************************"
-echo "* Enjoy our plugin *"
+echo "* Enjoy our plugin                    *"
 echo "****************************************"
-echo "* All Rights Reserved *"
-echo "* © 2024 - Lululla *"
+echo "* All Rights Reserved                 *"
+echo "* © 2024 - Lululla                    *"
 echo "****************************************"
+
+# Remove old version if found
 echo "Checking for an older version of vavoo in the system..."
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/vavoo ]
-then
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/vavoo > /dev/null 2>&1
-echo "An older version of vavoo was found and removed"
-echo "Proceeding to installation..."
+if [ -d /usr/lib/enigma2/python/Plugins/Extensions/vavoo ]; then
+    rm -rf /usr/lib/enigma2/python/Plugins/Extensions/vavoo > /dev/null 2>&1
+    echo "An older version of vavoo was found and removed"
+    echo "Proceeding to installation..."
 else
-echo "An older version of vavoo was not found in the system"
+    echo "An older version of vavoo was not found in the system"
 fi
+
+# Determine python command
+[ -e "/usr/bin/python3" ] && PY="python3" || PY="python"
+
+# Update and install python-requests
+opkg update
+opkg install --force-reinstall "${PY}-requests"
+
 exit 0

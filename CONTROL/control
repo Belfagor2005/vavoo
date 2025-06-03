@@ -1,9 +1,9 @@
 Package: enigma2-plugin-extensions-vavoo
-Version: 1.33
+Version: 1.38
 Section: misc
 Priority: optional
 Architecture: all
-Maintainer: *
+Maintainer: Lululla
 Description: Vavoo stream online
-Source: *
+Source: enigma2-plugin-extensions-vavoo
 Homepage: *
