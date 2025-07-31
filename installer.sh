@@ -42,9 +42,9 @@ cleanup
 if ! command -v wget >/dev/null 2>&1; then
     echo "Installing wget..."
     if [ "$OSTYPE" = "DreamOs" ]; then
-        apt-get update && apt-get install -y wget
+        apt-get update && apt-get install -y wget || { echo "Failed to install wget"; exit 1; }
     else
-        opkg update && opkg install wget
+        opkg update && opkg install wget || { echo "Failed to install wget"; exit 1; }
     fi
 fi
 
@@ -66,9 +66,9 @@ install_pkg() {
     if ! grep -qs "Package: $pkg" "$STATUS"; then
         echo "Installing $pkg..."
         if [ "$OSTYPE" = "DreamOs" ]; then
-            apt-get update && apt-get install -y "$pkg"
+            apt-get update && apt-get install -y "$pkg" || { echo "Failed to install $pkg"; exit 1; }
         else
-            opkg update && opkg install "$pkg"
+            opkg update && opkg install "$pkg" || { echo "Failed to install $pkg"; exit 1; }
         fi
     fi
 }
@@ -78,7 +78,7 @@ install_pkg "$Packagerequests"
 
 # Download and install plugin
 mkdir -p "$TMPPATH"
-cd "$TMPPATH" || exit 1
+cd "$TMPPATH" || { echo "Failed to enter directory $TMPPATH"; exit 1; }
 set -e
 
 echo -e "\n# Your image is ${OSTYPE}\n"
@@ -104,6 +104,7 @@ if [ $? -ne 0 ]; then
 fi
 
 cp -r 'vavoo-main/usr' '/'
+
 set +e
 
 # Verify installation
