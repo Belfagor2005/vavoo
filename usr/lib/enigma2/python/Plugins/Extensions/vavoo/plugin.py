@@ -965,7 +965,8 @@ class MainVavoo(Screen):
         select_match = compile(select_pattern, DOTALL).search(html_content)
         if select_match:
             select_content = select_match.group(1)
-            option_matches = compile(option_pattern, DOTALL).findall(select_content)
+            option_matches = compile(
+                option_pattern, DOTALL).findall(select_content)
 
             for value, text in option_matches:
                 if value and text and text != "All countries":
@@ -1081,8 +1082,11 @@ class MainVavoo(Screen):
             country_name = category.split("➾")[0].strip()
             country_code = country_codes.get(country_name, None)
             if country_code:
-                icon_path = os_path.join(PLUGIN_PATH, 'skin/cowntry', country_code + '.png')
-                print(f"  Country: {country_name}, Code: {country_code}, Icon exists: {os_path.isfile(icon_path)}")
+                icon_path = os_path.join(
+                    PLUGIN_PATH, 'skin/cowntry', country_code + '.png')
+                print(
+                    f"  Country: {country_name}, Code: {country_code}, Icon exists: {
+                        os_path.isfile(icon_path)}")
 
             self.cat_list.append(show_list(category, self.url, True))
 
@@ -1099,7 +1103,8 @@ class MainVavoo(Screen):
         countries = set()
         for entry in self.all_data:
             country = unquote(entry["country"]).strip("\r\n")
-            # FILTER OUT CATEGORIES: Only add if it does NOT contain the separator
+            # FILTER OUT CATEGORIES: Only add if it does NOT contain the
+            # separator
             if "➾" not in country:
                 countries.add(country)
 
@@ -1382,7 +1387,13 @@ class vavoo(Screen):
                     if not self._matches_selection(country, self.name):
                         continue
 
-                    ids = str(ids).replace(':', '').replace(' ', '').replace(',', '')
+                    ids = str(ids).replace(
+                        ':',
+                        '').replace(
+                        ' ',
+                        '').replace(
+                        ',',
+                        '')
                     url = str(server) + '/live2/play/' + ids + '.ts'
                     name_channel = vUtils.decodeHtml(name_channel)
                     name_channel = vUtils.rimuovi_parentesi(name_channel)
@@ -1528,9 +1539,16 @@ class vavoo(Screen):
         if app:
             ENIGMA_PATH = get_enigma2_path()
 
-            # Fix the file paths - use the correct ENIGMA_PATH for the output file
-            filename = os.path.join(PLUGIN_PATH, 'list/userbouquet.vavoo_%s.tv' % name.lower())
-            filenameout = os.path.join(ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' % name.lower())
+            # Fix the file paths - use the correct ENIGMA_PATH for the output
+            # file
+            filename = os.path.join(
+                PLUGIN_PATH,
+                'list/userbouquet.vavoo_%s.tv' %
+                name.lower())
+            filenameout = os.path.join(
+                ENIGMA_PATH,
+                'userbouquet.vavoo_%s.tv' %
+                name.lower())
 
             # Check if source file exists before proceeding
             if not os.path.exists(filename):
@@ -1574,7 +1592,8 @@ class vavoo(Screen):
                     cfg.last_update.save()
                     _session.open(
                         MessageBox,
-                        _('Wait...\nUpdate List Bouquet...\nbouquets reloaded..\nWith %s channel') % str(ch),
+                        _('Wait...\nUpdate List Bouquet...\nbouquets reloaded..\nWith %s channel') %
+                        str(ch),
                         MessageBox.TYPE_INFO,
                         timeout=5)
 
@@ -1650,10 +1669,13 @@ class vavoo(Screen):
                 # Write M3U entry
                 outfile.write('#EXTINF:-1,' + str(name) + '\n')
                 outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
-                outfile.write('#EXTVLCOPT:http-referrer=https://vavoo.to/' + '\n')
+                outfile.write(
+                    '#EXTVLCOPT:http-referrer=https://vavoo.to/' + '\n')
                 outfile.write('#KODIPROP:http-user-agent=VAVOO/2.6' + '\n')
-                outfile.write('#KODIPROP:http-referrer=https://vavoo.to/' + '\n')
-                outfile.write('#EXTHTTP:{"User-Agent":"VAVOO/1.0","Referer":"https://vavoo.to/"}' + '\n')
+                outfile.write(
+                    '#KODIPROP:http-referrer=https://vavoo.to/' + '\n')
+                outfile.write(
+                    '#EXTHTTP:{"User-Agent":"VAVOO/1.0","Referer":"https://vavoo.to/"}' + '\n')
                 outfile.write(str(url) + '\n')
 
     def goConfig(self):
