@@ -1,17 +1,33 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function
 
 """
-****************************************
-*        coded by Lululla              *
-*             26/04/2024               *
-* thank's to @oktus for image screen   *
-****************************************
-# ---- thank's Kiddac for support ---- #
-# Info Linuxsat-support.com & corvoboys.org
+#########################################################
+#                                                       #
+#  Vavoo Stream Live Plugin                             #
+#  Version: 1.39                                        #
+#  Created by Lululla (https://github.com/Belfagor2005) #
+#  License: CC BY-NC-SA 4.0                             #
+#  https://creativecommons.org/licenses/by-nc-sa/4.0    #
+#  Last Modified: 20251114                              #
+#                                                       #
+#  Credits:                                             #
+#  - Original concept by Lululla                        #
+#  - Special thanks to @KiddaC for support              #
+#  - Background images by @oktus                        #
+#  - Additional contributions by Qu4k3                  #
+#  - Linuxsat-support.com & Corvoboys communities       #
+#                                                       #
+#  Usage of this code without proper attribution        #
+#  is strictly prohibited.                              #
+#  For modifications and redistribution,                #
+#  please maintain this credit header.                  #
+#########################################################
 """
-from __future__ import print_function
-
+__author__ = "Lululla"
+__version__ = "1.39"
+__license__ = "CC BY-NC-SA 4.0"
 # Standard library imports
 # Enigma2 components
 try:
@@ -967,7 +983,6 @@ class MainVavoo(Screen):
             select_content = select_match.group(1)
             option_matches = compile(
                 option_pattern, DOTALL).findall(select_content)
-
             for value, text in option_matches:
                 if value and text and text != "All countries":
                     options.append((text.strip(), value))
@@ -1077,16 +1092,13 @@ class MainVavoo(Screen):
 
         print("=== CATEGORIES FOUND ===")
         for category in categories_list:
-            print(f"Category: {category}")
+            print("Category: " + category)
             # Debug icon path
-            country_name = category.split("➾")[0].strip()
+            country_name = category.split("⟾")[0].strip()
             country_code = country_codes.get(country_name, None)
             if country_code:
-                icon_path = os_path.join(
-                    PLUGIN_PATH, 'skin/cowntry', country_code + '.png')
-                print(
-                    f"  Country: {country_name}, Code: {country_code}, Icon exists: {
-                        os_path.isfile(icon_path)}")
+                icon_path = os_path.join(PLUGIN_PATH, 'skin/cowntry', country_code + '.png')
+                print("  Country: " + country_name + ", Code: " + str(country_code) + ", Icon exists: " + str(os_path.isfile(icon_path)))
 
             self.cat_list.append(show_list(category, self.url, True))
 
@@ -1288,7 +1300,6 @@ class vavoo(Screen):
         _session = session
 
         Screen.__init__(self, session)
-
         self._load_skin()
         self._initialize_labels()
         self._initialize_actions()
@@ -1296,7 +1307,6 @@ class vavoo(Screen):
         self.name = name
         self.url = url
         self.option_value = option_value
-
         self._initialize_timer()
 
     def _load_skin(self):
@@ -1418,7 +1428,6 @@ class vavoo(Screen):
     def _matches_selection(self, country_field, selected_name):
         """
         Check if a channel matches the selection
-
         country_field: country field from JSON (ex: "France" or "France ➾ Sports")
         selected_name: what user selected (ex: "France" or "France ➾ Sports")
         """
@@ -2159,7 +2168,6 @@ def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
                 svca = u"#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (
                     service, tag, url_encoded)
                 svz = svca + u":" + namel
-
                 tplst.append(svz.strip())
                 tplst.append(dct.strip())
                 ch += 1
