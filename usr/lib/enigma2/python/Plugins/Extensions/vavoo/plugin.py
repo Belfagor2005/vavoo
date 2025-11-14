@@ -1097,8 +1097,14 @@ class MainVavoo(Screen):
             country_name = category.split("⟾")[0].strip()
             country_code = country_codes.get(country_name, None)
             if country_code:
-                icon_path = os_path.join(PLUGIN_PATH, 'skin/cowntry', country_code + '.png')
-                print("  Country: " + country_name + ", Code: " + str(country_code) + ", Icon exists: " + str(os_path.isfile(icon_path)))
+                icon_path = os_path.join(
+                    PLUGIN_PATH, 'skin/cowntry', country_code + '.png')
+                print("  Country: " +
+                      country_name +
+                      ", Code: " +
+                      str(country_code) +
+                      ", Icon exists: " +
+                      str(os_path.isfile(icon_path)))
 
             self.cat_list.append(show_list(category, self.url, True))
 
