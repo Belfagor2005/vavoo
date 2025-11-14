@@ -116,7 +116,7 @@ except ImportError:
 
 
 # set plugin
-currversion = '1.38'
+currversion = '1.39'
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % currversion)
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
@@ -139,6 +139,7 @@ country_codes = {
     "Arabia": "sa",
     "Balkans": "bk",
     "Bulgaria": "bg",
+    "Croatia": "hr",
     "France": "fr",
     "Germany": "de",
     "Italy": "it",
@@ -285,6 +286,10 @@ cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.dns = ConfigSelection(default="Default", choices=mydns)
 cfg.fonts = ConfigSelection(default='vav', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
+cfg.default_view = ConfigSelection(
+    default="countries",
+    choices=[("countries", _("Countries")), ("categories", _("Categories"))]
+)
 FONTSTYPE = FNT_Path + '/' + cfg.fonts.value + '.ttf'
 eserv = int(cfg.services.value)
 
@@ -372,25 +377,41 @@ class m2list(MenuList):
         self.l.setFont(0, gFont('Regular', text_font_size))
 
 
-def show_list(name, link):
+def show_list(name, link, is_category=False):
     global HALIGN
-    if any(s in lng for s in locl):  # Se lingua RTL (arabo)
+    if any(s in lng for s in locl):  # If RTL language (arabic)
         HALIGN = RT_HALIGN_RIGHT
     else:
         HALIGN = RT_HALIGN_LEFT
 
     res = [(name, link)]
     default_icon = os_path.join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
-    country_code = country_codes.get(name, None)
-    if country_code:
-        country_code = country_code + '.png'
-        pngx = os_path.join(PLUGIN_PATH, 'skin/cowntry', country_code)
+
+    # Determine icon based on name - FIXED VERSION
+    pngx = default_icon
+
+    # If it's a category (contains ➾), extract country for icon
+    if "➾" in name:
+        country_name = name.split("➾")[0].strip()
+        country_code = country_codes.get(country_name, None)
+        if country_code:
+            icon_file = country_code + '.png'
+            pngx = os_path.join(PLUGIN_PATH, 'skin/cowntry', icon_file)
     else:
-        pngx = default_icon
+        # For normal countries
+        country_code = country_codes.get(name, None)
+        if country_code:
+            icon_file = country_code + '.png'
+            pngx = os_path.join(PLUGIN_PATH, 'skin/cowntry', icon_file)
+
+    # Check if file exists
     if not os_path.isfile(pngx):
+        print("Icon not found:", pngx)
         pngx = default_icon
+
     icon_pos = (10, 10) if screen_width == 2560 else (10, 5)
-    icon_size = (60, 40)
+    icon_size = (60, 40) if screen_width == 2560 else (50, 35)
+
     if screen_width == 2560:
         text_pos = (90, 0)
         text_size = (750, 60)
@@ -400,6 +421,7 @@ def show_list(name, link):
     else:
         text_pos = (85, 0)
         text_size = (380, 50)
+
     res.append(
         MultiContentEntryPixmapAlphaTest(
             pos=icon_pos,
@@ -476,6 +498,11 @@ class vavoo_config(Screen, ConfigListScreen):
                 downloadfree))
         self.list.append(
             getConfigListEntry(
+                _("Default View"),
+                cfg.default_view,
+                _("Default view when opening the plugin")))
+        self.list.append(
+            getConfigListEntry(
                 _("Server for Player Used"),
                 cfg.server,
                 _("Server for player.\nNow %s") %
@@ -534,6 +561,7 @@ class vavoo_config(Screen, ConfigListScreen):
                         2 * indent + _("Time to start update:"),
                         cfg.fixedtime,
                         _("Configure at a fixed time")))
+
         self.list.append(
             getConfigListEntry(
                 _('Link in Main Menu'),
@@ -899,6 +927,267 @@ class MainVavoo(Screen):
             'ChannelSelectBaseActions']
         self['actions'] = ActionMap(actions_list, actions, -1)
 
+    def cat(self):
+        self.cat_list = []
+        self.items_tmp = []
+
+        try:
+            content = self._get_content()
+            data = self._parse_json(content)
+            if data is None:
+                return
+
+            # Save data
+            self.all_data = data
+
+            # Use default view from config
+            if cfg.default_view.value == "countries":
+                self.show_countries_view()
+            else:
+                self.show_categories_view()
+
+            self._update_ui()
+        except Exception as error:
+            print("error as:", error)
+            trace_error()
+            self["name"].setText("Error")
+
+        self["version"].setText("V." + currversion)
+
+    def _parse_select_options(self, html_content):
+        """Parses options from the HTML select menu"""
+        options = []
+
+        # Regex to find the select menu and its options
+        select_pattern = r'<select[^>]*>(.*?)</select>'
+        option_pattern = r'<option[^>]*value="([^"]*)"[^>]*>([^<]*)</option>'
+
+        select_match = compile(select_pattern, DOTALL).search(html_content)
+        if select_match:
+            select_content = select_match.group(1)
+            option_matches = compile(option_pattern, DOTALL).findall(select_content)
+
+            for value, text in option_matches:
+                if value and text and text != "All countries":
+                    options.append((text.strip(), value))
+
+        return options
+
+    def _build_category_items(self, data):
+        """Builds the category list"""
+        categories = {}
+        for entry in data:
+            country = unquote(entry["country"]).strip("\r\n")
+            name = unquote(entry["name"]).strip("\r\n")
+
+            category_name = country + " -> " + self._extract_category(name)
+            if category_name not in categories:
+                categories[category_name] = country
+
+        category_items = []
+        for cat_name, country in categories.items():
+            item = cat_name + "###" + self.url + "\n"
+            category_items.append(item)
+
+        category_items.sort()
+        return category_items
+
+    def _extract_category(self, channel_name):
+        """Extracts the category from the channel name"""
+        categories = {
+            'Documentary': ['doc', 'documentar', 'history', 'science'],
+            'Kids': ['kids', 'cartoon', 'disney', 'nickelodeon', 'baby'],
+            'LifeStyle': ['lifestyle', 'fashion', 'cooking', 'travel', 'home'],
+            'Movie': ['movie', 'film', 'cinema', 'premiere'],
+            'Music': ['music', 'mtv', 'vh1', 'radio', 'hit'],
+            'Nature': ['nature', 'animal', 'wild', 'national geographic'],
+            'News': ['news', 'cnn', 'bbc', 'sky news', 'reuters'],
+            'Sports': ['sport', 'football', 'futbol', 'tennis', 'f1', 'nba'],
+            'Food': ['food', 'cooking', 'recipe'],
+            'Football': ['football', 'futbol', 'soccer', 'premier league'],
+            'Motor Sports': ['motor', 'f1', 'motogp', 'nascar']
+        }
+
+        channel_lower = channel_name.lower()
+        for category, keywords in categories.items():
+            for keyword in keywords:
+                if keyword in channel_lower:
+                    return category
+
+        return 'General'
+
+    def _get_content(self):
+        content = vUtils.getUrl(self.url)
+        if PY3:
+            content = vUtils.ensure_str(content)
+        return content
+
+    def _parse_json(self, content):
+        try:
+            return json.loads(content)
+        except ValueError:
+            print("Error parsing JSON data")
+            self["name"].setText("Error parsing data")
+            return None
+
+    def _build_country_items(self, data):
+        items = []
+        for entry in data:
+            country = unquote(entry["country"]).strip("\r\n")
+            if country not in self.items_tmp:
+                self.items_tmp.append(country)
+                item = str(country) + "###" + self.url + "\n"
+                items.append(item)
+        items.sort()
+        return items
+
+    def _build_cat_list(self, items):
+        for item in items:
+            parts = item.split("###")
+            if len(parts) != 2:
+                continue
+            name, url = parts
+            if name not in self.cat_list:
+                self.cat_list.append(show_list(name, url))
+
+    def _update_ui(self):
+        self["menulist"].l.setList(self.cat_list)
+        self["menulist"].moveToIndex(0)
+        txtsream = self["menulist"].getCurrent()[0][0]
+        self["name"].setText(str(txtsream))
+
+    def show_categories_view(self):
+        """Show only categories (without main countries)"""
+        self.cat_list = []
+
+        if not hasattr(self, 'all_data'):
+            return
+
+        # Extract only categories (with ➾ separator)
+        categories = set()
+        for entry in self.all_data:
+            country = unquote(entry["country"]).strip("\r\n")
+            # Only add if it contains category separator
+            if "➾" in country:
+                categories.add(country)
+
+        # Convert to list and sort
+        categories_list = sorted(list(categories))
+
+        print("=== CATEGORIES FOUND ===")
+        for category in categories_list:
+            print(f"Category: {category}")
+            # Debug icon path
+            country_name = category.split("➾")[0].strip()
+            country_code = country_codes.get(country_name, None)
+            if country_code:
+                icon_path = os_path.join(PLUGIN_PATH, 'skin/cowntry', country_code + '.png')
+                print(f"  Country: {country_name}, Code: {country_code}, Icon exists: {os_path.isfile(icon_path)}")
+
+            self.cat_list.append(show_list(category, self.url, True))
+
+        self._update_ui()
+
+    def show_countries_view(self):
+        """Show only main countries"""
+        self.cat_list = []
+
+        if not hasattr(self, 'all_data'):
+            return
+
+        # Extract only main countries (without categories)
+        countries = set()
+        for entry in self.all_data:
+            country = unquote(entry["country"]).strip("\r\n")
+            # FILTER OUT CATEGORIES: Only add if it does NOT contain the separator
+            if "➾" not in country:
+                countries.add(country)
+
+        # Convert to list and sort
+        countries_list = sorted(list(countries))
+
+        for country in countries_list:
+            self.cat_list.append(show_list(country, self.url))
+
+        self._update_ui()
+
+    def ok(self):
+        name = self['menulist'].getCurrent()[0][0]
+        url = self['menulist'].getCurrent()[0][1]
+
+        # Handle view options
+        if name == "View by Countries":
+            self.show_countries_view()
+            return
+        elif name == "View by Categories":
+            self.show_categories_view()
+            return
+
+        try:
+            self.session.open(vavoo, name, url)
+        except Exception as error:
+            print('error as:', error)
+            trace_error()
+
+    def msgdeleteBouquets(self):
+        self.session.openWithCallback(
+            self.deleteBouquets,
+            MessageBox,
+            _("Remove all Vavoo Favorite Bouquet?"),
+            MessageBox.TYPE_YESNO,
+            timeout=5,
+            default=True)
+
+    def deleteBouquets(self, result):
+        if result:
+            from enigma import eDVBDB
+            try:
+                for fname in listdir(ENIGMA_PATH):
+                    if 'userbouquet.vavoo' in fname:
+                        bouquet_path = os_path.join(ENIGMA_PATH, fname)
+                        print("[vavoo] Removing bouquet:", bouquet_path)
+                        eDVBDB.getInstance().removeBouquet(bouquet_path)
+
+                favorite_path = os_path.join(PLUGIN_PATH, 'Favorite.txt')
+                if os_path.exists(favorite_path):
+                    os.remove(favorite_path)
+
+                self.session.open(
+                    MessageBox,
+                    _('Vavoo Favorites removed'),
+                    MessageBox.TYPE_INFO,
+                    timeout=5)
+            except Exception as error:
+                print(error)
+                trace_error()
+
+    def goConfig(self):
+        self.session.open(vavoo_config)
+
+    def info(self):
+        aboutbox = self.session.open(
+            MessageBox, _(
+                "%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\n"
+                "Corvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\n"
+                "but only free channel found on the net") %
+            desc_plugin, MessageBox.TYPE_INFO)
+        aboutbox.setTitle(_('Info Vavoo'))
+
+    def chUp(self):
+        for x in range(5):
+            self[self.currentList].pageUp()
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
+
+    def chDown(self):
+        for x in range(5):
+            self[self.currentList].pageDown()
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
+
+    def exit(self):
+        self.close()
+
     def arabic(self):
         global HALIGN
         if HALIGN == RT_HALIGN_LEFT:
@@ -986,141 +1275,9 @@ class MainVavoo(Screen):
         print('result:', result)
         return
 
-    def goConfig(self):
-        self.session.open(vavoo_config)
-
-    def info(self):
-        aboutbox = self.session.open(
-            MessageBox, _(
-                "%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\n"
-                "Corvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\n"
-                "but only free channel found on the net") %
-            desc_plugin, MessageBox.TYPE_INFO)
-        aboutbox.setTitle(_('Info Vavoo'))
-
-    def chUp(self):
-        for x in range(5):
-            self[self.currentList].pageUp()
-        txtsream = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(txtsream))
-
-    def chDown(self):
-        for x in range(5):
-            self[self.currentList].pageDown()
-        txtsream = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(txtsream))
-
-    def cat(self):
-        self.cat_list = []
-        self.items_tmp = []
-
-        try:
-            content = self._get_content()
-            data = self._parse_json(content)
-            if data is None:
-                return
-
-            items = self._build_country_items(data)
-            self._build_cat_list(items)
-
-            if not self.cat_list:
-                return
-
-            self._update_ui()
-        except Exception as error:
-            print("error as:", error)
-            trace_error()
-            self["name"].setText("Error")
-
-        self["version"].setText("V." + currversion)
-
-    def _get_content(self):
-        content = vUtils.getUrl(self.url)
-        if PY3:
-            content = vUtils.ensure_str(content)
-        return content
-
-    def _parse_json(self, content):
-        try:
-            return json.loads(content)
-        except ValueError:
-            print("Error parsing JSON data")
-            self["name"].setText("Error _parse_json data")
-            return None
-
-    def _build_country_items(self, data):
-        items = []
-        for entry in data:
-            country = unquote(entry["country"]).strip("\r\n")
-            if country not in self.items_tmp:
-                self.items_tmp.append(country)
-                item = str(country) + "###" + self.url + "\n"
-                items.append(item)
-        items.sort()
-        return items
-
-    def _build_cat_list(self, items):
-        for item in items:
-            parts = item.split("###")
-            if len(parts) != 2:
-                continue
-            name, url = parts
-            if name not in self.cat_list:
-                self.cat_list.append(show_list(name, url))
-
-    def _update_ui(self):
-        self["menulist"].l.setList(self.cat_list)
-        self["menulist"].moveToIndex(0)
-        txtsream = self["menulist"].getCurrent()[0][0]
-        self["name"].setText(str(txtsream))
-
-    def ok(self):
-        name = self['menulist'].getCurrent()[0][0]
-        url = self['menulist'].getCurrent()[0][1]
-        try:
-            self.session.open(vavoo, name, url)
-        except Exception as error:
-            print('error as:', error)
-            trace_error()
-
-    def exit(self):
-        self.close()
-
-    def msgdeleteBouquets(self):
-        self.session.openWithCallback(
-            self.deleteBouquets,
-            MessageBox,
-            _("Remove all Vavoo Favorite Bouquet?"),
-            MessageBox.TYPE_YESNO,
-            timeout=5,
-            default=True)
-
-    def deleteBouquets(self, result):
-        if result:
-            from enigma import eDVBDB
-            try:
-                for fname in listdir(ENIGMA_PATH):
-                    if 'userbouquet.vavoo' in fname:
-                        bouquet_path = os_path.join(ENIGMA_PATH, fname)
-                        print("[vavoo] Removing bouquet:", bouquet_path)
-                        eDVBDB.getInstance().removeBouquet(bouquet_path)
-
-                favorite_path = os_path.join(PLUGIN_PATH, 'Favorite.txt')
-                if os_path.exists(favorite_path):
-                    os.remove(favorite_path)
-
-                self.session.open(
-                    MessageBox,
-                    _('Vavoo Favorites removed'),
-                    MessageBox.TYPE_INFO,
-                    timeout=5)
-            except Exception as error:
-                print(error)
-                trace_error()
-
 
 class vavoo(Screen):
-    def __init__(self, session, name, url):
+    def __init__(self, session, name, url, option_value=None):
         self.session = session
         global _session
         _session = session
@@ -1133,6 +1290,7 @@ class vavoo(Screen):
         self.currentList = 'menulist'
         self.name = name
         self.url = url
+        self.option_value = option_value
 
         self._initialize_timer()
 
@@ -1201,95 +1359,42 @@ class vavoo(Screen):
             self.timer.callback.append(self.cat)
         self.timer.start(500, True)
 
-    def arabic(self):
-        global HALIGN
-        if HALIGN == RT_HALIGN_LEFT:
-            HALIGN = RT_HALIGN_RIGHT
-            self['blue'].setText(_('Halign Left'))
-        elif HALIGN == RT_HALIGN_RIGHT:
-            HALIGN = RT_HALIGN_LEFT
-            self['blue'].setText(_('Halign Right'))
-        self.cat()
-
-    def goConfig(self):
-        self.session.open(vavoo_config)
-
-    def info(self):
-        aboutbox = self.session.open(
-            MessageBox,
-            _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') %
-            desc_plugin,
-            MessageBox.TYPE_INFO)
-        aboutbox.setTitle(_('Info Vavoo'))
-
-    def chUp(self):
-        for x in range(5):
-            self[self.currentList].pageUp()
-        txtsream = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(txtsream))
-
-    def chDown(self):
-        for x in range(5):
-            self[self.currentList].pageDown()
-        txtsream = self['menulist'].getCurrent()[0][0]
-        self['name'].setText(str(txtsream))
-
     def cat(self):
         self.cat_list = []
         items = []
         xxxname = '/tmp/' + self.name + '.m3u'
         svr = cfg.server.value
         server = zServer(0, svr, None)
-        data = None
-        # search_ok = False
-        # Retrieve and parse data
+
         try:
             content = vUtils.getUrl(self.url)
             if PY3:
                 content = vUtils.ensure_str(content)
-            data = json.loads(content)
-        except ValueError:
-            print('Error parsing JSON data')
-            self['name'].setText('Error cat parsing data')
-            return
+            all_data = json.loads(content)
 
-        # Process the data
-        try:
-            if data is not None:
-                for entry in data:
+            if all_data is not None:
+                for entry in all_data:
                     country = unquote(entry["country"]).strip("\r\n")
-                    name = unquote(entry["name"]).strip("\r\n")
-                    # name = name.decode('utf-8').encode('ascii', 'ignore')
-                    # name = name.encode('ascii', 'ignore').decode('ascii')
+                    name_channel = unquote(entry["name"]).strip("\r\n")
                     ids = entry["id"]
 
-                    if country != self.name:
+                    # Filter based on selection
+                    if not self._matches_selection(country, self.name):
                         continue
 
-                    ids = str(ids).replace(
-                        ':',
-                        '').replace(
-                        ' ',
-                        '').replace(
-                        ',',
-                        '')
+                    ids = str(ids).replace(':', '').replace(' ', '').replace(',', '')
                     url = str(server) + '/live2/play/' + ids + '.ts'
-                    name = vUtils.decodeHtml(name)
-                    name = vUtils.rimuovi_parentesi(name)
+                    name_channel = vUtils.decodeHtml(name_channel)
+                    name_channel = vUtils.rimuovi_parentesi(name_channel)
 
-                    item = name + "###" + url + '\n'
+                    item = name_channel + "###" + url + '\n'
                     items.append(item)
 
-                # Sort items and use them for search
                 items.sort()
-                self.itemlist = items  # Use for search
-
-                # Create M3U file
+                self.itemlist = items
                 self.create_m3u_file(xxxname, items)
 
-                if len(self.cat_list) < 1:
-                    return
-                else:
+                if len(self.cat_list) > 0:
                     self.update_menu()
 
         except Exception as error:
@@ -1299,27 +1404,46 @@ class vavoo(Screen):
 
         self['version'].setText('V.' + currversion)
 
-    def create_m3u_file(self, filename, items):
-        """Creates an M3U file with the provided items."""
-        with open(filename, 'w') as outfile:
-            for item in items:
-                name1, url = item.split('###')
-                url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
-                name = unquote(name1).strip("\r\n")
-                self.cat_list.append(show_list(name, url))
+    def _matches_selection(self, country_field, selected_name):
+        """
+        Check if a channel matches the selection
 
-                # Write M3U file content
-                outfile.write('#NAME %s\r\n' % self.name.capitalize())
-                outfile.write('#EXTINF:-1,' + str(name) + '\n')
-                outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
-                outfile.write(
-                    '#EXTVLCOPT:http-referrer=https://vavoo.to/' + '\n')
-                outfile.write('#KODIPROP:http-user-agent=VAVOO/2.6' + '\n')
-                outfile.write(
-                    '#KODIPROP:http-referrer=https://vavoo.to/' + '\n')
-                outfile.write(
-                    '#EXTHTTP:{"User-Agent":"VAVOO/1.0","Referer":"https://vavoo.to/"}' + '\n')
-                outfile.write(str(url) + '\n')
+        country_field: country field from JSON (ex: "France" or "France ➾ Sports")
+        selected_name: what user selected (ex: "France" or "France ➾ Sports")
+        """
+        # If user selected main country (without ➾)
+        if "➾" not in selected_name:
+            # Show all channels from that country, including categories
+            return country_field.startswith(selected_name)
+        else:
+            # User selected specific category
+            return country_field == selected_name
+
+    def _matches_category(self, channel_name, category):
+        """Checks whether a channel belongs to a category"""
+        channel_lower = channel_name.lower()
+        category_lower = category.lower()
+
+        category_keywords = {
+            'documentary': ['doc', 'documentar', 'history', 'science'],
+            'kids': ['kids', 'cartoon', 'disney', 'nickelodeon', 'baby'],
+            'lifestyle': ['lifestyle', 'fashion', 'cooking', 'travel', 'home'],
+            'movie': ['movie', 'film', 'cinema', 'premiere'],
+            'music': ['music', 'mtv', 'vh1', 'radio', 'hit'],
+            'nature': ['nature', 'animal', 'wild', 'national geographic'],
+            'news': ['news', 'cnn', 'bbc', 'sky news', 'reuters'],
+            'sports': ['sport', 'football', 'futbol', 'tennis', 'f1', 'nba'],
+            'food': ['food', 'cooking', 'recipe'],
+            'football': ['football', 'futbol', 'soccer', 'premier league'],
+            'motor sports': ['motor', 'f1', 'motogp', 'nascar']
+        }
+
+        if category_lower in category_keywords:
+            for keyword in category_keywords[category_lower]:
+                if keyword in channel_lower:
+                    return True
+
+        return category_lower in channel_lower
 
     def update_menu(self):
         """Update the menu list."""
@@ -1404,16 +1528,9 @@ class vavoo(Screen):
         if app:
             ENIGMA_PATH = get_enigma2_path()
 
-            # Fix the file paths - use the correct ENIGMA_PATH for the output
-            # file
-            filename = os.path.join(
-                PLUGIN_PATH,
-                'list/userbouquet.vavoo_%s.tv' %
-                name.lower())
-            filenameout = os.path.join(
-                ENIGMA_PATH,
-                'userbouquet.vavoo_%s.tv' %
-                name.lower())
+            # Fix the file paths - use the correct ENIGMA_PATH for the output file
+            filename = os.path.join(PLUGIN_PATH, 'list/userbouquet.vavoo_%s.tv' % name.lower())
+            filenameout = os.path.join(ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' % name.lower())
 
             # Check if source file exists before proceeding
             if not os.path.exists(filename):
@@ -1457,8 +1574,7 @@ class vavoo(Screen):
                     cfg.last_update.save()
                     _session.open(
                         MessageBox,
-                        _('Wait...\nUpdate List Bouquet...\nbouquets reloaded..\nWith %s channel') %
-                        str(ch),
+                        _('Wait...\nUpdate List Bouquet...\nbouquets reloaded..\nWith %s channel') % str(ch),
                         MessageBox.TYPE_INFO,
                         timeout=5)
 
@@ -1519,6 +1635,50 @@ class vavoo(Screen):
                 self['name'].setText('Error')
                 search_ok = False
 
+    def create_m3u_file(self, filename, items):
+        """Creates an M3U file with the provided items."""
+        with open(filename, 'w') as outfile:
+            # Write the header
+            outfile.write('#EXTM3U\n')
+
+            for item in items:
+                name1, url = item.split('###')
+                url = url.replace('%0a', '').replace('%0A', '').strip("\r\n")
+                name = unquote(name1).strip("\r\n")
+                self.cat_list.append(show_list(name, url))
+
+                # Write M3U entry
+                outfile.write('#EXTINF:-1,' + str(name) + '\n')
+                outfile.write('#EXTVLCOPT:http-user-agent=VAVOO/2.6' + '\n')
+                outfile.write('#EXTVLCOPT:http-referrer=https://vavoo.to/' + '\n')
+                outfile.write('#KODIPROP:http-user-agent=VAVOO/2.6' + '\n')
+                outfile.write('#KODIPROP:http-referrer=https://vavoo.to/' + '\n')
+                outfile.write('#EXTHTTP:{"User-Agent":"VAVOO/1.0","Referer":"https://vavoo.to/"}' + '\n')
+                outfile.write(str(url) + '\n')
+
+    def goConfig(self):
+        self.session.open(vavoo_config)
+
+    def info(self):
+        aboutbox = self.session.open(
+            MessageBox,
+            _('%s\n\n\nThanks:\n@KiddaC\n@oktus\nQu4k3\nAll staff Linuxsat-support.com\nCorvoboys - Forum\n\nThis plugin is free,\nno stream direct on server\nbut only free channel found on the net') %
+            desc_plugin,
+            MessageBox.TYPE_INFO)
+        aboutbox.setTitle(_('Info Vavoo'))
+
+    def chUp(self):
+        for x in range(5):
+            self[self.currentList].pageUp()
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
+
+    def chDown(self):
+        for x in range(5):
+            self[self.currentList].pageDown()
+        txtsream = self['menulist'].getCurrent()[0][0]
+        self['name'].setText(str(txtsream))
+
     def close(self, *args, **kwargs):
         try:
             self.timer.stop()
@@ -1540,6 +1700,16 @@ class vavoo(Screen):
         if search_ok:
             self.cat()
         self.close()
+
+    def arabic(self):
+        global HALIGN
+        if HALIGN == RT_HALIGN_LEFT:
+            HALIGN = RT_HALIGN_RIGHT
+            self['blue'].setText(_('Halign Left'))
+        elif HALIGN == RT_HALIGN_RIGHT:
+            HALIGN = RT_HALIGN_LEFT
+            self['blue'].setText(_('Halign Right'))
+        self.cat()
 
 
 class TvInfoBarShowHide():
@@ -1973,33 +2143,6 @@ def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
                 ch += 1
 
     return tplst, ch
-
-
-"""
-# def _parse_m3u_file(filepath, name_file, bouquet_type, service, app):
-    # tplst = [
-        # "#NAME %s (%s)" % (name_file.capitalize(), bouquet_type.upper()),
-        # "#SERVICE 1:64:0:0:0:0:0:0:0:0::%s CHANNELS" % name_file,
-        # "#DESCRIPTION --- %s ---" % name_file
-    # ]
-    # ch = 0
-    # namel, svz, dct = '', '', ''
-    # with open(filepath, "r") as f:
-        # for line in f:
-            # line = str(line).strip()
-            # if line.startswith("#EXTINF"):
-                # namel = line.split(",")[-1].strip()
-                # dct = "#DESCRIPTION %s" % namel
-            # elif line.startswith("http"):
-                # full_url = line.strip() + app
-                # tag = "2" if bouquet_type.upper() == "RADIO" else "1"
-                # svca = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s" % (service, tag, full_url.replace(":", "%3a"))
-                # svz = svca + ":" + namel
-                # tplst.append(svz.strip())
-                # tplst.append(dct.strip())
-                # ch += 1
-    # return tplst, ch
-"""
 
 
 def _write_bouquet_files(path1, tplst):

@@ -55,16 +55,11 @@ class AspectManager:
     """Manages aspect ratio settings for the plugin"""
 
     def __init__(self):
-        self.save_current_aspect()  # Salva l'aspect ratio corrente all'inizializzazione
-        print("[INFO] Initial aspect ratio saved:", self.init_aspect)
-
-    def save_current_aspect(self):
-        """Save current aspect ratio setting"""
         try:
             self.init_aspect = self.get_current_aspect()
-            print("[INFO] Current aspect ratio saved:", self.init_aspect)
+            print("[INFO] Initial aspect ratio:", self.init_aspect)
         except Exception as e:
-            print("[ERROR] Failed to save aspect ratio:", str(e))
+            print("[ERROR] Failed to initialize aspect manager:", str(e))
             self.init_aspect = 0  # Fallback
 
     def get_current_aspect(self):
