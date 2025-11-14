@@ -1,28 +1,56 @@
-Vavoo stream
-
-Enigma2 project
-
-[x]work 
+# 🎬 Vavoo Stream Live - Enigma2 Plugin
 
 [![Python package](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml)
+[![Version](https://img.shields.io/badge/Version-1.38-blue.svg)](https://github.com/Belfagor2005/vavoo)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Python](https://img.shields.io/badge/Python-2.7%2F3.x-yellow.svg)](https://python.org)
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png">
+A sophisticated Enigma2 plugin for streaming live TV channels from multiple sources with advanced bouquet management.
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.png">
+## ✨ Features
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen3.png">
+### 📺 Streaming & Playback
+- 🎥 **Live TV Streaming** from multiple servers (Vavoo, Oha, Kool, Huhu)
+- 🔄 **Auto-refresh** streams with configurable intervals
+- 🎭 **Multiple Player Support**: GStreamer, Exteplayer3, ServiceApp
+- 🌐 **IPv6 Support** with toggle option
+- ⚡ **Fast Channel Switching** with next/previous navigation
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen4.png">
+### 🗂️ Content Organization
+- 🌍 **Dual View Modes**: Countries view & Categories view
+- 🏴 **Country Flags** with automatic icon detection
+- 📑 **Hierarchical Bouquet Export** with container structure
+- 🔍 **Search Functionality** within categories
+- 📊 **Channel Filtering** by country and genre
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen5.png">
+### ⚙️ Configuration & Management
+- 🛠️ **Comprehensive Settings**: DNS, servers, update intervals
+- 💾 **Automatic Bouquet Updates** with scheduling
+- 📁 **M3U File Generation** for external players
+- 🎨 **Customizable UI**: Backgrounds, fonts, layouts
+- 🔄 **Auto-update System** with version checking
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen7.png">
+### 🔧 Technical Features
+- 🐍 **Python 2.7/3.x Compatible**
+- 📱 **Multi-resolution Support** (HD, FHD, WQHD)
+- 🌍 **RTL Language Support** (Arabic, etc.)
+- 🔒 **Authentication Handling**
+- 📝 **Comprehensive Logging**
 
-<img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen8.png">
+## 🖼️ Screenshots
 
-No video files are stored in this repository. The repository simply contains user-submitted links to publicly available video stream URLs, which to the best of our knowledge have been intentionally made publicly by the copyright holders. If any links in these playlists infringe on your rights as a copyright holder, they may be removed by sending a pull request or opening an issue.
+| Main Interface | Categories View | Settings |
+|----------------|-----------------|----------|
+| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen3.png" width="200"> |
 
-However, note that we have no control over the destination of the link, and just removing the link from the playlist will not remove its contents from the web. Note that linking does not directly infringe copyright because no copy is made on the site providing the link, and thus this is not a valid reason to send a DMCA notice to GitHub. To remove this content from the web, you should contact the web host that's actually hosting the content (not GitHub, nor the maintainers of this repository).
+| Player | Bouquet Export | Search |
+|--------|----------------|--------|
+| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen4.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen5.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen7.png" width="200"> |
 
-No Depository Links on server
+## 🚀 Installation
+
+### Manual Installation
+```bash
+wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
+
 
