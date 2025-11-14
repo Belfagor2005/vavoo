@@ -1,4 +1,3 @@
-```markdown
 # 🎬 Vavoo Stream Live - Enigma2 Plugin
 
 [![Python package](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml)
