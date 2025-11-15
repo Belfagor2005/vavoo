@@ -53,19 +53,20 @@ language.addCallback(localeInit)
 
 
 country_codes = {
-	"Albania": "al",
-	"Arabia": "sa",
-	"Balkans": "bk",
-	"Bulgaria": "bg",
-	"France": "fr",
-	"Germany": "de",
-	"Italy": "it",
-	"Netherlands": "nl",
-	"Poland": "pl",
-	"Portugal": "pt",
-	"Romania": "ro",
-	"Russia": "ru",
-	"Spain": "es",
-	"Turkey": "tr",
-	"United Kingdom": "gb"
+    "Albania": "al",
+    "Arabia": "sa",
+    "Balkans": "bk",
+    "Bulgaria": "bg",
+    "Croatia": "hr",
+    "France": "fr",
+    "Germany": "de",
+    "Italy": "it",
+    "Netherlands": "nl",
+    "Poland": "pl",
+    "Portugal": "pt",
+    "Romania": "ro",
+    "Russia": "ru",
+    "Spain": "es",
+    "Turkey": "tr",
+    "United Kingdom": "gb"
 }
