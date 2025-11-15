@@ -1173,7 +1173,8 @@ class MainVavoo(Screen):
                                      fname.startswith('subbouquet.vavoo_') or
                                      'vavoo' in fname.lower())
 
-                    if is_vavoo_file and (fname.endswith('.tv') or fname.endswith('.radio')):
+                    if is_vavoo_file and (
+                            fname.endswith('.tv') or fname.endswith('.radio')):
                         bouquet_path = join(ENIGMA_PATH, fname)
                         print("[vavoo] Removing bouquet:", fname)
 
@@ -1201,10 +1202,8 @@ class MainVavoo(Screen):
                 _reload_services_after_delay()
 
                 self.session.open(
-                    MessageBox,
-                    _('Vavoo bouquets removed successfully!\n(%s files deleted)') % removed_count,
-                    MessageBox.TYPE_INFO,
-                    timeout=5)
+                    MessageBox, _('Vavoo bouquets removed successfully!\n(%s files deleted)') %
+                    removed_count, MessageBox.TYPE_INFO, timeout=5)
 
             except Exception as error:
                 print("Error in deleteBouquets:", error)
@@ -1219,7 +1218,8 @@ class MainVavoo(Screen):
         try:
             # Clean main bouquet files
             for fname in listdir(ENIGMA_PATH):
-                if fname.startswith('bouquets.') and (fname.endswith('.tv') or fname.endswith('.radio')):
+                if fname.startswith('bouquets.') and (
+                        fname.endswith('.tv') or fname.endswith('.radio')):
                     bouquet_file = join(ENIGMA_PATH, fname)
 
                     if file_exists(bouquet_file):
@@ -1228,7 +1228,8 @@ class MainVavoo(Screen):
 
                         # Remove lines containing vavoo
                         lines = content.split('\n')
-                        new_lines = [line for line in lines if 'vavoo' not in line.lower()]
+                        new_lines = [
+                            line for line in lines if 'vavoo' not in line.lower()]
 
                         if len(new_lines) != len(lines):
                             with open(bouquet_file, 'w') as f:
@@ -1462,7 +1463,13 @@ class vavoo(Screen):
                     if not self._matches_selection(country, self.name):
                         continue
 
-                    ids = str(ids).replace(':', '').replace(' ', '').replace(',', '')
+                    ids = str(ids).replace(
+                        ':',
+                        '').replace(
+                        ' ',
+                        '').replace(
+                        ',',
+                        '')
                     url = str(server) + '/live2/play/' + ids + '.ts'
                     name_channel = vUtils.decodeHtml(name_channel)
                     name_channel = vUtils.rimuovi_parentesi(name_channel)
@@ -1567,11 +1574,22 @@ class vavoo(Screen):
         if answer is None:
             name = self.name
             # Check both normal bouquet and container bouquet
-            filename_normal = join(ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' % name.lower().replace(' ', '_'))
-            filename_container = join(ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.tv' % name.lower().replace(' ', '_'))
+            filename_normal = join(
+                ENIGMA_PATH,
+                'userbouquet.vavoo_%s.tv' %
+                name.lower().replace(
+                    ' ',
+                    '_'))
+            filename_container = join(
+                ENIGMA_PATH,
+                'userbouquet.vavoo_%s_cowntry.tv' %
+                name.lower().replace(
+                    ' ',
+                    '_'))
 
             # Check if at least one exists
-            bouquet_exists = file_exists(filename_normal) or file_exists(filename_container)
+            bouquet_exists = file_exists(
+                filename_normal) or file_exists(filename_container)
 
             if bouquet_exists:
                 # Bouquet exists, ask user what to do
@@ -1607,14 +1625,19 @@ class vavoo(Screen):
                 if hasattr(screen, 'current_view'):
                     main_instance = screen
                     break
-        except:
+        except BaseException:
             pass
 
         print("DEBUG message2:")
         print("   name:", name)
         print("   main_instance:", main_instance is not None)
         if main_instance:
-            print("   current_view:", getattr(main_instance, 'current_view', 'NOT FOUND'))
+            print(
+                "   current_view:",
+                getattr(
+                    main_instance,
+                    'current_view',
+                    'NOT FOUND'))
 
         # Determine export type based on current view AND content
         if "➾" in name:
@@ -1646,10 +1669,19 @@ class vavoo(Screen):
                 _reload_services_after_delay()
                 self.last_export_time = time.time()
 
-            _session.open(MessageBox, _('bouquets reloaded..\nWith %s channel') % str(ch), MessageBox.TYPE_INFO, timeout=10)
+            _session.open(
+                MessageBox,
+                _('bouquets reloaded..\nWith %s channel') %
+                str(ch),
+                MessageBox.TYPE_INFO,
+                timeout=10)
 
         else:
-            _session.open(MessageBox, _('Download Error'), MessageBox.TYPE_INFO, timeout=5)
+            _session.open(
+                MessageBox,
+                _('Download Error'),
+                MessageBox.TYPE_INFO,
+                timeout=5)
 
     def message3(self, name, url, response):
         """Update existing bouquet"""
@@ -1658,11 +1690,23 @@ class vavoo(Screen):
         if app:
             # Try first with normal bouquet, then with container
             name_safe = name.lower().replace(' ', '_')
-            filename_normal = join(PLUGIN_PATH, 'list/userbouquet.vavoo_%s.tv' % name_safe)
-            filenameout_normal = join(ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' % name_safe)
+            filename_normal = join(
+                PLUGIN_PATH,
+                'list/userbouquet.vavoo_%s.tv' %
+                name_safe)
+            filenameout_normal = join(
+                ENIGMA_PATH,
+                'userbouquet.vavoo_%s.tv' %
+                name_safe)
 
-            filename_container = join(PLUGIN_PATH, 'list/userbouquet.vavoo_%s_cowntry.tv' % name_safe)
-            filenameout_container = join(ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.tv' % name_safe)
+            filename_container = join(
+                PLUGIN_PATH,
+                'list/userbouquet.vavoo_%s_cowntry.tv' %
+                name_safe)
+            filenameout_container = join(
+                ENIGMA_PATH,
+                'userbouquet.vavoo_%s_cowntry.tv' %
+                name_safe)
 
             # Determine which file exists
             source_file = None
@@ -1711,10 +1755,8 @@ class vavoo(Screen):
                     cfg.last_update.value = localtime
                     cfg.last_update.save()
                     self.session.open(
-                        MessageBox,
-                        _('Bouquet updated successfully!\nWith %s channels') % str(ch),
-                        MessageBox.TYPE_INFO,
-                        timeout=5)
+                        MessageBox, _('Bouquet updated successfully!\nWith %s channels') %
+                        str(ch), MessageBox.TYPE_INFO, timeout=5)
 
             except Exception as e:
                 print("Error updating bouquet:", e)
@@ -1741,21 +1783,35 @@ class vavoo(Screen):
         name = self.name
         try:
             # Remove normal bouquet
-            bouquet_file_normal = join(ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' % name.lower().replace(' ', '_'))
+            bouquet_file_normal = join(
+                ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' %
+                name.lower().replace(
+                    ' ', '_'))
             if file_exists(bouquet_file_normal):
                 remove(bouquet_file_normal)
-                print("Removed normal bouquet: userbouquet.vavoo_%s.tv" % name.lower())
+                print(
+                    "Removed normal bouquet: userbouquet.vavoo_%s.tv" %
+                    name.lower())
 
             # Remove container bouquet
-            bouquet_file_container = join(ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.tv' % name.lower().replace(' ', '_'))
+            bouquet_file_container = join(
+                ENIGMA_PATH,
+                'userbouquet.vavoo_%s_cowntry.tv' %
+                name.lower().replace(
+                    ' ',
+                    '_'))
             if file_exists(bouquet_file_container):
                 remove(bouquet_file_container)
-                print("Removed container bouquet: userbouquet.vavoo_%s_cowntry.tv" % name.lower())
+                print(
+                    "Removed container bouquet: userbouquet.vavoo_%s_cowntry.tv" %
+                    name.lower())
 
             # Remove all related subbouquets
             country_safe = name.lower().replace(' ', '_')
             for fname in listdir(ENIGMA_PATH):
-                if fname.startswith('subbouquet.vavoo_%s_' % country_safe) and fname.endswith('.tv'):
+                if fname.startswith(
+                    'subbouquet.vavoo_%s_' %
+                        country_safe) and fname.endswith('.tv'):
                     subbouquet_file = join(ENIGMA_PATH, fname)
                     remove(subbouquet_file)
                     print("Removed subbouquet: " + fname)
@@ -2254,7 +2310,7 @@ def _add_to_main_bouquet(bouquet_name, bouquet_type):
     try:
         with open(main_bouquet_path, 'r') as f:
             content = f.read()
-    except:
+    except BaseException:
         content = ""
 
     bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet' % bouquet_name
@@ -2286,7 +2342,8 @@ def convert_bouquet(service, name, url, export_type="flat"):
         print("CREATING SINGLE CATEGORY + PARENT:", name)
 
         # 1. Create sub-bouquet for the category
-        ch_count = _create_category_bouquet(name, url, service, app, bouquet_type)
+        ch_count = _create_category_bouquet(
+            name, url, service, app, bouquet_type)
 
         # 2. Create/update parent bouquet with ONLY this category
         country_name = None
@@ -2299,7 +2356,8 @@ def convert_bouquet(service, name, url, export_type="flat"):
 
         if country_name:
             # Pass only the current category, not all categories
-            _create_or_update_container_bouquet(country_name, [name], bouquet_type)
+            _create_or_update_container_bouquet(
+                country_name, [name], bouquet_type)
 
         # Reload bouquets at the end
         print("DEBUG: convert_bouquet Calling ReloadBouquets after export")
@@ -2308,7 +2366,8 @@ def convert_bouquet(service, name, url, export_type="flat"):
         return ch_count
     else:
         print("CREATING HIERARCHICAL FOR COUNTRY:", name)
-        result = _create_hierarchical_bouquet(name, url, service, app, bouquet_type)
+        result = _create_hierarchical_bouquet(
+            name, url, service, app, bouquet_type)
 
         # Reload bouquets at the end
         print("DEBUG: convert_bouquet Calling ReloadBouquets after export")
@@ -2323,7 +2382,8 @@ def _prepare_bouquet_filenames(name, bouquet_type):
     name_file = sub(r'_+', '_', name_file)
     # Remove any remaining special characters
     name_file = sub(r'[^a-zA-Z0-9_]', '', name_file)
-    bouquet_name = "userbouquet.vavoo_%s.%s" % (name_file.lower(), bouquet_type.lower())
+    bouquet_name = "userbouquet.vavoo_%s.%s" % (
+        name_file.lower(), bouquet_type.lower())
     return name_file, bouquet_name
 
 
@@ -2371,17 +2431,23 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type):
                 if sep in name:
                     country_part = name.split(sep)[0].strip()
                     category_part = name.split(sep)[1].strip()
-                    safe_name = "%s_%s" % (country_part.lower().replace(' ', '_'), category_part.lower().replace(' ', '_'))
-                    bouquet_name = "subbouquet.vavoo_%s.%s" % (safe_name, bouquet_type)
+                    safe_name = "%s_%s" % (country_part.lower().replace(
+                        ' ', '_'), category_part.lower().replace(' ', '_'))
+                    bouquet_name = "subbouquet.vavoo_%s.%s" % (
+                        safe_name, bouquet_type)
                     display_name = "%s - %s" % (country_part, category_part)
                     break
         else:
             safe_name = name.lower().replace(' ', '_')
-            bouquet_name = "userbouquet.vavoo_%s.%s" % (safe_name, bouquet_type)
+            bouquet_name = "userbouquet.vavoo_%s.%s" % (
+                safe_name, bouquet_type)
             display_name = name
 
         bouquet_path = join(ENIGMA_PATH, bouquet_name)
-        main_bouquet_path = join(ENIGMA_PATH, "bouquets." + bouquet_type.lower())
+        main_bouquet_path = join(
+            ENIGMA_PATH,
+            "bouquets." +
+            bouquet_type.lower())
 
         with open(PLUGIN_PATH + "/Favorite.txt", "w") as r:
             r.write(str(name) + "###" + str(url))
@@ -2396,7 +2462,8 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type):
                 if entry_country == name:
                     filtered_data.append(entry)
             else:
-                if entry_country == name or entry_country.startswith(name + " ➾"):
+                if entry_country == name or entry_country.startswith(
+                        name + " ➾"):
                     filtered_data.append(entry)
 
         if not filtered_data:
@@ -2412,7 +2479,14 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type):
         ch_count = 0
         for entry in filtered_data:
             name_channel = unquote(entry["name"]).strip("\r\n")
-            ids = str(entry["id"]).replace(':', '').replace(' ', '').replace(',', '')
+            ids = str(
+                entry["id"]).replace(
+                ':',
+                '').replace(
+                ' ',
+                '').replace(
+                ',',
+                '')
 
             url_channel = "http://vavoo.to/live2/play/" + ids + '.ts' + app
             name_channel = vUtils.decodeHtml(name_channel)
@@ -2421,7 +2495,8 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type):
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
             url_encoded = url_channel.replace(":", "%3a")
 
-            service_line = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s:%s" % (service, tag, url_encoded, name_channel)
+            service_line = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s:%s" % (
+                service, tag, url_encoded, name_channel)
             desc_line = "#DESCRIPTION %s" % name_channel
 
             content_lines.append(service_line)
@@ -2434,12 +2509,15 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type):
 
         # Add to main bouquet if it's a userbouquet (not subbouquet)
         if bouquet_name.startswith("userbouquet."):
-            _ensure_bouquet_listed(main_bouquet_path, bouquet_name, bouquet_type)
+            _ensure_bouquet_listed(
+                main_bouquet_path, bouquet_name, bouquet_type)
 
         # Reload bouquets after creation
         # _reload_services_after_delay()
 
-        print("Created bouquet: %s with %s channels" % (bouquet_name, ch_count))
+        print(
+            "Created bouquet: %s with %s channels" %
+            (bouquet_name, ch_count))
         return ch_count
 
     except Exception as error:
@@ -2448,7 +2526,12 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type):
         return 0
 
 
-def _create_hierarchical_bouquet(country_name, url, service, app, bouquet_type):
+def _create_hierarchical_bouquet(
+        country_name,
+        url,
+        service,
+        app,
+        bouquet_type):
     """Create hierarchical bouquet structure with only exported categories"""
     try:
         # Get all data to find categories for this country
@@ -2465,25 +2548,33 @@ def _create_hierarchical_bouquet(country_name, url, service, app, bouquet_type):
         for entry in all_data:
             country = unquote(entry["country"]).strip("\r\n")
             # Check if starts with the country and has any separator
-            if country.startswith(country_name) and any(sep in country for sep in separators):
+            if country.startswith(country_name) and any(
+                    sep in country for sep in separators):
                 all_categories.add(country)
 
         if not all_categories:
-            print("No categories found for " + country_name + ", using flat structure")
-            return _create_flat_bouquet(country_name, url, service, app, bouquet_type)
+            print(
+                "No categories found for " +
+                country_name +
+                ", using flat structure")
+            return _create_flat_bouquet(
+                country_name, url, service, app, bouquet_type)
 
-        # Create category sub-bouquets (CHILDREN) and track which ones were actually created
+        # Create category sub-bouquets (CHILDREN) and track which ones were
+        # actually created
         exported_categories = []
         total_ch = 0
         for category in sorted(all_categories):
-            ch_count = _create_category_bouquet(category, url, service, app, bouquet_type)
+            ch_count = _create_category_bouquet(
+                category, url, service, app, bouquet_type)
             if ch_count > 0:  # Only add categories that were successfully exported
                 exported_categories.append(category)
                 total_ch += ch_count
 
         # Create container bouquet (PARENT) with ONLY exported categories
         if exported_categories:
-            container_ch_count = _create_or_update_container_bouquet(country_name, exported_categories, bouquet_type)
+            container_ch_count = _create_or_update_container_bouquet(
+                country_name, exported_categories, bouquet_type)
         else:
             container_ch_count = 0
 
@@ -2492,16 +2583,21 @@ def _create_hierarchical_bouquet(country_name, url, service, app, bouquet_type):
     except Exception as error:
         print("Error creating hierarchical bouquet:", error)
         trace_error()
-        return _create_flat_bouquet(country_name, url, service, app, bouquet_type)
+        return _create_flat_bouquet(
+            country_name, url, service, app, bouquet_type)
 
 
-def _create_or_update_container_bouquet(country_name, exported_categories, bouquet_type):
+def _create_or_update_container_bouquet(
+        country_name,
+        exported_categories,
+        bouquet_type):
     """Create or update the parent bouquet with only exported categories"""
     print("DEBUG: _create_or_update_container_bouquet called")
     print("DEBUG: country_name = " + country_name)
     print("DEBUG: exported_categories = " + str(exported_categories))
 
-    container_name = "userbouquet.vavoo_%s_cowntry.%s" % (country_name.lower().replace(' ', '_'), bouquet_type)
+    container_name = "userbouquet.vavoo_%s_cowntry.%s" % (
+        country_name.lower().replace(' ', '_'), bouquet_type)
     container_path = join(ENIGMA_PATH, container_name)
 
     separators = ["➾", "⟾", "->", "→"]
@@ -2516,7 +2612,8 @@ def _create_or_update_container_bouquet(country_name, exported_categories, bouqu
         existing_subbouquets = set()
 
         for line in existing_content:
-            if line.startswith('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "subbouquet.vavoo_'):
+            if line.startswith(
+                    '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "subbouquet.vavoo_'):
                 import re
                 match = re.search(r'FROM BOUQUET "([^"]+)"', line)
                 if match:
@@ -2550,10 +2647,13 @@ def _create_or_update_container_bouquet(country_name, exported_categories, bouqu
 
         country_safe = country_name.lower().replace(' ', '_')
         category_safe = category_part.lower().replace(' ', '_')
-        subbouquet_ref = "subbouquet.vavoo_%s_%s.%s" % (country_safe, category_safe, bouquet_type)
+        subbouquet_ref = "subbouquet.vavoo_%s_%s.%s" % (
+            country_safe, category_safe, bouquet_type)
 
         if subbouquet_ref not in existing_subbouquets:
-            content.append('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet' % subbouquet_ref)
+            content.append(
+                '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet' %
+                subbouquet_ref)
             print("DEBUG: Added subbouquet reference: " + subbouquet_ref)
 
     print("DEBUG: Final content lines: " + str(len(content)))
@@ -2567,7 +2667,8 @@ def _create_or_update_container_bouquet(country_name, exported_categories, bouqu
         _add_to_main_bouquet(container_name, bouquet_type)
 
         # Reload bouquets after creation/update
-        print("DEBUG: _create_or_update_container_bouquet Calling ReloadBouquets after export")
+        print(
+            "DEBUG: _create_or_update_container_bouquet Calling ReloadBouquets after export")
         _reload_services_after_delay()
 
         return 1
@@ -2617,7 +2718,8 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
 
         country_safe = country_part.lower().replace(' ', '_')
         category_safe = category_part.lower().replace(' ', '_')
-        subbouquet_name = "subbouquet.vavoo_%s_%s.%s" % (country_safe, category_safe, bouquet_type)
+        subbouquet_name = "subbouquet.vavoo_%s_%s.%s" % (
+            country_safe, category_safe, bouquet_type)
         subbouquet_path = join(ENIGMA_PATH, subbouquet_name)
 
         display_name = "%s - %s" % (country_part, category_part)
@@ -2631,9 +2733,17 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
         ch_count = 0
         for entry in filtered_data:
             name_channel = unquote(entry["name"]).strip("\r\n")
-            ids = str(entry["id"]).replace(':', '').replace(' ', '').replace(',', '')
+            ids = str(
+                entry["id"]).replace(
+                ':',
+                '').replace(
+                ' ',
+                '').replace(
+                ',',
+                '')
 
-            # FIX: Use the configured server instead of the hardcoded "http://vavoo.to"
+            # FIX: Use the configured server instead of the hardcoded
+            # "http://vavoo.to"
             server_url = cfg.server.value
             if not server_url.startswith('http'):
                 server_url = 'https://' + server_url
@@ -2645,7 +2755,8 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
             url_encoded = url_channel.replace(":", "%3a")
 
-            service_line = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s:%s" % (service, tag, url_encoded, name_channel)
+            service_line = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s:%s" % (
+                service, tag, url_encoded, name_channel)
             desc_line = "#DESCRIPTION %s" % name_channel
 
             content_lines.append(service_line)
@@ -2660,7 +2771,12 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
         with open(subbouquet_path, 'w') as f:
             f.write('\n'.join(content_lines))
 
-        print("Created sub-bouquet: " + subbouquet_name + " with " + str(ch_count) + " channels")
+        print(
+            "Created sub-bouquet: " +
+            subbouquet_name +
+            " with " +
+            str(ch_count) +
+            " channels")
 
         try:
             from enigma import eServiceReference, eServiceCenter
@@ -2673,7 +2789,10 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
             list = service_handler.list(bouquet_ref)
             if list:
                 service_count = list.getNumberOfServices()
-                print("DEBUG CRITICAL: Enigma2 reads " + str(service_count) + " services from bouquet")
+                print(
+                    "DEBUG CRITICAL: Enigma2 reads " +
+                    str(service_count) +
+                    " services from bouquet")
             else:
                 print("DEBUG CRITICAL: ERROR - Enigma2 CANNOT read the bouquet file!")
 
@@ -2681,7 +2800,7 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
 
         except Exception as e:
             print("DEBUG CRITICAL: Error testing bouquet: " + str(e))
-    
+
     except Exception as e:
         print("DEBUG CRITICAL: Error2 testing bouquet: " + str(e))
 
@@ -2705,8 +2824,8 @@ def _update_favorite_file(name, url, export_type):
                             existing_bouquets[bouq_name] = {
                                 'url': parts[1],
                                 'export_type': parts[2],
-                                'timestamp': parts[3] if len(parts) > 3 else str(time.time())
-                            }
+                                'timestamp': parts[3] if len(parts) > 3 else str(
+                                    time.time())}
         except Exception as e:
             print("Error reading Favorite.txt: " + str(e))
 
@@ -2728,7 +2847,8 @@ def _update_favorite_file(name, url, export_type):
             )
             f.write(line + "\n")
 
-    print("DEBUG: Updated Favorite.txt with " + str(len(existing_bouquets)) + " bouquets")
+    print("DEBUG: Updated Favorite.txt with " +
+          str(len(existing_bouquets)) + " bouquets")
 
 
 class AutoStartTimer:
@@ -2833,14 +2953,18 @@ class AutoStartTimer:
                 print("No bouquets found in Favorite.txt")
                 return
 
-            print("Scheduled update for " + str(len(bouquets_to_update)) + " bouquets")
+            print("Scheduled update for " +
+                  str(len(bouquets_to_update)) + " bouquets")
 
             # Update all bouquets using their export_type
             for name, url, export_type in bouquets_to_update:
-                print("Updating bouquet: " + name + " (type: " + export_type + ")")
-                ch = convert_bouquet(cfg.services.value, name, url, export_type)
+                print("Updating bouquet: " + name +
+                      " (type: " + export_type + ")")
+                ch = convert_bouquet(
+                    cfg.services.value, name, url, export_type)
                 if ch > 0:
-                    print("Successfully updated: " + name + " (" + str(ch) + " channels)")
+                    print("Successfully updated: " + name +
+                          " (" + str(ch) + " channels)")
                     # Update timestamp
                     _update_favorite_file(name, url, export_type)
                 else:
