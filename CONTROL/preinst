@@ -1,36 +1,85 @@
 #!/bin/sh
 
+# Vavoo Stream Live - Preinstallation Script
+# Version: 1.38
+# Author: Lululla
+# License: CC BY-NC-SA 4.0
+
+print_header() {
+    echo "############################################################"
+    echo "#                                                          #"
+    echo "#  Vavoo Stream Live Plugin - Installation                 #"
+    echo "#  Version: 1.38                                           #"
+    echo "#  Author: Lululla (https://github.com/Belfagor2005)       #"
+    echo "#  License: CC BY-NC-SA 4.0                                #"
+    echo "#                                                          #"
+    echo "############################################################"
+}
+
+print_footer() {
+    echo "############################################################"
+    echo "#                                                          #"
+    echo "#  Installation Completed Successfully!                    #"
+    echo "#                                                          #"
+    echo "#  Important: Restart Enigma2 to activate the plugin       #"
+    echo "#                                                          #"
+    echo "#  Access:                                                 #"
+    echo "#  - Main Menu -> Plugins -> Vavoo Stream Live             #"
+    echo "#  - Or via dedicated button in extensions                 #"
+    echo "#                                                          #"
+    echo "#  Thank you for choosing Vavoo Stream Live!               #"
+    echo "#                                                          #"
+    echo "############################################################"
+}
+
 # Check that opkg exists
 command -v opkg >/dev/null 2>&1 || {
-    echo "ERROR: opkg not found. Aborting installation."
+    echo "ERROR: opkg package manager not found."
+    echo "This script requires an Enigma2-based system with opkg."
     exit 1
 }
 
-# Print header
-echo "****************************************"
-echo "* Please .. Restart Enigma2           *"
-echo "****************************************"
-echo "* Enjoy our plugin                    *"
-echo "****************************************"
-echo "* All Rights Reserved                 *"
-echo "* © 2024 - Lululla                    *"
-echo "****************************************"
+print_header
 
 # Remove old version if found
-echo "Checking for an older version of vavoo in the system..."
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/vavoo ]; then
+echo "Checking for existing Vavoo installations..."
+if [ -d "/usr/lib/enigma2/python/Plugins/Extensions/vavoo" ]; then
+    echo "Removing previous version of Vavoo plugin..."
     rm -rf /usr/lib/enigma2/python/Plugins/Extensions/vavoo > /dev/null 2>&1
-    echo "An older version of vavoo was found and removed"
-    echo "Proceeding to installation..."
+    echo "✓ Previous version removed successfully"
 else
-    echo "An older version of vavoo was not found in the system"
+    echo "✓ No previous installation found"
 fi
 
-# Determine python command
-[ -e "/usr/bin/python3" ] && PY="python3" || PY="python"
+# Determine python command and install dependencies
+echo "Installing required dependencies..."
+if [ -e "/usr/bin/python3" ]; then
+    PY="python3"
+    echo "✓ Using Python 3"
+else
+    PY="python"
+    echo "✓ Using Python 2.7"
+fi
 
-# Update and install python-requests
-opkg update
-opkg install --force-reinstall "${PY}-requests"
+# Update package list and install dependencies
+echo "Updating package repository..."
+opkg update > /dev/null 2>&1
+
+echo "Installing ${PY}-requests..."
+if opkg install --force-reinstall "${PY}-requests" > /dev/null 2>&1; then
+    echo "✓ ${PY}-requests installed successfully"
+else
+    echo "⚠ Could not install ${PY}-requests, but continuing installation"
+fi
+
+# Additional dependency checks
+echo "Verifying system compatibility..."
+if [ -e "/usr/bin/enigma2" ]; then
+    echo "✓ Enigma2 detected"
+else
+    echo "⚠ Enigma2 not found in standard location"
+fi
+
+print_footer
 
 exit 0

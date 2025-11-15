@@ -4,19 +4,19 @@
 import base64
 import json
 import ssl
-from sys import version_info, maxsize
 import types
 from os import listdir, remove, system
 from os.path import exists, getsize, isfile, join, splitext
 from random import choice
-from re import search, sub, compile
+from re import compile, search, sub
+from six import iteritems, unichr
+from six.moves import html_entities, html_parser
+from sys import maxsize, version_info
 from time import time
 from unicodedata import normalize
 
 import requests
 import six
-from six import unichr, iteritems
-from six.moves import html_entities, html_parser
 
 # Project-specific imports
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
@@ -375,12 +375,47 @@ def MemClean():
         pass
 
 
+# def ReloadBouquets():
+    # """Reload Enigma2 bouquets and service lists"""
+    # from enigma import eDVBDB
+    # db = eDVBDB.getInstance()
+    # db.reloadServicelist()
+    # db.reloadBouquets()
+
+
 def ReloadBouquets():
-    """Reload Enigma2 bouquets and service lists"""
-    from enigma import eDVBDB
-    db = eDVBDB.getInstance()
-    db.reloadServicelist()
-    db.reloadBouquets()
+    # """Reload Enigma2 bouquets and service lists"""
+    from enigma import eDVBDB, eTimer
+    try:
+        def do_reload():
+            try:
+                db = eDVBDB.getInstance()
+                if db:
+                    db.reloadServicelist()
+                    db.reloadBouquets()
+            except Exception as e:
+                print("Error during service reload: " + str(e))
+
+        def do_delayed_reload():
+            try:
+                reload_timer2 = eTimer()
+                try:
+                    reload_timer2.callback.append(do_reload)
+                except BaseException:
+                    reload_timer2.timeout.connect(do_reload)
+                reload_timer2.start(2000, True)
+            except Exception as e:
+                print("Error setting up delayed reload: " + str(e))
+
+        reload_timer = eTimer()
+        try:
+            reload_timer.callback.append(do_delayed_reload)
+        except BaseException:
+            reload_timer.timeout.connect(do_delayed_reload)
+        reload_timer.start(100, True)
+        
+    except Exception as e:
+        print("Error setting up service reload: " + str(e))
 
 
 def sanitizeFilename(filename):

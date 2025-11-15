@@ -3,8 +3,8 @@
 ##setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
 ######### Only These 2 lines to edit with new version ######
-version='1.38'
-changelog='\n- Test Upgrade\n- fix player - infobar - Add --> refresh player'
+version='1.39'
+changelog='\n- Add Category and Cowntry\n- fix Config\n- Add Flag'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-install

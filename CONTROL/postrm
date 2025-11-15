@@ -1,6 +1,74 @@
 #!/bin/sh
 
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/vavoo ]
-then
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/vavoo > /dev/null 2>&1
+# Vavoo Stream Live - Post Removal Script
+# Version: 1.38
+# Author: Lululla
+# License: CC BY-NC-SA 4.0
+
+print_header() {
+    echo "############################################################"
+    echo "#                                                          #"
+    echo "#  Vavoo Stream Live Plugin - Removal                      #"
+    echo "#  Version: 1.38                                           #"
+    echo "#  Author: Lululla (https://github.com/Belfagor2005)       #"
+    echo "#                                                          #"
+    echo "############################################################"
+}
+
+print_footer() {
+    echo "############################################################"
+    echo "#                                                          #"
+    echo "#  Removal Completed Successfully!                         #"
+    echo "#                                                          #"
+    echo "#  Important: Restart Enigma2 to complete the removal      #"
+    echo "#                                                          #"
+    echo "#  All Vavoo files and configurations have been removed    #"
+    echo "#                                                          #"
+    echo "#  Thank you for using Vavoo Stream Live!                  #"
+    echo "#                                                          #"
+    echo "############################################################"
+}
+
+print_header
+
+# Remove plugin directory
+echo "Removing Vavoo plugin files..."
+if [ -d "/usr/lib/enigma2/python/Plugins/Extensions/vavoo" ]; then
+    rm -rf "/usr/lib/enigma2/python/Plugins/Extensions/vavoo" > /dev/null 2>&1
+    echo "✓ Plugin files removed successfully"
+else
+    echo "⚠ Plugin directory not found, skipping"
+fi
+
+# Remove temporary files
+echo "Cleaning up temporary files..."
+if [ -f "/tmp/vavoo.log" ]; then
+    rm -f "/tmp/vavoo.log" > /dev/null 2>&1
+    echo "✓ Temporary log files removed"
+fi
+
+if [ -f "/tmp/vavookey" ]; then
+    rm -f "/tmp/vavookey" > /dev/null 2>&1
+    echo "✓ Temporary key files removed"
+fi
+
+# Remove any leftover M3U files
+echo "Cleaning up M3U cache files..."
+find /tmp -name "*.m3u" -exec rm -f {} \; > /dev/null 2>&1
+echo "✓ Temporary M3U files removed"
+
+# Remove bouquet files
+echo "Removing Vavoo bouquet files..."
+find /etc/enigma2 -name "*vavoo*" -exec rm -f {} \; > /dev/null 2>&1
+echo "✓ Bouquet files removed"
+
+# Reload bouquets if enigma2 is running
+if [ -e "/usr/bin/enigma2" ]; then
+    echo "Reloading channel lists..."
+    wget -q -O - "http://127.0.0.1/web/servicelistreload?mode=0" > /dev/null 2>&1
+    echo "✓ Channel lists reloaded"
+fi
+
+print_footer
+
 exit 0
