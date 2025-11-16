@@ -413,7 +413,7 @@ def ReloadBouquets():
         except BaseException:
             reload_timer.timeout.connect(do_delayed_reload)
         reload_timer.start(100, True)
-
+        
     except Exception as e:
         print("Error setting up service reload: " + str(e))
 
