@@ -1575,9 +1575,8 @@ class vavoo(Screen):
                         'Do you want to:\n'
                         '• UPDATE existing bouquet (Yes)\n'
                         '• REMOVE and create new (No)\n'
-                        '• CANCEL operation (Cancel)'
                     ),
-                    MessageBox.TYPE_YESNOCANCEL
+                    MessageBox.TYPE_YESNO
                 )
             else:
                 # New bouquet, proceed directly
