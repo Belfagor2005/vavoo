@@ -1640,7 +1640,10 @@ class vavoo(Screen):
             name_safe = name.lower().replace(' ', '_')
 
             for fname in listdir(ENIGMA_PATH):
-                if fname.startswith(('userbouquet.vavoo_%s' % name_safe, 'subbouquet.vavoo_%s' % name_safe)) and fname.endswith('.tv'):
+                if fname.startswith(
+                    ('userbouquet.vavoo_%s' %
+                     name_safe, 'subbouquet.vavoo_%s' %
+                     name_safe)) and fname.endswith('.tv'):
                     bouquet_files.append(fname)
 
             print("Found %s bouquet files for %s" % (len(bouquet_files), name))
@@ -1652,11 +1655,15 @@ class vavoo(Screen):
                     with open(bouquet_path, 'r') as f:
                         content = f.read()
                         lines = content.splitlines()
-                        service_lines = [l for l in lines if l.startswith('#SERVICE') and '0:0:0' in l]
-                        print("File has %s total lines, %s service entries" % (len(lines), len(service_lines)))
+                        service_lines = [
+                            l for l in lines if l.startswith('#SERVICE') and '0:0:0' in l]
+                        print(
+                            "File has %s total lines, %s service entries" %
+                            (len(lines), len(service_lines)))
 
                         if service_lines:
-                            print("First service ref: %s" % service_lines[0][:100])
+                            print("First service ref: %s" %
+                                  service_lines[0][:100])
                 else:
                     print("Bouquet file not found: %s" % bouquet_path)
 
@@ -1677,21 +1684,35 @@ class vavoo(Screen):
         name = self.name
         try:
             # Remove normal bouquet
-            bouquet_file_normal = join(ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' % name.lower().replace(' ', '_'))
+            bouquet_file_normal = join(
+                ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' %
+                name.lower().replace(
+                    ' ', '_'))
             if file_exists(bouquet_file_normal):
                 remove(bouquet_file_normal)
-                print("Removed normal bouquet: userbouquet.vavoo_%s.tv" % name.lower())
+                print(
+                    "Removed normal bouquet: userbouquet.vavoo_%s.tv" %
+                    name.lower())
 
             # Remove container bouquet
-            bouquet_file_container = join(ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.tv' % name.lower().replace(' ', '_'))
+            bouquet_file_container = join(
+                ENIGMA_PATH,
+                'userbouquet.vavoo_%s_cowntry.tv' %
+                name.lower().replace(
+                    ' ',
+                    '_'))
             if file_exists(bouquet_file_container):
                 remove(bouquet_file_container)
-                print("Removed container bouquet: userbouquet.vavoo_%s_cowntry.tv" % name.lower())
+                print(
+                    "Removed container bouquet: userbouquet.vavoo_%s_cowntry.tv" %
+                    name.lower())
 
             # Remove all related subbouquets
             country_safe = name.lower().replace(' ', '_')
             for fname in listdir(ENIGMA_PATH):
-                if fname.startswith('subbouquet.vavoo_%s_' % country_safe) and fname.endswith('.tv'):
+                if fname.startswith(
+                    'subbouquet.vavoo_%s_' %
+                        country_safe) and fname.endswith('.tv'):
                     subbouquet_file = join(ENIGMA_PATH, fname)
                     remove(subbouquet_file)
                     print("Removed subbouquet: " + fname)
@@ -1723,15 +1744,30 @@ class vavoo(Screen):
 
             # Remove all possible files
             files_to_remove = [
-                join(ENIGMA_PATH, 'userbouquet.vavoo_%s.tv' % name_safe),
-                join(ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.tv' % name_safe),
-                join(ENIGMA_PATH, 'userbouquet.vavoo_%s.radio' % name_safe),
-                join(ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.radio' % name_safe),
+                join(
+                    ENIGMA_PATH,
+                    'userbouquet.vavoo_%s.tv' %
+                    name_safe),
+                join(
+                    ENIGMA_PATH,
+                    'userbouquet.vavoo_%s_cowntry.tv' %
+                    name_safe),
+                join(
+                    ENIGMA_PATH,
+                    'userbouquet.vavoo_%s.radio' %
+                    name_safe),
+                join(
+                    ENIGMA_PATH,
+                    'userbouquet.vavoo_%s_cowntry.radio' %
+                    name_safe),
             ]
 
             # Also remove any subbouquet
             for fname in listdir(ENIGMA_PATH):
-                if fname.startswith('subbouquet.vavoo_%s_' % name_safe) and (fname.endswith('.tv') or fname.endswith('.radio')):
+                if fname.startswith(
+                        'subbouquet.vavoo_%s_' %
+                        name_safe) and (
+                        fname.endswith('.tv') or fname.endswith('.radio')):
                     files_to_remove.append(join(ENIGMA_PATH, fname))
 
             for file_path in files_to_remove:
@@ -2620,7 +2656,8 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
 
         country_safe = country_part.lower().replace(' ', '_')
         category_safe = category_part.lower().replace(' ', '_')
-        subbouquet_name = "subbouquet.vavoo_%s_%s.%s" % (country_safe, category_safe, bouquet_type)
+        subbouquet_name = "subbouquet.vavoo_%s_%s.%s" % (
+            country_safe, category_safe, bouquet_type)
         subbouquet_path = join(ENIGMA_PATH, subbouquet_name)
 
         display_name = "%s - %s" % (country_part, category_part)
@@ -2634,7 +2671,14 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
         ch_count = 0
         for entry in filtered_data:
             name_channel = unquote(entry["name"]).strip("\r\n")
-            ids = str(entry["id"]).replace(':', '').replace(' ', '').replace(',', '')
+            ids = str(
+                entry["id"]).replace(
+                ':',
+                '').replace(
+                ' ',
+                '').replace(
+                ',',
+                '')
 
             server_url = cfg.server.value
             if not server_url.startswith('http'):
@@ -2647,7 +2691,8 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
             url_encoded = url_channel.replace(":", "%3a")
 
-            service_line = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s:%s" % (service, tag, url_encoded, name_channel)
+            service_line = "#SERVICE %s:0:%s:0:0:0:0:0:0:0:%s:%s" % (
+                service, tag, url_encoded, name_channel)
             desc_line = "#DESCRIPTION %s" % name_channel
 
             content_lines.append(service_line)
@@ -2657,7 +2702,9 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
         with open(subbouquet_path, 'w') as f:
             f.write('\n'.join(content_lines))
 
-        print("Created bouquet: %s with %s channels" % (subbouquet_name, ch_count))
+        print(
+            "Created bouquet: %s with %s channels" %
+            (subbouquet_name, ch_count))
 
         try:
             from enigma import eServiceReference, eServiceCenter
@@ -2666,9 +2713,13 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
             service_list = service_handler.list(ref)
             if service_list:
                 readable_count = service_list.getNumberOfServices()
-                print("Enigma2 can read %s services from bouquet" % readable_count)
+                print(
+                    "Enigma2 can read %s services from bouquet" %
+                    readable_count)
                 if readable_count != ch_count:
-                    print("WARNING: Enigma2 sees %s services but we wrote %s" % (readable_count, ch_count))
+                    print(
+                        "WARNING: Enigma2 sees %s services but we wrote %s" %
+                        (readable_count, ch_count))
             else:
                 print("ERROR: Enigma2 cannot read the bouquet file!")
         except Exception as e:
@@ -2679,7 +2730,6 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type):
     except Exception as e:
         print("Error creating category bouquet: %s" % str(e))
         return 0
-
 
 
 def _update_favorite_file(name, url, export_type):
@@ -2830,19 +2880,23 @@ class AutoStartTimer:
                 print("No bouquets found in Favorite.txt")
                 return
 
-            print("Scheduled update for " + str(len(bouquets_to_update)) + " bouquets")
+            print("Scheduled update for " +
+                  str(len(bouquets_to_update)) + " bouquets")
 
             # Update all bouquets by recreating them
             for name, url, export_type in bouquets_to_update:
-                print("Updating bouquet: " + name + " (type: " + export_type + ")")
+                print("Updating bouquet: " + name +
+                      " (type: " + export_type + ")")
 
                 # Rimuovere il bouquet esistente prima di ricrearlo
                 self._remove_bouquet_by_name(name)
 
                 # Ricreare il bouquet
-                ch = convert_bouquet(cfg.services.value, name, url, export_type)
+                ch = convert_bouquet(
+                    cfg.services.value, name, url, export_type)
                 if ch > 0:
-                    print("Successfully updated: " + name + " (" + str(ch) + " channels)")
+                    print("Successfully updated: " + name +
+                          " (" + str(ch) + " channels)")
                     # Update timestamp
                     _update_favorite_file(name, url, export_type)
                 else:
