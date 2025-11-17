@@ -36,7 +36,7 @@ import time
 from datetime import datetime
 from os import listdir, makedirs, unlink, remove, system
 from os.path import exists as file_exists, join, islink, isfile, splitext
-from re import sub, compile, DOTALL
+from re import sub, search, compile, DOTALL
 from json import loads
 from sys import version_info, stdout, stderr
 
