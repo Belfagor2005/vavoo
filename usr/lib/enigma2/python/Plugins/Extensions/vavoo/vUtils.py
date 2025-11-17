@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Standard library
 import base64
 import json
 import ssl
@@ -9,14 +10,17 @@ from os import listdir, remove, system
 from os.path import exists, getsize, isfile, join, splitext
 from random import choice
 from re import compile, search, sub
-from six import iteritems, unichr
-from six.moves import html_entities, html_parser
 from sys import maxsize, version_info
 from time import time
 from unicodedata import normalize
 
-import requests
+# Six library (third-party / compatibility)
 import six
+from six import iteritems, unichr
+from six.moves import html_entities, html_parser
+
+# Third-party library
+import requests
 
 # Project-specific imports
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
@@ -375,16 +379,8 @@ def MemClean():
         pass
 
 
-# def ReloadBouquets():
-    # """Reload Enigma2 bouquets and service lists"""
-    # from enigma import eDVBDB
-    # db = eDVBDB.getInstance()
-    # db.reloadServicelist()
-    # db.reloadBouquets()
-
-
 def ReloadBouquets():
-    # """Reload Enigma2 bouquets and service lists"""
+    """Reload Enigma2 bouquets and service lists"""
     from enigma import eDVBDB, eTimer
     try:
         def do_reload():
@@ -413,7 +409,7 @@ def ReloadBouquets():
         except BaseException:
             reload_timer.timeout.connect(do_delayed_reload)
         reload_timer.start(100, True)
-
+        
     except Exception as e:
         print("Error setting up service reload: " + str(e))
 

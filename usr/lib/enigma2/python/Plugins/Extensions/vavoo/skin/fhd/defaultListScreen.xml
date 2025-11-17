@@ -15,8 +15,8 @@
         <convert type="ClockToText">Default</convert>
     </widget>
     <eLabel name="" position="0,0" size="1920,1080" backgroundColor="#30000000" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
-    <eLabel name="" position="1844,1038" size="75,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="MENU" />
-    <eLabel name="" position="1771,1038" size="75,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="INFO" />
-    <eLabel name="" position="1705,1038" size="64,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="CH+" />
-    <eLabel name="" position="1641,1038" size="64,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="CH-" />
+    <eLabel name="" position="1844,1018" size="75,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="MENU" />
+    <eLabel name="" position="1771,1018" size="75,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="INFO" />
+    <eLabel name="" position="1705,1018" size="64,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="CH+" />
+    <eLabel name="" position="1641,1018" size="64,40" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 24" zPosition="3" text="CH-" />
 </screen>

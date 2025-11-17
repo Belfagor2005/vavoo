@@ -15,8 +15,8 @@
     <widget source="global.CurrentTime" render="Label" position="1932,105" size="422,130" font="Lcdx; 100" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <eLabel name="" position="2440,1390" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="Regular;28" zPosition="3" text="MENU" />
-    <eLabel name="" position="2320,1390" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="Regular;28" zPosition="3" text="INFO" />
-    <eLabel name="" position="2210,1390" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont;28" zPosition="3" text="CH+" />
-    <eLabel name="" position="2100,1390" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont;28" zPosition="3" text="CH-" />
+    <eLabel name="" position="2440,1365" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="Regular;28" zPosition="3" text="MENU" />
+    <eLabel name="" position="2320,1365" size="120,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="Regular;28" zPosition="3" text="INFO" />
+    <eLabel name="" position="2210,1365" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont;28" zPosition="3" text="CH+" />
+    <eLabel name="" position="2100,1365" size="110,52" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont;28" zPosition="3" text="CH-" />
 </screen>
