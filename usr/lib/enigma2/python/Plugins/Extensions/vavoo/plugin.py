@@ -2462,7 +2462,7 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type):
                 '').replace(
                 ',',
                 '')
-            url_channel = "http://vavoo.to/live2/play/" + ids + '.ts?n=1&b=5&vavoo_auth=' + str(sig) + '#User-Agent=VAVOO/2.6'
+            url_channel = "http://vavoo.to/live2/play/" + ids + '.ts?n=1&b=5&vavoo_auth=' + str(app) + '#User-Agent=VAVOO/2.6'
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
             url_encoded = url_channel.replace(":", "%3a")
 
