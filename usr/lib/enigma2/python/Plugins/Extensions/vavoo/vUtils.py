@@ -308,7 +308,8 @@ def getAuthSignature():
 
     signfile = get_cache('signfile')
     if signfile:
-        print("DEBUG: Found cached signature:", signfile[:50] + "..." if signfile else "None")
+        print("DEBUG: Found cached signature:",
+              signfile[:50] + "..." if signfile else "None")
         return signfile
 
     print("DEBUG: No cached signature, fetching new one...")
@@ -327,7 +328,8 @@ def getAuthSignature():
                     "https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json",
                     verify=False)
                 veclist = response.json()
-            print("DEBUG: Fetched veclist with", len(veclist) if veclist else 0, "items")
+            print("DEBUG: Fetched veclist with", len(
+                veclist) if veclist else 0, "items")
         except Exception as e:
             print("[vUtils] Failed to fetch veclist:", e)
             return None

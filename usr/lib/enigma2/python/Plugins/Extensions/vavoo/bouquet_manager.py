@@ -120,7 +120,10 @@ def _add_to_main_bouquet(bouquet_name, bouquet_type, list_position="bottom"):
                 break
 
         if bouquet_already_exists:
-            print("DEBUG: Bouquet " + bouquet_name + " already exists in main bouquet file")
+            print(
+                "DEBUG: Bouquet " +
+                bouquet_name +
+                " already exists in main bouquet file")
             return
 
         # Remove all Vavoo lines first
@@ -134,7 +137,8 @@ def _add_to_main_bouquet(bouquet_name, bouquet_type, list_position="bottom"):
                 non_vavoo_lines.append(line)
 
         # Remove the specific bouquet if already exists in Vavoo lines
-        vavoo_lines = [line for line in vavoo_lines if bouquet_name not in line]
+        vavoo_lines = [
+            line for line in vavoo_lines if bouquet_name not in line]
 
         # Add the current bouquet to Vavoo lines
         vavoo_lines.append(bouquet_line)
@@ -153,7 +157,12 @@ def _add_to_main_bouquet(bouquet_name, bouquet_type, list_position="bottom"):
         with open(main_bouquet_path, 'w') as f:
             f.writelines(new_lines)
 
-        print("Added " + bouquet_name + " to " + position_info + " (all Vavoo grouped)")
+        print(
+            "Added " +
+            bouquet_name +
+            " to " +
+            position_info +
+            " (all Vavoo grouped)")
 
     except Exception as e:
         print("Error adding to main bouquet: " + str(e))
@@ -186,10 +195,19 @@ def remove_bouquets_by_name(name=None):
         removed_count = 0
 
         for fname in listdir(ENIGMA_PATH):
-            if '.vavoo_' in fname and (fname.endswith('.tv') or fname.endswith('.radio')):
+            if '.vavoo_' in fname and (
+                    fname.endswith('.tv') or fname.endswith('.radio')):
                 # Se name è specificato, controlla il match
                 if name is not None:
-                    name_safe = name.lower().replace(' ', '_').replace('➾', '_').replace('⟾', '_').replace('->', '_')
+                    name_safe = name.lower().replace(
+                        ' ',
+                        '_').replace(
+                        '➾',
+                        '_').replace(
+                        '⟾',
+                        '_').replace(
+                        '->',
+                        '_')
                     if name_safe not in fname:
                         continue
 
@@ -210,7 +228,13 @@ def remove_bouquets_by_name(name=None):
         return 0
 
 
-def convert_bouquet(service, name, url, export_type="flat", server_url=None, list_position="bottom"):
+def convert_bouquet(
+        service,
+        name,
+        url,
+        export_type="flat",
+        server_url=None,
+        list_position="bottom"):
     """
     Convert a bouquet with the option of flat or hierarchical structure
     """
@@ -226,12 +250,14 @@ def convert_bouquet(service, name, url, export_type="flat", server_url=None, lis
     separators = ["➾", "⟾", "->", "→"]
     has_separator = any(sep in name for sep in separators)
 
-    print("DEBUG convert_bouquet: name='%s', export_type='%s', has_separator=%s" %
-          (name, export_type, has_separator))
+    print(
+        "DEBUG convert_bouquet: name='%s', export_type='%s', has_separator=%s" %
+        (name, export_type, has_separator))
 
     if has_separator:
         print("CREATING SINGLE CATEGORY: %s" % name)
-        ch_count = _create_category_bouquet(name, url, service, app, bouquet_type, server_url)
+        ch_count = _create_category_bouquet(
+            name, url, service, app, bouquet_type, server_url)
 
         country_name = None
         for sep in separators:
@@ -244,17 +270,20 @@ def convert_bouquet(service, name, url, export_type="flat", server_url=None, lis
         if country_name:
             content = getUrl(url)
             if PY3:
-                content = content.decode("utf-8") if isinstance(content, bytes) else content
+                content = content.decode(
+                    "utf-8") if isinstance(content, bytes) else content
             all_data = loads(content)
 
             all_categories = set()
             for entry in all_data:
                 country = unquote(entry["country"]).strip("\r\n")
-                if country.startswith(country_name) and any(sep in country for sep in separators):
+                if country.startswith(country_name) and any(
+                        sep in country for sep in separators):
                     all_categories.add(country)
 
             if all_categories:
-                _create_or_update_container_bouquet(country_name, [name], bouquet_type, list_position)
+                _create_or_update_container_bouquet(
+                    country_name, [name], bouquet_type, list_position)
 
         print("DEBUG: convert_bouquet calling ReloadBouquets after export")
         return ch_count
@@ -264,9 +293,11 @@ def convert_bouquet(service, name, url, export_type="flat", server_url=None, lis
               (name, export_type))
 
         if export_type == "hierarchical":
-            result = _create_hierarchical_bouquet(name, url, service, app, bouquet_type, server_url, list_position)
+            result = _create_hierarchical_bouquet(
+                name, url, service, app, bouquet_type, server_url, list_position)
         else:
-            result = _create_flat_bouquet(name, url, service, app, bouquet_type, server_url)
+            result = _create_flat_bouquet(
+                name, url, service, app, bouquet_type, server_url)
 
         print("DEBUG: convert_bouquet calling ReloadBouquets after export")
         return result
@@ -294,7 +325,8 @@ def _prepare_bouquet_filenames(name, bouquet_type):
 
         bouquet_name = "subbouquet.vavoo_" + name_file + "." + bouquet_type.lower()
     else:
-        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + bouquet_type.lower()
+        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + \
+            bouquet_type.lower()
 
     print("DEBUG: _prepare_bouquet_filenames: name='" +
           name + "' -> bouquet_name='" + bouquet_name + "'")
@@ -306,7 +338,8 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type, server_url):
     try:
         content = getUrl(url)
         if PY3:
-            content = content.decode("utf-8") if isinstance(content, bytes) else content
+            content = content.decode(
+                "utf-8") if isinstance(content, bytes) else content
         all_data = loads(content)
 
         separators = ["➾", "⟾", "->", "→"]
@@ -352,7 +385,9 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type, server_url):
             print("No channels found for: " + name)
             return 0
 
-        filtered_data.sort(key=lambda x: unquote(x["name"]).strip("\r\n").lower())
+        filtered_data.sort(
+            key=lambda x: unquote(
+                x["name"]).strip("\r\n").lower())
         content_lines = [
             "#NAME " + display_name
         ]
@@ -409,13 +444,21 @@ def _create_flat_bouquet(name, url, service, app, bouquet_type, server_url):
         return 0
 
 
-def _create_hierarchical_bouquet(country_name, url, service, app, bouquet_type, server_url, list_position="bottom"):
+def _create_hierarchical_bouquet(
+        country_name,
+        url,
+        service,
+        app,
+        bouquet_type,
+        server_url,
+        list_position="bottom"):
     """Create hierarchical bouquet structure with only exported categories"""
     try:
         # Get all data to find categories for this country
         content = getUrl(url)
         if PY3:
-            content = content.decode("utf-8") if isinstance(content, bytes) else content
+            content = content.decode(
+                "utf-8") if isinstance(content, bytes) else content
         all_data = loads(content)
 
         # Use the same robust approach for separators
@@ -426,25 +469,33 @@ def _create_hierarchical_bouquet(country_name, url, service, app, bouquet_type, 
         for entry in all_data:
             country = unquote(entry["country"]).strip("\r\n")
             # Check if starts with the country and has any separator
-            if country.startswith(country_name) and any(sep in country for sep in separators):
+            if country.startswith(country_name) and any(
+                    sep in country for sep in separators):
                 all_categories.add(country)
 
         if not all_categories:
-            print("No categories found for " + country_name + ", using flat structure")
-            return _create_flat_bouquet(country_name, url, service, app, bouquet_type, server_url)
+            print(
+                "No categories found for " +
+                country_name +
+                ", using flat structure")
+            return _create_flat_bouquet(
+                country_name, url, service, app, bouquet_type, server_url)
 
-        # Create category sub-bouquets (CHILDREN) and track which ones were actually created
+        # Create category sub-bouquets (CHILDREN) and track which ones were
+        # actually created
         exported_categories = []
         total_ch = 0
         for category in sorted(all_categories):
-            ch_count = _create_category_bouquet(category, url, service, app, bouquet_type, server_url)
+            ch_count = _create_category_bouquet(
+                category, url, service, app, bouquet_type, server_url)
             if ch_count > 0:  # Only add categories that were successfully exported
                 exported_categories.append(category)
                 total_ch += ch_count
 
         # Create container bouquet (PARENT) with ONLY exported categories
         if exported_categories:
-            container_ch_count = _create_or_update_container_bouquet(country_name, exported_categories, bouquet_type, list_position)
+            container_ch_count = _create_or_update_container_bouquet(
+                country_name, exported_categories, bouquet_type, list_position)
         else:
             container_ch_count = 0
 
@@ -452,7 +503,13 @@ def _create_hierarchical_bouquet(country_name, url, service, app, bouquet_type, 
 
     except Exception as error:
         print("Error creating hierarchical bouquet:", error)
-        return _create_flat_bouquet(country_name, url, service, app, bouquet_type, server_url)
+        return _create_flat_bouquet(
+            country_name,
+            url,
+            service,
+            app,
+            bouquet_type,
+            server_url)
 
 
 def _create_or_update_container_bouquet(
@@ -506,13 +563,15 @@ def _create_or_update_container_bouquet(
 
         # Add only if this subbouquet is not already in the container
         if subbouquet_ref not in existing_categories:
-            bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + subbouquet_ref + '" ORDER BY bouquet'
+            bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + \
+                subbouquet_ref + '" ORDER BY bouquet'
             content.append(bouquet_line)
             existing_categories.add(subbouquet_ref)
             print("DEBUG: Added subbouquet reference: " + subbouquet_ref)
 
     print("DEBUG: Final content lines: " + str(len(content)))
-    print("DEBUG: Total categories in container: " + str(len(existing_categories)))
+    print("DEBUG: Total categories in container: " +
+          str(len(existing_categories)))
 
     # Write the container bouquet file
     try:
@@ -531,12 +590,19 @@ def _create_or_update_container_bouquet(
         return 0
 
 
-def _create_category_bouquet(category_name, url, service, app, bouquet_type, server_url):
+def _create_category_bouquet(
+        category_name,
+        url,
+        service,
+        app,
+        bouquet_type,
+        server_url):
     """Create a sub-bouquet for a specific category"""
     try:
         content = getUrl(url)
         if PY3:
-            content = content.decode("utf-8") if isinstance(content, bytes) else content
+            content = content.decode(
+                "utf-8") if isinstance(content, bytes) else content
         all_data = loads(content)
 
         separators = ["➾", "⟾", "->", "→"]
@@ -570,7 +636,9 @@ def _create_category_bouquet(category_name, url, service, app, bouquet_type, ser
             print("No channels found for: " + category_name)
             return 0
 
-        filtered_data.sort(key=lambda x: unquote(x["name"]).strip("\r\n").lower())
+        filtered_data.sort(
+            key=lambda x: unquote(
+                x["name"]).strip("\r\n").lower())
 
         # Prepare filename
         name_file, subbouquet_name = _prepare_bouquet_filenames(

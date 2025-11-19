@@ -1119,11 +1119,8 @@ class MainVavoo(Screen):
 
                 # Show success message
                 self.session.open(
-                    MessageBox,
-                    _('Vavoo bouquets removed successfully!\n(%s files deleted)') % removed_count,
-                    MessageBox.TYPE_INFO,
-                    timeout=5
-                )
+                    MessageBox, _('Vavoo bouquets removed successfully!\n(%s files deleted)') %
+                    removed_count, MessageBox.TYPE_INFO, timeout=5)
 
                 self._reload_services_after_delay()
 
@@ -1510,12 +1507,20 @@ class vavoo(Screen):
                 # Single category - check only subbouquet
                 filename_to_check = join(
                     ENIGMA_PATH,
-                    'subbouquet.vavoo_%s.tv' % name.lower().replace(' ', '_').replace('➾', '_').replace('⟾', '_').replace('->', '_')
-                )
+                    'subbouquet.vavoo_%s.tv' %
+                    name.lower().replace(
+                        ' ',
+                        '_').replace(
+                        '➾',
+                        '_').replace(
+                        '⟾',
+                        '_').replace(
+                        '->',
+                        '_'))
                 filename_container = join(
-                    ENIGMA_PATH,
-                    'userbouquet.vavoo_%s_cowntry.tv' % name.split('➾')[0].strip().lower().replace(' ', '_')
-                )
+                    ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.tv' %
+                    name.split('➾')[0].strip().lower().replace(
+                        ' ', '_'))
             else:
                 # Whole country - check only flat bouquet
                 filename_to_check = join(
@@ -1524,10 +1529,13 @@ class vavoo(Screen):
                 )
                 filename_container = join(
                     ENIGMA_PATH,
-                    'userbouquet.vavoo_%s_cowntry.tv' % name.lower().replace(' ', '_')
-                )
+                    'userbouquet.vavoo_%s_cowntry.tv' %
+                    name.lower().replace(
+                        ' ',
+                        '_'))
 
-            bouquet_exists = file_exists(filename_to_check) or (has_separator and file_exists(filename_container))
+            bouquet_exists = file_exists(filename_to_check) or (
+                has_separator and file_exists(filename_container))
 
             if bouquet_exists:
                 # Bouquet exists, ask user what to do
@@ -1581,7 +1589,13 @@ class vavoo(Screen):
         print("FINAL export_type: %s" % export_type)
 
         _update_favorite_file(name, url, export_type)
-        ch = convert_bouquet(cfg.services.value, name, url, export_type, cfg.server.value, cfg.list_position.value)
+        ch = convert_bouquet(
+            cfg.services.value,
+            name,
+            url,
+            export_type,
+            cfg.server.value,
+            cfg.list_position.value)
 
         if int(ch) > 0:
             print("Bouquet created with %s channels" % ch)
@@ -2166,22 +2180,29 @@ class AutoStartTimer:
                 print("No bouquets found in Favorite.txt")
                 return
 
-            print("Scheduled update for " + str(len(bouquets_to_update)) + " bouquets")
+            print("Scheduled update for " +
+                  str(len(bouquets_to_update)) + " bouquets")
 
             # Update each bouquet
             for name, url, export_type in bouquets_to_update:
-                print("Updating bouquet: " + name + " (type: " + export_type + ")")
+                print("Updating bouquet: " + name +
+                      " (type: " + export_type + ")")
 
                 # Remove existing bouquet before recreating
                 self._remove_bouquet_by_name(name)
 
                 # Recreate bouquet
                 ch = convert_bouquet(
-                    cfg.services.value, name, url, export_type, cfg.server.value, cfg.list_position.value
-                )
+                    cfg.services.value,
+                    name,
+                    url,
+                    export_type,
+                    cfg.server.value,
+                    cfg.list_position.value)
 
                 if ch > 0:
-                    print("Successfully updated: " + name + " (" + str(ch) + " channels)")
+                    print("Successfully updated: " + name +
+                          " (" + str(ch) + " channels)")
                     # Update Favorite.txt timestamp
                     _update_favorite_file(name, url, export_type)
                 else:
