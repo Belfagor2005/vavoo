@@ -1306,7 +1306,9 @@ class vavoo(Screen):
             for screen in self.session.dialog_stack:
                 if hasattr(screen, 'current_view'):
                     self.current_view = screen.current_view
-                    print("DEBUG: Got current_view from main screen: " + self.current_view)
+                    print(
+                        "DEBUG: Got current_view from main screen: " +
+                        self.current_view)
                     break
         except Exception as e:
             print("DEBUG: Error getting current_view: " + str(e))
