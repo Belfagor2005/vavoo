@@ -6,7 +6,7 @@ from __future__ import absolute_import, print_function
 #########################################################
 #                                                       #
 #  Vavoo Stream Live Plugin                             #
-#  Version: 1.40                                        #
+#  Version: 1.41                                        #
 #  Created by Lululla (https://github.com/Belfagor2005) #
 #  License: CC BY-NC-SA 4.0                             #
 #  https://creativecommons.org/licenses/by-nc-sa/4.0    #
@@ -126,6 +126,7 @@ try:
     from urllib import unquote
 except ImportError:
     from urllib.parse import unquote
+
 
 try:
     aspect_manager = vUtils.AspectManager()
@@ -315,7 +316,7 @@ def raises(url):
         r = http.get(
             url,
             headers={'User-Agent': vUtils.RequestAgent()},
-            timeout=10,
+            timeout=(3, 10),
             verify=True,
             stream=True,
             allow_redirects=False
@@ -329,7 +330,7 @@ def raises(url):
             return True
 
     except Exception as error:
-        print(error)
+        print("Server check failed:", error)
         trace_error()
     return False
 
@@ -399,7 +400,7 @@ def show_list(name, link, is_category=False):
 
     # Check if file exists
     if not isfile(pngx):
-        print("Icon not found:", pngx)
+        print("Icon not found: " + pngx)
         pngx = default_icon
 
     icon_pos = (10, 10) if screen_width == 2560 else (10, 5)
@@ -946,7 +947,7 @@ class MainVavoo(Screen):
         ]
         self['actions'] = ActionMap(actions_list, actions, -1)
 
-    def _reload_services_after_delay(self, delay=5000):
+    def _reload_services_after_delay(self, delay=3000):
         """Reload services after a manual edit"""
         try:
             def do_reload():
@@ -1300,6 +1301,15 @@ class vavoo(Screen):
         self.name = name
         self.url = url
         self.option_value = option_value
+        self.current_view = "countries"  # default
+        try:
+            for screen in self.session.dialog_stack:
+                if hasattr(screen, 'current_view'):
+                    self.current_view = screen.current_view
+                    print("DEBUG: Got current_view from main screen: " + self.current_view)
+                    break
+        except Exception as e:
+            print("DEBUG: Error getting current_view: " + str(e))
         self._initialize_timer()
 
     def _load_skin(self):
@@ -1360,7 +1370,6 @@ class vavoo(Screen):
         items = []
         svr = cfg.server.value
         server = zServer(0, svr, None)
-
         try:
             content = vUtils.getUrl(self.url)
             if PY3:
@@ -1421,9 +1430,9 @@ class vavoo(Screen):
         country_field: country field from JSON (ex: "France" or "France ➾ Sports")
         selected_name: what user selected (ex: "France" or "France ➾ Sports")
         """
-        # Clean and normalize strings
         country_field = unquote(country_field).strip("\r\n")
         selected_name = selected_name.strip()
+
         # If user selected main country (without ➾)
         if "➾" not in selected_name:
             # Show ALL channels from that country, including subcategories
@@ -1434,7 +1443,7 @@ class vavoo(Screen):
             # User selected specific category - exact match only
             return country_field == selected_name
 
-    def _reload_services_after_delay(self, delay=5000):
+    def _reload_services_after_delay(self, delay=3000):
         """Reload services after a manual edit"""
         try:
             def do_reload():
@@ -1470,6 +1479,10 @@ class vavoo(Screen):
                 item = self.cat_list[i][0]
                 name = item[0]
                 url = item[1]
+            else:
+                print("No selection available")
+                return
+
             self.play_that_shit(
                 url,
                 name,
@@ -1483,11 +1496,6 @@ class vavoo(Screen):
     def play_that_shit(self, url, name, index, item, cat_list):
         self.session.open(Playstream2, name, url, index, item, cat_list)
 
-    def message0(self, name, url, response):
-        name = self.name
-        self.url = url
-        self.message2(name, self.url, False)
-
     def message1(self, answer=None):
         if answer is None:
             # Show confirmation message before export
@@ -1498,65 +1506,9 @@ class vavoo(Screen):
                 MessageBox.TYPE_YESNO
             )
         elif answer is True:
-            name = self.name
-            separators = ["➾", "⟾", "->", "→"]
-            has_separator = any(sep in name for sep in separators)
-
-            # Determine which files to check based on bouquet type
-            if has_separator:
-                # Single category - check only subbouquet
-                filename_to_check = join(
-                    ENIGMA_PATH,
-                    'subbouquet.vavoo_%s.tv' %
-                    name.lower().replace(
-                        ' ',
-                        '_').replace(
-                        '➾',
-                        '_').replace(
-                        '⟾',
-                        '_').replace(
-                        '->',
-                        '_'))
-                filename_container = join(
-                    ENIGMA_PATH, 'userbouquet.vavoo_%s_cowntry.tv' %
-                    name.split('➾')[0].strip().lower().replace(
-                        ' ', '_'))
-            else:
-                # Whole country - check only flat bouquet
-                filename_to_check = join(
-                    ENIGMA_PATH,
-                    'userbouquet.vavoo_%s.tv' % name.lower().replace(' ', '_')
-                )
-                filename_container = join(
-                    ENIGMA_PATH,
-                    'userbouquet.vavoo_%s_cowntry.tv' %
-                    name.lower().replace(
-                        ' ',
-                        '_'))
-
-            bouquet_exists = file_exists(filename_to_check) or (
-                has_separator and file_exists(filename_container))
-
-            if bouquet_exists:
-                # Bouquet exists, ask user what to do
-                self.session.openWithCallback(
-                    self.message4,
-                    MessageBox,
-                    _(
-                        'Bouquet already exists!\n\n'
-                        'Do you want to:\n'
-                        '• UPDATE existing bouquet (Yes)\n'
-                        '• REMOVE and create new (No)\n'
-                    ),
-                    MessageBox.TYPE_YESNO
-                )
-            else:
-                # New bouquet, proceed directly
-                self.message2(self.name, self.url, True)
-        elif answer is False:
-            # No - remove existing and create new
-            self._remove_existing_bouquet()
             self.message2(self.name, self.url, True)
+        elif answer is False:
+            print("Export cancelled by user")
 
     def message2(self, name, url, response):
         # Determine export type based on content AND view
@@ -1568,18 +1520,9 @@ class vavoo(Screen):
             export_type = "flat"
             print("DEBUG: Exporting single category as FLAT")
         else:
-            # Main country - use existing logic
-            main_instance = None
-            try:
-                for screen in self.session.dialog_stack:
-                    if hasattr(screen, 'current_view'):
-                        main_instance = screen
-                        break
-            except BaseException:
-                pass
-
-            if main_instance and hasattr(main_instance, 'current_view'):
-                if main_instance.current_view == "categories":
+            # Main country - use the SAVED current_view
+            if hasattr(self, 'current_view'):
+                if self.current_view == "categories":
                     export_type = "hierarchical"  # Categories view = hierarchical
                 else:
                     export_type = "flat"  # Countries view = SINGLE FILE
@@ -1602,19 +1545,6 @@ class vavoo(Screen):
 
         print("DEBUG: Calling ReloadBouquets after export")
         self._reload_services_after_delay()
-
-    def message4(self, answer=None):
-        if answer is None:
-            return
-        elif answer is True:  # Yes - update
-            self.message2(self.name, self.url, True)
-        elif answer is False:  # No - remove and create new
-            self._remove_existing_bouquet()
-            self.message2(self.name, self.url, True)
-
-    def _remove_existing_bouquet(self):
-        """Remove bouquets for current country/category"""
-        remove_bouquets_by_name(self.name)
 
     def search_vavoo(self):
         self.session.openWithCallback(

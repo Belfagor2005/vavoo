@@ -37,7 +37,10 @@ from os import listdir, remove
 
 from re import sub
 from sys import version_info
-from urllib.parse import unquote
+try:
+    from urllib import unquote
+except ImportError:
+    from urllib.parse import unquote
 
 # Enigma / Third-party
 from enigma import eTimer, eDVBDB
@@ -71,7 +74,7 @@ def get_enigma2_path():
 ENIGMA_PATH = get_enigma2_path()
 
 
-def _reload_services_after_delay(delay=5000):
+def _reload_services_after_delay(delay=3000):
     """Reload services after a manual edit"""
     try:
         def do_reload():
@@ -324,12 +327,11 @@ def _prepare_bouquet_filenames(name, bouquet_type):
                     break
 
         bouquet_name = "subbouquet.vavoo_" + name_file + "." + bouquet_type.lower()
+        print("DEBUG: Creating SUBBOUQUET: " + bouquet_name)
     else:
-        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + \
-            bouquet_type.lower()
+        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + bouquet_type.lower()
+        print("DEBUG: Creating USERBOUQUET: " + bouquet_name)
 
-    print("DEBUG: _prepare_bouquet_filenames: name='" +
-          name + "' -> bouquet_name='" + bouquet_name + "'")
     return name_file, bouquet_name
 
 
@@ -514,7 +516,7 @@ def _create_hierarchical_bouquet(
 
 def _create_or_update_container_bouquet(
         country_name, new_categories, bouquet_type, list_position="bottom"):
-    """Create or update container bouquet - ADD ONLY PROVIDED CATEGORIES"""
+    """Create or update container bouquet"""
     print("DEBUG: _create_or_update_container_bouquet called")
     print("DEBUG: country_name = " + country_name)
     print("DEBUG: new_categories = " + str(new_categories))
@@ -533,14 +535,15 @@ def _create_or_update_container_bouquet(
         with open(container_path, 'r') as f:
             for line in f:
                 line = line.strip()
-                if line.startswith('#SERVICE') and 'FROM BOUQUET "' in line:
+                if line.startswith('#NAME'):
+                    content = [line]  # Keep existing name
+                elif line.startswith('#SERVICE') and 'FROM BOUQUET "' in line:
                     # Extract subbouquet reference from existing line
                     parts = line.split('FROM BOUQUET "')
                     if len(parts) > 1:
                         subbouquet_ref = parts[1].split('"')[0]
                         existing_categories.add(subbouquet_ref)
-                elif line.startswith('#NAME'):
-                    content = [line]  # Keep existing name
+                        content.append(line)  # Keep existing categories
     else:
         content = ["#NAME " + country_name + " - Categories"]
 
@@ -567,7 +570,9 @@ def _create_or_update_container_bouquet(
                 subbouquet_ref + '" ORDER BY bouquet'
             content.append(bouquet_line)
             existing_categories.add(subbouquet_ref)
-            print("DEBUG: Added subbouquet reference: " + subbouquet_ref)
+            print("DEBUG: Added new subbouquet reference: " + subbouquet_ref)
+        else:
+            print("DEBUG: Subbouquet already exists: " + subbouquet_ref)
 
     print("DEBUG: Final content lines: " + str(len(content)))
     print("DEBUG: Total categories in container: " +
@@ -578,7 +583,7 @@ def _create_or_update_container_bouquet(
         with open(container_path, 'w') as f:
             for line in content:
                 f.write(line + '\n')
-        print("✓ Container bouquet saved: " + container_name)
+        print("✓ Container bouquet updated: " + container_name + " with " + str(len(existing_categories)) + " categories")
 
         # Add to main bouquet
         _add_to_main_bouquet(container_name, bouquet_type, list_position)
@@ -729,7 +734,6 @@ def _update_favorite_file(name, url, export_type):
                         parts = line.split('|')
                         if len(parts) >= 3:
                             bouq_name = parts[0]
-                            # Save all fields: name|url|export_type|timestamp
                             existing_bouquets[bouq_name] = {
                                 'url': parts[1],
                                 'export_type': parts[2],
