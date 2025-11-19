@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2025-11-14 20:49+0100\n"
+"POT-Creation-Date: 2025-11-18 22:18+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -12,60 +12,69 @@ msgstr ""
 "X-Generator: Poedit 3.8\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
+"X-Poedit-SearchPath-1: bouquet_manager.py\n"
 
-#: plugin.py:279
+#: plugin.py:264
 msgid "interval"
 msgstr "aralık"
 
-#: plugin.py:279
+#: plugin.py:264
 msgid "fixed time"
 msgstr "sabit zaman"
 
-#: plugin.py:291
+#: plugin.py:276
 msgid "Countries"
 msgstr ""
 
-#: plugin.py:291
+#: plugin.py:276
 msgid "Categories"
 msgstr ""
 
-#: plugin.py:456 plugin.py:1309
+#: plugin.py:280
+msgid "Bottom"
+msgstr ""
+
+#: plugin.py:280
+msgid "Top"
+msgstr ""
+
+#: plugin.py:452 plugin.py:1297
 msgid "Back"
 msgstr "Geri"
 
-#: plugin.py:457
+#: plugin.py:453
 msgid "- - - -"
 msgstr ""
 
-#: plugin.py:482
+#: plugin.py:478
 #, python-format
 msgid "Last channel update: %s"
 msgstr "Son kanal güncellemesi: %s"
 
-#: plugin.py:495
+#: plugin.py:491
 msgid "Generate .m3u files (Ok for Exec)"
 msgstr ""
 
-#: plugin.py:497
+#: plugin.py:493
 #, python-format
 msgid "Generate .m3u files and save to device %s."
 msgstr ""
 
-#: plugin.py:501
+#: plugin.py:497
 msgid "Default View"
 msgstr ""
 
-#: plugin.py:503
+#: plugin.py:499
 msgid "Default view when opening the plugin"
 msgstr ""
 
-#: plugin.py:506
+#: plugin.py:502
 #, fuzzy
 #| msgid "Server for Player used"
 msgid "Server for Player Used"
 msgstr "Kullanılan Oynatıcı Sunucusu"
 
-#: plugin.py:508
+#: plugin.py:504
 #, fuzzy, python-format
 #| msgid "Server for player. Use it: %s"
 msgid ""
@@ -73,47 +82,55 @@ msgid ""
 "Now %s"
 msgstr "Sunucu Oynatıcı: %s"
 
-#: plugin.py:512
+#: plugin.py:508
 msgid "Movie Services Reference"
 msgstr "Film Hizmetleri Referansı"
 
-#: plugin.py:514
+#: plugin.py:510
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Hizmeti yapılandırma Referansı Iptv-Gstreamer-Exteplayer3"
 
-#: plugin.py:517
-msgid "Refresh Player"
+#: plugin.py:513
+msgid "Bouquet Position in List"
+msgstr ""
+
+#: plugin.py:515
+msgid "Position of Vavoo bouquets in the main list"
 msgstr ""
 
 #: plugin.py:519
+msgid "Refresh Player"
+msgstr ""
+
+#: plugin.py:521
 msgid "Configure Update Timer for player refresh"
 msgstr ""
 
-#: plugin.py:522
+#: plugin.py:524
 msgid "Select DNS Server"
 msgstr ""
 
-#: plugin.py:524
+#: plugin.py:526
 msgid "Configure Dns Server for Box."
 msgstr ""
 
-#: plugin.py:527
+#: plugin.py:529
 #, fuzzy
 #| msgid "Select Fonts"
 msgid "Select Background"
 msgstr "Yazı Tiplerini Seçin"
 
-#: plugin.py:529
+#: plugin.py:531
 #, fuzzy
 #| msgid "Configure at a fixed time"
 msgid "Configure Main Background Image."
 msgstr "Sabit bir zamanda yapılandırın"
 
-#: plugin.py:532
+#: plugin.py:534
 msgid "Select Fonts"
 msgstr "Yazı Tiplerini Seçin"
 
-#: plugin.py:534
+#: plugin.py:536
 #, fuzzy
 #| msgid "Configure Fonts. Eg:Arabic or other."
 msgid ""
@@ -121,13 +138,13 @@ msgid ""
 "Eg:Arabic or other language."
 msgstr "Yazı Tiplerini Yapılandırın. Örneğin: Arapça veya diğer."
 
-#: plugin.py:537
+#: plugin.py:539
 #, fuzzy
 #| msgid "Ipv6 state lan (On/Off), now is:"
 msgid "Ipv6 State Of Lan (On/Off)"
 msgstr "Ipv6 durumu lan (Açık/Kapalı), şimdi:"
 
-#: plugin.py:539
+#: plugin.py:541
 #, fuzzy, python-format
 #| msgid "Active or Disactive lan Ipv6, now is: %s"
 msgid ""
@@ -135,126 +152,124 @@ msgid ""
 "Now %s"
 msgstr "Aktif veya Devre Dışı lan Ipv6, şimdi: %s"
 
-#: plugin.py:543
+#: plugin.py:545
 #, fuzzy
 #| msgid "Schedule type:"
 msgid "Scheduled Bouquet Update:"
 msgstr "Zamanlama türü:"
 
-#: plugin.py:545
+#: plugin.py:547
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktif Otomatik Buket Güncelleme"
 
-#: plugin.py:549
+#: plugin.py:551
 msgid "Schedule type:"
 msgstr "Zamanlama türü:"
 
-#: plugin.py:551
+#: plugin.py:553
 msgid "At an interval of hours or at a fixed time"
 msgstr "Saatler aralığında veya sabit bir zamanda"
 
-#: plugin.py:555
+#: plugin.py:557
 msgid "Update interval (minutes):"
 msgstr "Güncelleme aralığı (dakika):"
 
-#: plugin.py:557
+#: plugin.py:559
 msgid "Configure every interval of minutes from now"
 msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
 
-#: plugin.py:561
+#: plugin.py:563
 msgid "Time to start update:"
 msgstr "Güncellemeye başlama zamanı:"
 
-#: plugin.py:563
+#: plugin.py:565
 msgid "Configure at a fixed time"
 msgstr "Sabit bir zamanda yapılandırın"
 
-#: plugin.py:567 plugin.py:569
+#: plugin.py:569 plugin.py:571
 msgid "Link in Main Menu"
 msgstr "Ana Menüdeki Bağlantı"
 
-#: plugin.py:580
+#: plugin.py:582
 #, python-format
 msgid "Generate .m3u files and save to device %s?"
 msgstr ""
 
-#: plugin.py:610
+#: plugin.py:612
 msgid "All .m3u files have been generated!"
 msgstr ""
 
-#: plugin.py:625
+#: plugin.py:627
 msgid "SELECT YOUR CHOICE"
 msgstr "SEÇİMİNİZ"
 
-#: plugin.py:636
+#: plugin.py:638
 msgid "Ipv6 [Off]?"
 msgstr "Ipv6 [Kapalı]?"
 
-#: plugin.py:644
+#: plugin.py:646
 msgid "Ipv6 [On]?"
 msgstr "Ipv6 [Açık]?"
 
-#: plugin.py:668
+#: plugin.py:670
 msgid "Save"
 msgstr "Kaydet"
 
-#: plugin.py:729
+#: plugin.py:716
 #, fuzzy
-#| msgid ""
-#| "Settings saved successfully !\n"
-#| "you need to restart the GUI\n"
-#| "to apply the new configuration!\n"
-#| "Do you want to Restart the GUI now?"
-msgid ""
-"Settings saved successfully!\n"
-"You need to restart the GUI\n"
-"to apply the new configuration!\n"
-"Do you want to Restart the GUI now?"
-msgstr ""
-"Ayarlar başarıyla kaydedildi!\n"
-"Yeni yapılandırmayı uygulamak için\n"
-"GUI'yi yeniden başlatmanız gerekiyor\n"
-"GUI'yi şimdi yeniden başlatmak istiyor musunuz?"
+#| msgid "Settings saved successfully !"
+msgid "Bouquets reorganized successfully!"
+msgstr "Impostazioni salvate con successo !"
 
-#: plugin.py:736
-msgid "Restart GUI now?"
-msgstr "GUI şimdi yeniden başlatılsın mı?"
+#: plugin.py:755
+#, fuzzy
+#| msgid "Settings saved successfully !"
+msgid "Configuration saved successfully!"
+msgstr "Impostazioni salvate con successo !"
 
-#: plugin.py:778
+#: plugin.py:811
 msgid "Really close without saving settings?"
 msgstr "Ayarları kaydetmeden gerçekten kapatılsın mı?"
 
-#: plugin.py:884
+#: plugin.py:916
 msgid "Exit"
 msgstr "Çıkış"
 
-#: plugin.py:885
+#: plugin.py:917
 msgid "Remove"
 msgstr "Kaldır"
 
-#: plugin.py:886
+#: plugin.py:918
 msgid "Update Me"
 msgstr "Beni Güncelle"
 
-#: plugin.py:896 plugin.py:1195 plugin.py:1321 plugin.py:1708
-msgid "Halign Left"
+#: plugin.py:919 plugin.py:1300
+msgid "Reload Bouqet"
 msgstr ""
 
-#: plugin.py:898 plugin.py:1198 plugin.py:1323 plugin.py:1711
-msgid "Halign Right"
-msgstr ""
-
-#: plugin.py:1136
-msgid "Remove all Vavoo Favorite Bouquet?"
-msgstr "Tüm Vavoo Favori Buketleri kaldırılsın mı?"
-
-#: plugin.py:1157
+#: plugin.py:962 plugin.py:1427
 #, fuzzy
-#| msgid "Vavoo Favorites List have been removed"
-msgid "Vavoo Favorites removed"
-msgstr "Vavoo Favoriler Listesi kaldırıldı"
+#| msgid "Settings saved successfully !"
+msgid "Bouquets have been successfully reloaded!"
+msgstr "Impostazioni salvate con successo !"
 
-#: plugin.py:1170 plugin.py:1665
+#: plugin.py:1106
+msgid ""
+"Remove ALL Vavoo bouquets?\n"
+"This will remove:\n"
+"- Country bouquets\n"
+"- Category bouquets\n"
+"- Container bouquets"
+msgstr ""
+
+#: plugin.py:1126
+#, python-format
+msgid ""
+"Vavoo bouquets removed successfully!\n"
+"(%s files deleted)"
+msgstr ""
+
+#: plugin.py:1142
 #, fuzzy, python-format
 #| msgid ""
 #| "%s\n"
@@ -297,11 +312,11 @@ msgstr ""
 "sunucuda doğrudan akış yoktur\n"
 "sadece internette ücretsiz bulunun kanallar vardır"
 
-#: plugin.py:1174 plugin.py:1668
+#: plugin.py:1146
 msgid "Info Vavoo"
 msgstr "Vavoo Bilgi"
 
-#: plugin.py:1229
+#: plugin.py:1218
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -316,103 +331,164 @@ msgstr ""
 "\n"
 "Şimdi yüklemek istiyor musunuz?"
 
-#: plugin.py:1236
+#: plugin.py:1225
 msgid "Congrats! You already have the latest version..."
 msgstr ""
 
-#: plugin.py:1252
+#: plugin.py:1241
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
-#: plugin.py:1270
+#: plugin.py:1259
 #, fuzzy
 #| msgid "Update Me"
 msgid "Update Aborted!"
 msgstr "Beni Güncelle"
 
-#: plugin.py:1310
+#: plugin.py:1298
 msgid "Export"
 msgstr "Çıkart"
 
-#: plugin.py:1311
+#: plugin.py:1299
 msgid "Search"
 msgstr "Arama"
 
-#: plugin.py:1492
-#, fuzzy
-#| msgid ""
-#| "Do you want to Convert to favorite .tv ?\n"
-#| "\n"
-#| "Attention!! It may take some time\n"
-#| "depending on the number of streams contained !!!"
-msgid ""
-"Do you want to Convert to favorite .tv?\n"
-"\n"
-"Attention!! It may take some time\n"
-"depending on the number of streams contained !!!"
-msgstr ""
-"Favorite .tv'ye dönüştürmek ister misiniz?\n"
-"\n"
-"Dikkat!! Bu biraz zaman alabilir\n"
-"içerdiği akış sayısına bağlı olarak !!!"
-
-#: plugin.py:1516
+#: plugin.py:1477
 #, python-format
 msgid ""
-"bouquets reloaded..\n"
-"With %s channel"
-msgstr ""
-"buketler yeniden yüklendi..\n"
-"%s Kanal"
-
-#: plugin.py:1521
-msgid "Download Error"
-msgstr "İndirme Hatası"
-
-#: plugin.py:1540
-msgid "Bouquet file not found. Please export favorites first."
+"Do you want to export this bouquet?\n"
+"%s"
 msgstr ""
 
-#: plugin.py:1577
-#, fuzzy, python-format
-#| msgid ""
-#| "bouquets reloaded..\n"
-#| "With %s channel"
+#: plugin.py:1515
 msgid ""
-"Wait...\n"
-"Update List Bouquet...\n"
-"bouquets reloaded..\n"
-"With %s channel"
-msgstr ""
-"buketler yeniden yüklendi..\n"
-"%s Kanal"
-
-#: plugin.py:1585
-#, python-format
-msgid "Error updating bouquet: %s"
-msgstr ""
-
-#: plugin.py:1592
-msgid ""
-"The favorite channel list exists.\n"
-"Want to update it with epg and picons?\n"
+"Bouquet already exists!\n"
 "\n"
-"YES for Update\n"
-"else remove List Favorite first!"
+"Do you want to:\n"
+"• UPDATE existing bouquet (Yes)\n"
+"• REMOVE and create new (No)\n"
 msgstr ""
 
-#: plugin.py:1603
+#: plugin.py:1586
 msgid "Filter this category..."
 msgstr "Bu kategoriyi filtrele..."
 
-#: plugin.py:1623
+#: plugin.py:1606
 msgid "No channels found in search!!!"
 msgstr "Aramada kanal bulunamadı!!!"
 
-#: plugin.py:2332 plugin.py:2350
+#: plugin.py:1627
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"📊 **Plugin Information**\n"
+"• Version: %s\n"
+"• Author: %s\n"
+"• License: %s\n"
+"\n"
+"🛠️ **Technical Details**\n"
+"• Streaming protocol: HTTP Live Streaming\n"
+"• Supported formats: TS, M3U8\n"
+"• Service reference: 4097, 5001, 5002\n"
+"• Bouquet generation: Automatic\n"
+"\n"
+"👥 **Credits & Acknowledgments**\n"
+"• Graphics: @oktus\n"
+"• Technical support: Qu4k3 - @KiddaC - @giorbak \n"
+"• Community: Linuxsat-support.com- Corvoboys Forum\n"
+"\n"
+"📝 **Important Notes**\n"
+"• This plugin provides FREE content only\n"
+"• Streams are aggregated from public sources\n"
+"• No direct server hosting\n"
+"• For personal use only\n"
+"\n"
+"⚖️ **License Information**\n"
+"This software is licensed under CC BY-NC-SA 4.0\n"
+"Redistribution must maintain attribution\n"
+"Commercial use is strictly prohibited"
+msgstr ""
+
+#: plugin.py:1657
+#, fuzzy
+#| msgid "Vavoo Stream Live"
+msgid "Vavoo Stream Live - Information"
+msgstr "Vavoo Stream Live"
+
+#: plugin.py:2251 plugin.py:2269
 msgid "Vavoo Stream Live"
 msgstr "Vavoo Stream Live"
+
+#, fuzzy
+#~| msgid ""
+#~| "Settings saved successfully !\n"
+#~| "you need to restart the GUI\n"
+#~| "to apply the new configuration!\n"
+#~| "Do you want to Restart the GUI now?"
+#~ msgid ""
+#~ "Settings saved successfully!\n"
+#~ "You need to restart the GUI\n"
+#~ "to apply the new configuration!\n"
+#~ "Do you want to Restart the GUI now?"
+#~ msgstr ""
+#~ "Ayarlar başarıyla kaydedildi!\n"
+#~ "Yeni yapılandırmayı uygulamak için\n"
+#~ "GUI'yi yeniden başlatmanız gerekiyor\n"
+#~ "GUI'yi şimdi yeniden başlatmak istiyor musunuz?"
+
+#~ msgid "Restart GUI now?"
+#~ msgstr "GUI şimdi yeniden başlatılsın mı?"
+
+#~ msgid "Remove all Vavoo Favorite Bouquet?"
+#~ msgstr "Tüm Vavoo Favori Buketleri kaldırılsın mı?"
+
+#, fuzzy
+#~| msgid "Vavoo Favorites List have been removed"
+#~ msgid "Vavoo Favorites removed"
+#~ msgstr "Vavoo Favoriler Listesi kaldırıldı"
+
+#, fuzzy
+#~| msgid ""
+#~| "Do you want to Convert to favorite .tv ?\n"
+#~| "\n"
+#~| "Attention!! It may take some time\n"
+#~| "depending on the number of streams contained !!!"
+#~ msgid ""
+#~ "Do you want to Convert to favorite .tv?\n"
+#~ "\n"
+#~ "Attention!! It may take some time\n"
+#~ "depending on the number of streams contained !!!"
+#~ msgstr ""
+#~ "Favorite .tv'ye dönüştürmek ister misiniz?\n"
+#~ "\n"
+#~ "Dikkat!! Bu biraz zaman alabilir\n"
+#~ "içerdiği akış sayısına bağlı olarak !!!"
+
+#, python-format
+#~ msgid ""
+#~ "bouquets reloaded..\n"
+#~ "With %s channel"
+#~ msgstr ""
+#~ "buketler yeniden yüklendi..\n"
+#~ "%s Kanal"
+
+#~ msgid "Download Error"
+#~ msgstr "İndirme Hatası"
+
+#, fuzzy, python-format
+#~| msgid ""
+#~| "bouquets reloaded..\n"
+#~| "With %s channel"
+#~ msgid ""
+#~ "Wait...\n"
+#~ "Update List Bouquet...\n"
+#~ "bouquets reloaded..\n"
+#~ "With %s channel"
+#~ msgstr ""
+#~ "buketler yeniden yüklendi..\n"
+#~ "%s Kanal"
 
 #~ msgid "HALIGN"
 #~ msgstr "HALIGN"
@@ -422,6 +498,3 @@ msgstr "Vavoo Stream Live"
 
 #~ msgid "Automatic bouquet update (schedule):"
 #~ msgstr "Otomatik buket güncellemesi (plan):"
-
-#~ msgid "Settings saved successfully !"
-#~ msgstr "Impostazioni salvate con successo !"

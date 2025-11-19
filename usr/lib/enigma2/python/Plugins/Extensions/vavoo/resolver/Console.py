@@ -54,15 +54,7 @@ class Console(Screen):
             <eLabel text="Restart GUI" position="1626,1004" zPosition="2" size="250,40" font="Regular;28" halign="center" valign="center" backgroundColor="#16000000" foregroundColor="#00ffffff" transparent="1"/>
         </screen>'''
 
-    def __init__(
-            self,
-            session,
-            title='Console',
-            cmdlist=None,
-            finishedCallback=None,
-            closeOnSuccess=False,
-            showStartStopText=True,
-            skin=None):
+    def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None):
         Screen.__init__(self, session)
         self.finishedCallback = finishedCallback
         self.closeOnSuccess = closeOnSuccess
@@ -87,8 +79,7 @@ class Console(Screen):
             }, -1
         )
 
-        self.newtitle = title == 'Console' and _(
-            'Console') or title  # Fixed: Added _ function
+        self.newtitle = title == 'Console' and _('Console') or title  # Fixed: Added _ function
         self.cmdlist = isinstance(cmdlist, list) and cmdlist or [cmdlist]
         self.cancel_msg = None
         self.onShown.append(self.updateTitle)
@@ -98,11 +89,9 @@ class Console(Screen):
         try:
             self.container.appClosed.append(self.runFinished)
             self.container.dataAvail.append(self.dataAvail)
-        except BaseException:
-            self.container.appClosed_conn = self.container.appClosed.connect(
-                self.runFinished)
-            self.container.dataAvail_conn = self.container.dataAvail.connect(
-                self.dataAvail)
+        except:
+            self.container.appClosed_conn = self.container.appClosed.connect(self.runFinished)
+            self.container.dataAvail_conn = self.container.dataAvail.connect(self.dataAvail)
         self.onLayoutFinish.append(self.startRun)
 
     def updateTitle(self):
@@ -111,8 +100,7 @@ class Console(Screen):
     def startRun(self):
         if self.showStartStopText:
             self['text'].setText(_('Execution progress\n\n'))
-        print('[Console] executing in run', self.run,
-              ' the command:', self.cmdlist[self.run])
+        print('[Console] executing in run', self.run, ' the command:', self.cmdlist[self.run])
         print("[Console] Executing command:", self.cmdlist[self.run])
         if self.container.execute(self.cmdlist[self.run]):
             self['text'].setText(self.cmdlist[self.run])
@@ -162,12 +150,7 @@ class Console(Screen):
         if self.finished:
             self.closeConsole()
         else:
-            self.cancel_msg = self.session.openWithCallback(
-                self.cancelCallback,
-                MessageBox,
-                _('Cancel execution?'),
-                type=MessageBox.TYPE_YESNO,
-                default=False)
+            self.cancel_msg = self.session.openWithCallback(self.cancelCallback, MessageBox, _('Cancel execution?'), type=MessageBox.TYPE_YESNO, default=False)
 
     def cancelCallback(self, ret=None):
         self.cancel_msg = None
@@ -175,7 +158,7 @@ class Console(Screen):
             try:
                 self.container.appClosed.remove(self.runFinished)
                 self.container.dataAvail.remove(self.dataAvail)
-            except BaseException:
+            except:
                 self.container.appClosed_conn = None
                 self.container.dataAvail_conn = None
             self.container.kill()
@@ -186,7 +169,7 @@ class Console(Screen):
             try:
                 self.container.appClosed.remove(self.runFinished)
                 self.container.dataAvail.remove(self.dataAvail)
-            except BaseException:
+            except:
                 self.container.appClosed_conn = None
                 self.container.dataAvail_conn = None
             self.close()

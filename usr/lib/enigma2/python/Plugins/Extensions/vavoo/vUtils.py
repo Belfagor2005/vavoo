@@ -304,12 +304,18 @@ def _is_cache_valid(data):
 
 
 def getAuthSignature():
+    print("DEBUG: Getting auth signature...")
+
     signfile = get_cache('signfile')
     if signfile:
+        print("DEBUG: Found cached signature:", signfile[:50] + "..." if signfile else "None")
         return signfile
+
+    print("DEBUG: No cached signature, fetching new one...")
 
     veclist = get_cache("veclist")
     if not veclist:
+        print("DEBUG: No cached veclist, fetching from GitHub...")
         try:
             if ssl_context:
                 req = Request(
@@ -321,25 +327,40 @@ def getAuthSignature():
                     "https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json",
                     verify=False)
                 veclist = response.json()
+            print("DEBUG: Fetched veclist with", len(veclist) if veclist else 0, "items")
         except Exception as e:
             print("[vUtils] Failed to fetch veclist:", e)
             return None
 
         set_cache("veclist", veclist, timeout=3600)
+
     sig = None
     i = 0
+    print("DEBUG: Trying to get signature from Vavoo API...")
     while not sig and i < 50:
         i += 1
         vec = {"vec": choice(veclist)}
-        req = requests.post(
-            'https://www.vavoo.tv/api/box/ping2',
-            data=vec).json()
-        sig = req.get('signed') or req.get(
-            'data', {}).get('signed') or req.get(
-            'response', {}).get('signed')
+        try:
+            req = requests.post(
+                'https://www.vavoo.tv/api/box/ping2',
+                data=vec,
+                timeout=10).json()
+            sig = req.get('signed') or req.get(
+                'data', {}).get('signed') or req.get(
+                'response', {}).get('signed')
+            if sig:
+                print("DEBUG: Successfully got signature on attempt", i)
+                break
+        except Exception as e:
+            print("DEBUG: Attempt", i, "failed:", e)
+            continue
 
     if sig:
+        print("DEBUG: Saving signature to cache...")
         set_cache('signfile', convert_to_unicode(sig), timeout=3600)
+    else:
+        print("DEBUG: Failed to get signature after", i, "attempts")
+
     return sig
 
 

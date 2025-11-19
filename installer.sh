@@ -3,8 +3,8 @@
 ##setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
 ######### Only These 2 lines to edit with new version ######
-version='1.39'
-changelog='\n- Add Category and Cowntry\n- fix Config\n- Add Flag'
+version='1.40'
+changelog='\n- Recoded all source'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-install
