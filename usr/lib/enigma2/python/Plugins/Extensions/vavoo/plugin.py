@@ -1015,7 +1015,8 @@ class MainVavoo(Screen):
             try:
                 self.reload_timer.callback.append(self.on_timer)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(self.on_timer)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(
+                    self.on_timer)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1516,7 +1517,8 @@ class vavoo(Screen):
             try:
                 self.reload_timer.callback.append(self.on_timer)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(self.on_timer)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(
+                    self.on_timer)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
