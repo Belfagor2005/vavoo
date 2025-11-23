@@ -428,7 +428,8 @@ def ReloadBouquets():
                 try:
                     reload_timer2.callback.append(self.on_timer)
                 except BaseException:
-                    reload_timer2_conn = reload_timer2.timeout.connect(self.on_timer)
+                    reload_timer2_conn = reload_timer2.timeout.connect(
+                        self.on_timer)
                 reload_timer.start(delay, True)
             except Exception as e:
                 print("Error setting up delayed reload: " + str(e))
@@ -455,14 +456,19 @@ def sanitizeFilename(filename):
         if isinstance(filename, str):
             filename = filename.decode('utf-8', 'ignore')
         filename = normalize('NFKD', filename).encode('ascii', 'ignore')
-    except:
+    except BaseException:
         # Python 3
-        filename = normalize('NFKD', filename).encode('ascii', 'ignore').decode()
+        filename = normalize(
+            'NFKD',
+            filename).encode(
+            'ascii',
+            'ignore').decode()
 
     filename = filename.rstrip('. ').strip()
 
     # Handle reserved names
-    reserved = ["CON", "PRN", "AUX", "NUL"] + ["COM" + str(i) for i in range(1, 10)] + ["LPT" + str(i) for i in range(1, 10)]
+    reserved = ["CON", "PRN", "AUX", "NUL"] + ["COM" + \
+        str(i) for i in range(1, 10)] + ["LPT" + str(i) for i in range(1, 10)]
     if filename.upper() in reserved or not filename:
         if filename:
             filename = "__" + filename

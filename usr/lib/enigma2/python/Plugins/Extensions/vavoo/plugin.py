@@ -1016,7 +1016,6 @@ class MainVavoo(Screen):
                 reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
             reload_timer.start(delay, True)
 
-
         except Exception as e:
             print("Error setting up service reload: " + str(e))
 
