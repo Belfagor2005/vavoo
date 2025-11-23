@@ -930,7 +930,12 @@ class MainVavoo(Screen):
         _session = session
 
         Screen.__init__(self, session)
-        self._load_skin()
+        skin = join(skin_path, 'defaultListScreen.xml')
+        if isfile('/var/lib/dpkg/status'):
+            skin = skin.replace('.xml', '_cvs.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
+            self.skin = f.read()
+
         self._initialize_labels()
         self._initialize_actions()
         self["menulist"].onSelectionChanged.append(self._update_selection_name)
@@ -941,14 +946,6 @@ class MainVavoo(Screen):
         self.loading = 0
         self.current_view = "categories"
         self.cat()
-
-    def _load_skin(self):
-        """Load the skin file."""
-        skin = join(skin_path, 'defaultListScreen.xml')
-        if isfile('/var/lib/dpkg/status'):
-            skin = skin.replace('.xml', '_cvs.xml')
-        with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
 
     def _initialize_labels(self):
         """Initialize the labels on the screen."""
@@ -1009,20 +1006,14 @@ class MainVavoo(Screen):
                 except Exception as e:
                     print("Error during service reload: " + str(e))
                 finally:
-                    # CORRETTO: usa self.reload_timer
-                    if hasattr(
-                            self,
-                            'reload_timer') and self.reload_timer is not None:
+                    if hasattr(self, 'reload_timer') and self.reload_timer is not None:
                         self.reload_timer.stop()
 
-            # CORRETTO: salva il timer come attributo della classe
             self.reload_timer = eTimer()
             try:
-                # CORRETTO: passa do_reload invece di self.on_timer
                 self.reload_timer.callback.append(do_reload)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(
-                    do_reload)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(do_reload)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1523,8 +1514,7 @@ class vavoo(Screen):
             try:
                 self.reload_timer.callback.append(self.on_timer)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(
-                    self.on_timer)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(self.on_timer)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1727,7 +1717,11 @@ class vavoo(Screen):
 class VavooSearch(Screen):
     def __init__(self, session, parentScreen, itemlist):
         self.session = session
-        self._load_skin()
+        skin = join(skin_path, 'vavoo_search.xml')
+        if isfile('/var/lib/dpkg/status'):
+            skin = skin.replace('.xml', '_cvs.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
+            self.skin = f.read()
         self.parentScreen = parentScreen
         self.itemlist = itemlist
         self.filteredList = []
@@ -1792,14 +1786,6 @@ class VavooSearch(Screen):
             self.key_timer.callback.append(self.finishKeyInput)
 
         self.updateFilteredList()
-
-    def _load_skin(self):
-        """Load the skin file."""
-        skin = join(skin_path, 'vavoo_search.xml')
-        if isfile('/var/lib/dpkg/status'):
-            skin = skin.replace('.xml', '_cvs.xml')
-        with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
 
     def keyNumber(self, number):
         key_chars = {
