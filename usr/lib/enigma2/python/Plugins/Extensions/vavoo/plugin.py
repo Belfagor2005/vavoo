@@ -67,7 +67,6 @@ from Components.config import (
     ConfigSubsection,
     NoSave
 )
-
 from enigma import (
     RT_HALIGN_LEFT,
     RT_HALIGN_RIGHT,
@@ -96,6 +95,7 @@ from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import SCOPE_PLUGINS, SCOPE_CONFIG, resolveFilename
+from Tools.NumericalTextInput import NumericalTextInput
 from Plugins.Plugin import PluginDescriptor
 
 # Local application/library-specific imports
@@ -249,6 +249,12 @@ except Exception as e:
 
 
 # config section
+# --- Live search input field integrated in plugin config ---
+class ConfigSearchText(ConfigText):
+    def __init__(self, default=""):
+        ConfigText.__init__(self, default=default)
+
+
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
@@ -276,6 +282,8 @@ cfg.list_position = ConfigSelection(
     default="bottom",
     choices=[("bottom", _("Bottom")), ("top", _("Top"))]
 )
+cfg.search_text = ConfigSearchText(default="")
+
 FONTSTYPE = FNT_Path + '/' + cfg.fonts.value + '.ttf'
 eserv = int(cfg.services.value)
 
@@ -366,6 +374,11 @@ class m2list(MenuList):
             text_font_size = 28
         self.l.setItemHeight(item_height)
         self.l.setFont(0, gFont('Regular', text_font_size))
+        self.l.setBuildFunc(self.buildEntry)
+
+    def buildEntry(self, entry):
+        """Build list entry - entry should be [ (name, link), icon, text ]"""
+        return entry
 
 
 def show_list(name, link, is_category=False):
@@ -375,6 +388,7 @@ def show_list(name, link, is_category=False):
     else:
         HALIGN = RT_HALIGN_LEFT
 
+    # Il primo elemento deve essere una tupla con i dati
     res = [(name, link)]
     default_icon = join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
 
@@ -403,8 +417,8 @@ def show_list(name, link, is_category=False):
         print("Icon not found: " + pngx)
         pngx = default_icon
 
-    icon_pos = (10, 10) if screen_width == 2560 else (10, 5)
-    icon_size = (60, 40) if screen_width == 2560 else (50, 35)
+    icon_pos = (10, 10) if screen_width == 1920 else (10, 5)
+    icon_size = (50, 35) if screen_width == 1920 else (40, 30)
 
     if screen_width == 2560:
         text_pos = (90, 0)
@@ -416,6 +430,7 @@ def show_list(name, link, is_category=False):
         text_pos = (85, 0)
         text_size = (380, 50)
 
+    # Aggiungi gli elementi MultiContent
     res.append(
         MultiContentEntryPixmapAlphaTest(
             pos=icon_pos,
@@ -426,7 +441,7 @@ def show_list(name, link, is_category=False):
             pos=text_pos,
             size=text_size,
             font=0,
-            text=name,
+            text=str(name),
             flags=HALIGN | RT_VALIGN_CENTER))
     return res
 
@@ -1306,9 +1321,7 @@ class vavoo(Screen):
             for screen in self.session.dialog_stack:
                 if hasattr(screen, 'current_view'):
                     self.current_view = screen.current_view
-                    print(
-                        "DEBUG: Got current_view from main screen: " +
-                        self.current_view)
+                    print("DEBUG: Got current_view from main screen: " + self.current_view)
                     break
         except Exception as e:
             print("DEBUG: Error getting current_view: " + str(e))
@@ -1340,7 +1353,6 @@ class vavoo(Screen):
                 "MenuActions",
                 "OkCancelActions",
                 "DirectionActions",
-                # "InfobarEPGActions",
                 "ColorActions"
             ],
             {
@@ -1399,9 +1411,9 @@ class vavoo(Screen):
                         name_channel = vUtils.decodeHtml(
                             name_channel)          # 1° - Decodifica HTML
                         name_channel = vUtils.rimuovi_parentesi(
-                            name_channel)   # 2° - Rimuovi (2023)
+                            name_channel)   # 2° - Remove (2023)
                         name_channel = vUtils.sanitizeFilename(
-                            name_channel)    # 3° - Pulisci per filesystem
+                            name_channel)    # 3° - Clean filesystem
                         item = name_channel + "###" + url + '\n'
                         items.append(item)
 
@@ -1549,11 +1561,21 @@ class vavoo(Screen):
         self._reload_services_after_delay()
 
     def search_vavoo(self):
-        self.session.openWithCallback(
-            self.filterM3u,
-            VirtualKeyBoard,
-            title=_("Filter this category..."),
-            text='')
+        self.saved_itemlist = self.itemlist
+        self.session.openWithCallback(self.onSearchResult, VavooSearch, self, self.itemlist)
+
+    def onSearchResult(self, selected_item=None):
+        """Callback con il canale selezionato dalla ricerca"""
+        if selected_item:
+            name, url = selected_item
+            self.session.open(
+                Playstream2,
+                name,
+                url,
+                0,
+                [name, url],
+                [[[name, url]]]
+            )
 
     def filterM3u(self, result):
         global search_ok
@@ -1651,6 +1673,276 @@ class vavoo(Screen):
         if search_ok:
             self.cat()
         self.close()
+
+
+# --- Live search screen ---
+class VavooSearch(Screen):
+    def __init__(self, session, parentScreen, itemlist):
+        self.session = session
+        self.parentScreen = parentScreen
+        self.itemlist = itemlist
+        self.filteredList = []
+        self.selectedIndex = 0
+        self.search_text = ""
+        self.current_input = ""
+        if screen_width == 2560:
+            self.skin = """
+                <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
+                    <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
+                    <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="darkblue" />
+                    <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
+                    <widget name="channel_list" position="20,250" size="1160,510" font="Regular;36" itemHeight="60" scrollbarMode="showOnDemand" />
+                    <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
+                    <widget name="key_red" position="20,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                    <widget name="key_green" position="210,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                    <widget name="key_yellow" position="400,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                    <widget name="key_blue" position="590,844" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                </screen>
+            """
+        elif screen_width == 1920:
+            self.skin = """
+                <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
+                    <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
+                    <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="darkblue" />
+                    <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
+                    <widget name="channel_list" position="20,180" size="960,380" font="Regular;28" itemHeight="50" scrollbarMode="showOnDemand" />
+                    <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
+                    <widget name="key_red" position="20,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                    <widget name="key_green" position="210,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                    <widget name="key_yellow" position="400,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                    <widget name="key_blue" position="590,654" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                </screen>
+            """
+        else:
+            self.skin = """
+                <screen name="VavooSearch" position="center,center" size="800,600" title="Vavoo Search">
+                    <widget name="search_label" position="20,20" size="760,30" font="Regular;24" halign="left" valign="center" />
+                    <widget name="search_text" position="20,60" size="760,40" font="Regular;24" halign="left" valign="center" backgroundColor="#000080" />
+                    <widget name="input_info" position="20,475" size="760,25" font="Regular;18" halign="center" />
+                    <widget name="channel_list" position="20,120" size="760,349" font="Regular;22" itemHeight="50" scrollbarMode="showOnDemand" />
+                    <widget name="status" position="20,500" size="760,30" font="Regular;20" halign="center" />
+                    <widget name="key_red" position="20,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                    <widget name="key_green" position="210,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                    <widget name="key_yellow" position="400,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                    <widget name="key_blue" position="590,539" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                </screen>
+                """
+
+        Screen.__init__(self, session)
+        self["search_label"] = Label(_("Search Channels:"))
+        self["search_text"] = Label("")
+        self["input_info"] = Label(_("Press TEXT button to type, BACKSPACE to delete"))
+        self["channel_list"] = m2list([])
+        self["status"] = Label(_("Enter text to search..."))
+        self["key_red"] = Label(_("Clear All"))
+        self["key_green"] = Label(_("Keyboard"))
+        self["key_yellow"] = Label(_("Backspace"))
+        self["key_blue"] = Label(_("Space"))
+        self["actions"] = ActionMap(
+            ["OkCancelActions", "DirectionActions", "ColorActions", "NumberActions"],
+            {
+                "ok": self.onOk,
+                "cancel": self.onCancel,
+                "up": self.moveUp,
+                "down": self.moveDown,
+                "left": self.moveLeft,
+                "right": self.moveRight,
+                "red": self.clearSearch,
+                "green": self.openKeyboard,
+                "yellow": self.deleteChar,
+                "blue": self.addSpace,
+                "1": lambda: self.keyNumber(1),
+                "2": lambda: self.keyNumber(2),
+                "3": lambda: self.keyNumber(3),
+                "4": lambda: self.keyNumber(4),
+                "5": lambda: self.keyNumber(5),
+                "6": lambda: self.keyNumber(6),
+                "7": lambda: self.keyNumber(7),
+                "8": lambda: self.keyNumber(8),
+                "9": lambda: self.keyNumber(9),
+                "0": lambda: self.keyNumber(0),
+            }, -1)
+
+        self.searchTimer = eTimer()
+        try:
+            self.searchTimer_conn = self.searchTimer.timeout.connect(self.updateFilteredList)
+        except BaseException:
+            self.searchTimer.callback.append(self.updateFilteredList)
+
+        self.numericalInput = NumericalTextInput(nextFunc=self.searchWithString, mode="Search")
+        self.input_active = False
+        self.upper_case = False
+        self.last_key = None
+        self.search_text = ""
+        self.last_key_time = 0
+        self.key_timer = eTimer()
+        try:
+            self.key_timer_conn = self.key_timer.timeout.connect(self.finishKeyInput)
+        except:
+            self.key_timer.callback.append(self.finishKeyInput)
+
+        self.updateFilteredList()
+
+    def keyNumber(self, number):
+        key_chars = {
+            2: "abc2", 3: "def3", 4: "ghi4", 5: "jkl5", 6: "mno6",
+            7: "pqrs7", 8: "tuv8", 9: "wxyz9", 0: " 0", 1: "1"
+        }
+        if number in key_chars:
+            chars = key_chars[number]
+            current_time = time.time()
+            if hasattr(self, 'last_key') and self.last_key == number and current_time - self.last_key_time < 1.0:
+                if self.search_text and self.search_text[-1] in chars:
+                    current_index = chars.index(self.search_text[-1])
+                    next_index = (current_index + 1) % len(chars)
+                    self.search_text = self.search_text[:-1] + chars[next_index]
+                else:
+                    self.search_text += chars[0]
+            else:
+                self.search_text += chars[0]
+
+            self["search_text"].setText(self.search_text)
+            self.updateFilteredList()
+
+            self.last_key = number
+            self.last_key_time = current_time
+
+    def searchWithString(self):
+        """Callback called by NumericalTextInput - nothing to do"""
+        pass
+
+    def deleteChar(self):
+        """Delete the last character"""
+        if self.search_text:
+            self.search_text = self.search_text[:-1]
+            self["search_text"].setText(self.search_text)
+            self.numericalInput.nextKey()  # Reset NumericalTextInput
+            self.updateFilteredList()
+
+    def clearSearch(self):
+        """Clear the entire search"""
+        self.search_text = ""
+        self["search_text"].setText("")
+        self.numericalInput.nextKey()
+        self.updateFilteredList()
+
+    def addSpace(self):
+        """Add a space"""
+        self.search_text += " "
+        self["search_text"].setText(self.search_text)
+        self.updateFilteredList()
+
+    def finishKeyInput(self):
+        """Reset key state after inactivity"""
+        self.last_key = None
+
+    def openKeyboard(self):
+        self.session.openWithCallback(self.onKeyboardClosed, VirtualKeyBoard, title=_("Search"), text=self.search_text)
+
+    def onKeyboardClosed(self, result):
+        if result is not None:
+            self.search_text = result
+            self["search_text"].setText(self.search_text)
+            self.updateFilteredList()
+
+    def toggleCase(self):
+        """Toggle between uppercase and lowercase"""
+        self.upper_case = not self.upper_case
+        case_text = _("UPPERCASE") if self.upper_case else _("lowercase")
+        self["status"].setText(_("Case: {}").format(case_text))
+
+    def updateStatusText(self):
+        """Update status text"""
+        if self.search_text:
+            self["status"].setText(_('Search: "{}" - Found: {} channels').format(
+                self.search_text, len(self.filteredList)))
+        else:
+            self["status"].setText(_("Showing all channels: {}").format(len(self.filteredList)))
+
+    def updateFilteredList(self):
+        text = self.search_text.lower().strip()
+
+        if not text:
+            self.filteredList = self.itemlist[:]
+            self["status"].setText(_("Showing all channels: {}").format(len(self.filteredList)))
+        else:
+            self.filteredList = []
+            for item in self.itemlist:
+                try:
+                    name = item.split('###')[0].lower()
+                    if text in name:
+                        self.filteredList.append(item)
+                except:
+                    continue
+
+            if self.filteredList:
+                self["status"].setText(_('Search: "{}" - Found: {} channels').format(
+                    self.search_text, len(self.filteredList)))
+            else:
+                self["status"].setText(_('Search: "{}" - No channels found').format(self.search_text))
+
+        self.updateChannelList()
+
+        if self.filteredList:
+            self.selectedIndex = 0
+            self["channel_list"].moveToIndex(self.selectedIndex)
+        else:
+            self.selectedIndex = -1
+
+    def updateChannelList(self):
+        display_list = []
+        for item in self.filteredList:
+            try:
+                name = item.split('###')[0]
+                url = item.split('###')[1].replace('%0a', '').replace('%0A', '').strip("\r\n")
+                display_list.append(show_list(name, url))
+            except:
+                continue
+        self["channel_list"].l.setList(display_list)
+
+    def moveUp(self):
+        if self.filteredList:
+            self.selectedIndex = max(0, self.selectedIndex - 1)
+            self["channel_list"].moveToIndex(self.selectedIndex)
+
+    def moveDown(self):
+        if self.filteredList:
+            self.selectedIndex = min(len(self.filteredList) - 1, self.selectedIndex + 1)
+            self["channel_list"].moveToIndex(self.selectedIndex)
+
+    def moveLeft(self):
+        self.moveUp()
+
+    def moveRight(self):
+        self.moveDown()
+
+    def onOk(self):
+        if self.filteredList and 0 <= self.selectedIndex < len(self.filteredList):
+            channel_item = self.filteredList[self.selectedIndex]
+            name = channel_item.split('###')[0]
+            url = channel_item.split('###')[1].replace('%0a', '').replace('%0A', '').strip("\r\n")
+            self.close((name, url))
+        else:
+            self.close(None)
+
+    def onPlayerClosed(self, result=None):
+        """Callback called when the player is closed"""
+        print("DEBUG: Player closed, returning to Vavoo main screen")
+        self.close()
+
+    def onCancel(self):
+        """Return to the Vavoo screen without opening the player"""
+        print("DEBUG: Search cancelled, returning to Vavoo main screen")
+        self.close()
+
+    def close(self, *args, **kwargs):
+        """Cleanup when the screen is closed"""
+        try:
+            if hasattr(self, 'numericalInput'):
+                self.numericalInput.nextKey()
+        except:
+            pass
+        return Screen.close(self, *args, **kwargs)
 
 
 class TvInfoBarShowHide():
