@@ -1006,14 +1006,17 @@ class MainVavoo(Screen):
                 except Exception as e:
                     print("Error during service reload: " + str(e))
                 finally:
-                    if hasattr(self, 'reload_timer') and self.reload_timer is not None:
+                    if hasattr(
+                            self,
+                            'reload_timer') and self.reload_timer is not None:
                         self.reload_timer.stop()
 
             self.reload_timer = eTimer()
             try:
                 self.reload_timer.callback.append(do_reload)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(do_reload)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(
+                    do_reload)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1514,7 +1517,8 @@ class vavoo(Screen):
             try:
                 self.reload_timer.callback.append(self.on_timer)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(self.on_timer)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(
+                    self.on_timer)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1854,7 +1858,8 @@ class VavooSearch(Screen):
         except BaseException:
             self.searchTimer.callback.append(self.updateFilteredList)
 
-        self.numericalInput = NumericalTextInput(nextFunc=self.searchWithString)
+        self.numericalInput = NumericalTextInput(
+            nextFunc=self.searchWithString)
         self.input_active = False
         self.upper_case = False
         self.last_key = None
