@@ -6,7 +6,7 @@ from __future__ import absolute_import, print_function
 #########################################################
 #                                                       #
 #  Vavoo Stream Live Plugin                             #
-#  Version: 1.41                                        #
+#  Version: 1.42                                        #
 #  Created by Lululla (https://github.com/Belfagor2005) #
 #  License: CC BY-NC-SA 4.0                             #
 #  https://creativecommons.org/licenses/by-nc-sa/4.0    #
@@ -170,6 +170,8 @@ CONFIG_FILE = resolveFilename(SCOPE_CONFIG, "settings")
 regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
 
 global HALIGN, BackPath, FONTSTYPE, FNTPath
+global search_ok
+search_ok = False
 auto_start_timer = None
 _session = None
 tmlast = None
@@ -177,6 +179,11 @@ now = None
 
 PY2 = version_info[0] == 2
 PY3 = version_info[0] == 3
+
+try:
+    unicode
+except NameError:
+    unicode = str
 
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
@@ -231,6 +238,24 @@ except Exception as e:
     print(e)
 
 print('final folder back: ', BackPath)
+
+
+# Helper function for string conversion
+def to_string(text):
+    """Convert any input to proper string format for Enigma2 widgets"""
+    if text is None:
+        return ""
+
+    # Se è già una stringa unicode (Python 2) o str (Python 3)
+    if isinstance(text, unicode):
+        return text.encode('utf-8', 'ignore') if PY2 else text
+
+    # Se è bytes (Python 3)
+    if PY3 and isinstance(text, bytes):
+        return text.decode('utf-8', 'ignore')
+
+    # Per altri tipi, converti a stringa
+    return str(text)
 
 
 # fonts
@@ -374,7 +399,6 @@ class m2list(MenuList):
             text_font_size = 28
         self.l.setItemHeight(item_height)
         self.l.setFont(0, gFont('Regular', text_font_size))
-        self.l.setBuildFunc(self.buildEntry)
 
     def buildEntry(self, entry):
         """Build list entry - entry should be [ (name, link), icon, text ]"""
@@ -388,23 +412,26 @@ def show_list(name, link, is_category=False):
     else:
         HALIGN = RT_HALIGN_LEFT
 
-    # Il primo elemento deve essere una tupla con i dati
-    res = [(name, link)]
+    # Converti a stringhe sicure
+    safe_name = to_string(name)
+    safe_link = to_string(link)
+
+    res = [(safe_name, safe_link)]
     default_icon = join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
 
     pngx = default_icon
 
     separators = ["➾", "⟾", "->", "→"]
     for sep in separators:
-        if sep in name:
-            country_name = name.split(sep)[0].strip()
+        if sep in safe_name:
+            country_name = safe_name.split(sep)[0].strip()
             country_code = country_codes.get(country_name, None)
             if country_code:
                 icon_file = country_code + '.png'
                 pngx = join(PLUGIN_PATH, 'skin/cowntry', icon_file)
             break
     else:
-        country_code = country_codes.get(name, None)
+        country_code = country_codes.get(safe_name, None)
         if country_code:
             icon_file = country_code + '.png'
             pngx = join(PLUGIN_PATH, 'skin/cowntry', icon_file)
@@ -412,7 +439,6 @@ def show_list(name, link, is_category=False):
     if not isfile(pngx):
         pngx = default_icon
 
-    # Check if file exists
     if not isfile(pngx):
         print("Icon not found: " + pngx)
         pngx = default_icon
@@ -430,7 +456,6 @@ def show_list(name, link, is_category=False):
         text_pos = (85, 0)
         text_size = (380, 50)
 
-    # Aggiungi gli elementi MultiContent
     res.append(
         MultiContentEntryPixmapAlphaTest(
             pos=icon_pos,
@@ -441,9 +466,10 @@ def show_list(name, link, is_category=False):
             pos=text_pos,
             size=text_size,
             font=0,
-            text=str(name),
+            text=safe_name,
             flags=HALIGN | RT_VALIGN_CENTER))
-    return res
+
+    return list(res)
 
 
 class vavoo_config(Screen, ConfigListScreen):
@@ -883,6 +909,7 @@ class startVavoo(Screen):
         else:
             self.timerx.callback.append(self.clsgo)
         self.timerx.start(2000, True)
+        self["version"].setText(to_string("V." + __version__))
 
     def clsgo(self):
         if first is True:
@@ -983,8 +1010,12 @@ class MainVavoo(Screen):
                     reload_timer.stop()
 
             reload_timer = eTimer()
-            reload_timer.callback.append(do_reload)
+            try:
+                reload_timer.callback.append(self.on_timer)
+            except BaseException:
+                reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
             reload_timer.start(delay, True)
+
 
         except Exception as e:
             print("Error setting up service reload: " + str(e))
@@ -1015,9 +1046,9 @@ class MainVavoo(Screen):
         except Exception as error:
             print("error:", error)
             trace_error()
-            self["name"].setText("Error")
+            self["name"].setText(to_string("Error loading data"))
 
-        self["version"].setText("V." + __version__)
+        self["version"].setText(to_string("V." + __version__))
 
     def _parse_select_options(self, html_content):
         """Parses options from the HTML select menu"""
@@ -1218,10 +1249,11 @@ class MainVavoo(Screen):
             current = self['menulist'].getCurrent()
             if current and len(current) > 0:
                 name = current[0][0]
-                self['name'].setText(str(name))
-                print("MainVavoo _update_selection_name: " + str(name))
+                self['name'].setText(to_string(name))
+                print("MainVavoo _update_selection_name: " + to_string(name))
         except Exception as e:
             print("Error in MainVavoo _update_selection_name:", e)
+            self['name'].setText("")
 
     def update_me(self):
         remote_version = '0.0'
@@ -1411,9 +1443,9 @@ class vavoo(Screen):
                         name_channel = vUtils.decodeHtml(
                             name_channel)          # 1° - Decodifica HTML
                         name_channel = vUtils.rimuovi_parentesi(
-                            name_channel)   # 2° - Remove (2023)
+                            name_channel)          # 2° - Remove (2023)
                         name_channel = vUtils.sanitizeFilename(
-                            name_channel)    # 3° - Clean filesystem
+                            name_channel)          # 3° - Clean filesystem
                         item = name_channel + "###" + url + '\n'
                         items.append(item)
 
@@ -1428,7 +1460,7 @@ class vavoo(Screen):
         except Exception as error:
             print('Error:', error)
             trace_error()
-            self['name'].setText('Error')
+            self['name'].setText(to_string('Error'))
 
     def _create_list_directly(self, items):
         self.cat_list = []
@@ -1478,7 +1510,10 @@ class vavoo(Screen):
                     reload_timer.stop()
 
             reload_timer = eTimer()
-            reload_timer.callback.append(do_reload)
+            try:
+                reload_timer.callback.append(self.on_timer)
+            except BaseException:
+                reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
             reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1635,11 +1670,12 @@ class vavoo(Screen):
         try:
             current = self['menulist'].getCurrent()
             if current and len(current) > 0:
-                name = current[0][0]  # First tuple, first element (name)
-                self['name'].setText(str(name))
-                print("MainVavoo _update_selection_name: " + str(name))
+                name = current[0][0]
+                self['name'].setText(to_string(name))
+                print("vavoo _update_selection_name: " + to_string(name))
         except Exception as e:
-            print("Error in MainVavoo _update_selection_name:", e)
+            print("Error in vavoo _update_selection_name:", e)
+            self['name'].setText("")
 
     def update_menu(self):
         try:
@@ -1679,55 +1715,13 @@ class vavoo(Screen):
 class VavooSearch(Screen):
     def __init__(self, session, parentScreen, itemlist):
         self.session = session
+        self._load_skin()
         self.parentScreen = parentScreen
         self.itemlist = itemlist
         self.filteredList = []
         self.selectedIndex = 0
         self.search_text = ""
         self.current_input = ""
-        if screen_width == 2560:
-            self.skin = """
-                <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
-                    <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
-                    <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="darkblue" />
-                    <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
-                    <widget name="channel_list" position="20,250" size="1160,510" font="Regular;36" itemHeight="60" scrollbarMode="showOnDemand" />
-                    <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
-                    <widget name="key_red" position="20,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                    <widget name="key_green" position="210,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                    <widget name="key_yellow" position="400,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                    <widget name="key_blue" position="590,844" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                </screen>
-            """
-        elif screen_width == 1920:
-            self.skin = """
-                <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
-                    <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
-                    <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="darkblue" />
-                    <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
-                    <widget name="channel_list" position="20,180" size="960,380" font="Regular;28" itemHeight="50" scrollbarMode="showOnDemand" />
-                    <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
-                    <widget name="key_red" position="20,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                    <widget name="key_green" position="210,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                    <widget name="key_yellow" position="400,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                    <widget name="key_blue" position="590,654" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                </screen>
-            """
-        else:
-            self.skin = """
-                <screen name="VavooSearch" position="center,center" size="800,600" title="Vavoo Search">
-                    <widget name="search_label" position="20,20" size="760,30" font="Regular;24" halign="left" valign="center" />
-                    <widget name="search_text" position="20,60" size="760,40" font="Regular;24" halign="left" valign="center" backgroundColor="#000080" />
-                    <widget name="input_info" position="20,475" size="760,25" font="Regular;18" halign="center" />
-                    <widget name="channel_list" position="20,120" size="760,349" font="Regular;22" itemHeight="50" scrollbarMode="showOnDemand" />
-                    <widget name="status" position="20,500" size="760,30" font="Regular;20" halign="center" />
-                    <widget name="key_red" position="20,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                    <widget name="key_green" position="210,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                    <widget name="key_yellow" position="400,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                    <widget name="key_blue" position="590,539" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                </screen>
-                """
-
         Screen.__init__(self, session)
         self["search_label"] = Label(_("Search Channels:"))
         self["search_text"] = Label("")
@@ -1782,6 +1776,14 @@ class VavooSearch(Screen):
             self.key_timer.callback.append(self.finishKeyInput)
 
         self.updateFilteredList()
+
+    def _load_skin(self):
+        """Load the skin file."""
+        skin = join(skin_path, 'vavoo_search.xml')
+        if isfile('/var/lib/dpkg/status'):
+            skin = skin.replace('.xml', '_cvs.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
+            self.skin = f.read()
 
     def keyNumber(self, number):
         key_chars = {

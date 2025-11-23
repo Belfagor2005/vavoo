@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2025-11-19 14:25+0100\n"
+"POT-Creation-Date: 2025-11-23 17:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,226 +22,226 @@ msgstr ""
 "X-Poedit-SearchPath-7: resolver/hlsclient.py\n"
 "X-Poedit-SearchPath-8: resolver/tsclient.py\n"
 
-#: plugin.py:260
+#: plugin.py:292
 msgid "interval"
 msgstr ""
 
-#: plugin.py:260
+#: plugin.py:292
 msgid "fixed time"
 msgstr ""
 
-#: plugin.py:272
+#: plugin.py:304
 msgid "Countries"
 msgstr ""
 
-#: plugin.py:272
+#: plugin.py:304
 msgid "Categories"
 msgstr ""
 
-#: plugin.py:276
+#: plugin.py:308
 msgid "Bottom"
 msgstr ""
 
-#: plugin.py:276
+#: plugin.py:308
 msgid "Top"
 msgstr ""
 
-#: plugin.py:448 plugin.py:1320
+#: plugin.py:490 plugin.py:1374
 msgid "Back"
 msgstr ""
 
-#: plugin.py:449
+#: plugin.py:491
 msgid "- - - -"
 msgstr ""
 
-#: plugin.py:474
+#: plugin.py:516
 #, python-format
 msgid "Last channel update: %s"
 msgstr ""
 
-#: plugin.py:487
+#: plugin.py:529
 msgid "Generate .m3u files (Ok for Exec)"
 msgstr ""
 
-#: plugin.py:489
+#: plugin.py:531
 #, python-format
 msgid "Generate .m3u files and save to device %s."
 msgstr ""
 
-#: plugin.py:493
+#: plugin.py:535
 msgid "Default View"
 msgstr ""
 
-#: plugin.py:495
+#: plugin.py:537
 msgid "Default view when opening the plugin"
 msgstr ""
 
-#: plugin.py:498
+#: plugin.py:540
 msgid "Server for Player Used"
 msgstr ""
 
-#: plugin.py:500
+#: plugin.py:542
 #, python-format
 msgid ""
 "Server for player.\n"
 "Now %s"
 msgstr ""
 
-#: plugin.py:504
+#: plugin.py:546
 msgid "Movie Services Reference"
 msgstr ""
 
-#: plugin.py:506
+#: plugin.py:548
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr ""
 
-#: plugin.py:509
+#: plugin.py:551
 msgid "Bouquet Position in List"
 msgstr ""
 
-#: plugin.py:511
+#: plugin.py:553
 msgid "Position of Vavoo bouquets in the main list"
 msgstr ""
 
-#: plugin.py:515
+#: plugin.py:557
 msgid "Refresh Player"
 msgstr ""
 
-#: plugin.py:517
+#: plugin.py:559
 msgid "Configure Update Timer for player refresh"
 msgstr ""
 
-#: plugin.py:520
+#: plugin.py:562
 msgid "Select DNS Server"
 msgstr ""
 
-#: plugin.py:522
+#: plugin.py:564
 msgid "Configure Dns Server for Box."
 msgstr ""
 
-#: plugin.py:525
+#: plugin.py:567
 msgid "Select Background"
 msgstr ""
 
-#: plugin.py:527
+#: plugin.py:569
 msgid "Configure Main Background Image."
 msgstr ""
 
-#: plugin.py:530
+#: plugin.py:572
 msgid "Select Fonts"
 msgstr ""
 
-#: plugin.py:532
+#: plugin.py:574
 msgid ""
 "Configure Fonts.\n"
 "Eg:Arabic or other language."
 msgstr ""
 
-#: plugin.py:535
+#: plugin.py:577
 msgid "Ipv6 State Of Lan (On/Off)"
 msgstr ""
 
-#: plugin.py:537
+#: plugin.py:579
 #, python-format
 msgid ""
 "Active or Disactive lan Ipv6.\n"
 "Now %s"
 msgstr ""
 
-#: plugin.py:541
+#: plugin.py:583
 msgid "Scheduled Bouquet Update:"
 msgstr ""
 
-#: plugin.py:543
+#: plugin.py:585
 msgid "Active Automatic Bouquet Update"
 msgstr ""
 
-#: plugin.py:547
+#: plugin.py:589
 msgid "Schedule type:"
 msgstr ""
 
-#: plugin.py:549
+#: plugin.py:591
 msgid "At an interval of hours or at a fixed time"
 msgstr ""
 
-#: plugin.py:553
+#: plugin.py:595
 msgid "Update interval (minutes):"
 msgstr ""
 
-#: plugin.py:555
+#: plugin.py:597
 msgid "Configure every interval of minutes from now"
 msgstr ""
 
-#: plugin.py:559
+#: plugin.py:601
 msgid "Time to start update:"
 msgstr ""
 
-#: plugin.py:561
+#: plugin.py:603
 msgid "Configure at a fixed time"
 msgstr ""
 
-#: plugin.py:565 plugin.py:567
+#: plugin.py:607 plugin.py:609
 msgid "Link in Main Menu"
 msgstr ""
 
-#: plugin.py:578
+#: plugin.py:620
 #, python-format
 msgid "Generate .m3u files and save to device %s?"
 msgstr ""
 
-#: plugin.py:608
+#: plugin.py:650
 msgid "All .m3u files have been generated!"
 msgstr ""
 
-#: plugin.py:623
+#: plugin.py:665
 msgid "SELECT YOUR CHOICE"
 msgstr ""
 
-#: plugin.py:634
+#: plugin.py:676
 msgid "Ipv6 [Off]?"
 msgstr ""
 
-#: plugin.py:642
+#: plugin.py:684
 msgid "Ipv6 [On]?"
 msgstr ""
 
-#: plugin.py:666
+#: plugin.py:708
 msgid "Save"
 msgstr ""
 
-#: plugin.py:712
+#: plugin.py:754
 msgid "Bouquets reorganized successfully!"
 msgstr ""
 
-#: plugin.py:751
+#: plugin.py:793
 msgid "Configuration saved successfully!"
 msgstr ""
 
-#: plugin.py:807
+#: plugin.py:849
 msgid "Really close without saving settings?"
 msgstr ""
 
-#: plugin.py:912
+#: plugin.py:955
 msgid "Exit"
 msgstr ""
 
-#: plugin.py:913
+#: plugin.py:956
 msgid "Remove"
 msgstr ""
 
-#: plugin.py:914
+#: plugin.py:957
 msgid "Update Me"
 msgstr ""
 
-#: plugin.py:915 plugin.py:1323
+#: plugin.py:958 plugin.py:1377
 msgid "Reload Bouqet"
 msgstr ""
 
-#: plugin.py:959 plugin.py:1450
+#: plugin.py:1002 plugin.py:1502
 msgid "Bouquets have been successfully reloaded!"
 msgstr ""
 
-#: plugin.py:1103
+#: plugin.py:1150
 msgid ""
 "Remove ALL Vavoo bouquets?\n"
 "This will remove:\n"
@@ -250,14 +250,14 @@ msgid ""
 "- Container bouquets"
 msgstr ""
 
-#: plugin.py:1123
+#: plugin.py:1169
 #, python-format
 msgid ""
 "Vavoo bouquets removed successfully!\n"
 "(%s files deleted)"
 msgstr ""
 
-#: plugin.py:1139
+#: plugin.py:1183
 #, python-format
 msgid ""
 "%s\n"
@@ -290,11 +290,11 @@ msgid ""
 "Commercial use is strictly prohibited"
 msgstr ""
 
-#: plugin.py:1169
+#: plugin.py:1213
 msgid "Vavoo Stream Live - Information"
 msgstr ""
 
-#: plugin.py:1241
+#: plugin.py:1286
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -304,77 +304,120 @@ msgid ""
 "Do you want to install it now?"
 msgstr ""
 
-#: plugin.py:1248
+#: plugin.py:1293
 msgid "Congrats! You already have the latest version..."
 msgstr ""
 
-#: plugin.py:1264
+#: plugin.py:1309
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
-#: plugin.py:1282
+#: plugin.py:1327
 msgid "Update Aborted!"
 msgstr ""
 
-#: plugin.py:1321
+#: plugin.py:1375
 msgid "Export"
 msgstr ""
 
-#: plugin.py:1322
+#: plugin.py:1376 plugin.py:1842
 msgid "Search"
 msgstr ""
 
-#: plugin.py:1500
+#: plugin.py:1554
 #, python-format
 msgid ""
 "Do you want to export this bouquet?\n"
 "%s"
 msgstr ""
 
-#: plugin.py:1538
-msgid ""
-"Bouquet already exists!\n"
-"\n"
-"Do you want to:\n"
-"• UPDATE existing bouquet (Yes)\n"
-"• REMOVE and create new (No)\n"
-msgstr ""
-
-#: plugin.py:1609
-msgid "Filter this category..."
-msgstr ""
-
-#: plugin.py:1629
+#: plugin.py:1632
 msgid "No channels found in search!!!"
 msgstr ""
 
-#: plugin.py:2241 plugin.py:2259
+#: plugin.py:1726
+msgid "Search Channels:"
+msgstr ""
+
+#: plugin.py:1728
+msgid "Press TEXT button to type, BACKSPACE to delete"
+msgstr ""
+
+#: plugin.py:1730
+msgid "Enter text to search..."
+msgstr ""
+
+#: plugin.py:1731
+msgid "Clear All"
+msgstr ""
+
+#: plugin.py:1732
+msgid "Keyboard"
+msgstr ""
+
+#: plugin.py:1733
+msgid "Backspace"
+msgstr ""
+
+#: plugin.py:1734
+msgid "Space"
+msgstr ""
+
+#: plugin.py:1853
+msgid "UPPERCASE"
+msgstr ""
+
+#: plugin.py:1853
+msgid "lowercase"
+msgstr ""
+
+#: plugin.py:1854
+#, python-brace-format
+msgid "Case: {}"
+msgstr ""
+
+#: plugin.py:1859 plugin.py:1881
+#, python-brace-format
+msgid "Search: \"{}\" - Found: {} channels"
+msgstr ""
+
+#: plugin.py:1862 plugin.py:1869
+#, python-brace-format
+msgid "Showing all channels: {}"
+msgstr ""
+
+#: plugin.py:1884
+#, python-brace-format
+msgid "Search: \"{}\" - No channels found"
+msgstr ""
+
+#: plugin.py:2488 plugin.py:2506
 msgid "Vavoo Stream Live"
 msgstr ""
 
-#: resolver/Console.py:66
+#: resolver/Console.py:74
 msgid "Cancel"
 msgstr ""
 
-#: resolver/Console.py:67
+#: resolver/Console.py:75
 msgid "Hide/Show"
 msgstr ""
 
-#: resolver/Console.py:68
+#: resolver/Console.py:76
 msgid "Restart"
 msgstr ""
 
-#: resolver/Console.py:82
+#: resolver/Console.py:91
 msgid "Console"
 msgstr ""
 
-#: resolver/Console.py:102
+#: resolver/Console.py:113
 msgid ""
 "Execution progress\n"
 "\n"
 msgstr ""
 
-#: resolver/Console.py:153
+#: resolver/Console.py:168
 msgid "Cancel execution?"
 msgstr ""

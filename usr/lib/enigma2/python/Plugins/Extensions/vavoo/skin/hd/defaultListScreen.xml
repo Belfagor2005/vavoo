@@ -1,9 +1,8 @@
 <screen name="MainVavoo" position="0,0" size="1280,720" backgroundColor="transparent" flags="wfNoBorder">
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/default.png" position="0,0" size="1280,720" alphatest="blend" zPosition="-1" />
-    <!-- <eLabel backgroundColor="#30000000" position="0,0" size="1280,720" transparent="0" zPosition="-9" foregroundColor="#00ffffff" /> -->
     <widget name="name" position="45,567" size="636,79" noWrap="1" zPosition="1" transparent="1" font="Regular; 28" valign="center" halign="left" backgroundColor="#30000000" foregroundColor="#00ffffff" />
     <widget name="menulist" position="30,121" size="480,400" itemHeight="50" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
-    <widget name="version" position="1095,623" size="100,30" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 20" halign="center" foregroundColor="#ffffff" />
+    <widget name="version" position="914,671" size="100,30" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 20" halign="center" foregroundColor="#ffffff" />
     <widget name="red" font="cvfont; 20" halign="center" valign="center" position="15,660" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <widget name="green" font="cvfont; 20" halign="center" valign="center" position="195,660" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <widget name="yellow" font="cvfont; 20" halign="center" valign="center" position="375,660" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
@@ -20,4 +19,8 @@
     <eLabel name="" position="1160,670" size="60,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 17" zPosition="3" text="INFO" />
     <eLabel name="" position="1090,670" size="70,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 17" zPosition="3" text="CH+" />
     <eLabel name="" position="1020,670" size="70,30" backgroundColor="#914167" halign="center" valign="center" transparent="0" font="cvfont; 17" zPosition="3" text="CH-" />
+    <widget source="session.CurrentService" render="Label" position="869,611" size="400,34" font="Regular;26" backgroundColor="background" transparent="1" halign="center" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
+        <convert type="ServiceName">Name</convert>
+    </widget>
+    <widget source="session.VideoPicture" render="Pig" position="869,389" zPosition="20" size="400,220" backgroundColor="transparent" transparent="0" cornerRadius="14" />
 </screen>

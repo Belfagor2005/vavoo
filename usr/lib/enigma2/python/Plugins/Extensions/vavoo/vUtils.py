@@ -423,16 +423,22 @@ def ReloadBouquets():
                 except BaseException:
                     reload_timer2.timeout.connect(do_reload)
                 reload_timer2.start(2000, True)
+
+                reload_timer2 = eTimer()
+                try:
+                    reload_timer2.callback.append(self.on_timer)
+                except BaseException:
+                    reload_timer2_conn = reload_timer2.timeout.connect(self.on_timer)
+                reload_timer.start(delay, True)
             except Exception as e:
                 print("Error setting up delayed reload: " + str(e))
 
         reload_timer = eTimer()
         try:
-            reload_timer.callback.append(do_delayed_reload)
+            reload_timer.callback.append(self.on_timer)
         except BaseException:
-            reload_timer.timeout.connect(do_delayed_reload)
-        reload_timer.start(100, True)
-
+            reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
+        reload_timer.start(delay, True)
     except Exception as e:
         print("Error setting up service reload: " + str(e))
 
@@ -442,22 +448,33 @@ def sanitizeFilename(filename):
     # Remove unsafe characters
     filename = sub(r'[\\/:*?"<>|\0]', '', filename)
     filename = ''.join(c for c in filename if ord(c) > 31)
-    # Normalize and strip trailing characters
-    filename = normalize('NFKD', filename).encode('ascii', 'ignore').decode()
+
+    # Gestione unicode per Python 2 e 3
+    try:
+        # Python 2
+        if isinstance(filename, str):
+            filename = filename.decode('utf-8', 'ignore')
+        filename = normalize('NFKD', filename).encode('ascii', 'ignore')
+    except:
+        # Python 3
+        filename = normalize('NFKD', filename).encode('ascii', 'ignore').decode()
+
     filename = filename.rstrip('. ').strip()
+
     # Handle reserved names
-    reserved = ["CON", "PRN", "AUX", "NUL"] + ["COM" +
-                                               str(i) for i in range(1, 10)] + ["LPT" + str(i) for i in range(1, 10)]
+    reserved = ["CON", "PRN", "AUX", "NUL"] + ["COM" + str(i) for i in range(1, 10)] + ["LPT" + str(i) for i in range(1, 10)]
     if filename.upper() in reserved or not filename:
         if filename:
             filename = "__" + filename
         else:
             filename = "__"
+
     # Truncate if necessary
     if len(filename) > 255:
         base, ext = splitext(filename)
         ext = ext[:254]
         filename = base[:255 - len(ext)] + ext
+
     return filename or "__"
 
 

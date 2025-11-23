@@ -89,9 +89,12 @@ def _reload_services_after_delay(delay=3000):
             finally:
                 reload_timer.stop()
 
-        reload_timer = eTimer()
-        reload_timer.callback.append(do_reload)
-        reload_timer.start(delay, True)
+            reload_timer = eTimer()
+            try:
+                reload_timer.callback.append(self.on_timer)
+            except BaseException:
+                reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
+            reload_timer.start(delay, True)
     except Exception as e:
         print("Error setting up service reload: " + str(e))
 
@@ -329,8 +332,7 @@ def _prepare_bouquet_filenames(name, bouquet_type):
         bouquet_name = "subbouquet.vavoo_" + name_file + "." + bouquet_type.lower()
         print("DEBUG: Creating SUBBOUQUET: " + bouquet_name)
     else:
-        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + \
-            bouquet_type.lower()
+        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + bouquet_type.lower()
         print("DEBUG: Creating USERBOUQUET: " + bouquet_name)
 
     return name_file, bouquet_name
@@ -584,8 +586,7 @@ def _create_or_update_container_bouquet(
         with open(container_path, 'w') as f:
             for line in content:
                 f.write(line + '\n')
-        print("✓ Container bouquet updated: " + container_name +
-              " with " + str(len(existing_categories)) + " categories")
+        print("✓ Container bouquet updated: " + container_name + " with " + str(len(existing_categories)) + " categories")
 
         # Add to main bouquet
         _add_to_main_bouquet(container_name, bouquet_type, list_position)

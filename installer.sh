@@ -3,8 +3,8 @@
 ##setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/vavoo/main/installer.sh -O - | /bin/sh
 
 ######### Only These 2 lines to edit with new version ######
-version='1.41'
-changelog='\n- Recoded all source'
+version='1.42'
+changelog='\n- Recoded all source\nFix Py2 str\nAdd search Live'
 ##############################################################
 
 TMPPATH=/tmp/vavoo-install
