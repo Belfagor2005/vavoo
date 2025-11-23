@@ -415,30 +415,13 @@ def ReloadBouquets():
             except Exception as e:
                 print("Error during service reload: " + str(e))
 
-        def do_delayed_reload():
-            try:
-                reload_timer2 = eTimer()
-                try:
-                    reload_timer2.callback.append(do_reload)
-                except BaseException:
-                    reload_timer2.timeout.connect(do_reload)
-                reload_timer2.start(2000, True)
-
-                reload_timer2 = eTimer()
-                try:
-                    reload_timer2.callback.append(self.on_timer)
-                except BaseException:
-                    reload_timer2_conn = reload_timer2.timeout.connect(self.on_timer)
-                reload_timer.start(delay, True)
-            except Exception as e:
-                print("Error setting up delayed reload: " + str(e))
-
         reload_timer = eTimer()
         try:
-            reload_timer.callback.append(self.on_timer)
-        except BaseException:
-            reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
-        reload_timer.start(delay, True)
+            reload_timer.callback.append(do_reload)
+        except:
+            reload_timer_conn = reload_timer.timeout.connect(do_reload)
+        reload_timer.start(2000, True)
+        
     except Exception as e:
         print("Error setting up service reload: " + str(e))
 

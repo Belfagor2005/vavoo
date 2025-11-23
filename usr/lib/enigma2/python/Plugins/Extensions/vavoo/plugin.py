@@ -945,6 +945,8 @@ class MainVavoo(Screen):
     def _load_skin(self):
         """Load the skin file."""
         skin = join(skin_path, 'defaultListScreen.xml')
+        if isfile('/var/lib/dpkg/status'):
+            skin = skin.replace('.xml', '_cvs.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
 
@@ -1009,13 +1011,12 @@ class MainVavoo(Screen):
                 finally:
                     reload_timer.stop()
 
-            reload_timer = eTimer()
+            self.reload_timer = eTimer()
             try:
-                reload_timer.callback.append(self.on_timer)
+                self.reload_timer.callback.append(self.on_timer)
             except BaseException:
-                reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
-            reload_timer.start(delay, True)
-
+                self.reload_timer_conn = self.reload_timer.timeout.connect(self.on_timer)
+            self.reload_timer.start(delay, True)
 
         except Exception as e:
             print("Error setting up service reload: " + str(e))
@@ -1509,14 +1510,14 @@ class vavoo(Screen):
                 except Exception as e:
                     print("Error during service reload: " + str(e))
                 finally:
-                    reload_timer.stop()
+                    self.reload_timer.stop()
 
-            reload_timer = eTimer()
+            self.reload_timer = eTimer()
             try:
-                reload_timer.callback.append(self.on_timer)
+                self.reload_timer.callback.append(self.on_timer)
             except BaseException:
-                reload_timer_conn = reload_timer.timeout.connect(self.on_timer)
-            reload_timer.start(delay, True)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(self.on_timer)
+            self.reload_timer.start(delay, True)
 
         except Exception as e:
             print("Error setting up service reload: " + str(e))
