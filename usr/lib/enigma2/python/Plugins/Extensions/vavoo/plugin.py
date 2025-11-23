@@ -1353,7 +1353,9 @@ class vavoo(Screen):
             for screen in self.session.dialog_stack:
                 if hasattr(screen, 'current_view'):
                     self.current_view = screen.current_view
-                    print("DEBUG: Got current_view from main screen: " + self.current_view)
+                    print(
+                        "DEBUG: Got current_view from main screen: " +
+                        self.current_view)
                     break
         except Exception as e:
             print("DEBUG: Error getting current_view: " + str(e))
@@ -1597,7 +1599,8 @@ class vavoo(Screen):
 
     def search_vavoo(self):
         self.saved_itemlist = self.itemlist
-        self.session.openWithCallback(self.onSearchResult, VavooSearch, self, self.itemlist)
+        self.session.openWithCallback(
+            self.onSearchResult, VavooSearch, self, self.itemlist)
 
     def onSearchResult(self, selected_item=None):
         """Callback con il canale selezionato dalla ricerca"""
@@ -1725,7 +1728,8 @@ class VavooSearch(Screen):
         Screen.__init__(self, session)
         self["search_label"] = Label(_("Search Channels:"))
         self["search_text"] = Label("")
-        self["input_info"] = Label(_("Press TEXT button to type, BACKSPACE to delete"))
+        self["input_info"] = Label(
+            _("Press TEXT button to type, BACKSPACE to delete"))
         self["channel_list"] = m2list([])
         self["status"] = Label(_("Enter text to search..."))
         self["key_red"] = Label(_("Clear All"))
@@ -1759,11 +1763,13 @@ class VavooSearch(Screen):
 
         self.searchTimer = eTimer()
         try:
-            self.searchTimer_conn = self.searchTimer.timeout.connect(self.updateFilteredList)
+            self.searchTimer_conn = self.searchTimer.timeout.connect(
+                self.updateFilteredList)
         except BaseException:
             self.searchTimer.callback.append(self.updateFilteredList)
 
-        self.numericalInput = NumericalTextInput(nextFunc=self.searchWithString, mode="Search")
+        self.numericalInput = NumericalTextInput(
+            nextFunc=self.searchWithString, mode="Search")
         self.input_active = False
         self.upper_case = False
         self.last_key = None
@@ -1771,8 +1777,9 @@ class VavooSearch(Screen):
         self.last_key_time = 0
         self.key_timer = eTimer()
         try:
-            self.key_timer_conn = self.key_timer.timeout.connect(self.finishKeyInput)
-        except:
+            self.key_timer_conn = self.key_timer.timeout.connect(
+                self.finishKeyInput)
+        except BaseException:
             self.key_timer.callback.append(self.finishKeyInput)
 
         self.updateFilteredList()
@@ -1793,11 +1800,14 @@ class VavooSearch(Screen):
         if number in key_chars:
             chars = key_chars[number]
             current_time = time.time()
-            if hasattr(self, 'last_key') and self.last_key == number and current_time - self.last_key_time < 1.0:
+            if hasattr(
+                    self,
+                    'last_key') and self.last_key == number and current_time - self.last_key_time < 1.0:
                 if self.search_text and self.search_text[-1] in chars:
                     current_index = chars.index(self.search_text[-1])
                     next_index = (current_index + 1) % len(chars)
-                    self.search_text = self.search_text[:-1] + chars[next_index]
+                    self.search_text = self.search_text[:-
+                                                        1] + chars[next_index]
                 else:
                     self.search_text += chars[0]
             else:
@@ -1839,7 +1849,11 @@ class VavooSearch(Screen):
         self.last_key = None
 
     def openKeyboard(self):
-        self.session.openWithCallback(self.onKeyboardClosed, VirtualKeyBoard, title=_("Search"), text=self.search_text)
+        self.session.openWithCallback(
+            self.onKeyboardClosed,
+            VirtualKeyBoard,
+            title=_("Search"),
+            text=self.search_text)
 
     def onKeyboardClosed(self, result):
         if result is not None:
@@ -1859,14 +1873,16 @@ class VavooSearch(Screen):
             self["status"].setText(_('Search: "{}" - Found: {} channels').format(
                 self.search_text, len(self.filteredList)))
         else:
-            self["status"].setText(_("Showing all channels: {}").format(len(self.filteredList)))
+            self["status"].setText(
+                _("Showing all channels: {}").format(len(self.filteredList)))
 
     def updateFilteredList(self):
         text = self.search_text.lower().strip()
 
         if not text:
             self.filteredList = self.itemlist[:]
-            self["status"].setText(_("Showing all channels: {}").format(len(self.filteredList)))
+            self["status"].setText(
+                _("Showing all channels: {}").format(len(self.filteredList)))
         else:
             self.filteredList = []
             for item in self.itemlist:
@@ -1874,14 +1890,15 @@ class VavooSearch(Screen):
                     name = item.split('###')[0].lower()
                     if text in name:
                         self.filteredList.append(item)
-                except:
+                except BaseException:
                     continue
 
             if self.filteredList:
                 self["status"].setText(_('Search: "{}" - Found: {} channels').format(
                     self.search_text, len(self.filteredList)))
             else:
-                self["status"].setText(_('Search: "{}" - No channels found').format(self.search_text))
+                self["status"].setText(
+                    _('Search: "{}" - No channels found').format(self.search_text))
 
         self.updateChannelList()
 
@@ -1896,9 +1913,11 @@ class VavooSearch(Screen):
         for item in self.filteredList:
             try:
                 name = item.split('###')[0]
-                url = item.split('###')[1].replace('%0a', '').replace('%0A', '').strip("\r\n")
+                url = item.split('###')[1].replace(
+                    '%0a', '').replace(
+                    '%0A', '').strip("\r\n")
                 display_list.append(show_list(name, url))
-            except:
+            except BaseException:
                 continue
         self["channel_list"].l.setList(display_list)
 
@@ -1909,7 +1928,8 @@ class VavooSearch(Screen):
 
     def moveDown(self):
         if self.filteredList:
-            self.selectedIndex = min(len(self.filteredList) - 1, self.selectedIndex + 1)
+            self.selectedIndex = min(
+                len(self.filteredList) - 1, self.selectedIndex + 1)
             self["channel_list"].moveToIndex(self.selectedIndex)
 
     def moveLeft(self):
@@ -1919,10 +1939,12 @@ class VavooSearch(Screen):
         self.moveDown()
 
     def onOk(self):
-        if self.filteredList and 0 <= self.selectedIndex < len(self.filteredList):
+        if self.filteredList and 0 <= self.selectedIndex < len(
+                self.filteredList):
             channel_item = self.filteredList[self.selectedIndex]
             name = channel_item.split('###')[0]
-            url = channel_item.split('###')[1].replace('%0a', '').replace('%0A', '').strip("\r\n")
+            url = channel_item.split('###')[1].replace(
+                '%0a', '').replace('%0A', '').strip("\r\n")
             self.close((name, url))
         else:
             self.close(None)
@@ -1942,7 +1964,7 @@ class VavooSearch(Screen):
         try:
             if hasattr(self, 'numericalInput'):
                 self.numericalInput.nextKey()
-        except:
+        except BaseException:
             pass
         return Screen.close(self, *args, **kwargs)
 
