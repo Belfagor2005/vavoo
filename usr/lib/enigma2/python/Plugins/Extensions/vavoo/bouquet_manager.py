@@ -93,7 +93,7 @@ def _reload_services_after_delay(delay=3000):
             # Python 3
             reload_timer.callback.append(do_reload)
         except Exception:
-            # Python 2  
+            # Python 2
             reload_timer_conn = reload_timer.timeout.connect(do_reload)
         reload_timer.start(delay, True)
 
@@ -334,7 +334,8 @@ def _prepare_bouquet_filenames(name, bouquet_type):
         bouquet_name = "subbouquet.vavoo_" + name_file + "." + bouquet_type.lower()
         print("DEBUG: Creating SUBBOUQUET: " + bouquet_name)
     else:
-        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + bouquet_type.lower()
+        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + \
+            bouquet_type.lower()
         print("DEBUG: Creating USERBOUQUET: " + bouquet_name)
 
     return name_file, bouquet_name
@@ -588,7 +589,8 @@ def _create_or_update_container_bouquet(
         with open(container_path, 'w') as f:
             for line in content:
                 f.write(line + '\n')
-        print("✓ Container bouquet updated: " + container_name + " with " + str(len(existing_categories)) + " categories")
+        print("✓ Container bouquet updated: " + container_name +
+              " with " + str(len(existing_categories)) + " categories")
 
         # Add to main bouquet
         _add_to_main_bouquet(container_name, bouquet_type, list_position)

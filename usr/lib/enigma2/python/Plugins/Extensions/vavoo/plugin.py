@@ -1010,7 +1010,9 @@ class MainVavoo(Screen):
                     print("Error during service reload: " + str(e))
                 finally:
                     # CORRETTO: usa self.reload_timer
-                    if hasattr(self, 'reload_timer') and self.reload_timer is not None:
+                    if hasattr(
+                            self,
+                            'reload_timer') and self.reload_timer is not None:
                         self.reload_timer.stop()
 
             # CORRETTO: salva il timer come attributo della classe
@@ -1019,7 +1021,8 @@ class MainVavoo(Screen):
                 # CORRETTO: passa do_reload invece di self.on_timer
                 self.reload_timer.callback.append(do_reload)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(do_reload)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(
+                    do_reload)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
