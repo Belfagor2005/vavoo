@@ -1006,17 +1006,14 @@ class MainVavoo(Screen):
                 except Exception as e:
                     print("Error during service reload: " + str(e))
                 finally:
-                    if hasattr(
-                            self,
-                            'reload_timer') and self.reload_timer is not None:
+                    if hasattr(self, 'reload_timer') and self.reload_timer is not None:
                         self.reload_timer.stop()
 
             self.reload_timer = eTimer()
             try:
                 self.reload_timer.callback.append(do_reload)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(
-                    do_reload)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(do_reload)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1517,8 +1514,7 @@ class vavoo(Screen):
             try:
                 self.reload_timer.callback.append(self.on_timer)
             except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(
-                    self.on_timer)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(self.on_timer)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1721,17 +1717,100 @@ class vavoo(Screen):
 class VavooSearch(Screen):
     def __init__(self, session, parentScreen, itemlist):
         self.session = session
-        skin = join(skin_path, 'vavoo_search.xml')
-        if isfile('/var/lib/dpkg/status'):
-            skin = skin.replace('.xml', '_cvs.xml')
-        with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
         self.parentScreen = parentScreen
         self.itemlist = itemlist
         self.filteredList = []
         self.selectedIndex = 0
         self.search_text = ""
         self.current_input = ""
+        if isfile('/var/lib/dpkg/status'):
+            if screen_width == 2560:
+                self.skin = """
+                    <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
+                        <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
+                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
+                        <widget name="channel_list" position="20,250" size="1160,510"itemHeight="60" scrollbarMode="showOnDemand" />
+                        <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
+                        <widget name="key_red" position="20,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                        <widget name="key_green" position="210,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                        <widget name="key_yellow" position="400,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                        <widget name="key_blue" position="590,844" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                    </screen>
+                """
+            elif screen_width == 1920:
+                self.skin = """
+                    <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
+                        <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
+                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
+                        <widget name="channel_list" position="20,180" size="960,380"itemHeight="50" scrollbarMode="showOnDemand" />
+                        <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
+                        <widget name="key_red" position="20,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                        <widget name="key_green" position="210,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                        <widget name="key_yellow" position="400,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                        <widget name="key_blue" position="590,654" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                    </screen>
+                """
+            else:
+                self.skin = """
+                    <screen name="VavooSearch" position="center,center" size="800,600" title="Vavoo Search">
+                        <widget name="search_label" position="20,20" size="760,30" font="Regular;24" halign="left" valign="center" />
+                        <widget name="search_text" position="20,60" size="760,40" font="Regular;24" halign="left" valign="center" backgroundColor="#000080" />
+                        <widget name="input_info" position="20,475" size="760,25" font="Regular;18" halign="center" />
+                        <widget name="channel_list" position="20,120" size="760,349"itemHeight="50" scrollbarMode="showOnDemand" />
+                        <widget name="status" position="20,500" size="760,30" font="Regular;20" halign="center" />
+                        <widget name="key_red" position="20,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                        <widget name="key_green" position="210,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                        <widget name="key_yellow" position="400,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                        <widget name="key_blue" position="590,539" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                    </screen>
+                    """
+
+        else:
+            if screen_width == 2560:
+                self.skin = """
+                    <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
+                        <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
+                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
+                        <widget name="channel_list" position="20,250" size="1160,510" font="Regular;36" itemHeight="60" scrollbarMode="showOnDemand" />
+                        <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
+                        <widget name="key_red" position="20,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                        <widget name="key_green" position="210,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                        <widget name="key_yellow" position="400,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                        <widget name="key_blue" position="590,844" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                    </screen>
+                """
+            elif screen_width == 1920:
+                self.skin = """
+                    <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
+                        <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
+                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
+                        <widget name="channel_list" position="20,180" size="960,380" font="Regular;28" itemHeight="50" scrollbarMode="showOnDemand" />
+                        <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
+                        <widget name="key_red" position="20,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                        <widget name="key_green" position="210,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                        <widget name="key_yellow" position="400,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                        <widget name="key_blue" position="590,654" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                    </screen>
+                """
+            else:
+                self.skin = """
+                    <screen name="VavooSearch" position="center,center" size="800,600" title="Vavoo Search">
+                        <widget name="search_label" position="20,20" size="760,30" font="Regular;24" halign="left" valign="center" />
+                        <widget name="search_text" position="20,60" size="760,40" font="Regular;24" halign="left" valign="center" backgroundColor="#000080" />
+                        <widget name="input_info" position="20,475" size="760,25" font="Regular;18" halign="center" />
+                        <widget name="channel_list" position="20,120" size="760,349" font="Regular;22" itemHeight="50" scrollbarMode="showOnDemand" />
+                        <widget name="status" position="20,500" size="760,30" font="Regular;20" halign="center" />
+                        <widget name="key_red" position="20,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
+                        <widget name="key_green" position="210,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
+                        <widget name="key_yellow" position="400,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
+                        <widget name="key_blue" position="590,539" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
+                    </screen>
+                    """
+
         Screen.__init__(self, session)
         self["search_label"] = Label(_("Search Channels:"))
         self["search_text"] = Label("")
@@ -1775,8 +1854,7 @@ class VavooSearch(Screen):
         except BaseException:
             self.searchTimer.callback.append(self.updateFilteredList)
 
-        self.numericalInput = NumericalTextInput(
-            nextFunc=self.searchWithString, mode="Search")
+        self.numericalInput = NumericalTextInput(nextFunc=self.searchWithString)
         self.input_active = False
         self.upper_case = False
         self.last_key = None
