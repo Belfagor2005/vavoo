@@ -1033,8 +1033,13 @@ class MainVavoo(Screen):
 
         try:
             content = self._get_content()
+            if not content:
+                self["name"].setText(to_string("Error: No data received"))
+                return
+
             data = self._parse_json(content)
             if data is None:
+                self["name"].setText(to_string("Error: Invalid data format"))
                 return
 
             self.all_data = data
@@ -1128,22 +1133,32 @@ class MainVavoo(Screen):
         self._update_ui()
 
     def ok(self):
-        name = self['menulist'].getCurrent()[0][0]
-        url = self['menulist'].getCurrent()[0][1]
-
-        # Handle view options
-        if name == "View by Countries":
-            self.show_countries_view()
-            return
-        elif name == "View by Categories":
-            self.show_categories_view()
-            return
-
         try:
-            self.session.open(vavoo, name, url)
+            current_item = self['menulist'].getCurrent()
+            if not current_item or len(current_item) == 0:
+                print("DEBUG: No current item selected or item is empty")
+                return
+
+            name = current_item[0][0]
+            url = current_item[0][1]
+            # Handle view options
+            if name == "View by Countries":
+                self.show_countries_view()
+                return
+            elif name == "View by Categories":
+                self.show_categories_view()
+                return
+
+            try:
+                self.session.open(vavoo, name, url)
+            except Exception as error:
+                print('error as:', error)
+                trace_error()
+
         except Exception as error:
-            print('error as:', error)
+            print('Error in ok method:', error)
             trace_error()
+            self.session.open(MessageBox, _("Error: Cannot open selected item"), MessageBox.TYPE_ERROR, timeout=3)
 
     def msgdeleteBouquets(self):
         self.session.openWithCallback(
@@ -1235,15 +1250,16 @@ class MainVavoo(Screen):
     def _update_ui(self):
         """Update the UI with current list"""
         try:
-            if self.cat_list:
+            if self.cat_list and len(self.cat_list) > 0:
                 self["menulist"].l.setList(self.cat_list)
-                # self["menulist"].moveToIndex(0)
                 self._update_selection_name()
             else:
-                self["name"].setText("No items found")
+                self["name"].setText("No items available")
+                self.cat_list = []
         except Exception as error:
             print("Error updating UI:", error)
             self["name"].setText("Error")
+            self.cat_list = []
 
     def _update_selection_name(self):
         """Update the name label with current selection"""
@@ -1253,9 +1269,11 @@ class MainVavoo(Screen):
                 name = current[0][0]
                 self['name'].setText(to_string(name))
                 print("MainVavoo _update_selection_name: " + to_string(name))
+            else:
+                self['name'].setText("No selection")  # Testo di fallback
         except Exception as e:
             print("Error in MainVavoo _update_selection_name:", e)
-            self['name'].setText("")
+            self['name'].setText("Error")
 
     def update_me(self):
         remote_version = '0.0'
