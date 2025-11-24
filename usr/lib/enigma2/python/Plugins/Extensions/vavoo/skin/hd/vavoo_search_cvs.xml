@@ -9,3 +9,4 @@
 	<widget name="key_yellow" position="400,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
 	<widget name="key_blue" position="590,539" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
 </screen>
+

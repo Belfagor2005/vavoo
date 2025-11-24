@@ -22,5 +22,5 @@
     <widget source="session.CurrentService" render="Label" position="1320,964" size="550,45" font="Regular;26" backgroundColor="background" transparent="1" halign="center" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
-    <widget source="session.VideoPicture" render="Pig" position="1323,599" zPosition="20" size="550,360" backgroundColor="transparent" transparent="0" cornerRadius="14" />
+    <widget source="session.VideoPicture" render="Pig" position="1323,599" zPosition="20" size="550,360" backgroundColor="transparent" transparent="0" />
 </screen>

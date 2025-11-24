@@ -418,10 +418,10 @@ def ReloadBouquets():
         reload_timer = eTimer()
         try:
             reload_timer.callback.append(do_reload)
-        except BaseException:
+        except:
             reload_timer_conn = reload_timer.timeout.connect(do_reload)
         reload_timer.start(2000, True)
-
+        
     except Exception as e:
         print("Error setting up service reload: " + str(e))
 
@@ -449,8 +449,8 @@ def sanitizeFilename(filename):
     filename = filename.rstrip('. ').strip()
 
     # Handle reserved names
-    reserved = ["CON", "PRN", "AUX", "NUL"] + ["COM" +
-                                               str(i) for i in range(1, 10)] + ["LPT" + str(i) for i in range(1, 10)]
+    reserved = ["CON", "PRN", "AUX", "NUL"] + ["COM" + \
+        str(i) for i in range(1, 10)] + ["LPT" + str(i) for i in range(1, 10)]
     if filename.upper() in reserved or not filename:
         if filename:
             filename = "__" + filename
