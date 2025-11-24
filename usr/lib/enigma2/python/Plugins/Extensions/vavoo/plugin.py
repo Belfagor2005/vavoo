@@ -1730,7 +1730,7 @@ class VavooSearch(Screen):
                         <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
                         <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="darkblue" />
                         <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
-                        <widget name="channel_list" position="20,250" size="1160,510"itemHeight="60" scrollbarMode="showOnDemand" />
+                        <widget name="channel_list" position="20,250" size="1160,510" itemHeight="60" scrollbarMode="showOnDemand" />
                         <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
                         <widget name="key_red" position="20,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
                         <widget name="key_green" position="210,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
@@ -1744,7 +1744,7 @@ class VavooSearch(Screen):
                         <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
                         <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="darkblue" />
                         <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
-                        <widget name="channel_list" position="20,180" size="960,380"itemHeight="50" scrollbarMode="showOnDemand" />
+                        <widget name="channel_list" position="20,180" size="960,380" itemHeight="50" scrollbarMode="showOnDemand" />
                         <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
                         <widget name="key_red" position="20,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
                         <widget name="key_green" position="210,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
@@ -1758,7 +1758,7 @@ class VavooSearch(Screen):
                         <widget name="search_label" position="20,20" size="760,30" font="Regular;24" halign="left" valign="center" />
                         <widget name="search_text" position="20,60" size="760,40" font="Regular;24" halign="left" valign="center" backgroundColor="#000080" />
                         <widget name="input_info" position="20,475" size="760,25" font="Regular;18" halign="center" />
-                        <widget name="channel_list" position="20,120" size="760,349"itemHeight="50" scrollbarMode="showOnDemand" />
+                        <widget name="channel_list" position="20,120" size="760,349" itemHeight="50" scrollbarMode="showOnDemand" />
                         <widget name="status" position="20,500" size="760,30" font="Regular;20" halign="center" />
                         <widget name="key_red" position="20,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
                         <widget name="key_green" position="210,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
