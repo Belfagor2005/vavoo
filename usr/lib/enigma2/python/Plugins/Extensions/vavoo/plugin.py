@@ -1732,7 +1732,7 @@ class VavooSearch(Screen):
                 self.skin = """
                     <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
                         <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
-                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="#00008B" />
                         <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
                         <widget name="channel_list" position="20,250" size="1160,510" itemHeight="60" scrollbarMode="showOnDemand" />
                         <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
@@ -1746,7 +1746,7 @@ class VavooSearch(Screen):
                 self.skin = """
                     <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
                         <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
-                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="#00008B" />
                         <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
                         <widget name="channel_list" position="20,180" size="960,380" itemHeight="50" scrollbarMode="showOnDemand" />
                         <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
@@ -1776,7 +1776,7 @@ class VavooSearch(Screen):
                 self.skin = """
                     <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
                         <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
-                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="#00008B" />
                         <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
                         <widget name="channel_list" position="20,250" size="1160,510" font="Regular;36" itemHeight="60" scrollbarMode="showOnDemand" />
                         <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
@@ -1790,7 +1790,7 @@ class VavooSearch(Screen):
                 self.skin = """
                     <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
                         <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
-                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="darkblue" />
+                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="#00008B" />
                         <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
                         <widget name="channel_list" position="20,180" size="960,380" font="Regular;28" itemHeight="50" scrollbarMode="showOnDemand" />
                         <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
