@@ -1158,7 +1158,11 @@ class MainVavoo(Screen):
         except Exception as error:
             print('Error in ok method:', error)
             trace_error()
-            self.session.open(MessageBox, _("Error: Cannot open selected item"), MessageBox.TYPE_ERROR, timeout=3)
+            self.session.open(
+                MessageBox,
+                _("Error: Cannot open selected item"),
+                MessageBox.TYPE_ERROR,
+                timeout=3)
 
     def msgdeleteBouquets(self):
         self.session.openWithCallback(
