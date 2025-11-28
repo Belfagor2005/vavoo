@@ -2611,7 +2611,7 @@ def add_skin_font():
 
 def cfgmain(menuid, **kwargs):
     if menuid == "mainmenu":
-        return [(_('Vavoo Stream Live'), main, 'Vavoo', 55)]
+        return [(_('Vavoo Stream Live'), main, 'Vavoo', 11)]
     else:
         return []
 
