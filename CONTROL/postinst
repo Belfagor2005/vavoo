@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # Vavoo Stream Live - Post Installation Script
-# Version: 1.38
 # Author: Lululla
 # License: CC BY-NC-SA 4.0
 
@@ -9,7 +8,6 @@ print_header() {
     echo "############################################################"
     echo "#                                                          #"
     echo "#  Vavoo Stream Live Plugin - Installation Complete        #"
-    echo "#  Version: 1.38                                           #"
     echo "#  Author: Lululla (https://github.com/Belfagor2005)       #"
     echo "#  License: CC BY-NC-SA 4.0                                #"
     echo "#                                                          #"

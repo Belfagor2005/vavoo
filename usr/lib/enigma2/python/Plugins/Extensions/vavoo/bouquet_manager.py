@@ -6,11 +6,10 @@ from __future__ import absolute_import, print_function
 #########################################################
 #                                                       #
 #  Vavoo Stream Live Plugin                             #
-#  Version: 1.40                                        #
 #  Created by Lululla (https://github.com/Belfagor2005) #
 #  License: CC BY-NC-SA 4.0                             #
 #  https://creativecommons.org/licenses/by-nc-sa/4.0    #
-#  Last Modified: 20251118                              #
+#  Last Modified: 20251216                              #
 #                                                       #
 #  Credits:                                             #
 #  - Original concept by Lululla                        #
@@ -26,27 +25,23 @@ from __future__ import absolute_import, print_function
 #########################################################
 """
 __author__ = "Lululla"
-__version__ = "1.40"
 __license__ = "CC BY-NC-SA 4.0"
 
-# Standard library
 import time
 from json import loads
-from os.path import exists as file_exists, join, isfile
 from os import listdir, remove
-
+from os.path import exists as file_exists, isfile, join
 from re import sub
 from sys import version_info
+
 try:
     from urllib import unquote
 except ImportError:
     from urllib.parse import unquote
 
-# Enigma / Third-party
-from enigma import eTimer, eDVBDB
+from enigma import eDVBDB, eTimer
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
 
-# Local modules
 from .vUtils import getAuthSignature, getUrl, decodeHtml, rimuovi_parentesi, sanitizeFilename
 
 # Constants
@@ -58,7 +53,7 @@ PY3 = version_info[0] == 3
 def get_enigma2_path():
     barry_active = '/media/ba/active/etc/enigma2'
     if file_exists(barry_active):
-        return barry_active.rstrip('/')  # Rimuovi eventuale slash finale
+        return barry_active.rstrip('/')
 
     possible_paths = [
         '/autofs/sda1/etc/enigma2',
@@ -205,7 +200,7 @@ def remove_bouquets_by_name(name=None):
         for fname in listdir(ENIGMA_PATH):
             if '.vavoo_' in fname and (
                     fname.endswith('.tv') or fname.endswith('.radio')):
-                # Se name è specificato, controlla il match
+                # If name is specified, check the match
                 if name is not None:
                     name_safe = name.lower().replace(
                         ' ',
@@ -334,8 +329,7 @@ def _prepare_bouquet_filenames(name, bouquet_type):
         bouquet_name = "subbouquet.vavoo_" + name_file + "." + bouquet_type.lower()
         print("DEBUG: Creating SUBBOUQUET: " + bouquet_name)
     else:
-        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + \
-            bouquet_type.lower()
+        bouquet_name = "userbouquet.vavoo_" + name_file.lower() + "." + bouquet_type.lower()
         print("DEBUG: Creating USERBOUQUET: " + bouquet_name)
 
     return name_file, bouquet_name
@@ -589,8 +583,7 @@ def _create_or_update_container_bouquet(
         with open(container_path, 'w') as f:
             for line in content:
                 f.write(line + '\n')
-        print("✓ Container bouquet updated: " + container_name +
-              " with " + str(len(existing_categories)) + " categories")
+        print("✓ Container bouquet updated: " + container_name + " with " + str(len(existing_categories)) + " categories")
 
         # Add to main bouquet
         _add_to_main_bouquet(container_name, bouquet_type, list_position)

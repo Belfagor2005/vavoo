@@ -6,7 +6,6 @@ from __future__ import absolute_import, print_function
 #########################################################
 #                                                       #
 #  Vavoo Stream Live Plugin                             #
-#  Version: 1.42                                        #
 #  Created by Lululla (https://github.com/Belfagor2005) #
 #  License: CC BY-NC-SA 4.0                             #
 #  https://creativecommons.org/licenses/by-nc-sa/4.0    #
@@ -30,9 +29,10 @@ from __future__ import absolute_import, print_function
 import codecs
 import ssl
 import time
+import threading
 from datetime import datetime
-from os import listdir, makedirs, unlink, remove, system
-from os.path import exists as file_exists, join, islink, isfile, splitext
+from os import listdir, makedirs, unlink, remove, system, chmod
+from os.path import exists as file_exists, join, islink, isfile, splitext, getsize
 from re import compile, DOTALL  # sub
 from json import loads
 from sys import version_info  # , stdout, stderr
@@ -99,7 +99,7 @@ from Tools.NumericalTextInput import NumericalTextInput
 from Plugins.Plugin import PluginDescriptor
 
 # Local application/library-specific imports
-from . import _, __author__, __version__, __license__, country_codes
+from . import _, __author__, __version__, __license__  # , country_codes
 from . import vUtils
 from .resolver.Console import Console
 from .bouquet_manager import (
@@ -109,7 +109,15 @@ from .bouquet_manager import (
     remove_bouquets_by_name,
     trace_error
 )
-
+from .vUtils import (
+    # load_flag_to_widget,
+    get_country_code,
+    download_flag_online,
+    # preload_country_flags,
+    cleanup_old_temp_files,
+    download_flag_with_size,
+    initialize_cache_with_local_flags
+)
 
 try:
     unicode
@@ -170,7 +178,7 @@ CONFIG_FILE = resolveFilename(SCOPE_CONFIG, "settings")
 regexs = '<a[^>]*href="([^"]+)"[^>]*><img[^>]*src="([^"]+)"[^>]*>'
 
 global HALIGN, BackPath, FONTSTYPE, FNTPath
-global search_ok
+global search_ok, screen_width
 search_ok = False
 auto_start_timer = None
 _session = None
@@ -246,15 +254,15 @@ def to_string(text):
     if text is None:
         return ""
 
-    # Se è già una stringa unicode (Python 2) o str (Python 3)
+    # If it's already a unicode string (Python 2) or str (Python 3)
     if isinstance(text, unicode):
         return text.encode('utf-8', 'ignore') if PY2 else text
 
-    # Se è bytes (Python 3)
+    # If it's bytes (Python 3)
     if PY3 and isinstance(text, bytes):
         return text.decode('utf-8', 'ignore')
 
-    # Per altri tipi, converti a stringa
+    # For other types, convert to string
     return str(text)
 
 
@@ -406,68 +414,108 @@ class m2list(MenuList):
 
 
 def show_list(name, link, is_category=False):
+    """
+    Build a MultiContent entry for a country or category with icon and text.
+    """
     global HALIGN
+
+    # Text alignment based on language
     if any(s in lng for s in locl):
         HALIGN = RT_HALIGN_RIGHT
     else:
         HALIGN = RT_HALIGN_LEFT
 
-    # Converti a stringhe sicure
     safe_name = to_string(name)
     safe_link = to_string(link)
 
     res = [(safe_name, safe_link)]
+
+    # Default icon
     default_icon = join(PLUGIN_PATH, 'skin/pics/vavoo_ico.png')
+    icon_path = default_icon
 
-    pngx = default_icon
+    # Extract country name
+    country_name = safe_name.split('➾')[0].split('⟾')[0].split('→')[0].split('->')[0].strip()
 
-    separators = ["➾", "⟾", "->", "→"]
-    for sep in separators:
-        if sep in safe_name:
-            country_name = safe_name.split(sep)[0].strip()
-            country_code = country_codes.get(country_name, None)
+    if not is_category and country_name:
+        try:
+            country_code = get_country_code(country_name)
             if country_code:
-                icon_file = country_code + '.png'
-                pngx = join(PLUGIN_PATH, 'skin/cowntry', icon_file)
-            break
-    else:
-        country_code = country_codes.get(safe_name, None)
-        if country_code:
-            icon_file = country_code + '.png'
-            pngx = join(PLUGIN_PATH, 'skin/cowntry', icon_file)
+                cache_file = "/tmp/vavoo_flags/%s.png" % country_code.lower()
 
-    if not isfile(pngx):
-        pngx = default_icon
+                # Use cache if exists and valid
+                if file_exists(cache_file):
+                    try:
+                        if getsize(cache_file) > 100:
+                            icon_path = cache_file
+                            print("✓ [show_list] Using cached flag: %s" % country_name)
+                        else:
+                            print("✗ [show_list] Cache too small, removing: %s" % cache_file)
+                            unlink(cache_file)
+                    except Exception:
+                        pass
 
-    if not isfile(pngx):
-        print("Icon not found: " + pngx)
-        pngx = default_icon
+                # If not in cache, download
+                if icon_path == default_icon:
+                    print("⏳ [show_list] Downloading flag for: %s" % country_name)
+                    # Flag size based on screen_width
+                    if screen_width >= 2560:
+                        target_size = "80x60"
+                    elif screen_width >= 1920:
+                        target_size = "60x45"
+                    else:
+                        target_size = "40x30"
 
-    icon_pos = (10, 10) if screen_width == 1920 else (10, 5)
-    icon_size = (50, 35) if screen_width == 1920 else (40, 30)
+                    success = download_flag_with_size(country_name, target_size)
+                    if success and file_exists(cache_file):
+                        icon_path = cache_file
+                        print("✓ [show_list] Downloaded flag: %s" % country_name)
+            else:
+                print("✗ [show_list] No country code for: %s" % country_name)
 
-    if screen_width == 2560:
-        text_pos = (90, 0)
+        except Exception as e:
+            print("[show_list] Error processing %s: %s" % (country_name, str(e)))
+
+    # Icon size and position
+    if screen_width >= 2560:
+        icon_size = (80, 60)
+        icon_pos = (10, 10)
         text_size = (750, 60)
-    elif screen_width == 1920:
-        text_pos = (80, 0)
+        text_pos = (icon_size[0] + 20, 0)
+    elif screen_width >= 1920:
+        icon_size = (60, 45)
+        icon_pos = (10, 10)
         text_size = (540, 50)
+        text_pos = (icon_size[0] + 20, 0)
     else:
-        text_pos = (85, 0)
+        icon_size = (40, 30)
+        icon_pos = (10, 5)
         text_size = (380, 50)
+        text_pos = (icon_size[0] + 20, 0)
 
-    res.append(
-        MultiContentEntryPixmapAlphaTest(
+    # Load PNG
+    try:
+        png_data = loadPNG(icon_path)
+    except Exception:
+        try:
+            png_data = loadPNG(default_icon)
+        except Exception:
+            png_data = None
+
+    if png_data:
+        res.append(MultiContentEntryPixmapAlphaTest(
             pos=icon_pos,
             size=icon_size,
-            png=loadPNG(pngx)))
-    res.append(
-        MultiContentEntryText(
-            pos=text_pos,
-            size=text_size,
-            font=0,
-            text=safe_name,
-            flags=HALIGN | RT_VALIGN_CENTER))
+            png=png_data
+        ))
+
+    res.append(MultiContentEntryText(
+        pos=text_pos,
+        size=text_size,
+        font=0,
+        text=safe_name,
+        flags=HALIGN | RT_VALIGN_CENTER
+    ))
 
     return list(res)
 
@@ -695,7 +743,6 @@ class vavoo_config(Screen, ConfigListScreen):
                 system("echo '#!/bin/bash")
                 system(
                     "echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
-                from os import chmod
                 chmod("/etc/init.d/ipv6dis.sh", 0o700)
                 system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
                 cfg.ipv6.setValue(True)
@@ -945,6 +992,13 @@ class MainVavoo(Screen):
         self.count = 0
         self.loading = 0
         self.current_view = "categories"
+        self.flag_refresh_timer = eTimer()
+        try:
+            self.flag_refresh_timer.callback.append(self.refresh_list_with_flags)
+        except Exception:
+            # Fallback in case the callback attribute does not exist
+            self.flag_refresh_timer_conn = self.flag_refresh_timer.timeout.connect(self.refresh_list_with_flags)
+
         self.cat()
 
     def _initialize_labels(self):
@@ -964,6 +1018,7 @@ class MainVavoo(Screen):
             'prevBouquet': self.chDown,
             'nextBouquet': self.chUp,
             'ok': self.ok,
+            'mainMenu': self.goConfig,
             'menu': self.goConfig,
             'green': self.msgdeleteBouquets,
             'blue': self._reload_services_after_delay,
@@ -981,15 +1036,88 @@ class MainVavoo(Screen):
         actions_list = [
             'MenuActions',
             'OkCancelActions',
-            'DirectionActions',
+            # 'DirectionActions',
             'ColorActions',
             'InfobarEPGActions',
             'EPGSelectActions'
+            'HotkeyActions'
         ]
         self['actions'] = ActionMap(actions_list, actions, -1)
 
+    def preload_flags_for_visible_countries(self):
+        """Pre-carica le bandiere per i paesi visibili"""
+        try:
+            if not hasattr(self, 'all_data'):
+                return
+
+            # Estrai lista paesi
+            countries = set()
+            for entry in self.all_data:
+                country = unquote(entry["country"]).strip("\r\n")
+                if "➾" not in country:
+                    countries.add(country)
+
+            countries_list = sorted(list(countries))
+
+            print("[MainVavoo] Preloading flags for %d countries" % len(countries_list))
+
+            # Preload first 8 flags SYNCHRONOUSLY
+            downloaded = 0
+            for i, country in enumerate(countries_list[:8]):  # First 8
+                try:
+                    success, _ = download_flag_online(country, screen_width=screen_width)
+                    if success:
+                        downloaded += 1
+                        print("[Preload] OK: %s" % country)
+                except Exception as e:
+                    print("[Preload] Error %s: %s" % (country, str(e)))
+
+            print("[MainVavoo] Downloaded %d flags synchronously" % downloaded)
+
+            # Start timer for refresh after 1 second
+            if downloaded > 0:
+                self.flag_refresh_timer.start(1000, True)
+
+            # Download remaining in background
+            if len(countries_list) > 8:
+
+                def download_rest():
+                    for country in countries_list[8:]:
+                        try:
+                            download_flag_online(country, screen_width=screen_width)
+                        except:
+                            pass
+
+                    print("[Background] Finished downloading remaining flags")
+
+                thread = threading.Thread(target=download_rest)
+                thread.daemon = True
+                thread.start()
+
+        except Exception as e:
+            print("[MainVavoo] Error preloading flags: %s" % str(e))
+
+    def refresh_list_with_flags(self):
+        """Refresh list to show downloaded flags (Python 2/3 compatible)"""
+        try:
+            print("[MainVavoo] Refreshing list to show downloaded flags")
+
+            # Recreate the list
+            if cfg.default_view.value == "countries":
+                self.show_countries_view()
+            else:
+                self.show_categories_view()
+
+            self._update_ui()
+
+            # Stop the timer
+            self.flag_refresh_timer.stop()
+
+        except Exception as e:
+            print("[MainVavoo] Error refreshing list: %s" % str(e))
+
     def _reload_services_after_delay(self, delay=3000):
-        """Reload services after a manual edit"""
+        """Reload services after a manual edit, with a delay in milliseconds."""
         try:
             def do_reload():
                 try:
@@ -1000,30 +1128,37 @@ class MainVavoo(Screen):
                             MessageBox,
                             _("Bouquets have been successfully reloaded!"),
                             MessageBox.TYPE_INFO,
-                            timeout=5)
+                            timeout=5
+                        )
                     else:
-                        print("Could not get eDVBDB instance for reload")
+                        print("[Reload] Could not get eDVBDB instance for reload")
                 except Exception as e:
-                    print("Error during service reload: " + str(e))
+                    print("[Reload] Error during service reload: %s" % str(e))
                 finally:
-                    if hasattr(
-                            self,
-                            'reload_timer') and self.reload_timer is not None:
+                    # Stop timer if it exists
+                    if hasattr(self, 'reload_timer') and self.reload_timer is not None:
                         self.reload_timer.stop()
 
             self.reload_timer = eTimer()
             try:
                 self.reload_timer.callback.append(do_reload)
-            except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(
-                    do_reload)
+            except Exception:
+                # Fallback in case the callback attribute does not exist
+                self.reload_timer_conn = self.reload_timer.timeout.connect(do_reload)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
-            print("Error setting up service reload: " + str(e))
+            print("[Reload] Error setting up service reload: %s" % str(e))
 
     def closex(self):
-        print("DEBUG: Exit from plugin Calling ReloadBouquets after export")
+        print("[DEBUG] Exit from plugin. Calling _reload_services_after_delay...")
+        # Clean up temp files
+        try:
+            cleaned = cleanup_old_temp_files(max_age_hours=0)  # Clean ALL temp files
+            print("[Cleanup] Removed %d temporary files" % cleaned)
+        except Exception as e:
+            print("[Cleanup] Error: %s" % str(e))
+
         self._reload_services_after_delay()
         self.close()
 
@@ -1032,11 +1167,13 @@ class MainVavoo(Screen):
         self.items_tmp = []
 
         try:
+            # Fetch content
             content = self._get_content()
             if not content:
                 self["name"].setText(to_string("Error: No data received"))
                 return
 
+            # Parse JSON
             data = self._parse_json(content)
             if data is None:
                 self["name"].setText(to_string("Error: Invalid data format"))
@@ -1044,17 +1181,57 @@ class MainVavoo(Screen):
 
             self.all_data = data
 
+            # Preload visible flags
+            self.preload_flags_for_visible_countries()
+
+            # ====== PRELOAD FLAGS BEFORE CREATING LIST ======
+            # countries_to_preload = []
+
+            if cfg.default_view.value == "countries":
+                # Extract unique country names
+                countries = set()
+                for entry in self.all_data:
+                    country = unquote(entry["country"]).strip("\r\n")
+                    if "➾" not in country:
+                        countries.add(country)
+
+                countries_list = sorted(list(countries))
+                # countries_to_preload = countries_list
+
+                print("Preloading %d flags..." % len(countries_list))
+
+                # Download first 5 flags synchronously for initial display
+                for country in countries_list[:5]:
+                    try:
+                        country_code = get_country_code(country)
+                        if country_code:
+                            success, flag_path = download_flag_online(
+                                country,
+                                cache_dir="/tmp/vavoo_flags",
+                                screen_width=1920
+                            )
+                            if success:
+                                print("✓ Preloaded flag for: %s" % country)
+                    except Exception:
+                        pass
+
+            # Show the appropriate view
             if cfg.default_view.value == "countries":
                 self.show_countries_view()
             else:
                 self.show_categories_view()
 
+            # Preload flags AFTER showing initial list
+            self.preload_flags_for_visible_countries()
+
             self._update_ui()
+
         except Exception as error:
-            print("error:", error)
+            print("Error:", error)
             trace_error()
             self["name"].setText(to_string("Error loading data"))
 
+        # Set version
         self["version"].setText(to_string("V." + __version__))
 
     def _parse_select_options(self, html_content):
@@ -1200,12 +1377,12 @@ class MainVavoo(Screen):
 
     def info(self):
         """Display professional plugin information"""
-        info_text = _(
-            "%s\n\n"
+        info_template = _(
+            "\n\n"
             "📊 **Plugin Information**\n"
-            "• Version: %s\n"
-            "• Author: %s\n"
-            "• License: %s\n\n"
+            "• Version: {version}\n"
+            "• Author: {author}\n"
+            "• License: {license}\n\n"
             "🛠️ **Technical Details**\n"
             "• Streaming protocol: HTTP Live Streaming\n"
             "• Supported formats: TS, M3U8\n"
@@ -1224,7 +1401,13 @@ class MainVavoo(Screen):
             "This software is licensed under CC BY-NC-SA 4.0\n"
             "Redistribution must maintain attribution\n"
             "Commercial use is strictly prohibited"
-        ) % (desc_plugin, __version__, __author__, __license__)
+        )
+
+        info_text = info_template.format(
+            version=__version__,
+            author=__author__,
+            license=__license__
+        )
 
         aboutbox = self.session.open(
             MessageBox,
@@ -1304,13 +1487,21 @@ class MainVavoo(Screen):
         if float(__version__) < float(remote_version):
             new_version = remote_version
             new_changelog = remote_changelog
+            update_message = _(
+                "New version {version} is available.\n\n"
+                "Changelog: {changelog}\n\n"
+                "Do you want to install it now?"
+            )
+            formatted_message = update_message.format(
+                version=new_version,
+                changelog=new_changelog
+            )
             self.session.openWithCallback(
                 self.install_update,
                 MessageBox,
-                _("New version %s is available.\n\nChangelog: %s\n\nDo you want to install it now?") %
-                (new_version,
-                    new_changelog),
-                MessageBox.TYPE_YESNO)
+                formatted_message,
+                MessageBox.TYPE_YESNO
+            )
         else:
             self.session.open(
                 MessageBox,
@@ -2621,6 +2812,11 @@ def main(session, **kwargs):
         if isfile('/tmp/vavoo.log'):
             remove('/tmp/vavoo.log')
         add_skin_font()
+        try:
+            initialize_cache_with_local_flags()
+            cleanup_old_temp_files()
+        except Exception as e:
+            print("Cache initialization error: %s" % str(e))
         session.open(startVavoo)
     except Exception as error:
         print('error as:', error)

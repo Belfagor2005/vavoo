@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version='1.42'
+version='1.43'
 changelog='\n- Recoded all source\nFix Py2 str\nAdd search Live'
 
 TMPPATH=/tmp/vavoo-install
@@ -180,7 +180,7 @@ IMAGE VERSION: ${distro_version:-Unknown}
 PLUGIN VERSION: $version
 EOF
 
-echo "Restarting enigma2 in 5 seconds..."
-sleep 5
-killall -9 enigma2
-exit 0
+# echo "Restarting enigma2 in 5 seconds..."
+# sleep 5
+# killall -9 enigma2
+# exit 0
