@@ -1,7 +1,7 @@
 #!/bin/bash
 
 version='1.43'
-changelog='\n- Recoded all source\nFix Py2 str\nAdd search Live'
+changelog='\nRemoved Flags folders\nadd flags online'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz
