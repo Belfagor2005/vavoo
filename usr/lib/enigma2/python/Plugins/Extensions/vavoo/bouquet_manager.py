@@ -317,7 +317,8 @@ def _prepare_bouquet_filenames(name, bouquet_type, max_length=100):
     # Use compiled regex patterns for better performance
     # Simple character class replacements - safe from backtracking
     invalid_chars = compile(r'[<>:"/\\|?*, ]')
-    digit_colon_pattern = compile(r'\d+:\d+(?:\.\d+)+')  # More specific pattern
+    digit_colon_pattern = compile(
+        r'\d+:\d+(?:\.\d+)+')  # More specific pattern
     multiple_underscores = compile(r'_+')
     non_alnum = compile(r'[^a-zA-Z0-9_]')
 
