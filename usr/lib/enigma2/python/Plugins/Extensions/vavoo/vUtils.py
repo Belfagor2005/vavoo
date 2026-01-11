@@ -145,6 +145,28 @@ _ESCAPE_DICT = {
 }
 
 
+std_headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6',
+    'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en-us,en;q=0.5'}
+
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.88 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+
+]
+
+
+def RequestAgent():
+    """Get random user agent from list"""
+    return choice(USER_AGENTS)
+
+
 def ensure_str(s, encoding="utf-8", errors="strict"):
     if isinstance(s, str):
         return s
@@ -201,11 +223,11 @@ def getUrl(url):
                 Request(
                     url,
                     headers=headers),
-                timeout=20,
+                timeout=30,
                 context=ssl_context)
             return response.read().decode('utf-8', errors='ignore')
         else:
-            response = urlopen(Request(url, headers=headers), timeout=20)
+            response = urlopen(Request(url, headers=headers), timeout=30)
             return response.read()
     except Exception as e:
         print("URL fetch error: %s" % e)
@@ -453,7 +475,7 @@ def ReloadBouquets():
         try:
             reload_timer.callback.append(do_reload)
         except BaseException:
-            reload_timer_conn = reload_timer.timeout.connect(
+            reload_timer.timeout.connect(
                 do_reload)
         reload_timer.start(2000, True)
     except Exception as e:
@@ -549,28 +571,6 @@ def getserviceinfo(service_ref):
         return None, None
 
 
-std_headers = {
-    'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6',
-    'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'en-us,en;q=0.5'}
-
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.88 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
-
-]
-
-
-def RequestAgent():
-    """Get random user agent from list"""
-    return choice(USER_AGENTS)
-
-
 # ============================================================================
 # FLAG DOWNLOAD FUNCTIONS
 # ============================================================================
@@ -613,10 +613,7 @@ def initialize_cache_with_local_flags():
     return copied
 
 
-def download_flag_online(
-        country_name,
-        cache_dir="/tmp/vavoo_flags",
-        screen_width=None):
+def download_flag_online(country_name, cache_dir="/tmp/vavoo_flags", screen_width=None):
     """
     Download country flag from online service (TV Garden style)
     Returns: (success, flag_path_or_error_message)
@@ -626,9 +623,7 @@ def download_flag_online(
         if screen_width is None:
             screen_width = get_screen_width()  # deve restituire int
 
-        print(
-            "[vUtils] Processing %s with screen_width=%d" %
-            (country_name, screen_width))
+        print("[vUtils] Processing %s with screen_width=%d" % (country_name, screen_width))
 
         # 2. Get country code
         country_code = get_country_code(country_name)
@@ -639,15 +634,9 @@ def download_flag_online(
         special_flags = ['bk', 'internat']
 
         if country_code_lower in special_flags:
-            local_path = join(
-                PLUGIN_PATH,
-                'skin/cowntry',
-                '%s.png' %
-                country_code_lower)
+            local_path = join(PLUGIN_PATH, 'skin/cowntry', '%s.png' % country_code_lower)
             if exists(local_path):
-                print(
-                    "[vUtils] Using special flag: %s -> %s" %
-                    (country_name, local_path))
+                print("[vUtils] Using special flag: %s -> %s" % (country_name, local_path))
                 return True, local_path
 
         # 3. Create cache directory (Python 2 safe)
@@ -679,10 +668,8 @@ def download_flag_online(
             width, height = 40, 30
 
         # 7. Build URL
-        url = "https://flagcdn.com/%dx%d/%s.png" % (
-            width, height, country_code_lower)
-        print("[vUtils] Downloading %s (%dx%d) from: %s" %
-              (country_name, width, height, url))
+        url = "https://flagcdn.com/%dx%d/%s.png" % (width, height, country_code_lower)
+        print("[vUtils] Downloading %s (%dx%d) from: %s" % (country_name, width, height, url))
 
         # 8. Download
         req = Request(url, headers={'User-Agent': 'Vavoo-Stream/1.0'})
@@ -706,9 +693,7 @@ def download_flag_online(
 
         # 10. Validate small file
         if len(flag_data) < 100:
-            print(
-                "[vUtils] Warning: Flag file too small (%d bytes)" %
-                len(flag_data))
+            print("[vUtils] Warning: Flag file too small (%d bytes)" % len(flag_data))
 
         # 11. Save to cache
         try:
@@ -728,8 +713,7 @@ def download_flag_online(
                     pass
                 return False, "Invalid PNG file downloaded"
 
-            print("[vUtils] Flag %dx%d saved: %s (%d bytes)" %
-                  (width, height, cache_file, len(flag_data)))
+            print("[vUtils] Flag %dx%d saved: %s (%d bytes)" % (width, height, cache_file, len(flag_data)))
             return True, cache_file
 
         except Exception as e:
@@ -741,10 +725,7 @@ def download_flag_online(
         return False, "Flag download error: %s" % e
 
 
-def download_flag_with_size(
-        country_name,
-        size="40x30",
-        cache_dir="/tmp/vavoo_flags"):
+def download_flag_with_size(country_name, size="40x30", cache_dir="/tmp/vavoo_flags"):
     """
     Download flag with specific size (40x30, 80x60, etc.)
     Returns: success (True/False)
@@ -761,17 +742,15 @@ def download_flag_with_size(
                 width, height = size.split("x")
                 width = int(width)
                 height = int(height)
-            except BaseException:
+            except:
                 width, height = 40, 30
         else:
             width, height = 40, 30
 
         # URL with fixed size w/h
-        url = "https://flagcdn.com/w%d/h%d/%s.png" % (
-            width, height, country_code.lower())
+        url = "https://flagcdn.com/w%d/h%d/%s.png" % (width, height, country_code.lower())
 
-        print("[vUtils] Downloading %s flag %dx%d from: %s" %
-              (country_name, width, height, url))
+        print("[vUtils] Downloading %s flag %dx%d from: %s" % (country_name, width, height, url))
 
         # Create cache folder
         makedirs(cache_dir, exist_ok=True)
@@ -802,9 +781,7 @@ def download_flag_with_size(
                   (width, height, cache_file, len(flag_data)))
             return True
         else:
-            print(
-                "[vUtils] ✗ Download failed for %s (HTTP %d)" %
-                (country_name, response.getcode()))
+            print("[vUtils] ✗ Download failed for %s (HTTP %d)" % (country_name, response.getcode()))
             return False
 
     except Exception as e:
@@ -963,9 +940,7 @@ def cleanup_flag_cache(max_age_days=7):
                         unlink(filepath)
                         print("[vUtils] Removed old flag: %s" % filename)
                 except Exception as e:
-                    print(
-                        "[vUtils] Error removing %s: %s" %
-                        (filename, str(e)))
+                    print("[vUtils] Error removing %s: %s" % (filename, str(e)))
     except Exception as e:
         print("[vUtils] Error cleaning flag cache: %s" % str(e))
 
@@ -996,13 +971,9 @@ def cleanup_old_temp_files(max_age_hours=1):
                         if file_age > max_age:
                             unlink(filepath)
                             cleaned += 1
-                            print(
-                                "[vUtils] Cleaned old temp file: %s" %
-                                filepath)
+                            print("[vUtils] Cleaned old temp file: %s" % filepath)
                 except Exception as e:
-                    print(
-                        "[vUtils] Error removing %s: %s" %
-                        (filepath, str(e)))
+                    print("[vUtils] Error removing %s: %s" % (filepath, str(e)))
 
         if cleaned > 0:
             print("[vUtils] Total cleaned old temp files: %d" % cleaned)
@@ -1029,9 +1000,7 @@ def preload_country_flags(country_list, cache_dir="/tmp/vavoo_flags"):
                 if success:
                     print("[vUtils] Preloaded flag for: %s" % country)
             except Exception as e:
-                print(
-                    "[vUtils] Error preloading flag for %s: %s" %
-                    (country, str(e)))
+                print("[vUtils] Error preloading flag for %s: %s" % (country, str(e)))
 
     # Split list into chunks to avoid overloading
     chunk_size = 10

@@ -435,8 +435,7 @@ def show_list(name, link, is_category=False):
     icon_path = default_icon
 
     # Extract country name
-    country_name = safe_name.split('➾')[0].split(
-        '⟾')[0].split('→')[0].split('->')[0].strip()
+    country_name = safe_name.split('➾')[0].split('⟾')[0].split('→')[0].split('->')[0].strip()
 
     if not is_category and country_name:
         try:
@@ -449,22 +448,16 @@ def show_list(name, link, is_category=False):
                     try:
                         if getsize(cache_file) > 100:
                             icon_path = cache_file
-                            print(
-                                "✓ [show_list] Using cached flag: %s" %
-                                country_name)
+                            print("✓ [show_list] Using cached flag: %s" % country_name)
                         else:
-                            print(
-                                "✗ [show_list] Cache too small, removing: %s" %
-                                cache_file)
+                            print("✗ [show_list] Cache too small, removing: %s" % cache_file)
                             unlink(cache_file)
                     except Exception:
                         pass
 
                 # If not in cache, download
                 if icon_path == default_icon:
-                    print(
-                        "⏳ [show_list] Downloading flag for: %s" %
-                        country_name)
+                    print("⏳ [show_list] Downloading flag for: %s" % country_name)
                     # Flag size based on screen_width
                     if screen_width >= 2560:
                         target_size = "80x60"
@@ -473,20 +466,15 @@ def show_list(name, link, is_category=False):
                     else:
                         target_size = "40x30"
 
-                    success = download_flag_with_size(
-                        country_name, target_size)
+                    success = download_flag_with_size(country_name, target_size)
                     if success and file_exists(cache_file):
                         icon_path = cache_file
-                        print(
-                            "✓ [show_list] Downloaded flag: %s" %
-                            country_name)
+                        print("✓ [show_list] Downloaded flag: %s" % country_name)
             else:
                 print("✗ [show_list] No country code for: %s" % country_name)
 
         except Exception as e:
-            print(
-                "[show_list] Error processing %s: %s" %
-                (country_name, str(e)))
+            print("[show_list] Error processing %s: %s" % (country_name, str(e)))
 
     # Icon size and position
     if screen_width >= 2560:
@@ -1006,12 +994,10 @@ class MainVavoo(Screen):
         self.current_view = "categories"
         self.flag_refresh_timer = eTimer()
         try:
-            self.flag_refresh_timer.callback.append(
-                self.refresh_list_with_flags)
+            self.flag_refresh_timer.callback.append(self.refresh_list_with_flags)
         except Exception:
             # Fallback in case the callback attribute does not exist
-            self.flag_refresh_timer_conn = self.flag_refresh_timer.timeout.connect(
-                self.refresh_list_with_flags)
+            self.flag_refresh_timer_conn = self.flag_refresh_timer.timeout.connect(self.refresh_list_with_flags)
 
         self.cat()
 
@@ -1073,16 +1059,13 @@ class MainVavoo(Screen):
 
             countries_list = sorted(list(countries))
 
-            print(
-                "[MainVavoo] Preloading flags for %d countries" %
-                len(countries_list))
+            print("[MainVavoo] Preloading flags for %d countries" % len(countries_list))
 
             # Preload first 8 flags SYNCHRONOUSLY
             downloaded = 0
             for i, country in enumerate(countries_list[:8]):  # First 8
                 try:
-                    success, _ = download_flag_online(
-                        country, screen_width=screen_width)
+                    success, _ = download_flag_online(country, screen_width=screen_width)
                     if success:
                         downloaded += 1
                         print("[Preload] OK: %s" % country)
@@ -1101,9 +1084,8 @@ class MainVavoo(Screen):
                 def download_rest():
                     for country in countries_list[8:]:
                         try:
-                            download_flag_online(
-                                country, screen_width=screen_width)
-                        except BaseException:
+                            download_flag_online(country, screen_width=screen_width)
+                        except:
                             pass
 
                     print("[Background] Finished downloading remaining flags")
@@ -1154,9 +1136,7 @@ class MainVavoo(Screen):
                     print("[Reload] Error during service reload: %s" % str(e))
                 finally:
                     # Stop timer if it exists
-                    if hasattr(
-                            self,
-                            'reload_timer') and self.reload_timer is not None:
+                    if hasattr(self, 'reload_timer') and self.reload_timer is not None:
                         self.reload_timer.stop()
 
             self.reload_timer = eTimer()
@@ -1164,8 +1144,7 @@ class MainVavoo(Screen):
                 self.reload_timer.callback.append(do_reload)
             except Exception:
                 # Fallback in case the callback attribute does not exist
-                self.reload_timer_conn = self.reload_timer.timeout.connect(
-                    do_reload)
+                self.reload_timer_conn = self.reload_timer.timeout.connect(do_reload)
             self.reload_timer.start(delay, True)
 
         except Exception as e:
@@ -1175,8 +1154,7 @@ class MainVavoo(Screen):
         print("[DEBUG] Exit from plugin. Calling _reload_services_after_delay...")
         # Clean up temp files
         try:
-            cleaned = cleanup_old_temp_files(
-                max_age_hours=0)  # Clean ALL temp files
+            cleaned = cleanup_old_temp_files(max_age_hours=0)  # Clean ALL temp files
             print("[Cleanup] Removed %d temporary files" % cleaned)
         except Exception as e:
             print("[Cleanup] Error: %s" % str(e))
@@ -1833,7 +1811,7 @@ class vavoo(Screen):
             print("Bouquet created with %s channels" % ch)
 
         print("DEBUG: Calling ReloadBouquets after export")
-        self._reload_services_after_delay()
+        self._reload_services_after_delay(5000)
 
     def search_vavoo(self):
         self.saved_itemlist = self.itemlist
