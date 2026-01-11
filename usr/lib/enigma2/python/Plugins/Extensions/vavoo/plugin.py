@@ -1116,39 +1116,9 @@ class MainVavoo(Screen):
         except Exception as e:
             print("[MainVavoo] Error refreshing list: %s" % str(e))
 
-    def _reload_services_after_delay(self, delay=3000):
-        """Reload services after a manual edit, with a delay in milliseconds."""
-        try:
-            def do_reload():
-                try:
-                    db = eDVBDB.getInstance()
-                    if db:
-                        db.reloadBouquets()
-                        self.session.open(
-                            MessageBox,
-                            _("Bouquets have been successfully reloaded!"),
-                            MessageBox.TYPE_INFO,
-                            timeout=5
-                        )
-                    else:
-                        print("[Reload] Could not get eDVBDB instance for reload")
-                except Exception as e:
-                    print("[Reload] Error during service reload: %s" % str(e))
-                finally:
-                    # Stop timer if it exists
-                    if hasattr(self, 'reload_timer') and self.reload_timer is not None:
-                        self.reload_timer.stop()
-
-            self.reload_timer = eTimer()
-            try:
-                self.reload_timer.callback.append(do_reload)
-            except Exception:
-                # Fallback in case the callback attribute does not exist
-                self.reload_timer_conn = self.reload_timer.timeout.connect(do_reload)
-            self.reload_timer.start(delay, True)
-
-        except Exception as e:
-            print("[Reload] Error setting up service reload: %s" % str(e))
+    def _reload_services_after_delay(self):
+        eDVBDB.getInstance().reloadBouquets()
+        eDVBDB.getInstance().reloadServicelist()
 
     def closex(self):
         print("[DEBUG] Exit from plugin. Calling _reload_services_after_delay...")
@@ -1706,36 +1676,9 @@ class vavoo(Screen):
             # User selected specific category - exact match only
             return country_field == selected_name
 
-    def _reload_services_after_delay(self, delay=3000):
-        """Reload services after a manual edit"""
-        try:
-            def do_reload():
-                try:
-                    db = eDVBDB.getInstance()
-                    if db:
-                        db.reloadBouquets()
-                        self.session.open(
-                            MessageBox,
-                            _("Bouquets have been successfully reloaded!"),
-                            MessageBox.TYPE_INFO,
-                            timeout=5)
-                    else:
-                        print("Could not get eDVBDB instance for reload")
-                except Exception as e:
-                    print("Error during service reload: " + str(e))
-                finally:
-                    self.reload_timer.stop()
-
-            self.reload_timer = eTimer()
-            try:
-                self.reload_timer.callback.append(self.on_timer)
-            except BaseException:
-                self.reload_timer_conn = self.reload_timer.timeout.connect(
-                    self.on_timer)
-            self.reload_timer.start(delay, True)
-
-        except Exception as e:
-            print("Error setting up service reload: " + str(e))
+    def _reload_services_after_delay(self):
+        eDVBDB.getInstance().reloadBouquets()
+        eDVBDB.getInstance().reloadServicelist()
 
     def ok(self):
         try:
@@ -1811,7 +1754,7 @@ class vavoo(Screen):
             print("Bouquet created with %s channels" % ch)
 
         print("DEBUG: Calling ReloadBouquets after export")
-        self._reload_services_after_delay(5000)
+        self._reload_services_after_delay()
 
     def search_vavoo(self):
         self.saved_itemlist = self.itemlist

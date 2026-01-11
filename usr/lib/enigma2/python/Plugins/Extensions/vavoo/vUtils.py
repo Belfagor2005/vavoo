@@ -465,9 +465,8 @@ def ReloadBouquets():
         def do_reload():
             try:
                 db = eDVBDB.getInstance()
-                if db:
-                    db.reloadServicelist()
-                    db.reloadBouquets()
+                db.reloadBouquets()
+                db.reloadServicelist()
             except Exception as e:
                 print("Error during service reload: " + str(e))
 
