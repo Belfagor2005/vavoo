@@ -31,7 +31,7 @@ import time
 from json import loads
 from os import listdir, remove
 from os.path import exists as file_exists, isfile, join
-from re import sub
+from re import compile
 from sys import version_info
 
 try:
@@ -89,7 +89,7 @@ def _reload_services_after_delay(delay=3000):
             reload_timer.callback.append(do_reload)
         except Exception:
             # Python 2
-            reload_timer_conn = reload_timer.timeout.connect(do_reload)
+            reload_timer.timeout.connect(do_reload)
         reload_timer.start(delay, True)
 
     except Exception as e:
@@ -306,26 +306,53 @@ def convert_bouquet(
         return result
 
 
-def _prepare_bouquet_filenames(name, bouquet_type):
-    """Prepare sanitized file names for bouquet creation"""
-    name_file = sub(r'[<>:"/\\|?*, ]', '_', str(name))
-    name_file = sub(r'\d+:\d+:[\d.]+', '_', name_file)
-    name_file = sub(r'_+', '_', name_file)
-    name_file = sub(r'[^a-zA-Z0-9_]', '', name_file)
+def _prepare_bouquet_filenames(name, bouquet_type, max_length=100):
+    """Prepare sanitized file names for bouquet creation with ReDoS protection"""
+    # Convert to string and truncate to prevent excessively long inputs
+    name_str = str(name)
+    if len(name_str) > max_length:
+        name_str = name_str[:max_length]
+        print(f"WARNING: Input truncated to {max_length} characters")
 
+    # Use compiled regex patterns for better performance
+    # Simple character class replacements - safe from backtracking
+    invalid_chars = compile(r'[<>:"/\\|?*, ]')
+    digit_colon_pattern = compile(r'\d+:\d+(?:\.\d+)+')  # More specific pattern
+    multiple_underscores = compile(r'_+')
+    non_alnum = compile(r'[^a-zA-Z0-9_]')
+
+    # Apply patterns in sequence
+    name_file = invalid_chars.sub('_', name_str)
+    name_file = digit_colon_pattern.sub('_', name_file)
+    name_file = multiple_underscores.sub('_', name_file)
+    name_file = non_alnum.sub('', name_file)
+
+    # Check for separators with length limits
     separators = ["➾", "⟾", "->", "→"]
-    has_separator = any(sep in name for sep in separators)
+    has_separator = False
+    separator_found = None
+
+    for sep in separators:
+        if sep in name_str:
+            has_separator = True
+            separator_found = sep
+            break
+
+    if has_separator and separator_found:
+        # Split only once to avoid unnecessary processing
+        parts = name_str.split(separator_found, 1)
+        if len(parts) >= 2:
+            # Limit the length of each part
+            country_part = parts[0].strip().lower().replace(' ', '_')[:50]
+            category_part = parts[1].strip().lower().replace(' ', '_')[:50]
+            name_file = country_part + "_" + category_part
+        else:
+            name_file = name_file[:100]  # Truncate if something went wrong
+
+    # Ensure final filename has reasonable length
+    name_file = name_file[:100]
 
     if has_separator:
-        for sep in separators:
-            if sep in name:
-                parts = name.split(sep)
-                if len(parts) >= 2:
-                    country_part = parts[0].strip().lower().replace(' ', '_')
-                    category_part = parts[1].strip().lower().replace(' ', '_')
-                    name_file = country_part + "_" + category_part
-                    break
-
         bouquet_name = "subbouquet.vavoo_" + name_file + "." + bouquet_type.lower()
         print("DEBUG: Creating SUBBOUQUET: " + bouquet_name)
     else:
