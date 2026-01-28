@@ -811,7 +811,7 @@ def _create_hierarchical_bouquet(
         total_ch = 0
         for category in sorted(all_categories):
             ch_count = _create_category_bouquet(
-                category, url, service, app, bouquet_type, server_url
+                category, url, service, bouquet_type, server_url
             )
             if ch_count > 0:  # Only add successfully exported categories
                 exported_categories.append(category)
