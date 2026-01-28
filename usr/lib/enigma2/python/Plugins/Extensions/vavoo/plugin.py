@@ -1719,7 +1719,7 @@ class MainVavoo(Screen):
             try:
                 requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
                 time.sleep(3)
-            except BaseException:
+            except:
                 pass
 
             # Kill python processes that could be the proxy
@@ -1729,7 +1729,7 @@ class MainVavoo(Screen):
             # Restart
             return run_proxy_in_background()
 
-        except BaseException:
+        except:
             return False
 
     def _reload_services_after_delay(self):
@@ -3239,7 +3239,7 @@ class VavooSearch(Screen):
                     if hasattr(self.searchTimer, 'callback'):
                         self.searchTimer.callback.remove(
                             self.updateFilteredList)
-                except BaseException:
+                except:
                     pass
 
             if hasattr(self, 'key_timer'):
@@ -3408,15 +3408,7 @@ class TvInfoBarShowHide():
             self.startHideTimer()
 
 
-class Playstream2(
-        InfoBarBase,
-        InfoBarMenu,
-        InfoBarSeek,
-        InfoBarAudioSelection,
-        InfoBarSubtitleSupport,
-        InfoBarNotifications,
-        TvInfoBarShowHide,
-        Screen):
+class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide, Screen):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
@@ -3584,9 +3576,12 @@ class Playstream2(
         if time_since_last_eof < 10:
             self.eof_count += 1
             print(
-                f"[Playstream2] __evEOF #{
-                    self.eof_count}, time: {
-                    time_since_last_eof:.1f}s")
+                "[Playstream2] __evEOF #" +
+                str(self.eof_count) +
+                ", time: " +
+                "%.1f" % time_since_last_eof +
+                "s"
+            )
         else:
             self.eof_count = 1
 
@@ -3648,7 +3643,7 @@ class Playstream2(
             self.eof_recovery_timer = eTimer()
             try:
                 self.eof_recovery_timer.callback.append(self.restartAfterEOF)
-            except BaseException:
+            except:
                 self.eof_recovery_timer_conn = self.eof_recovery_timer.timeout.connect(
                     self.restartAfterEOF)
 
@@ -3815,7 +3810,7 @@ class Playstream2(
             self.session.nav.stopService()
             if self.srefInit:
                 self.session.nav.playService(self.srefInit)
-        except BaseException:
+        except:
             pass
 
     def cancel(self):
@@ -3834,7 +3829,7 @@ class Playstream2(
         # Restore aspect ratio
         try:
             aspect_manager.restore_aspect()
-        except BaseException:
+        except:
             pass
 
         self.close()
@@ -4021,20 +4016,6 @@ class AutoStartTimer:
                       "/" +
                       str(len(bouquets_to_update)) +
                       " bouquets")
-
-                # Show MessageBox
-                try:
-                    self.session.open(
-                        MessageBox,
-                        "Bouquets reloaded successfully (" +
-                        str(successful_updates) +
-                        " updated)",
-                        MessageBox.TYPE_INFO,
-                        timeout=5)
-                except Exception as e:
-                    print(
-                        "[AutoStartTimer] Could not show MessageBox: " +
-                        str(e))
 
         except Exception as e:
             print("[AutoStartTimer] Error: " + str(e))
