@@ -311,7 +311,7 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" + \
+                                print("[Token Monitor] Token old (" +
                                       str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 

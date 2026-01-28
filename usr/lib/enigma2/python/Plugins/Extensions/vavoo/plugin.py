@@ -1834,7 +1834,6 @@ class MainVavoo(Screen):
     def _fallback_to_original_countries(self):
         """Fallback to the original method of getting countries"""
         try:
-            # self.url = "https://vavoo.to/channels"
             content = getUrl(self.url)
             if PY3:
                 content = ensure_str(content)
@@ -1884,7 +1883,7 @@ class MainVavoo(Screen):
 
     def _get_content(self):
         """Get data directly from vavoo.to"""
-        content = getUrl(self.url)  # self.url = "https://vavoo.to/channels"
+        content = getUrl(self.url)
         if PY3:
             content = ensure_str(content)
         return content
@@ -2011,7 +2010,7 @@ class MainVavoo(Screen):
         self.session.open(vavoo_config)
 
     def info(self):
-        """Display professional plugin information"""
+        """Display plugin information"""
         message_parts = []
         message_parts.append("=" * 40)
         message_parts.append(_("Vavoo Stream Live Plugin"))
