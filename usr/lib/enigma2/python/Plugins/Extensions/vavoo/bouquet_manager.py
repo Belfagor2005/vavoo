@@ -254,7 +254,13 @@ def remove_bouquets_by_name(name=None):
         return 0
 
 
-def convert_bouquet(servicetype, name, url, export_type, server, bouquet_position):
+def convert_bouquet(
+        servicetype,
+        name,
+        url,
+        export_type,
+        server,
+        bouquet_position):
     """Create bouquet using PROXY only - ignore URL parameter"""
     try:
         print("[Bouquet] Creating bouquet for: " + name)
@@ -290,13 +296,17 @@ def convert_bouquet(servicetype, name, url, export_type, server, bouquet_positio
             print("[Bouquet] No channels received from proxy for: " + name)
             return 0
 
-        print("[Bouquet] Received " + str(len(channels)) + " channels from proxy")
+        print("[Bouquet] Received " +
+              str(len(channels)) +
+              " channels from proxy")
 
         # 4. Create bouquet file
-        bouquet_count = create_bouquet_file(name, channels, servicetype, export_type, bouquet_position)
+        bouquet_count = create_bouquet_file(
+            name, channels, servicetype, export_type, bouquet_position)
 
         if bouquet_count > 0:
-            print("[Bouquet] Successfully created bouquet: " + name + " (" + str(bouquet_count) + " channels)")
+            print("[Bouquet] Successfully created bouquet: " +
+                  name + " (" + str(bouquet_count) + " channels)")
             # Reload services
             _reload_services_after_delay(2000)
         else:
@@ -320,7 +330,8 @@ def get_channels_from_proxy(name, export_type):
         encoded_name = quote(name)
 
         # Proxy URL
-        proxy_url = "http://127.0.0.1:%d/channels?country=%s" % (PORT, encoded_name)
+        proxy_url = "http://127.0.0.1:%d/channels?country=%s" % (
+            PORT, encoded_name)
 
         # Request to the proxy
         response = getUrl(proxy_url, timeout=30)
@@ -335,7 +346,8 @@ def get_channels_from_proxy(name, export_type):
         except BaseException:
             # Try with different encodings
             try:
-                channels = json.loads(response.decode('utf-8') if isinstance(response, bytes) else response)
+                channels = json.loads(response.decode(
+                    'utf-8') if isinstance(response, bytes) else response)
             except BaseException:
                 print("[Proxy] Invalid JSON response for %s" % name)
                 return []
@@ -411,7 +423,11 @@ def _prepare_bouquet_filenames(name, bouquet_type, max_length=100):
     return name_file, bouquet_name
 
 
-def _create_flat_bouquet_proxy(country_name, channels, servicetype, bouquet_position):
+def _create_flat_bouquet_proxy(
+        country_name,
+        channels,
+        servicetype,
+        bouquet_position):
     """Create a flat bouquet (no categories) using proxy channels"""
     try:
         # Prepare file names
@@ -434,7 +450,8 @@ def _create_flat_bouquet_proxy(country_name, channels, servicetype, bouquet_posi
             encoded_name = channel_name.replace(":", "%3a")
 
             # Add service line
-            line = "#SERVICE %s:0:1:0:0:0:0:0:0:0:%s:%s" % (servicetype, encoded_url, encoded_name)
+            line = "#SERVICE %s:0:1:0:0:0:0:0:0:0:%s:%s" % (
+                servicetype, encoded_url, encoded_name)
             lines.append(line)
             lines.append("#DESCRIPTION %s" % channel_name)
 
@@ -452,7 +469,11 @@ def _create_flat_bouquet_proxy(country_name, channels, servicetype, bouquet_posi
         return 0
 
 
-def _create_hierarchical_bouquet_proxy(category_name, channels, servicetype, bouquet_position):
+def _create_hierarchical_bouquet_proxy(
+        category_name,
+        channels,
+        servicetype,
+        bouquet_position):
     """Create a bouquet for a category and add it to the country's container"""
     try:
         # Extract country and category from name (e.g., "Italy ➾ Sports")
@@ -474,7 +495,8 @@ def _create_hierarchical_bouquet_proxy(category_name, channels, servicetype, bou
         # Create the bouquet for the category
         safe_country = country.lower().replace(' ', '_')
         safe_category = category.lower().replace(' ', '_')
-        bouquet_name = "subbouquet.vavoo_%s_%s.tv" % (safe_country, safe_category)
+        bouquet_name = "subbouquet.vavoo_%s_%s.tv" % (
+            safe_country, safe_category)
         bouquet_path = join(ENIGMA_PATH, bouquet_name)
 
         # Create bouquet lines
@@ -490,7 +512,8 @@ def _create_hierarchical_bouquet_proxy(category_name, channels, servicetype, bou
             encoded_url = channel_url.replace(":", "%3a")
             encoded_name = channel_name.replace(":", "%3a")
 
-            line = "#SERVICE %s:0:1:0:0:0:0:0:0:0:%s:%s" % (servicetype, encoded_url, encoded_name)
+            line = "#SERVICE %s:0:1:0:0:0:0:0:0:0:%s:%s" % (
+                servicetype, encoded_url, encoded_name)
             lines.append(line)
             lines.append("#DESCRIPTION %s" % channel_name)
 
@@ -525,7 +548,12 @@ def _create_hierarchical_bouquet_proxy(category_name, channels, servicetype, bou
         return 0
 
 
-def create_bouquet_file(name, channels, servicetype, export_type, bouquet_position):
+def create_bouquet_file(
+        name,
+        channels,
+        servicetype,
+        export_type,
+        bouquet_position):
     """Create the Enigma2 bouquet file"""
     try:
         print("[Bouquet] Creating bouquet: %s (%s)" % (name, export_type))
@@ -537,7 +565,17 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
         # Prepare file name
         if export_type == "flat" or not is_category:
             # Flat bouquet for country
-            safe_name = name.lower().replace(' ', '_').replace('➾', '').replace('⟾', '').replace('->', '').replace('→', '')
+            safe_name = name.lower().replace(
+                ' ',
+                '_').replace(
+                '➾',
+                '').replace(
+                '⟾',
+                '').replace(
+                '->',
+                '').replace(
+                    '→',
+                '')
             bouquet_filename = "userbouquet.vavoo_%s.tv" % safe_name
         else:
             # Hierarchical bouquet for category
@@ -553,12 +591,23 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
                     break
 
             if not country_part or not category_part:
-                safe_name = name.lower().replace(' ', '_').replace('➾', '_').replace('⟾', '_').replace('->', '_').replace('→', '_')
+                safe_name = name.lower().replace(
+                    ' ',
+                    '_').replace(
+                    '➾',
+                    '_').replace(
+                    '⟾',
+                    '_').replace(
+                    '->',
+                    '_').replace(
+                    '→',
+                    '_')
                 bouquet_filename = "userbouquet.vavoo_%s.tv" % safe_name
             else:
                 country_safe = country_part.lower().replace(' ', '_')
                 category_safe = category_part.lower().replace(' ', '_')
-                bouquet_filename = "userbouquet.vavoo_%s_%s.tv" % (country_safe, category_safe)
+                bouquet_filename = "userbouquet.vavoo_%s_%s.tv" % (
+                    country_safe, category_safe)
 
         # Full bouquet path
         bouquet_path = join(ENIGMA_PATH, bouquet_filename)
@@ -576,13 +625,15 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
                     # If URL is proxy /resolve?id=, convert to /vavoo?channel=
                     if "/resolve?id=" in channel_url:
                         channel_id = channel_url.split("/resolve?id=")[1]
-                        channel_url = "http://127.0.0.1:%d/vavoo?channel=%s" % (PORT, channel_id)
+                        channel_url = "http://127.0.0.1:%d/vavoo?channel=%s" % (
+                            PORT, channel_id)
 
                     # If URL is not proxy, use base version
                     if not channel_url.startswith("http://127.0.0.1"):
                         channel_id = channel.get('id', '')
                         if channel_id:
-                            channel_url = "http://127.0.0.1:%d/vavoo?channel=%s" % (PORT, channel_id)
+                            channel_url = "http://127.0.0.1:%d/vavoo?channel=%s" % (
+                                PORT, channel_id)
 
                     # Clean channel name
                     channel_name = decodeHtml(channel_name)
@@ -594,7 +645,8 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
                     encoded_name = channel_name.replace(":", "%3a")
 
                     # Service line
-                    service_line = "#SERVICE %s:0:1:0:0:0:0:0:0:0:%s:%s" % (servicetype, encoded_url, encoded_name)
+                    service_line = "#SERVICE %s:0:1:0:0:0:0:0:0:0:%s:%s" % (
+                        servicetype, encoded_url, encoded_name)
                     desc_line = "#DESCRIPTION %s" % channel_name
 
                     content.append(service_line)
@@ -613,7 +665,9 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
         try:
             with open(bouquet_path, 'w', encoding='utf-8') as f:
                 f.write('\n'.join(content))
-            print("[Bouquet] File created: %s (%d channels)" % (bouquet_filename, channel_count))
+            print(
+                "[Bouquet] File created: %s (%d channels)" %
+                (bouquet_filename, channel_count))
         except Exception as e:
             print("[Bouquet] Error writing file: %s" % str(e))
             with open(bouquet_path, 'w') as f:
@@ -633,7 +687,10 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
 def _create_flat_bouquet(name, url, service, bouquet_type, server_url):
     """Create flat bouquet using PROXY ONLY"""
     try:
-        print("[bouquet_manager] Creating bouquet for: " + name + " using proxy")
+        print(
+            "[bouquet_manager] Creating bouquet for: " +
+            name +
+            " using proxy")
 
         # Get channels from proxy
         channels = get_proxy_channels(name)
@@ -671,12 +728,14 @@ def _create_flat_bouquet(name, url, service, bouquet_type, server_url):
                 continue
 
             # Use proxy URL format
-            url_channel = "http://" + local_ip + ":" + str(PORT) + "/vavoo?channel=" + channel_id
+            url_channel = "http://" + local_ip + ":" + \
+                str(PORT) + "/vavoo?channel=" + channel_id
 
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
             url_encoded = url_channel.replace(":", "%3a")
 
-            service_line = "#SERVICE " + str(service) + ":0:" + tag + ":0:0:0:0:0:0:0:" + url_encoded + ":" + name_channel
+            service_line = "#SERVICE " + \
+                str(service) + ":0:" + tag + ":0:0:0:0:0:0:0:" + url_encoded + ":" + name_channel
             desc_line = "#DESCRIPTION " + name_channel
 
             content_lines.append(service_line)
@@ -698,7 +757,8 @@ def _create_flat_bouquet(name, url, service, bouquet_type, server_url):
 
         _add_to_main_bouquet(bouquet_name, bouquet_type)
 
-        print("[bouquet_manager] Created bouquet: " + bouquet_name + " (" + str(ch_count) + " channels)")
+        print("[bouquet_manager] Created bouquet: " +
+              bouquet_name + " (" + str(ch_count) + " channels)")
         return ch_count
 
     except Exception as error:
@@ -720,7 +780,8 @@ def _create_hierarchical_bouquet(
         # Get all data to find categories for this country
         content = getUrl(url)
         if PY3:
-            content = content.decode("utf-8") if isinstance(content, bytes) else content
+            content = content.decode(
+                "utf-8") if isinstance(content, bytes) else content
         all_data = loads(content)
 
         # Use robust approach for separators
@@ -731,16 +792,21 @@ def _create_hierarchical_bouquet(
         for entry in all_data:
             country = unquote(entry["country"]).strip("\r\n")
             # Check if starts with the country and has any separator
-            if country.startswith(country_name) and any(sep in country for sep in separators):
+            if country.startswith(country_name) and any(
+                    sep in country for sep in separators):
                 all_categories.add(country)
 
         if not all_categories:
-            print("[bouquet_manager] No categories found for " + country_name + ", using flat structure")
+            print(
+                "[bouquet_manager] No categories found for " +
+                country_name +
+                ", using flat structure")
             return _create_flat_bouquet(
                 country_name, url, service, app, bouquet_type, server_url
             )
 
-        # Create category sub-bouquets (children) and track which ones were created
+        # Create category sub-bouquets (children) and track which ones were
+        # created
         exported_categories = []
         total_ch = 0
         for category in sorted(all_categories):
@@ -762,7 +828,9 @@ def _create_hierarchical_bouquet(
         return total_ch + container_ch_count
 
     except Exception as error:
-        print("[bouquet_manager] Error creating hierarchical bouquet: " + str(error))
+        print(
+            "[bouquet_manager] Error creating hierarchical bouquet: " +
+            str(error))
         return _create_flat_bouquet(
             country_name,
             url,
@@ -781,7 +849,8 @@ def _create_or_update_container_bouquet(
     print("[bouquet_manager] new_categories = " + str(new_categories))
 
     # Container filename
-    container_name = "userbouquet.vavoo_" + country_name.lower().replace(' ', '_') + "_cowntry." + bouquet_type
+    container_name = "userbouquet.vavoo_" + country_name.lower().replace(' ', '_') + \
+        "_cowntry." + bouquet_type
     container_path = join(ENIGMA_PATH, container_name)
 
     # Read existing content to preserve already added categories
@@ -814,25 +883,36 @@ def _create_or_update_container_bouquet(
 
         country_safe = country_name.lower().replace(' ', '_')
         category_safe = category_part.lower().replace(' ', '_')
-        subbouquet_ref = "subbouquet.vavoo_" + country_safe + "_" + category_safe + "." + bouquet_type
+        subbouquet_ref = "subbouquet.vavoo_" + country_safe + \
+            "_" + category_safe + "." + bouquet_type
 
         if subbouquet_ref not in existing_categories:
-            bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + subbouquet_ref + '" ORDER BY bouquet'
+            bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "' + \
+                subbouquet_ref + '" ORDER BY bouquet'
             content.append(bouquet_line)
             existing_categories.add(subbouquet_ref)
-            print("[bouquet_manager] Added new subbouquet reference: " + subbouquet_ref)
+            print(
+                "[bouquet_manager] Added new subbouquet reference: " +
+                subbouquet_ref)
         else:
-            print("[bouquet_manager] Subbouquet already exists: " + subbouquet_ref)
+            print(
+                "[bouquet_manager] Subbouquet already exists: " +
+                subbouquet_ref)
 
     print("[bouquet_manager] Final content lines: " + str(len(content)))
-    print("[bouquet_manager] Total categories in container: " + str(len(existing_categories)))
+    print("[bouquet_manager] Total categories in container: " +
+          str(len(existing_categories)))
 
     # Write the container bouquet file
     try:
         with open(container_path, 'w') as f:
             for line in content:
                 f.write(line + '\n')
-        print("[bouquet_manager] ✓ Container bouquet updated: " + container_name + " with " + str(len(existing_categories)) + " categories")
+        print("[bouquet_manager] ✓ Container bouquet updated: " +
+              container_name +
+              " with " +
+              str(len(existing_categories)) +
+              " categories")
 
         # Add to main bouquet
         _add_to_main_bouquet(container_name, bouquet_type, list_position)
@@ -840,11 +920,18 @@ def _create_or_update_container_bouquet(
         return len(existing_categories)
 
     except Exception as e:
-        print("[bouquet_manager] ERROR: Failed to save container bouquet: " + str(e))
+        print(
+            "[bouquet_manager] ERROR: Failed to save container bouquet: " +
+            str(e))
         return 0
 
 
-def _create_category_bouquet(category_name, url, service, bouquet_type, server_url):
+def _create_category_bouquet(
+        category_name,
+        url,
+        service,
+        bouquet_type,
+        server_url):
     """Create category bouquet using PROXY ONLY"""
     try:
         print("[bouquet_manager] Creating category bouquet: " + category_name)
@@ -869,7 +956,9 @@ def _create_category_bouquet(category_name, url, service, bouquet_type, server_u
         channels = get_proxy_channels(country_part)
 
         if not channels:
-            print("[bouquet_manager] No channels received from proxy for: " + country_part)
+            print(
+                "[bouquet_manager] No channels received from proxy for: " +
+                country_part)
             return 0
 
         # Filter channels for this specific category
@@ -883,13 +972,16 @@ def _create_category_bouquet(category_name, url, service, bouquet_type, server_u
                 filtered_channels.append(channel)
 
         if not filtered_channels:
-            print("[bouquet_manager] No channels found for category: " + category_name)
+            print(
+                "[bouquet_manager] No channels found for category: " +
+                category_name)
             return 0
 
         # Prepare filenames
         country_safe = country_part.lower().replace(' ', '_')
         category_safe = category_part.lower().replace(' ', '_')
-        bouquet_name = "subbouquet.vavoo_" + country_safe + "_" + category_safe + "." + bouquet_type
+        bouquet_name = "subbouquet.vavoo_" + country_safe + \
+            "_" + category_safe + "." + bouquet_type
         bouquet_path = join(ENIGMA_PATH, bouquet_name)
 
         # Build bouquet
@@ -913,12 +1005,14 @@ def _create_category_bouquet(category_name, url, service, bouquet_type, server_u
                 continue
 
             # Use proxy URL format
-            url_channel = "http://" + local_ip + ":" + str(PORT) + "/vavoo?channel=" + channel_id
+            url_channel = "http://" + local_ip + ":" + \
+                str(PORT) + "/vavoo?channel=" + channel_id
 
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
             url_encoded = url_channel.replace(":", "%3a")
 
-            service_line = "#SERVICE " + str(service) + ":0:" + tag + ":0:0:0:0:0:0:0:" + url_encoded + ":" + name_channel
+            service_line = "#SERVICE " + \
+                str(service) + ":0:" + tag + ":0:0:0:0:0:0:0:" + url_encoded + ":" + name_channel
             desc_line = "#DESCRIPTION " + name_channel
 
             content_lines.append(service_line)
@@ -934,7 +1028,8 @@ def _create_category_bouquet(category_name, url, service, bouquet_type, server_u
             with open(bouquet_path, 'w') as f:
                 f.write('\n'.join(content_lines))
 
-        print("Created category bouquet: " + bouquet_name + " (" + str(ch_count) + " channels)")
+        print("Created category bouquet: " + bouquet_name +
+              " (" + str(ch_count) + " channels)")
         return ch_count
 
     except Exception as e:
@@ -947,7 +1042,8 @@ def _update_favorite_file(name, url, export_type):
     """Update Favorite.txt - URL is always empty (proxy only)"""
     favorite_path = join(PLUGIN_PATH, 'Favorite.txt')
 
-    print("[Bouquet] Updating Favorite.txt: " + name + " (type: " + export_type + ")")
+    print("[Bouquet] Updating Favorite.txt: " +
+          name + " (type: " + export_type + ")")
 
     # Read existing bouquets
     existing_bouquets = {}
@@ -963,8 +1059,8 @@ def _update_favorite_file(name, url, export_type):
                             existing_bouquets[bouq_name] = {
                                 'url': parts[1].strip() if len(parts) > 1 and parts[1].strip() else "",
                                 'export_type': parts[2].strip(),
-                                'timestamp': parts[3].strip() if len(parts) > 3 else str(time.time())
-                            }
+                                'timestamp': parts[3].strip() if len(parts) > 3 else str(
+                                    time.time())}
         except Exception as e:
             print("[Bouquet] Error reading Favorite.txt: " + str(e))
 
@@ -979,10 +1075,12 @@ def _update_favorite_file(name, url, export_type):
     try:
         with open(favorite_path, 'w') as f:
             for bouq_name, bouq_data in sorted(existing_bouquets.items()):
-                line = bouq_name + "|" + bouq_data['url'] + "|" + bouq_data['export_type'] + "|" + bouq_data['timestamp']
+                line = bouq_name + "|" + \
+                    bouq_data['url'] + "|" + bouq_data['export_type'] + "|" + bouq_data['timestamp']
                 f.write(line + "\n")
 
-        print("[Bouquet] Favorite.txt updated with " + str(len(existing_bouquets)) + " bouquets")
+        print("[Bouquet] Favorite.txt updated with " +
+              str(len(existing_bouquets)) + " bouquets")
 
     except Exception as e:
         print("[Bouquet] Error writing Favorite.txt: " + str(e))

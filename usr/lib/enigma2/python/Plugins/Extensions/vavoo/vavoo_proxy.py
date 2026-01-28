@@ -286,7 +286,8 @@ class VavooProxy:
 
         try:
             # SINGLE REQUEST, no infinite retries
-            response = requests.Session.request(self.session, method, url, **kwargs)
+            response = requests.Session.request(
+                self.session, method, url, **kwargs)
             return response
         except (requests.exceptions.Timeout, socket.timeout) as e:
             print("[Proxy] Timeout on " + str(url) + ": " + str(e))
@@ -310,7 +311,8 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" + str(int(token_age)) + "s), refreshing...")
+                                print("[Token Monitor] Token old (" +
+                                      str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
                     # ALSO: Send heartbeat to keep connections alive
@@ -323,7 +325,8 @@ class VavooProxy:
                 except Exception as e:
                     print("[Token Monitor] Error: " + str(e))
 
-        monitor_thread = threading.Thread(target=token_monitor_loop, daemon=True)
+        monitor_thread = threading.Thread(
+            target=token_monitor_loop, daemon=True)
         monitor_thread.start()
         print("[Proxy] Token monitor started (with heartbeat)")
 
@@ -354,7 +357,8 @@ class VavooProxy:
         """Refresh the addonSig if needed with better error handling"""
         with self.addon_sig_lock:
             now = time.time()
-            if not force and self.addon_sig_data["sig"] and (now - self.addon_sig_data["ts"] < 480):  # 8 minutes
+            if not force and self.addon_sig_data["sig"] and (
+                    now - self.addon_sig_data["ts"] < 480):  # 8 minutes
                 return self.addon_sig_data["sig"]
 
             try:
@@ -366,30 +370,44 @@ class VavooProxy:
                     "locale": self.current_language,
                     "theme": "dark",
                     "metadata": {
-                        "device": {"type": "desktop", "uniqueId": unique_id},
-                        "os": {"name": "win32", "version": "Windows 10 Pro", "abis": ["x64"], "host": "Lenovo"},
-                        "app": {"platform": "electron"},
-                        "version": {"package": "tv.vavoo.app", "binary": "3.1.8", "js": "3.1.8"}
-                    },
+                        "device": {
+                            "type": "desktop",
+                            "uniqueId": unique_id},
+                        "os": {
+                            "name": "win32",
+                            "version": "Windows 10 Pro",
+                            "abis": ["x64"],
+                            "host": "Lenovo"},
+                        "app": {
+                            "platform": "electron"},
+                        "version": {
+                            "package": "tv.vavoo.app",
+                            "binary": "3.1.8",
+                            "js": "3.1.8"}},
                     "appFocusTime": 0,
                     "playerActive": False,
                     "playDuration": 0,
-                    "devMode": False,
-                    "hasAddon": True,
-                    "castConnected": False,
-                    "package": "tv.vavoo.app",
-                    "version": "3.1.8",
-                    "process": "app",
-                    "firstAppStart": current_timestamp,
-                    "lastAppStart": current_timestamp,
-                    "ipLocation": None,
-                    "adblockEnabled": True,
-                    "proxy": {"supported": ["ss"], "engine": "Mu", "enabled": False, "autoServer": True},
-                    "iap": {"supported": False}
-                }
+                        "devMode": False,
+                        "hasAddon": True,
+                        "castConnected": False,
+                        "package": "tv.vavoo.app",
+                        "version": "3.1.8",
+                        "process": "app",
+                        "firstAppStart": current_timestamp,
+                        "lastAppStart": current_timestamp,
+                        "ipLocation": None,
+                        "adblockEnabled": True,
+                        "proxy": {
+                            "supported": ["ss"],
+                            "engine": "Mu",
+                            "enabled": False,
+                            "autoServer": True},
+                    "iap": {
+                        "supported": False}}
 
                 # Use the robust request method
-                r = self._robust_request("POST", PING_URL, json=payload, timeout=15)
+                r = self._robust_request(
+                    "POST", PING_URL, json=payload, timeout=15)
                 r.raise_for_status()
                 data = decode_response(r)
                 sig = data.get("addonSig")
@@ -433,7 +451,9 @@ class VavooProxy:
                 if country and country != "default":
                     countries.add(country)
 
-            print("[Proxy] ✓ Initialized: %d channels, %d countries" % (len(all_channels), len(countries)))
+            print(
+                "[Proxy] ✓ Initialized: %d channels, %d countries" %
+                (len(all_channels), len(countries)))
             return True
 
         except Exception as e:
@@ -493,7 +513,8 @@ class VavooProxy:
                         separators = ["➾", "⟾", "->", "→", "»", "›"]
                         for sep in separators:
                             if sep in base_country:
-                                base_country = base_country.split(sep)[0].strip()
+                                base_country = base_country.split(sep)[
+                                    0].strip()
                                 break
 
                         if not base_country:
@@ -566,7 +587,8 @@ class VavooProxy:
                         return stream_url
 
             except Exception as e:
-                print("[Proxy] Resolve attempt " + str(attempt + 1) + " failed: " + str(e))
+                print("[Proxy] Resolve attempt " +
+                      str(attempt + 1) + " failed: " + str(e))
                 if attempt < max_retries - 1:
                     time.sleep(1)
 
@@ -616,37 +638,52 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
                     # 2. Open a connection to the Vavoo upstream server
                     #    Use stream=True to download the stream in chunks
-                    upstream_response = proxy.session.get(stream_url, stream=True, timeout=15)
+                    upstream_response = proxy.session.get(
+                        stream_url, stream=True, timeout=15)
                     upstream_response.raise_for_status()
 
                     # 3. Send headers to the Enigma2 player
                     self.send_response(200)
-                    self.send_header('Content-Type', upstream_response.headers.get('Content-Type', 'video/mp2t'))
+                    self.send_header(
+                        'Content-Type',
+                        upstream_response.headers.get(
+                            'Content-Type',
+                            'video/mp2t'))
                     self.send_header('Connection', 'close')
                     self.end_headers()
 
-                    # 4. Forward data chunk-by-chunk, checking if the source is still active
+                    # 4. Forward data chunk-by-chunk, checking if the source is
+                    # still active
                     try:
-                        for chunk in upstream_response.iter_content(chunk_size=8192):
+                        for chunk in upstream_response.iter_content(
+                                chunk_size=8192):
                             if chunk:  # If data is present...
                                 self.wfile.write(chunk)
                                 self.wfile.flush()  # Force immediate send
                             else:
-                                # If the chunk is empty, the source may have stopped
-                                print("[Proxy] Empty chunk from upstream, stream might have ended.")
+                                # If the chunk is empty, the source may have
+                                # stopped
+                                print(
+                                    "[Proxy] Empty chunk from upstream, stream might have ended.")
                                 break  # Exit loop and close player connection
                     except (socket.timeout, ConnectionError, BrokenPipeError) as e:
-                        print("[Proxy] Downstream connection error (player side): " + str(e))
+                        print(
+                            "[Proxy] Downstream connection error (player side): " + str(e))
                     finally:
                         # 5. Always clean up the upstream connection
                         upstream_response.close()
-                        print("[Proxy] Stream forwarding finished for channel: " + channel_id)
+                        print(
+                            "[Proxy] Stream forwarding finished for channel: " +
+                            channel_id)
 
                 except (requests.exceptions.Timeout, socket.timeout) as e:
-                    print("[Proxy] Timeout connecting to upstream stream: " + str(e))
+                    print(
+                        "[Proxy] Timeout connecting to upstream stream: " +
+                        str(e))
                     self.send_error(504, "Upstream timeout")
                 except requests.exceptions.ConnectionError as e:
-                    print("[Proxy] Cannot connect to upstream stream: " + str(e))
+                    print(
+                        "[Proxy] Cannot connect to upstream stream: " + str(e))
                     self.send_error(502, "Cannot connect to source")
                 except Exception as e:
                     print("[Proxy] Error in /vavoo handler: " + str(e))
@@ -671,7 +708,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                 for channel in matching_channels:
                     channel_id = channel.get("id", "")
                     if channel_id:
-                        proxy_url = "http://%s:%d/vavoo?channel=%s" % (local_ip, PORT, channel_id)
+                        proxy_url = "http://%s:%d/vavoo?channel=%s" % (
+                            local_ip, PORT, channel_id)
                         response_channels.append({
                             "id": channel_id,
                             "name": channel.get("name", ""),
@@ -690,7 +728,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_response(200)
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
-                    self.wfile.write(dumps(proxy.all_filtered_items).encode('utf-8'))
+                    self.wfile.write(
+                        dumps(
+                            proxy.all_filtered_items).encode('utf-8'))
                 else:
                     self.send_error(404, "No catalog loaded")
 
@@ -711,12 +751,14 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             elif parsed_path.path == '/status':
                 status = {
                     "initialized": proxy.initialized,
-                    "channels_count": len(proxy.all_filtered_items),
+                    "channels_count": len(
+                        proxy.all_filtered_items),
                     "addon_sig_valid": proxy.addon_sig_data["sig"] is not None,
-                    "addon_sig_age": int(time.time() - proxy.addon_sig_data["ts"]),
+                    "addon_sig_age": int(
+                        time.time() -
+                        proxy.addon_sig_data["ts"]),
                     "local_ip": proxy.get_local_ip(),
-                    "port": PORT
-                }
+                    "port": PORT}
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
@@ -735,7 +777,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
                     # Check if proxy is initialized
                     initialized = proxy.initialized
-                    channels_count = len(proxy.all_filtered_items) if initialized else 0
+                    channels_count = len(
+                        proxy.all_filtered_items) if initialized else 0
 
                     # Proxy status
                     proxy_status = {
@@ -767,7 +810,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
                     self.send_response(200)
                     self.send_header('Content-Type', 'application/json')
-                    self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                    self.send_header(
+                        'Cache-Control',
+                        'no-cache, no-store, must-revalidate')
                     self.send_header('Pragma', 'no-cache')
                     self.send_header('Expires', '0')
                     self.end_headers()
@@ -788,8 +833,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                 sig = proxy.refresh_addon_sig_if_needed(force=True)
                 response = {
                     "status": "success" if sig else "error",
-                    "message": "Token refreshed" if sig else "Failed to refresh token"
-                }
+                    "message": "Token refreshed" if sig else "Failed to refresh token"}
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
@@ -831,7 +875,8 @@ def start_proxy():
     while restart_count < max_restarts:
         try:
             print("=" * 50)
-            print("VAVOO PROXY v1.0 (Attempt " + str(restart_count + 1) + "/" + str(max_restarts) + ")")
+            print("VAVOO PROXY v1.0 (Attempt " +
+                  str(restart_count + 1) + "/" + str(max_restarts) + ")")
             print("=" * 50)
 
             if not proxy.initialize_proxy():
@@ -902,7 +947,11 @@ def run_proxy_in_background():
     if is_proxy_running():
         from os import system
         try:
-            response = requests.get("http://127.0.0.1:" + str(PORT) + "/status", timeout=2)
+            response = requests.get(
+                "http://127.0.0.1:" +
+                str(PORT) +
+                "/status",
+                timeout=2)
             if response.status_code == 200:
                 return True
             else:
@@ -924,7 +973,8 @@ def run_proxy_in_background():
         if is_proxy_running():
             try:
                 # Health check
-                response = requests.get("http://127.0.0.1:" + str(PORT) + "/status", timeout=3)
+                response = requests.get(
+                    "http://127.0.0.1:" + str(PORT) + "/status", timeout=3)
                 if response.status_code == 200:
                     data = response.json()
                     if data.get("initialized", False):

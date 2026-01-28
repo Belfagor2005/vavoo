@@ -101,7 +101,8 @@ def extract_python_strings():
 
         # Run xgettext - Python 2 compatible
         try:
-            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            process = subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
             if process.returncode != 0:
                 print("ERROR xgettext: {}".format(stderr))
@@ -124,7 +125,7 @@ def extract_python_strings():
             # Clean up temp file
             try:
                 os.remove(temp_pot)
-            except:
+            except BaseException:
                 pass
 
         print("Python: found {} strings".format(len(py_strings)))
@@ -140,7 +141,7 @@ def update_pot_file(xml_strings, py_strings):
     # Ensure the folder exists
     try:
         os.makedirs(LOCALE_DIR)
-    except:
+    except BaseException:
         pass
 
     # Merge all strings
@@ -163,11 +164,14 @@ def update_pot_file(xml_strings, py_strings):
                 pot_header = parts[0]
 
             # Extract existing translations
-            for match in re.finditer(r'msgid "([^"]+)"\s*\nmsgstr "([^"]*)"', content, re.DOTALL):
+            for match in re.finditer(
+                r'msgid "([^"]+)"\s*\nmsgstr "([^"]*)"',
+                content,
+                    re.DOTALL):
                 msgid = match.group(1)
                 msgstr = match.group(2)
                 existing_translations[msgid] = msgstr
-        except:
+        except BaseException:
             pass
 
     # Write the new .pot file
@@ -179,7 +183,8 @@ def update_pot_file(xml_strings, py_strings):
             else:
                 f.write('# {} translations\n'.format(PLUGIN_NAME))
                 f.write('# Copyright (C) 2025 LinuxsatPanel Team\n')
-                f.write('# This file is distributed under the same license as the LinuxsatPanel package.\n')
+                f.write(
+                    '# This file is distributed under the same license as the LinuxsatPanel package.\n')
                 f.write('# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.\n')
                 f.write('#\n')
                 f.write('msgid ""\n')
@@ -199,7 +204,10 @@ def update_pot_file(xml_strings, py_strings):
             for msgid in all_strings:
                 f.write('\n')
                 f.write('msgid "{}"\n'.format(msgid))
-                f.write('msgstr "{}"\n'.format(existing_translations.get(msgid, "")))
+                f.write(
+                    'msgstr "{}"\n'.format(
+                        existing_translations.get(
+                            msgid, "")))
 
         print("Updated .pot file: {}".format(POT_FILE))
         return len(all_strings)
@@ -221,7 +229,8 @@ def update_po_files():
         po_dir = os.path.join(LOCALE_DIR, lang_dir, "LC_MESSAGES")
         po_file = os.path.join(po_dir, "{}.po".format(PLUGIN_NAME))
 
-        if os.path.isdir(os.path.join(LOCALE_DIR, lang_dir)) and lang_dir != 'templates':
+        if os.path.isdir(os.path.join(LOCALE_DIR, lang_dir)
+                         ) and lang_dir != 'templates':
             if os.path.exists(po_file):
                 print("Updating: {}".format(lang_dir))
 
@@ -237,12 +246,15 @@ def update_po_files():
                 ]
 
                 try:
-                    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    process = subprocess.Popen(
+                        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     stdout, stderr = process.communicate()
                     if process.returncode == 0:
                         print(" ✓ {} updated".format(lang_dir))
                     else:
-                        print(" ✗ ERROR updating {}: {}".format(lang_dir, stderr))
+                        print(
+                            " ✗ ERROR updating {}: {}".format(
+                                lang_dir, stderr))
                 except Exception as e:
                     print(" ✗ ERROR updating {}: {}".format(lang_dir, e))
 
@@ -250,20 +262,32 @@ def update_po_files():
                 # Create new .po file
                 try:
                     os.makedirs(po_dir)
-                except:
+                except BaseException:
                     pass
 
-                cmd = ['msginit', '-i', POT_FILE, '-o', po_file, '-l', lang_dir]
+                cmd = [
+                    'msginit',
+                    '-i',
+                    POT_FILE,
+                    '-o',
+                    po_file,
+                    '-l',
+                    lang_dir]
 
                 try:
-                    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    process = subprocess.Popen(
+                        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     stdout, stderr = process.communicate()
                     if process.returncode == 0:
                         print(" ✓ Created new file for: {}".format(lang_dir))
                     else:
-                        print(" ✗ ERROR creating file for {}: {}".format(lang_dir, stderr))
+                        print(
+                            " ✗ ERROR creating file for {}: {}".format(
+                                lang_dir, stderr))
                 except Exception as e:
-                    print(" ✗ ERROR creating file for {}: {}".format(lang_dir, e))
+                    print(
+                        " ✗ ERROR creating file for {}: {}".format(
+                            lang_dir, e))
 
 
 def compile_mo_files():
@@ -277,10 +301,12 @@ def compile_mo_files():
         if os.path.exists(po_file):
             try:
                 cmd = ['msgfmt', po_file, '-o', mo_file]
-                process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                process = subprocess.Popen(
+                    cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
                 if process.returncode == 0:
-                    print("✓ Compiled: {}/LC_MESSAGES/{}.mo".format(lang_dir, PLUGIN_NAME))
+                    print(
+                        "✓ Compiled: {}/LC_MESSAGES/{}.mo".format(lang_dir, PLUGIN_NAME))
                 else:
                     print("✗ ERROR compiling {}: {}".format(lang_dir, stderr))
             except Exception as e:

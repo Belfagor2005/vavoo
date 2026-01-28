@@ -462,14 +462,18 @@ def get_proxy_channels(country_name):
             encoded_country = quote(country_name)
 
             # Build URL
-            proxy_url = "http://127.0.0.1:" + str(PORT) + "/channels?country=" + encoded_country
+            proxy_url = "http://127.0.0.1:" + \
+                str(PORT) + "/channels?country=" + encoded_country
             print("[vUtils] Request URL: " + proxy_url)
 
             # Fetch with timeout
             response = getUrl(proxy_url, timeout=15)
 
             if not response:
-                print("[vUtils] Empty response for '" + str(country_name) + "'")
+                print(
+                    "[vUtils] Empty response for '" +
+                    str(country_name) +
+                    "'")
                 continue
 
             # Parse JSON
@@ -492,7 +496,8 @@ def get_proxy_channels(country_name):
                         continue
 
                     # Build proxy URL
-                    proxy_stream_url = "http://127.0.0.1:" + str(PORT) + "/vavoo?channel=" + channel_id
+                    proxy_stream_url = "http://127.0.0.1:" + \
+                        str(PORT) + "/vavoo?channel=" + channel_id
 
                     processed_channels.append({
                         'id': channel_id,

@@ -462,7 +462,8 @@ def show_list(name, link, is_category=False, is_channel=False):
     icon_path = default_icon
 
     if not is_channel and not is_category:
-        country_name = safe_name.split('➾')[0].split('⟾')[0].split('→')[0].split('->')[0].strip()
+        country_name = safe_name.split('➾')[0].split(
+            '⟾')[0].split('→')[0].split('->')[0].strip()
         if country_name:
             try:
                 country_code = get_country_code(country_name)
@@ -480,7 +481,8 @@ def show_list(name, link, is_category=False, is_channel=False):
                             pass
 
                     # If not in cache, use default icon (don't download here - use preloading)
-                    # Download will happen in preload_flags_for_visible_countries()
+                    # Download will happen in
+                    # preload_flags_for_visible_countries()
 
             except Exception:
                 pass
@@ -565,7 +567,8 @@ def get_proxy_stream_url(channel_id):
     """Get the stream URL via proxy"""
     local_ip = "127.0.0.1"
     # port = 4323
-    return "http://" + str(local_ip) + ":" + str(PORT) + "/resolve?id=" + str(channel_id)
+    return "http://" + str(local_ip) + ":" + str(PORT) + \
+        "/resolve?id=" + str(channel_id)
 
 
 def keep_proxy_alive():
@@ -576,7 +579,8 @@ def keep_proxy_alive():
         while True:
             try:
                 if not is_proxy_running():
-                    print("[Proxy Monitor] Proxy not running, attempting to restart...")
+                    print(
+                        "[Proxy Monitor] Proxy not running, attempting to restart...")
                     run_proxy_in_background()
                 elif not is_proxy_ready():
                     print("[Proxy Monitor] Proxy running but not ready")
@@ -656,7 +660,8 @@ class vavoo_config(Screen, ConfigListScreen):
                 _("Default View"),
                 cfg.default_view,
                 _("Default view when opening the plugin")))
-        help_text = _("Server for player.") + "\n" + _("Now %s") % cfg.server.value
+        help_text = _("Server for player.") + "\n" + \
+            _("Now %s") % cfg.server.value
         self.list.append(
             getConfigListEntry(
                 _("Server for Player Used"),
@@ -697,7 +702,8 @@ class vavoo_config(Screen, ConfigListScreen):
                 _("Select Background"),
                 cfg.back,
                 _("Configure Main Background Image.")))
-        help_text2 = _("Configure Fonts.") + "\n" + _("Eg: Arabic or other language.")
+        help_text2 = _("Configure Fonts.") + "\n" + \
+            _("Eg: Arabic or other language.")
         self.list.append(
             getConfigListEntry(
                 _("Select Fonts"),
@@ -826,11 +832,13 @@ class vavoo_config(Screen, ConfigListScreen):
             if mode == "all":
                 # Generate for all countries
                 self.session.openWithCallback(
-                    lambda confirm: self.generate_all_m3u_files(confirm, countries),
+                    lambda confirm: self.generate_all_m3u_files(
+                        confirm,
+                        countries),
                     MessageBox,
-                    _("Generate .m3u files for ALL %d countries?") % len(countries),
-                    MessageBox.TYPE_YESNO
-                )
+                    _("Generate .m3u files for ALL %d countries?") %
+                    len(countries),
+                    MessageBox.TYPE_YESNO)
             elif mode == "single":
                 # Show country list for single selection
                 self.show_country_selection(countries)
@@ -894,11 +902,13 @@ class vavoo_config(Screen, ConfigListScreen):
         part3 = _("(%d channels)?") % len(channels)
         message = part1 + "\n" + part2 + "\n" + part3
         self.session.openWithCallback(
-            lambda confirm: self.generate_single_country_m3u(confirm, selected_country, channels),
+            lambda confirm: self.generate_single_country_m3u(
+                confirm,
+                selected_country,
+                channels),
             MessageBox,
             message,
-            MessageBox.TYPE_YESNO
-        )
+            MessageBox.TYPE_YESNO)
 
     def generate_single_country_m3u(self, confirm, country_name, channels):
         """Generate M3U for a single country"""
@@ -971,7 +981,9 @@ class vavoo_config(Screen, ConfigListScreen):
                     if m3u_count > 0:
                         total_channels += m3u_count
                         generated += 1
-                        print("[M3U Export] OK %s: %d channels" % (country, m3u_count))
+                        print(
+                            "[M3U Export] OK %s: %d channels" %
+                            (country, m3u_count))
                     else:
                         failed += 1
                         print("[M3U Export] FAIL %s: no channels" % country)
@@ -983,11 +995,13 @@ class vavoo_config(Screen, ConfigListScreen):
             # Show detailed result
             msg = _("M3U generation completed!")
             msg += ""
-            msg += _("Countries: %(generated)d/%(total)d") % {'generated': generated, 'total': len(countries)}
+            msg += _("Countries: %(generated)d/%(total)d") % {
+                'generated': generated, 'total': len(countries)}
             msg += ""
             msg += _("Failed: %(failed)d") % {'failed': failed}
             msg += ""
-            msg += _("Total channels: %(total_channels)d") % {'total_channels': total_channels}
+            msg += _("Total channels: %(total_channels)d") % {
+                'total_channels': total_channels}
             msg += ""
             msg += _("Saved in: %(path)s") % {'path': downloadfree}
 
@@ -1053,7 +1067,9 @@ class vavoo_config(Screen, ConfigListScreen):
             try:
                 with open(m3u_path, 'w', encoding='utf-8') as f:
                     f.write(m3u_content)
-                print("[M3U] File created: %s (%d channels)" % (m3u_path, channel_count))
+                print(
+                    "[M3U] File created: %s (%d channels)" %
+                    (m3u_path, channel_count))
             except Exception as e:
                 print("[M3U] Error writing file: %s" % str(e))
                 with open(m3u_path, 'w') as f:
@@ -1062,14 +1078,17 @@ class vavoo_config(Screen, ConfigListScreen):
             return channel_count
 
         except Exception as e:
-            print("[M3U] Error generating M3U for %s: %s" % (country_name, str(e)))
+            print(
+                "[M3U] Error generating M3U for %s: %s" %
+                (country_name, str(e)))
             return 0
 
     def get_channels_for_country(self, country_name):
         """Get channels for a country from the proxy"""
         try:
             encoded_country = quote(country_name)
-            proxy_url = "http://127.0.0.1:%d/channels?country=%s" % (PORT, encoded_country)
+            proxy_url = "http://127.0.0.1:%d/channels?country=%s" % (
+                PORT, encoded_country)
 
             response = getUrl(proxy_url, timeout=15)
             if not response:
@@ -1137,7 +1156,8 @@ class vavoo_config(Screen, ConfigListScreen):
                 os_system(
                     "echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
                 chmod("/etc/init.d/ipv6dis.sh", 0o700)
-                os_system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
+                os_system(
+                    "ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
                 cfg.ipv6.setValue(True)
             cfg.ipv6.save()
 
@@ -1213,7 +1233,8 @@ class vavoo_config(Screen, ConfigListScreen):
                     os_system(
                         "echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
                     chmod("/etc/init.d/ipv6dis.sh", 0o700)
-                    os_system("ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
+                    os_system(
+                        "ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
 
             configfile.save()
 
@@ -1384,9 +1405,11 @@ class MainVavoo(Screen):
         """
         self.proxy_watchdog_timer = eTimer()
         try:
-            self.proxy_watchdog_timer_conn = self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
+            self.proxy_watchdog_timer_conn = self.proxy_watchdog_timer.timeout.connect(
+                self._proxy_watchdog_check)
         except BaseException:
-            self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
+            self.proxy_watchdog_timer.callback.append(
+                self._proxy_watchdog_check)
         self.proxy_watchdog_timer.start(60000)  # Check ogni 60 secondi
 
         # No need for monitor thread - proxy stays alive automatically
@@ -1394,10 +1417,10 @@ class MainVavoo(Screen):
         self.proxy_monitor_timer = eTimer()
         try:
             self.proxy_monitor_timer_conn = self.proxy_monitor_timer.timeout.connect(
-                self._check_and_update_proxy_status
-            )
+                self._check_and_update_proxy_status)
         except BaseException:
-            self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
+            self.proxy_monitor_timer.callback.append(
+                self._check_and_update_proxy_status)
         self.proxy_monitor_timer.start(10000)  # Ogni 10 secondi
         self.cat()
 
@@ -1615,18 +1638,22 @@ class MainVavoo(Screen):
         try:
             if is_proxy_running():
                 try:
-                    response = getUrl("http://127.0.0.1:4323/status", timeout=2)
+                    response = getUrl(
+                        "http://127.0.0.1:4323/status", timeout=2)
                     if response:
                         status_data = loads(response)
 
-                        if status_data.get("initialized", False) and status_data.get("addon_sig_valid", False):
+                        if status_data.get(
+                                "initialized", False) and status_data.get(
+                                "addon_sig_valid", False):
                             token_age = status_data.get("addon_sig_age", 0)
 
                             if token_age < 300:
                                 status_text = "✓ Proxy OK"
                             elif token_age < 540:
                                 ttl = 600 - token_age
-                                status_text = "✓ Proxy (" + str(int(ttl)) + "s)"
+                                status_text = "✓ Proxy (" + \
+                                    str(int(ttl)) + "s)"
                             else:
                                 status_text = "⚠ Proxy (expiring)"
                         else:
@@ -1650,8 +1677,7 @@ class MainVavoo(Screen):
                 self._refresh_proxy_callback,
                 MessageBox,
                 "Force proxy refresh?\nThis will refresh the authentication token.",
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
         except Exception as e:
             print("[MainVavoo] Refresh proxy error: " + str(e))
 
@@ -1741,7 +1767,9 @@ class MainVavoo(Screen):
                 return
 
             self.all_data = data
-            print("[MainVavoo] Loaded %d channels from original source" % len(self.all_data))
+            print(
+                "[MainVavoo] Loaded %d channels from original source" % len(
+                    self.all_data))
 
             # === 2. EXTRACT AND DISPLAY COUNTRIES (NO PROXY DEPENDENCY) ===
             if cfg.default_view.value == "countries":
@@ -1749,12 +1777,15 @@ class MainVavoo(Screen):
                 countries = set()
                 for entry in self.all_data:
                     country = unquote(entry["country"]).strip("\r\n")
-                    # CRITICAL FILTER: exclude "default" and problematic strings
+                    # CRITICAL FILTER: exclude "default" and problematic
+                    # strings
                     if "➾" not in country and country.lower() != "default" and len(country) > 1:
                         countries.add(country)
 
                 countries_list = sorted(list(countries))
-                print("[MainVavoo] Found %d valid countries" % len(countries_list))
+                print(
+                    "[MainVavoo] Found %d valid countries" %
+                    len(countries_list))
 
                 # Preload flags for first countries
                 for country in countries_list[:5]:
@@ -1769,7 +1800,9 @@ class MainVavoo(Screen):
                             if success:
                                 print("✓ Preloaded flag for: %s" % country)
                     except Exception as e:
-                        print("Flag preload error for %s: %s" % (country, str(e)))
+                        print(
+                            "Flag preload error for %s: %s" %
+                            (country, str(e)))
 
                 # Show countries view
                 self.show_countries_view()
@@ -1785,15 +1818,19 @@ class MainVavoo(Screen):
             if not hasattr(self, '_proxy_bg_started'):
                 def start_bg_proxy():
                     try:
-                        print("[BG] Starting proxy for future channel resolution...")
+                        print(
+                            "[BG] Starting proxy for future channel resolution...")
                         # Important: do not call initialize_for_country("default")!
                         # Let the proxy start with its base configuration.
                         self.start_vavoo_proxy()
                     except Exception as bg_e:
-                        print("[BG] Proxy background start non-critical: %s" % str(bg_e))
+                        print(
+                            "[BG] Proxy background start non-critical: %s" %
+                            str(bg_e))
 
                 import threading
-                bg_thread = threading.Thread(target=start_bg_proxy, daemon=True)
+                bg_thread = threading.Thread(
+                    target=start_bg_proxy, daemon=True)
                 bg_thread.start()
                 self._proxy_bg_started = True
 
@@ -1807,7 +1844,8 @@ class MainVavoo(Screen):
     def _fallback_to_original_countries(self):
         """Fallback to the original method of getting countries"""
         try:
-            content = getUrl(self.url)  # self.url = "https://vavoo.to/channels"
+            # self.url = "https://vavoo.to/channels"
+            content = getUrl(self.url)
             if PY3:
                 content = ensure_str(content)
 
@@ -2006,8 +2044,10 @@ class MainVavoo(Screen):
 
         message_parts.append(_("Credits:"))
         message_parts.append(_("- Graphics: @oktus"))
-        message_parts.append(_("- Technical support: Qu4k3, @KiddaC, @giorbak"))
-        message_parts.append(_("- Community: Linuxsat-support.com, Corvoboys Forum"))
+        message_parts.append(
+            _("- Technical support: Qu4k3, @KiddaC, @giorbak"))
+        message_parts.append(
+            _("- Community: Linuxsat-support.com, Corvoboys Forum"))
         message_parts.append("")
 
         message_parts.append(_("Important Notes:"))
@@ -2101,7 +2141,8 @@ class MainVavoo(Screen):
         if float(__version__) < float(remote_version):
             new_version = remote_version
             new_changelog = remote_changelog
-            part1 = _("New version {version} is available.").format(version=new_version)
+            part1 = _("New version {version} is available.").format(
+                version=new_version)
             part2 = _("Changelog: {changelog}").format(changelog=new_changelog)
             part3 = _("Do you want to install it now?")
             update_message = part1 + "\n\n" + part2 + "\n\n" + part3
@@ -2209,8 +2250,11 @@ class vavoo(Screen):
         """Verify that the proxy is ready without attempting to start it"""
         try:
             if not is_proxy_ready(timeout=2):
-                print("[vavoo] Warning: Proxy not ready for %s" % self.country_name)
-                # Do not start the proxy here – let the cat() method handle the fallback
+                print(
+                    "[vavoo] Warning: Proxy not ready for %s" %
+                    self.country_name)
+                # Do not start the proxy here – let the cat() method handle the
+                # fallback
         except Exception as e:
             print("[vavoo] Error checking proxy: %s" % str(e))
 
@@ -2274,10 +2318,12 @@ class vavoo(Screen):
     def _initialize_proxy_for_country(self):
         """Initialize the proxy for the selected country"""
         try:
-            print("[vavoo] Initializing proxy for country: " + str(self.country_name))
+            print("[vavoo] Initializing proxy for country: " +
+                  str(self.country_name))
 
             # URL to initialize the proxy for the specific country
-            init_url = "http://127.0.0.1:4323/initialize_country?country=" + str(self.country_name)
+            init_url = "http://127.0.0.1:4323/initialize_country?country=" + \
+                str(self.country_name)
 
             content = getUrl(init_url, timeout=10)
             if content:
@@ -2286,7 +2332,8 @@ class vavoo(Screen):
 
                 result = loads(content)
                 if result.get("status") == "ok":
-                    print("[vavoo] Proxy initialized for " + str(self.country_name))
+                    print("[vavoo] Proxy initialized for " +
+                          str(self.country_name))
                     self.proxy_initialized = True
                     return True
 
@@ -2299,7 +2346,9 @@ class vavoo(Screen):
         """Debug function to check proxy state"""
         try:
             print("=" * 60)
-            print("[DEBUG] Checking proxy state for country: " + self.country_name)
+            print(
+                "[DEBUG] Checking proxy state for country: " +
+                self.country_name)
 
             # 1. Check status
             status_url = "http://127.0.0.1:4323/status"
@@ -2316,7 +2365,8 @@ class vavoo(Screen):
             # 3. Try to get channels
             test_url = "http://127.0.0.1:4323/channels?country=Italy"
             channels = getUrl(test_url, timeout=5)
-            print("[DEBUG] Channels response length: " + str(len(channels) if channels else 0))
+            print("[DEBUG] Channels response length: " +
+                  str(len(channels) if channels else 0))
             if channels and len(channels) < 500:
                 print("[DEBUG] Channels data: " + channels)
 
@@ -2337,20 +2387,23 @@ class vavoo(Screen):
 
             # 2. GET CHANNELS FROM PROXY
             country_encoded = quote(self.country_name)
-            proxy_url = "http://127.0.0.1:" + str(PORT) + "/channels?country=" + country_encoded
+            proxy_url = "http://127.0.0.1:" + \
+                str(PORT) + "/channels?country=" + country_encoded
             print("[DEBUG] Fetching from proxy: " + proxy_url)
 
             content = getUrl(proxy_url, timeout=10)
 
             if not content or content.strip() == "" or content == "null":
-                print("[ERROR] Proxy returned empty response for " + str(self.country_name))
+                print("[ERROR] Proxy returned empty response for " +
+                      str(self.country_name))
 
                 # Recovery attempt
                 if self._try_proxy_recovery():
                     self.cat()  # Retry
                     return
 
-                self['name'].setText("No channels for " + str(self.country_name))
+                self['name'].setText("No channels for " +
+                                     str(self.country_name))
                 return
 
             # 3. PROCESS CHANNELS
@@ -2367,7 +2420,8 @@ class vavoo(Screen):
         self.cat_list = []
 
         if not isinstance(channels_data, list):
-            print("[vavoo] Invalid channels data type: " + str(type(channels_data)))
+            print("[vavoo] Invalid channels data type: " +
+                  str(type(channels_data)))
             return
 
         for channel in channels_data:
@@ -2439,9 +2493,13 @@ class vavoo(Screen):
 
             token_age = proxy_data.get("addon_sig_age", 0)
             if token_age > 540:
-                print("[vavoo] Token old (" + str(token_age) + "s), forcing refresh...")
+                print(
+                    "[vavoo] Token old (" +
+                    str(token_age) +
+                    "s), forcing refresh...")
                 try:
-                    refresh_url = "http://127.0.0.1:" + str(PORT) + "/refresh_token"
+                    refresh_url = "http://127.0.0.1:" + \
+                        str(PORT) + "/refresh_token"
                     getUrl(refresh_url, timeout=3)
                 except Exception:
                     pass
@@ -2462,7 +2520,8 @@ class vavoo(Screen):
 
             # 1. Try token refresh
             try:
-                refresh_url = "http://127.0.0.1:" + str(PORT) + "/refresh_token"
+                refresh_url = "http://127.0.0.1:" + \
+                    str(PORT) + "/refresh_token"
                 getUrl(refresh_url, timeout=3)
                 print("[vavoo] Token refresh attempted")
             except Exception:
@@ -2676,14 +2735,17 @@ class vavoo(Screen):
             )
 
             if int(ch) > 0:
-                print("[Export] Bouquet created: %s (%s channels)" % (name, ch))
+                print(
+                    "[Export] Bouquet created: %s (%s channels)" %
+                    (name, ch))
 
                 # Update Favorite.txt
                 from .bouquet_manager import _update_favorite_file
                 _update_favorite_file(name, "", export_type)
 
                 # Show confirmation
-                message_part1 = _("Bouquet '%(name)s' created successfully!") % {'name': name}
+                message_part1 = _("Bouquet '%(name)s' created successfully!") % {
+                    'name': name}
                 message_part2 = _("(%(count)d channels)") % {'count': ch}
                 message = message_part1 + "\n" + message_part2
 
@@ -3188,7 +3250,8 @@ class VavooSearch(Screen):
                 self.searchTimer.stop()
                 try:
                     if hasattr(self.searchTimer, 'callback'):
-                        self.searchTimer.callback.remove(self.updateFilteredList)
+                        self.searchTimer.callback.remove(
+                            self.updateFilteredList)
                 except BaseException:
                     pass
 
@@ -3358,7 +3421,15 @@ class TvInfoBarShowHide():
             self.startHideTimer()
 
 
-class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide, Screen):
+class Playstream2(
+        InfoBarBase,
+        InfoBarMenu,
+        InfoBarSeek,
+        InfoBarAudioSelection,
+        InfoBarSubtitleSupport,
+        InfoBarNotifications,
+        TvInfoBarShowHide,
+        Screen):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
@@ -3476,18 +3547,24 @@ class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, 
 
             if time_since_last_eof < 10:  # Less than 10 seconds between EOFs
                 self.eof_count += 1
-                print(f"[Playstream2] Frequent EOF #{self.eof_count}, time: {time_since_last_eof:.1f}s")
+                print(
+                    f"[Playstream2] Frequent EOF #{
+                        self.eof_count}, time: {
+                        time_since_last_eof:.1f}s")
             else:
                 self.eof_count = 1
 
             # Restart based on EOF frequency
             if self.eof_count <= 3:  # Allow up to 3 quick retries
                 delay = 2 + (self.eof_count * 2)  # 2, 4, 6 seconds
-                print(f"[Playstream2] Restarting stream in {delay} seconds (EOF #{self.eof_count})")
+                print(
+                    f"[Playstream2] Restarting stream in {delay} seconds (EOF #{
+                        self.eof_count})")
                 self.restartStreamDelayed(delay * 1000)
             else:
                 print("[Playstream2] Too many EOFs, stopping auto-restart")
-                error_msg = _("Stream ended. Too many connection issues.") + "\n" + _("Please try another channel.")
+                error_msg = _("Stream ended. Too many connection issues.") + \
+                    "\n" + _("Please try another channel.")
                 self.session.open(
                     MessageBox,
                     error_msg,
@@ -3513,7 +3590,10 @@ class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, 
 
         if time_since_last_eof < 10:
             self.eof_count += 1
-            print(f"[Playstream2] __evEOF #{self.eof_count}, time: {time_since_last_eof:.1f}s")
+            print(
+                f"[Playstream2] __evEOF #{
+                    self.eof_count}, time: {
+                    time_since_last_eof:.1f}s")
         else:
             self.eof_count = 1
 
@@ -3572,7 +3652,8 @@ class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, 
             try:
                 self.eof_recovery_timer.callback.append(self.restartAfterEOF)
             except BaseException:
-                self.eof_recovery_timer_conn = self.eof_recovery_timer.timeout.connect(self.restartAfterEOF)
+                self.eof_recovery_timer_conn = self.eof_recovery_timer.timeout.connect(
+                    self.restartAfterEOF)
 
             self.eof_recovery_timer.start(delay_ms, True)
         except Exception as e:
@@ -3868,9 +3949,11 @@ class AutoStartTimer:
                     line = line.strip()
                     if line and '|' in line:
                         parts = line.split('|')
-                        if len(parts) >= 3 and parts[0].strip() and parts[2].strip():
+                        if len(parts) >= 3 and parts[0].strip(
+                        ) and parts[2].strip():
                             name = parts[0].strip()
-                            url = parts[1].strip() if len(parts) > 1 and parts[1].strip() else ""
+                            url = parts[1].strip() if len(
+                                parts) > 1 and parts[1].strip() else ""
                             export_type = parts[2].strip()
                             bouquets_to_update.append((name, url, export_type))
 
@@ -3878,7 +3961,8 @@ class AutoStartTimer:
                 print("No valid bouquets found in Favorite.txt")
                 return
 
-            print("[AutoStartTimer] Updating " + str(len(bouquets_to_update)) + " bouquets")
+            print("[AutoStartTimer] Updating " +
+                  str(len(bouquets_to_update)) + " bouquets")
 
             # 2. Ensure proxy is running
             if not is_proxy_running():
@@ -3902,7 +3986,10 @@ class AutoStartTimer:
                 # Remove old bouquet
                 removed = remove_bouquets_by_name(name)
                 if removed > 0:
-                    print("[AutoStartTimer] Removed " + str(removed) + " old bouquet files")
+                    print(
+                        "[AutoStartTimer] Removed " +
+                        str(removed) +
+                        " old bouquet files")
 
                 # Create new bouquet (proxy only)
                 ch = convert_bouquet(
@@ -3916,7 +4003,8 @@ class AutoStartTimer:
 
                 if ch > 0:
                     successful_updates += 1
-                    print("[AutoStartTimer] ✓ Updated: " + name + " (" + str(ch) + " channels)")
+                    print("[AutoStartTimer] ✓ Updated: " +
+                          name + " (" + str(ch) + " channels)")
                     _update_favorite_file(name, url, export_type)
                 else:
                     print("[AutoStartTimer] ✗ Failed: " + name)
@@ -3926,19 +4014,25 @@ class AutoStartTimer:
                 localtime = time.asctime(time.localtime(time.time()))
                 cfg.last_update.value = localtime
                 cfg.last_update.save()
-                print("[AutoStartTimer] Updated " + str(successful_updates) + "/" +
-                      str(len(bouquets_to_update)) + " bouquets")
+                print("[AutoStartTimer] Updated " +
+                      str(successful_updates) +
+                      "/" +
+                      str(len(bouquets_to_update)) +
+                      " bouquets")
 
                 # Show MessageBox
                 try:
                     self.session.open(
                         MessageBox,
-                        "Bouquets reloaded successfully (" + str(successful_updates) + " updated)",
+                        "Bouquets reloaded successfully (" +
+                        str(successful_updates) +
+                        " updated)",
                         MessageBox.TYPE_INFO,
-                        timeout=5
-                    )
+                        timeout=5)
                 except Exception as e:
-                    print("[AutoStartTimer] Could not show MessageBox: " + str(e))
+                    print(
+                        "[AutoStartTimer] Could not show MessageBox: " +
+                        str(e))
 
         except Exception as e:
             print("[AutoStartTimer] Error: " + str(e))
