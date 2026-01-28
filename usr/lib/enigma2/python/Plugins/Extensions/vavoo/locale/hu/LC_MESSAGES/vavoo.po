@@ -1,8 +1,7 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2025-11-23 17:23+0100\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: \n"
@@ -11,464 +10,440 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.8\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-SearchPath-0: plugin.py\n"
-"X-Poedit-SearchPath-1: vUtils.py\n"
-"X-Poedit-SearchPath-2: resolver/Console.py\n"
-"X-Poedit-SearchPath-3: resolver/cron_exec.txt\n"
-"X-Poedit-SearchPath-4: resolver/DnsCloudflare.sh\n"
-"X-Poedit-SearchPath-5: resolver/DnsGoogle.sh\n"
-"X-Poedit-SearchPath-6: resolver/DnsQuad9.sh\n"
-"X-Poedit-SearchPath-7: resolver/hlsclient.py\n"
-"X-Poedit-SearchPath-8: resolver/tsclient.py\n"
 
-#: plugin.py:292
-msgid "interval"
-msgstr "intervallum"
+msgid "(%(count)d channels)"
+msgstr "(%(count)d csatorna)"
 
-#: plugin.py:292
-msgid "fixed time"
-msgstr "megbeszélt időpont"
+msgid "(%d channels)?"
+msgstr "(%d csatorna)?"
 
-#: plugin.py:304
-msgid "Countries"
-msgstr "Országok"
+msgid "(%s files deleted)"
+msgstr "(%s fájl törölve)"
 
-#: plugin.py:304
-msgid "Categories"
-msgstr "Kategóriák"
-
-#: plugin.py:308
-msgid "Bottom"
-msgstr "Alul"
-
-#: plugin.py:308
-msgid "Top"
-msgstr "Felső"
-
-#: plugin.py:490 plugin.py:1374
-msgid "Back"
-msgstr "Vissza"
-
-#: plugin.py:491
 msgid "- - - -"
 msgstr "- - - - -"
 
-#: plugin.py:516
-#, python-format
-msgid "Last channel update: %s"
-msgstr "Utolsó csatornafrissítés: %s"
+msgid "- Auto token refresh every 9 minutes"
+msgstr "- Automatikus tokenfrissítés 9 percenként"
 
-#: plugin.py:529
-msgid "Generate .m3u files (Ok for Exec)"
-msgstr ".m3u fájlok generálása (Exec esetén rendben)"
+msgid "- Automatic bouquet generation"
+msgstr "- Automatikus csokorgenerálás"
 
-#: plugin.py:531
-#, python-format
-msgid "Generate .m3u files and save to device %s."
-msgstr ".m3u fájlok létrehozása és mentése a(z) %s eszközre."
+msgid "- Category bouquets"
+msgstr "- Kategória csokrok"
 
-#: plugin.py:535
-msgid "Default View"
-msgstr "Alapértelmezett nézet"
+msgid "- Commercial use is strictly prohibited"
+msgstr "- Kereskedelmi célú felhasználás szigorúan tilos"
 
-#: plugin.py:537
-msgid "Default view when opening the plugin"
-msgstr "Alapértelmezett nézet a bővítmény megnyitásakor"
+msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+msgstr "- Közösség: Linuxsat-support.com, Corvoboys Fórum"
 
-#: plugin.py:540
-msgid "Server for Player Used"
-msgstr "Használt szerver a lejátszóhoz"
+msgid "- Container bouquets"
+msgstr "- Konténeres csokrok"
 
-#: plugin.py:542
-#, python-format
-msgid ""
-"Server for player.\n"
-"Now %s"
-msgstr ""
-"Szerver a játékosnak.\n"
-"Most %s"
+msgid "- Country bouquets"
+msgstr "- Vidéki csokrok"
 
-#: plugin.py:546
-msgid "Movie Services Reference"
-msgstr "Filmszolgáltatások referencia"
+msgid "- For personal use only"
+msgstr "- Csak személyes használatra"
 
-#: plugin.py:548
-msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "Szolgáltatás konfigurálása Referencia Iptv-Gstreamer-Exteplayer3"
+msgid "- Free content only"
+msgstr "- Csak ingyenes tartalom"
 
-#: plugin.py:551
-msgid "Bouquet Position in List"
-msgstr "Csokor pozíciója a listában"
+msgid "- Graphics: @oktus"
+msgstr "- Grafika: @oktus"
 
-#: plugin.py:553
-msgid "Position of Vavoo bouquets in the main list"
-msgstr "A Vavoo csokrok helye a fő listában"
+msgid "- HTTP Live Streaming"
+msgstr "- HTTP élő közvetítés"
 
-#: plugin.py:557
-msgid "Refresh Player"
-msgstr "Lejátszó frissítése"
+msgid "- Integrated proxy system"
+msgstr "- Integrált proxy rendszer"
 
-#: plugin.py:559
-msgid "Configure Update Timer for player refresh"
-msgstr "Frissítési időzítő konfigurálása a lejátszó frissítéséhez"
+msgid "- No direct server hosting"
+msgstr "- Nincs közvetlen szerverhoszting"
 
-#: plugin.py:562
-msgid "Select DNS Server"
-msgstr "Válassza a DNS-kiszolgálót"
+msgid "- Redistribution must maintain attribution"
+msgstr "- Az újraelosztásnak fenn kell tartania a forrásmegjelölést"
 
-#: plugin.py:564
-msgid "Configure Dns Server for Box."
-msgstr "Konfigurálja a DNS-kiszolgálót a Box számára."
+msgid "- Service references: 4097, 5001, 5002"
+msgstr "- Szolgáltatási hivatkozások: 4097, 5001, 5002"
 
-#: plugin.py:567
-msgid "Select Background"
-msgstr "Háttér kiválasztása"
+msgid "- Streams from public sources"
+msgstr "- Nyilvános forrásokból származó streamek"
 
-#: plugin.py:569
-msgid "Configure Main Background Image."
-msgstr "Állítsa be a fő háttérképet."
+msgid "- TS/M3U8 formats"
+msgstr "- TS/M3U8 formátumok"
 
-#: plugin.py:572
-msgid "Select Fonts"
-msgstr "Válassza a Betűtípusok lehetőséget"
+msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
+msgstr "- Technikai támogatás: Qu4k3, @KiddaC, @giorbak"
 
-#: plugin.py:574
-msgid ""
-"Configure Fonts.\n"
-"Eg:Arabic or other language."
-msgstr ""
-"Betűtípusok konfigurálása.\n"
-"Pl.: arab vagy más nyelv."
-
-#: plugin.py:577
-msgid "Ipv6 State Of Lan (On/Off)"
-msgstr "IPv6 State Of Lan (be/ki)"
-
-#: plugin.py:579
-#, python-format
-msgid ""
-"Active or Disactive lan Ipv6.\n"
-"Now %s"
-msgstr ""
-"Aktív vagy inaktív LAN Ipv6.\n"
-"Most %s"
-
-#: plugin.py:583
-msgid "Scheduled Bouquet Update:"
-msgstr "Ütemezett csokor frissítés:"
-
-#: plugin.py:585
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktív automatikus csokorfrissítés"
 
-#: plugin.py:589
-msgid "Schedule type:"
-msgstr "Menetrend típusa:"
+msgid "Active or Disactive lan Ipv6."
+msgstr "Aktív vagy inaktív LAN Ipv6."
 
-#: plugin.py:591
+msgid "All countries (%d)"
+msgstr "Minden ország (%d)"
+
 msgid "At an interval of hours or at a fixed time"
 msgstr "Órák időközönként vagy meghatározott időpontban"
 
-#: plugin.py:595
-msgid "Update interval (minutes):"
-msgstr "Frissítési időköz (perc):"
+msgid "Author:"
+msgstr "Szerző:"
 
-#: plugin.py:597
-msgid "Configure every interval of minutes from now"
-msgstr "Mostantól minden percnyi intervallum konfigurálása"
+msgid "Auto-refresh stream (minutes):"
+msgstr "Automatikus frissítésű stream (perc):"
 
-#: plugin.py:601
-msgid "Time to start update:"
-msgstr "A frissítés megkezdésének ideje:"
+msgid "Back"
+msgstr "Vissza"
 
-#: plugin.py:603
-msgid "Configure at a fixed time"
-msgstr "Konfigurálás meghatározott időpontban"
+msgid "Backspace"
+msgstr "Backspace"
 
-#: plugin.py:607 plugin.py:609
-msgid "Link in Main Menu"
-msgstr "Link a főmenüben"
+msgid "Bottom"
+msgstr "Alul"
 
-#: plugin.py:620
-#, python-format
-msgid "Generate .m3u files and save to device %s?"
-msgstr ".m3u fájlok generálása és mentése a(z) %s eszközre?"
+msgid "Bouquet '%(name)s' created successfully!"
+msgstr "A(z) „%(name)s” csokor sikeresen létrehozva!"
 
-#: plugin.py:650
-msgid "All .m3u files have been generated!"
-msgstr "Minden .m3u fájl generálva lett!"
+msgid "Bouquet Position in List"
+msgstr "Csokor pozíciója a listában"
 
-#: plugin.py:665
-msgid "SELECT YOUR CHOICE"
-msgstr "VÁLASZD A VÁLASZTÁST"
+msgid "Bouquet creation error: %s"
+msgstr "Csokor létrehozási hiba: %s"
 
-#: plugin.py:676
-msgid "Ipv6 [Off]?"
-msgstr "Ipv6 [Ki]?"
-
-#: plugin.py:684
-msgid "Ipv6 [On]?"
-msgstr "Ipv6 [Be]?"
-
-#: plugin.py:708
-msgid "Save"
-msgstr "Mentés"
-
-#: plugin.py:754
 msgid "Bouquets reorganized successfully!"
 msgstr "A csokrok átrendezése sikeresen megtörtént!"
 
-#: plugin.py:793
+msgid "Cancel"
+msgstr "Mégsem"
+
+msgid "Cancel execution?"
+msgstr "Végrehajtás megszakítva?"
+
+msgid "Case: {}"
+msgstr "Ügy: {}"
+
+msgid "Changelog: {changelog}"
+msgstr "Változási napló: {changelog}"
+
+msgid "Channels: %d"
+msgstr "Csatornák: %d"
+
+msgid "Clear All"
+msgstr "Összes törlése"
+
 msgid "Configuration saved successfully!"
 msgstr "Konfiguráció sikeresen mentve!"
 
-#: plugin.py:849
-msgid "Really close without saving settings?"
-msgstr "Tényleg bezárja a beállítások mentése nélkül?"
+msgid "Configure Dns Server for Box."
+msgstr "Konfigurálja a DNS-kiszolgálót a Box számára."
 
-#: plugin.py:955
+msgid "Configure Fonts."
+msgstr "Betűtípusok konfigurálása."
+
+msgid "Configure Main Background Image."
+msgstr "Állítsa be a fő háttérképet."
+
+msgid "Configure at a fixed time"
+msgstr "Konfigurálás meghatározott időpontban"
+
+msgid "Configure every interval of minutes from now"
+msgstr "Mostantól minden percnyi intervallum konfigurálása"
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "Szolgáltatás konfigurálása Referencia Iptv-Gstreamer-Exteplayer3"
+
+msgid "Congrats! You already have the latest version..."
+msgstr "Gratula! Már megvan a legújabb verzió..."
+
+msgid "Console"
+msgstr "Konzol"
+
+msgid "Countries"
+msgstr "Országok"
+
+msgid "Countries: %(generated)d/%(total)d"
+msgstr "Országok: %(generated)d/%(total)d"
+
+msgid "Country: %s"
+msgstr "Ország: %s"
+
+msgid "Credits:"
+msgstr "Kreditek:"
+
+msgid "Default View"
+msgstr "Alapértelmezett nézet"
+
+msgid "Default view when opening the plugin"
+msgstr "Alapértelmezett nézet a bővítmény megnyitásakor"
+
+msgid "Do you want to export this bouquet?"
+msgstr "Exportálni szeretné ezt a csokrot?"
+
+msgid "Do you want to install it now?"
+msgstr ""
+"Új verzió (%s) elérhető\n"
+"\n"
+"Változásnapló: %s\n"
+"\n"
+"Telepíteni szeretnéd most?"
+
+msgid "Do you want to install update ( %s ) now?"
+msgstr "Szeretné most telepíteni a frissítést (%s)?"
+
+msgid "Eg: Arabic or other language."
+msgstr "Pl.: arab vagy más nyelv."
+
+msgid "Enter text to search..."
+msgstr "Írjon be szöveget a kereséshez..."
+
+msgid "Error starting channel"
+msgstr "Hiba a csatorna indításakor"
+
+msgid "Error starting stream via proxy"
+msgstr "Hiba a proxyn keresztüli stream indításakor"
+
+msgid "Error: %s"
+msgstr "Hiba: %s"
+
 msgid "Exit"
 msgstr "Kilépés"
 
-#: plugin.py:956
-msgid "Remove"
-msgstr "Eltávolítás"
+msgid "Export"
+msgstr "Exportálás"
 
-#: plugin.py:957
-msgid "Update Me"
-msgstr "Frissítsen engem"
+msgid "Failed: %(failed)d"
+msgstr "Sikertelen: %(failed)d"
 
-#: plugin.py:958 plugin.py:1377
+msgid "Found: {} channels"
+msgstr "{} csatorna található"
+
+msgid "Generate .m3u file for:"
+msgstr ".m3u fájl generálása a következőhöz:"
+
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr ".m3u fájlok generálása (Exec esetén rendben)"
+
+msgid "Generate .m3u files and save to device %s."
+msgstr ".m3u fájlok létrehozása és mentése a(z) %s eszközre."
+
+msgid "Generate .m3u files and save to device %s?"
+msgstr ".m3u fájlok generálása és mentése a(z) %s eszközre?"
+
+msgid "Generate .m3u files for ALL %d countries?"
+msgstr ".m3u fájlok generálása MINDEN %d ország számára?"
+
+msgid "Hide/Show"
+msgstr "Elrejtés/Megjelenítés"
+
+msgid "Important Notes:"
+msgstr "Fontos megjegyzések:"
+
+msgid "Ipv6 State Of Lan (On/Off)"
+msgstr "IPv6 State Of Lan (be/ki)"
+
+msgid "Keyboard"
+msgstr "Billentyűzet"
+
+msgid "Last channel update: %s"
+msgstr "Utolsó csatornafrissítés: %s"
+
+msgid "License:"
+msgstr "Licensz:"
+
+msgid "License: CC BY-NC-SA 4.0"
+msgstr "Licenc: CC BY-NC-SA 4.0"
+
+msgid "Link in Main Menu"
+msgstr "Link a főmenüben"
+
+msgid "Lower = less interruption but more refreshes"
+msgstr "Alacsonyabb = kevesebb megszakítás, de több frissítés"
+
+msgid "M3U file generated successfully!"
+msgstr "M3U fájl sikeresen generálva!"
+
+msgid "M3U generation completed!"
+msgstr "M3U generáció elkészült!"
+
+msgid "M3U generation error: %s"
+msgstr "M3U generálási hiba: %s"
+
+msgid "Movie Services Reference"
+msgstr "Filmszolgáltatások referencia"
+
+msgid "New version {version} is available."
+msgstr "Új verzió ({version}) érhető el."
+
+msgid "No channels found"
+msgstr "Nem található csatorna a következőhöz: {}"
+
+msgid "No channels found for '%(name)s'"
+msgstr "Nem található csatorna a következőhöz: '%(name)s'"
+
+msgid "No channels found for: %s"
+msgstr "Nem található csatorna a következőhöz: %s"
+
+msgid "No channels found in search!!!"
+msgstr "Nem található csatorna a keresésben!!!"
+
+msgid "No valid channels for: %s"
+msgstr "Nincsenek érvényes csatornák ehhez: %s"
+
+msgid "Now %s"
+msgstr "Most %s"
+
+msgid "Only one specific country"
+msgstr "Csak egy konkrét ország"
+
+msgid "Please try another channel."
+msgstr "Kérlek, próbálj meg egy másik csatornát."
+
+msgid "Position of Vavoo bouquets in the main list"
+msgstr "A Vavoo csokrok helye a fő listában"
+
+msgid "Press TEXT button to type, BACKSPACE to delete"
+msgstr "Nyomja meg a TEXT gombot a gépeléshez, a BACKSPACE gombot a törléshez"
+
+msgid "Proxy not active. Unable to generate M3U file."
+msgstr "A proxy nem aktív. Nem sikerült létrehozni az M3U fájlt."
+
+msgid "Really close without saving settings?"
+msgstr "Tényleg bezárja a beállítások mentése nélkül?"
+
+msgid "Recommended: 5-8 minutes"
+msgstr "Ajánlott: 5-8 perc"
+
+msgid "Refresh stream every X minutes (1-15)"
+msgstr "Stream frissítése X percenként (1-15)"
+
 msgid "Reload Bouqet"
 msgstr "Bouqet újratöltése"
 
-#: plugin.py:1002 plugin.py:1502
-msgid "Bouquets have been successfully reloaded!"
-msgstr "A csokrok feltöltése sikeresen megtörtént!"
+msgid "Remove"
+msgstr "Eltávolítás"
 
-#: plugin.py:1150
-msgid ""
-"Remove ALL Vavoo bouquets?\n"
-"This will remove:\n"
-"- Country bouquets\n"
-"- Category bouquets\n"
-"- Container bouquets"
-msgstr ""
-"Eltávolítja az ÖSSZES Vavoo csokrot?\n"
-"Ez eltávolítja a következőket:\n"
-"- Vidéki csokrok\n"
-"- Kategória csokrok\n"
-"- Konténer csokrok"
+msgid "Remove ALL Vavoo bouquets?"
+msgstr "Eltávolítom az ÖSSZES Vavoo csokrot?"
 
-#: plugin.py:1169
-#, python-format
-msgid ""
-"Vavoo bouquets removed successfully!\n"
-"(%s files deleted)"
+msgid "Restart"
+msgstr "Újraindítás"
+
+msgid "SELECT YOUR CHOICE"
+msgstr "VÁLASZD A VÁLASZTÁST"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "Saved in: %(path)s"
+msgstr "Mentve ide: %(path)s"
+
+msgid "Saved in: %s"
+msgstr "Mentve ide: %s"
+
+msgid "Schedule type:"
+msgstr "Menetrend típusa:"
+
+msgid "Scheduled Bouquet Update:"
+msgstr "Ütemezett csokor frissítés:"
+
+msgid "Scheduled List Update:"
+msgstr "Ütemezett lista frissítése:"
+
+msgid "Search"
+msgstr "Keresés"
+
+msgid "Search Channels:"
+msgstr "Csatornák keresése:"
+
+msgid "Search..."
+msgstr "Keresés..."
+
+msgid "Search:"
+msgstr "Keresés:"
+
+msgid "Select Background"
+msgstr "Háttér kiválasztása"
+
+msgid "Select DNS Server"
+msgstr "Válassza a DNS-kiszolgálót"
+
+msgid "Select Fonts"
+msgstr "Válassza a Betűtípusok lehetőséget"
+
+msgid "Select M3U export mode:"
+msgstr "Válassza ki az M3U exportálási módot:"
+
+msgid "Select country to export M3U:"
+msgstr "Válasszon országot az M3U exportálásához:"
+
+msgid "Server for Player Used"
+msgstr "Használt szerver a lejátszóhoz"
+
+msgid "Server for player."
+msgstr "Szerver a játékosoknak."
+
+msgid "Showing all channels: {}"
+msgstr "Az összes csatorna megjelenítése: {}"
+
+msgid "Space"
+msgstr "Tér"
+
+msgid "Stream ended. Too many connection issues."
+msgstr "A streamelés véget ért. Túl sok kapcsolódási probléma."
+
+msgid "Technical Features:"
+msgstr "Műszaki jellemzők:"
+
+msgid "This will remove:"
+msgstr "Ez eltávolítja a következőket:"
+
+msgid "Time to start update:"
+msgstr "A frissítés megkezdésének ideje:"
+
+msgid "Top"
+msgstr "Felső"
+
+msgid "Total channels: %(total_channels)d"
+msgstr "Összes csatorna: %(total_channels)d"
+
+msgid "UPPERCASE"
+msgstr "NAGYBETŰS"
+
+msgid "Update Aborted!"
+msgstr "Frissítés megszakítva!"
+
+msgid "Update Me"
+msgstr "Frissítsen engem"
+
+msgid "Update interval (minutes):"
+msgstr "Frissítési időköz (perc):"
+
+msgid "Vavoo Stream Live"
+msgstr "Vavoo Stream élőben"
+
+msgid "Vavoo Stream Live - Information"
+msgstr "Vavoo élő közvetítés - Információk"
+
+msgid "Vavoo Stream Live Plugin"
+msgstr "Vavoo élő közvetítés bővítmény"
+
+msgid "Vavoo bouquets removed successfully!"
 msgstr ""
 "Vavoo csokrok sikeresen eltávolítva!\n"
 "\n"
 "(%s fájl törölve)"
 
-#: plugin.py:1183
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"📊 **Plugin Information**\n"
-"• Version: %s\n"
-"• Author: %s\n"
-"• License: %s\n"
-"\n"
-"🛠️ **Technical Details**\n"
-"• Streaming protocol: HTTP Live Streaming\n"
-"• Supported formats: TS, M3U8\n"
-"• Service reference: 4097, 5001, 5002\n"
-"• Bouquet generation: Automatic\n"
-"\n"
-"👥 **Credits & Acknowledgments**\n"
-"• Graphics: @oktus\n"
-"• Technical support: Qu4k3 - @KiddaC - @giorbak \n"
-"• Community: Linuxsat-support.com- Corvoboys Forum\n"
-"\n"
-"📝 **Important Notes**\n"
-"• This plugin provides FREE content only\n"
-"• Streams are aggregated from public sources\n"
-"• No direct server hosting\n"
-"• For personal use only\n"
-"\n"
-"⚖️ **License Information**\n"
-"This software is licensed under CC BY-NC-SA 4.0\n"
-"Redistribution must maintain attribution\n"
-"Commercial use is strictly prohibited"
-msgstr ""
-"%s\n"
-"\n"
-"📊 **Bővítmény információi**\n"
-"• Verzió: %s\n"
-"• Szerző: %s\n"
-"• Licenc: %s\n"
-"\n"
-"🛠️ **Technikai adatok**\n"
-"• Streaming protokoll: HTTP Élő közvetítés\n"
-"• Támogatott formátumok: TS, M3U8\n"
-"• Szolgáltatás hivatkozása: 4097, 5001, 5002\n"
-"• Csokor generálása: Automatikus\n"
-"\n"
-"👥 **Kreditek és köszönetnyilvánítás**\n"
-"• Grafika: @oktus\n"
-"• Technikai támogatás: Qu4k3 - @KiddaC - @giorbak \n"
-"• Közösség: Linuxsat-support.com- Corvoboys Fórum\n"
-"\n"
-"📝 **Fontos megjegyzések**\n"
-"• Ez a bővítmény csak INGYENES tartalmat biztosít\n"
-"• A streamek nyilvános forrásokból származnak\n"
-"• Nincs közvetlen szerverhoszting\n"
-"• Csak személyes használatra\n"
-"\n"
-"⚖️ **Licenc információk**\n"
-"Ez a szoftver CC BY-NC-SA 4.0 licenc alatt áll\n"
-"Az újraterjesztéshez meg kell őrizni a forrásmegjelölést\n"
-"A kereskedelmi felhasználás szigorúan tilos"
+msgid "Version:"
+msgstr "Verzió:"
 
-#: plugin.py:1213
-msgid "Vavoo Stream Live - Information"
-msgstr "Vavoo élő közvetítés - Információk"
+msgid "fixed time"
+msgstr "megbeszélt időpont"
 
-#: plugin.py:1286
-#, python-format
-msgid ""
-"New version %s is available.\n"
-"\n"
-"Changelog: %s\n"
-"\n"
-"Do you want to install it now?"
-msgstr ""
-"Új verzió (%s) elérhető.\n"
-"\n"
-"Változásnapló: %s \n"
-"\n"
-"Most szeretné telepíteni?"
+msgid "interval"
+msgstr "intervallum"
 
-#: plugin.py:1293
-msgid "Congrats! You already have the latest version..."
-msgstr "Gratula! Már megvan a legújabb verzió..."
-
-#: plugin.py:1309
-#, python-format
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Szeretné most telepíteni a frissítést (%s)?"
-
-#: plugin.py:1327
-msgid "Update Aborted!"
-msgstr "Frissítés megszakítva!"
-
-#: plugin.py:1375
-msgid "Export"
-msgstr "Exportálás"
-
-#: plugin.py:1376 plugin.py:1842
-msgid "Search"
-msgstr "Keresés"
-
-#: plugin.py:1554
-#, python-format
-msgid ""
-"Do you want to export this bouquet?\n"
-"%s"
-msgstr ""
-"Exportálni szeretné ezt a csokrot?\n"
-"%s"
-
-#: plugin.py:1632
-msgid "No channels found in search!!!"
-msgstr "Nem található csatorna a keresésben!!!"
-
-#: plugin.py:1726
-msgid "Search Channels:"
-msgstr "Csatornák keresése:"
-
-#: plugin.py:1728
-msgid "Press TEXT button to type, BACKSPACE to delete"
-msgstr "Nyomja meg a TEXT gombot a gépeléshez, a BACKSPACE gombot a törléshez"
-
-#: plugin.py:1730
-msgid "Enter text to search..."
-msgstr "Írjon be szöveget a kereséshez..."
-
-#: plugin.py:1731
-msgid "Clear All"
-msgstr "Összes törlése"
-
-#: plugin.py:1732
-msgid "Keyboard"
-msgstr "Billentyűzet"
-
-#: plugin.py:1733
-msgid "Backspace"
-msgstr "Backspace"
-
-#: plugin.py:1734
-msgid "Space"
-msgstr "Tér"
-
-#: plugin.py:1853
-msgid "UPPERCASE"
-msgstr "NAGYBETŰS"
-
-#: plugin.py:1853
 msgid "lowercase"
 msgstr "kisbetűk"
-
-#: plugin.py:1854
-#, python-brace-format
-msgid "Case: {}"
-msgstr "Ügy: {}"
-
-#: plugin.py:1859 plugin.py:1881
-#, python-brace-format
-msgid "Search: \"{}\" - Found: {} channels"
-msgstr "Keresés: „{}” – Találatok: {} csatorna"
-
-#: plugin.py:1862 plugin.py:1869
-#, python-brace-format
-msgid "Showing all channels: {}"
-msgstr "Az összes csatorna megjelenítése: {}"
-
-#: plugin.py:1884
-#, python-brace-format
-msgid "Search: \"{}\" - No channels found"
-msgstr "Keresés: „{}” – Nem található csatorna"
-
-#: plugin.py:2488 plugin.py:2506
-msgid "Vavoo Stream Live"
-msgstr "Vavoo Stream élőben"
-
-#: resolver/Console.py:74
-msgid "Cancel"
-msgstr "Mégsem"
-
-#: resolver/Console.py:75
-msgid "Hide/Show"
-msgstr "Elrejtés/Megjelenítés"
-
-#: resolver/Console.py:76
-msgid "Restart"
-msgstr "Újraindítás"
-
-#: resolver/Console.py:91
-msgid "Console"
-msgstr "Konzol"
-
-#: resolver/Console.py:113
-msgid ""
-"Execution progress\n"
-"\n"
-msgstr ""
-"A végrehajtás előrehaladása\n"
-"\n"
-
-#: resolver/Console.py:168
-msgid "Cancel execution?"
-msgstr "Végrehajtás megszakítva?"

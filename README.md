@@ -5,135 +5,126 @@
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Python](https://img.shields.io/badge/Python-2.7%2F3.x-yellow.svg)](https://python.org)
 
-A sophisticated Enigma2 plugin for streaming live TV channels from multiple sources with advanced bouquet management.
+## 📌 Overview
+Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousands of live TV channels from multiple countries. It features a built-in local proxy for improved reliability, automatic bouquet updates, and seamless integration with your Enigma2 receiver.
 
-## ✨ Features
+## ✨ Key Features
+- **Live TV Streaming** – Watch live channels from various countries
+- **Country & Category Browsing** – Organized by country and category
+- **Search Functionality** – Find channels by name in real-time
+- **Enigma2 Bouquet Export** – Export channels directly to your channel list
+- **M3U Playlist Generation** – Create standard M3U playlists for external players
+- **Automatic Updates** – Scheduled bouquet updates to keep channels current
+- **Local Proxy Integration** – Enhanced reliability and no 10-minute blocks
+- **Multi-Language Support** – Including right-to-left language support
+- **Customizable Interface** – Change backgrounds, fonts, and settings
+- **Proxy Status Monitor** – Real-time proxy status display in main interface
+- **Text Key Functions** – Manual proxy refresh using TEXT button
 
-### 📺 Streaming & Playback
-- 🎥 **Live TV Streaming** from multiple servers (Vavoo, Oha, Kool, Huhu)
-- 🔄 **Auto-refresh** streams with configurable intervals
-- 🎭 **Multiple Player Support**: GStreamer, Exteplayer3, ServiceApp
-- 🌐 **IPv6 Support** with toggle option
-- ⚡ **Fast Channel Switching** with next/previous navigation
+## 🚀 Quick Start Guide
 
-### 🗂️ Content Organization
-- 🌍 **Dual View Modes**: Countries view & Categories view
-- 🏴 **Country Flags** with automatic icon detection
-- 📑 **Hierarchical Bouquet Export** with container structure
-- 🔍 **Search Functionality** within categories
-- 📊 **Channel Filtering** by country and genre
+### First-Time Setup
+1. **Open the Vavoo Plugin** – The proxy will start automatically
+2. **Select a Country** – Choose your desired country (e.g., "Italy")
+3. **Press GREEN Button** – Export favorites to Enigma2 bouquets
+4. **Return to TV** – Your channels will appear in the channel list!
 
-### ⚙️ Configuration & Management
-- 🛠️ **Comprehensive Settings**: DNS, servers, update intervals
-- 💾 **Automatic Bouquet Updates** with scheduling
-- 📁 **M3U File Generation** for external players
-- 🎨 **Customizable UI**: Backgrounds, fonts, layouts
-- 🔄 **Auto-update System** with version checking
+### Automatic Updates (Recommended)
+- Go to **Menu Config** → Enable **"Scheduled Bouquet Update: ON"**
+- Choose update interval (5-15 minutes) or fixed time
+- The proxy will handle everything automatically
 
-### 🔧 Technical Features
-- 🐍 **Python 2.7/3.x Compatible**
-- 📱 **Multi-resolution Support** (HD, FHD, WQHD)
-- 🌍 **RTL Language Support** (Arabic, etc.)
-- 🔒 **Authentication Handling**
-- 📝 **Comprehensive Logging**
+### Manual Use
+- If auto-update is OFF, simply open the plugin when you want to update
+- The proxy starts automatically when plugin opens
+- Select country and press GREEN to export
 
-## 🖼️ Screenshots
+## 🔧 User Configuration
+In the Config Menu:
+- ✅ **Scheduled Bouquet Update**: ON/OFF (only required setting)
+- ✅ If ON: Choose interval (5-15 min) or fixed time
+- ✅ Proxy and updates are managed automatically
 
-| Main Interface | Categories View | Settings |
-|----------------|-----------------|----------|
-| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen3.png" width="200"> |
+## 🎯 Benefits
+- ✅ **No 10-minute blocks** – Proxy handles authentication tokens
+- ✅ **Automatic updates** – Keep bouquets fresh without manual work
+- ✅ **Improved performance** – Local proxy provides stable streams
+- ✅ **Clean system** – Single configuration point
+- ✅ **No manual refreshes** – Everything happens automatically
+- ✅ **Real-time monitoring** – Proxy status always visible
+- ✅ **Manual control** – Force proxy refresh with TEXT button
 
-| Player | Bouquet Export | Search |
-|--------|----------------|--------|
-| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen4.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen5.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen7.png" width="200"> |
+## 🛠 Technical Features
+The local proxy (127.0.0.1:4323):
+- Manages authentication with Vavoo servers
+- Automatically renews tokens every 8-9 minutes
+- Provides stable URLs for bouquets
+- Completely eliminates 10-minute streaming blocks
+- Self-monitoring with automatic restart on failure
+- Connection pool management to prevent timeouts
 
-## 🚀 Installation
+## 📋 API Endpoints
+The proxy provides these endpoints:
+- `/status` – Check proxy status
+- `/channels?country=CountryName` – Get channels by country
+- `/vavoo?channel=ChannelID` – Resolve stream URLs
+- `/catalog` – Full channel catalog
+- `/countries` – List all countries
+- `/refresh_token` – Force token refresh
+- `/shutdown` – Gracefully stop proxy
 
-### Manual Installation
+## 🗂 File Management
+### Bouquet Export
+- Path: Plugin menu → Select country → GREEN button
+- Creates bouquets with proxy URLs: `http://127.0.0.1:4323/vavoo?channel=CHANNEL_ID`
+- Requires proxy to be running during export
+
+### M3U Export
+- Path: Config Menu → "Generate .m3u files"
+- Downloads playlist from proxy and saves as `vavoo_[country]_playlist.m3u`
+
+## 🚨 Troubleshooting
+### Quick Diagnostics
 ```bash
-cd /tmp
-wget https://github.com/Belfagor2005/vavoo/releases/latest/download/vavoo.ipk
-opkg install vavoo.ipk
+# Check proxy status
+curl -s http://127.0.0.1:4323/status
+
+# Check proxy logs
+cat /tmp/vavoo_proxy.log
+
+# Check plugin logs
+cat /tmp/vavoo.log
 ```
 
-### Auto-Update
-The plugin includes built-in update checking with one-click installation.
+### Common Issues
+| Problem | Solution |
+|---------|----------|
+| "No channels found" | Restart plugin, check internet connection |
+| Bouquets don't open | Ensure proxy is running |
+| Stream doesn't start | Proxy should auto-refresh tokens |
+| M3U export fails | Verify port 4323 is accessible |
 
-## ⚙️ Configuration
+## 📝 Important Notes
+- Old bouquets won't work with new system – re-export required
+- Proxy runs in background – bouquets work even after closing plugin
+- Minimal memory usage (~20-50MB)
+- Only `vavoo_proxy.py` needs updates if Vavoo API changes
+- Use **TEXT button** in main menu to manually refresh proxy token
+- Proxy status is displayed in real-time in the main interface
 
-Access plugin settings through:
-- **Enigma2 Menu** → Plugins → Vavoo Stream Live
-- **Plugin Menu** → Configuration
-
-### Key Settings:
-- **Server Selection**: Choose between Vavoo, Oha, Kool, Huhu
-- **Update Intervals**: Configure automatic bouquet updates
-- **DNS Settings**: Google, Cloudflare, Quad9, or default
-- **View Preferences**: Countries or Categories as default
-- **Player Settings**: Service reference configuration
-
-## 🏗️ Bouquet Export System
-
-### Flat Structure (Countries View)
-```
-userbouquet.vavoo_italy.tv
-userbouquet.vavoo_france.tv
-userbouquet.vavoo_germany.tv
-```
-
-### Hierarchical Structure (Categories View)
-```
-bouquet.tv
-├── userbouquet.vavoo_italy_cowntry.tv
-│   ├── userbouquet.vavoo_italy_documentary.tv
-│   ├── userbouquet.vavoo_italy_sports.tv
-│   └── userbouquet.vavoo_italy_movie.tv
-└── userbouquet.vavoo_france_cowntry.tv
-    ├── userbouquet.vavoo_france_documentary.tv
-    └── userbouquet.vavoo_france_sports.tv
-```
-
-## 🌍 Supported Countries
-
-- 🇦🇱 Albania - 🇸🇦 Arabia - 🇧🇬 Bulgaria - 🇭🇷 Croatia 
-- 🇫🇷 France - 🇩🇪 Germany - 🇮🇹 Italy - 🇳🇱 Netherlands
-- 🇵🇱 Poland - 🇵🇹 Portugal - 🇷🇴 Romania - 🇷🇺 Russia
-- 🇪🇸 Spain - 🇹🇷 Turkey - 🇬🇧 United Kingdom
-
-## 🛠️ Technical Details
-
-- **Architecture**: Modular Python plugin for Enigma2
-- **Compatibility**: Enigma2-based receivers (OpenPLi, OpenATV, etc.)
-- **Dependencies**: Standard Enigma2 components, requests library
-- **Skin Support**: HD, FHD, and WQHD resolutions
-- **Font Support**: Custom TTF/OTF font integration
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
-
-### Credit & Acknowledgments
-- **Developer**: [Lululla](https://github.com/Belfagor2005)
-- **Support**: @KiddaC for technical guidance
-- **Graphics**: @oktus for background images
-- **Testing**: Qu4k3 and the community
-- **Communities**: Linuxsat-support.com & Corvoboys.org
+## 🤝 Credits
+- **Created by**: Lululla (https://github.com/Belfagor2005)
+- **Special thanks to**: @KiddaC for suggestions
+- **Background images**: @oktus
+- **Contributions**: Qu4k3
+- **Communities**: Linuxsat-support.com & Corvoboys
 
 ## 📄 License
+CC BY-NC-SA 4.0  
+https://creativecommons.org/licenses/by-nc-sa/4.0
 
-This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. See the [LICENSE](LICENSE) file for details.
-
-## ⚠️ Disclaimer
-
-This plugin provides access to publicly available video stream URLs. No video files are stored in this repository. All links point to content that we believe has been intentionally made publicly available by copyright holders.
-
-If you believe any content infringes on your rights, please:
-1. Contact the actual content host
-2. Open an issue for link removal
-
-This repository contains only links and does not host any content. DMCA notices should be directed to the actual content hosts, not GitHub or this repository's maintainers.
+**Usage of this code without proper attribution is strictly prohibited.**
+**For modifications and redistribution, please maintain this credit header.**
 
 ---
-
-**⭐ If you find this plugin useful, please give it a star!**
-```
+*Last Modified: 2026-01-23*

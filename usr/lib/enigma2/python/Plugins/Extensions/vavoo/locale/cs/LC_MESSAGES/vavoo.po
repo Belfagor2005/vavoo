@@ -1,8 +1,7 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2025-11-23 17:23+0100\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: \n"
@@ -11,463 +10,439 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.8\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-SearchPath-0: plugin.py\n"
-"X-Poedit-SearchPath-1: vUtils.py\n"
-"X-Poedit-SearchPath-2: resolver/Console.py\n"
-"X-Poedit-SearchPath-3: resolver/cron_exec.txt\n"
-"X-Poedit-SearchPath-4: resolver/DnsCloudflare.sh\n"
-"X-Poedit-SearchPath-5: resolver/DnsGoogle.sh\n"
-"X-Poedit-SearchPath-6: resolver/DnsQuad9.sh\n"
-"X-Poedit-SearchPath-7: resolver/hlsclient.py\n"
-"X-Poedit-SearchPath-8: resolver/tsclient.py\n"
 
-#: plugin.py:292
-msgid "interval"
-msgstr "interval"
+msgid "(%(count)d channels)"
+msgstr "(%(count)d kanálů)"
 
-#: plugin.py:292
-msgid "fixed time"
-msgstr "pevný časový"
+msgid "(%d channels)?"
+msgstr "(%d kanálů)?"
 
-#: plugin.py:304
-msgid "Countries"
-msgstr "Země"
+msgid "(%s files deleted)"
+msgstr "(Smazáno souborů: %s)"
 
-#: plugin.py:304
-msgid "Categories"
-msgstr "Kategorie"
-
-#: plugin.py:308
-msgid "Bottom"
-msgstr "Dole"
-
-#: plugin.py:308
-msgid "Top"
-msgstr "Nahoře"
-
-#: plugin.py:490 plugin.py:1374
-msgid "Back"
-msgstr "Zpět"
-
-#: plugin.py:491
 msgid "- - - -"
 msgstr "- - - -"
 
-#: plugin.py:516
-#, python-format
-msgid "Last channel update: %s"
-msgstr "Poslední aktualizace kanálu: %s"
+msgid "- Auto token refresh every 9 minutes"
+msgstr "- Automatická aktualizace tokenu každých 9 minut"
 
-#: plugin.py:529
-msgid "Generate .m3u files (Ok for Exec)"
-msgstr "Generování souborů .m3u (vhodné pro Exec)"
+msgid "- Automatic bouquet generation"
+msgstr "- Automatické generování kytice"
 
-#: plugin.py:531
-#, python-format
-msgid "Generate .m3u files and save to device %s."
-msgstr "Generovat soubory .m3u a ukládat je do zařízení %s."
+msgid "- Category bouquets"
+msgstr "- Kategorie kytice"
 
-#: plugin.py:535
-msgid "Default View"
-msgstr "Výchozí zobrazení"
+msgid "- Commercial use is strictly prohibited"
+msgstr "- Komerční využití je přísně zakázáno"
 
-#: plugin.py:537
-msgid "Default view when opening the plugin"
-msgstr "Výchozí zobrazení při otevření pluginu"
+msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+msgstr "- Komunita: Linuxsat-support.com, Fórum Corvoboys"
 
-#: plugin.py:540
-msgid "Server for Player Used"
-msgstr "Použitý server pro přehrávač"
+msgid "- Container bouquets"
+msgstr "- Kytice z nádob"
 
-#: plugin.py:542
-#, python-format
-msgid ""
-"Server for player.\n"
-"Now %s"
-msgstr ""
-"Server pro hráče.\n"
-"Nyní %s"
+msgid "- Country bouquets"
+msgstr "- Venkovské kytice"
 
-#: plugin.py:546
-msgid "Movie Services Reference"
-msgstr "Reference filmových služeb"
+msgid "- For personal use only"
+msgstr "- Pouze pro osobní použití"
 
-#: plugin.py:548
-msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "Konfigurace služby Reference Iptv-Gstreamer-Exteplayer3"
+msgid "- Free content only"
+msgstr "- Pouze bezplatný obsah"
 
-#: plugin.py:551
-msgid "Bouquet Position in List"
-msgstr "Pozice kytice v seznamu"
+msgid "- Graphics: @oktus"
+msgstr "- Grafika: @oktus"
 
-#: plugin.py:553
-msgid "Position of Vavoo bouquets in the main list"
-msgstr "Pozice kytic Vavoo v hlavním seznamu"
+msgid "- HTTP Live Streaming"
+msgstr "- Živé vysílání HTTP"
 
-#: plugin.py:557
-msgid "Refresh Player"
-msgstr "Obnovit přehrávač"
+msgid "- Integrated proxy system"
+msgstr "- Integrovaný proxy systém"
 
-#: plugin.py:559
-msgid "Configure Update Timer for player refresh"
-msgstr "Konfigurace časovače aktualizace pro obnovení přehrávače"
+msgid "- No direct server hosting"
+msgstr "- Žádný přímý hosting serveru"
 
-#: plugin.py:562
-msgid "Select DNS Server"
-msgstr "Vyberte DNS Server"
+msgid "- Redistribution must maintain attribution"
+msgstr "- Redistribuce musí zachovat uvedení zdroje"
 
-#: plugin.py:564
-msgid "Configure Dns Server for Box."
-msgstr "Nakonfigurujte DNS server pro Box."
+msgid "- Service references: 4097, 5001, 5002"
+msgstr "- Servisní reference: 4097, 5001, 5002"
 
-#: plugin.py:567
-msgid "Select Background"
-msgstr "Vyberte Pozadí"
+msgid "- Streams from public sources"
+msgstr "- Streamy z veřejných zdrojů"
 
-#: plugin.py:569
-msgid "Configure Main Background Image."
-msgstr "Nakonfigurujte hlavní obrázek na pozadí."
+msgid "- TS/M3U8 formats"
+msgstr "- Formáty TS/M3U8"
 
-#: plugin.py:572
-msgid "Select Fonts"
-msgstr "Vyberte Písma"
+msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
+msgstr "- Technická podpora: Qu4k3, @KiddaC, @giorbak"
 
-#: plugin.py:574
-msgid ""
-"Configure Fonts.\n"
-"Eg:Arabic or other language."
-msgstr ""
-"Konfigurace písem.\n"
-"Např.: arabština nebo jiný jazyk."
-
-#: plugin.py:577
-msgid "Ipv6 State Of Lan (On/Off)"
-msgstr "Ipv6 State Of Lan (zapnuto/vypnuto)"
-
-#: plugin.py:579
-#, python-format
-msgid ""
-"Active or Disactive lan Ipv6.\n"
-"Now %s"
-msgstr ""
-"Aktivní nebo neaktivní lan Ipv6.\n"
-"Nyní %s"
-
-#: plugin.py:583
-msgid "Scheduled Bouquet Update:"
-msgstr "Plánovaná aktualizace kytice:"
-
-#: plugin.py:585
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktivní automatická aktualizace kytice"
 
-#: plugin.py:589
-msgid "Schedule type:"
-msgstr "Typ rozvrhu:"
+msgid "Active or Disactive lan Ipv6."
+msgstr "Aktivní nebo neaktivní IPv6 v lokální síti."
 
-#: plugin.py:591
+msgid "All countries (%d)"
+msgstr "Všechny země (%d)"
+
 msgid "At an interval of hours or at a fixed time"
 msgstr "V intervalu hodin nebo v pevně stanovený čas"
 
-#: plugin.py:595
-msgid "Update interval (minutes):"
-msgstr "Interval aktualizace (minuty):"
+msgid "Author:"
+msgstr "Autor:"
 
-#: plugin.py:597
-msgid "Configure every interval of minutes from now"
-msgstr "Od této chvíle konfigurujte každý interval minut"
+msgid "Auto-refresh stream (minutes):"
+msgstr "Automatické obnovení streamu (minuty):"
 
-#: plugin.py:601
-msgid "Time to start update:"
-msgstr "Čas zahájit aktualizaci:"
+msgid "Back"
+msgstr "Zpět"
 
-#: plugin.py:603
-msgid "Configure at a fixed time"
-msgstr "Nakonfigurujte v pevně stanovený čas"
+msgid "Backspace"
+msgstr "Zpět"
 
-#: plugin.py:607 plugin.py:609
-msgid "Link in Main Menu"
-msgstr "Odkaz v hlavní nabídce"
+msgid "Bottom"
+msgstr "Dole"
 
-#: plugin.py:620
-#, python-format
-msgid "Generate .m3u files and save to device %s?"
-msgstr "Generovat soubory .m3u a uložit je do zařízení %s?"
+msgid "Bouquet '%(name)s' created successfully!"
+msgstr "Kytice '%(name)s' byla úspěšně vytvořena!"
 
-#: plugin.py:650
-msgid "All .m3u files have been generated!"
-msgstr "Všechny soubory .m3u byly vygenerovány!"
+msgid "Bouquet Position in List"
+msgstr "Pozice kytice v seznamu"
 
-#: plugin.py:665
-msgid "SELECT YOUR CHOICE"
-msgstr "VYBERTE SI SVOU VOLBU"
+msgid "Bouquet creation error: %s"
+msgstr "Chyba při vytváření kytice: %s"
 
-#: plugin.py:676
-msgid "Ipv6 [Off]?"
-msgstr "IPv6 [Vypnuto]?"
-
-#: plugin.py:684
-msgid "Ipv6 [On]?"
-msgstr "Ipv6 [Zapnuto]?"
-
-#: plugin.py:708
-msgid "Save"
-msgstr "Uložit"
-
-#: plugin.py:754
 msgid "Bouquets reorganized successfully!"
 msgstr "Kytice byly úspěšně reorganizovány!"
 
-#: plugin.py:793
+msgid "Cancel"
+msgstr "Zrušit"
+
+msgid "Cancel execution?"
+msgstr "Zrušit provedení?"
+
+msgid "Case: {}"
+msgstr "Případ: {}"
+
+msgid "Changelog: {changelog}"
+msgstr "Seznam změn: {changelog}"
+
+msgid "Channels: %d"
+msgstr "Kanály: %d"
+
+msgid "Clear All"
+msgstr "Vymazat vše"
+
 msgid "Configuration saved successfully!"
 msgstr "Konfigurace byla úspěšně uložena!"
 
-#: plugin.py:849
-msgid "Really close without saving settings?"
-msgstr "Opravdu zavřít bez uložení nastavení?"
+msgid "Configure Dns Server for Box."
+msgstr "Nakonfigurujte DNS server pro Box."
 
-#: plugin.py:955
+msgid "Configure Fonts."
+msgstr "Konfigurace písem."
+
+msgid "Configure Main Background Image."
+msgstr "Nakonfigurujte hlavní obrázek na pozadí."
+
+msgid "Configure at a fixed time"
+msgstr "Nakonfigurujte v pevně stanovený čas"
+
+msgid "Configure every interval of minutes from now"
+msgstr "Od této chvíle konfigurujte každý interval minut"
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "Konfigurace služby Reference Iptv-Gstreamer-Exteplayer3"
+
+msgid "Congrats! You already have the latest version..."
+msgstr "Gratuluji! Už máte nejnovější verzi..."
+
+msgid "Console"
+msgstr "Konzole"
+
+msgid "Countries"
+msgstr "Země"
+
+msgid "Countries: %(generated)d/%(total)d"
+msgstr "Země: %(generated)d/%(total)d"
+
+msgid "Country: %s"
+msgstr "Země: %s"
+
+msgid "Credits:"
+msgstr "Kredity:"
+
+msgid "Default View"
+msgstr "Výchozí zobrazení"
+
+msgid "Default view when opening the plugin"
+msgstr "Výchozí zobrazení při otevření pluginu"
+
+msgid "Do you want to export this bouquet?"
+msgstr "Chcete tuto kytici exportovat?"
+
+msgid "Do you want to install it now?"
+msgstr ""
+"Nová verze %s k dispozici\n"
+"\n"
+"Seznam změn: %s\n"
+"\n"
+"Chcete ji nyní nainstalovat?"
+
+msgid "Do you want to install update ( %s ) now?"
+msgstr "Chcete nyní nainstalovat aktualizaci ( %s )?"
+
+msgid "Eg: Arabic or other language."
+msgstr "Např.: arabština nebo jiný jazyk."
+
+msgid "Enter text to search..."
+msgstr "Zadejte text pro vyhledávání..."
+
+msgid "Error starting channel"
+msgstr "Chyba při spuštění kanálu"
+
+msgid "Error starting stream via proxy"
+msgstr "Chyba při spuštění streamu přes proxy"
+
+msgid "Error: %s"
+msgstr "Chyba: %s"
+
 msgid "Exit"
 msgstr "Odejít"
 
-#: plugin.py:956
-msgid "Remove"
-msgstr "Odstranit"
+msgid "Export"
+msgstr "Export"
 
-#: plugin.py:957
-msgid "Update Me"
-msgstr "Aktualizovat mě"
+msgid "Failed: %(failed)d"
+msgstr "Selhalo: %(failed)d"
 
-#: plugin.py:958 plugin.py:1377
+msgid "Found: {} channels"
+msgstr "Nalezeno {} kanálů"
+
+msgid "Generate .m3u file for:"
+msgstr "Generovat soubor .m3u pro:"
+
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr "Generování souborů .m3u (vhodné pro Exec)"
+
+msgid "Generate .m3u files and save to device %s."
+msgstr "Generovat soubory .m3u a ukládat je do zařízení %s."
+
+msgid "Generate .m3u files and save to device %s?"
+msgstr "Generovat soubory .m3u a uložit je do zařízení %s?"
+
+msgid "Generate .m3u files for ALL %d countries?"
+msgstr "Generovat soubory .m3u pro VŠECHNY %d zemí?"
+
+msgid "Hide/Show"
+msgstr "Skrýt/zobrazit"
+
+msgid "Important Notes:"
+msgstr "Důležité poznámky:"
+
+msgid "Ipv6 State Of Lan (On/Off)"
+msgstr "Ipv6 State Of Lan (zapnuto/vypnuto)"
+
+msgid "Keyboard"
+msgstr "Klávesnice"
+
+msgid "Last channel update: %s"
+msgstr "Poslední aktualizace kanálu: %s"
+
+msgid "License:"
+msgstr "Licence:"
+
+msgid "License: CC BY-NC-SA 4.0"
+msgstr "Licence: CC BY-NC-SA 4.0"
+
+msgid "Link in Main Menu"
+msgstr "Odkaz v hlavní nabídce"
+
+msgid "Lower = less interruption but more refreshes"
+msgstr "Nižší = méně přerušení, ale více obnov"
+
+msgid "M3U file generated successfully!"
+msgstr "Soubor M3U byl úspěšně vygenerován!"
+
+msgid "M3U generation completed!"
+msgstr "Generování M3U dokončeno!"
+
+msgid "M3U generation error: %s"
+msgstr "Chyba generování M3U: %s"
+
+msgid "Movie Services Reference"
+msgstr "Reference filmových služeb"
+
+msgid "New version {version} is available."
+msgstr "Je k dispozici nová verze {version}."
+
+msgid "No channels found"
+msgstr "Nenalezeny žádné kanály pro: {}"
+
+msgid "No channels found for '%(name)s'"
+msgstr "Pro '%(name)s' nebyly nalezeny žádné kanály"
+
+msgid "No channels found for: %s"
+msgstr "Nebyly nalezeny žádné kanály pro: %s"
+
+msgid "No channels found in search!!!"
+msgstr "Při vyhledávání nebyly nalezeny žádné kanály!!!"
+
+msgid "No valid channels for: %s"
+msgstr "Žádné platné kanály pro: %s"
+
+msgid "Now %s"
+msgstr "Nyní %s"
+
+msgid "Only one specific country"
+msgstr "Pouze jedna konkrétní země"
+
+msgid "Please try another channel."
+msgstr "Zkuste prosím jiný kanál."
+
+msgid "Position of Vavoo bouquets in the main list"
+msgstr "Pozice kytic Vavoo v hlavním seznamu"
+
+msgid "Press TEXT button to type, BACKSPACE to delete"
+msgstr "Stiskněte tlačítko TEXT pro psaní, BACKSPACE pro smazání"
+
+msgid "Proxy not active. Unable to generate M3U file."
+msgstr "Proxy není aktivní. Nelze vygenerovat soubor M3U."
+
+msgid "Really close without saving settings?"
+msgstr "Opravdu zavřít bez uložení nastavení?"
+
+msgid "Recommended: 5-8 minutes"
+msgstr "Doporučeno: 5–8 minut"
+
+msgid "Refresh stream every X minutes (1-15)"
+msgstr "Obnovovat stream každých X minut (1–15)"
+
 msgid "Reload Bouqet"
 msgstr "Obnovit kytici"
 
-#: plugin.py:1002 plugin.py:1502
-msgid "Bouquets have been successfully reloaded!"
-msgstr "Kytice byly úspěšně znovu načteny!"
+msgid "Remove"
+msgstr "Odstranit"
 
-#: plugin.py:1150
-msgid ""
-"Remove ALL Vavoo bouquets?\n"
-"This will remove:\n"
-"- Country bouquets\n"
-"- Category bouquets\n"
-"- Container bouquets"
-msgstr ""
-"Odstranit VŠECHNY kytice Vavoo?\n"
-"Tímto se odstraní:\n"
-"- Kytice venkovského typu\n"
-"- Kytice kategorií\n"
-"- Kytice v nádobách"
+msgid "Remove ALL Vavoo bouquets?"
+msgstr "Odstranit VŠECHNY kytice Vavoo?"
 
-#: plugin.py:1169
-#, python-format
-msgid ""
-"Vavoo bouquets removed successfully!\n"
-"(%s files deleted)"
+msgid "Restart"
+msgstr "Reštart"
+
+msgid "SELECT YOUR CHOICE"
+msgstr "VYBERTE SI SVOU VOLBU"
+
+msgid "Save"
+msgstr "Uložit"
+
+msgid "Saved in: %(path)s"
+msgstr "Uloženo v: %(path)s"
+
+msgid "Saved in: %s"
+msgstr "Uloženo v: %s"
+
+msgid "Schedule type:"
+msgstr "Typ rozvrhu:"
+
+msgid "Scheduled Bouquet Update:"
+msgstr "Plánovaná aktualizace kytice:"
+
+msgid "Scheduled List Update:"
+msgstr "Plánovaná aktualizace seznamu:"
+
+msgid "Search"
+msgstr "Hledat"
+
+msgid "Search Channels:"
+msgstr "Vyhledávání kanálů:"
+
+msgid "Search..."
+msgstr "Hledat..."
+
+msgid "Search:"
+msgstr "Hledat:"
+
+msgid "Select Background"
+msgstr "Vyberte Pozadí"
+
+msgid "Select DNS Server"
+msgstr "Vyberte DNS Server"
+
+msgid "Select Fonts"
+msgstr "Vyberte Písma"
+
+msgid "Select M3U export mode:"
+msgstr "Vyberte režim exportu M3U:"
+
+msgid "Select country to export M3U:"
+msgstr "Vyberte zemi pro export M3U:"
+
+msgid "Server for Player Used"
+msgstr "Použitý server pro přehrávač"
+
+msgid "Server for player."
+msgstr "Server pro hráče."
+
+msgid "Showing all channels: {}"
+msgstr "Zobrazují se všechny kanály: {}"
+
+msgid "Space"
+msgstr "Prostor"
+
+msgid "Stream ended. Too many connection issues."
+msgstr "Stream skončil. Příliš mnoho problémů s připojením."
+
+msgid "Technical Features:"
+msgstr "Technické vlastnosti:"
+
+msgid "This will remove:"
+msgstr "Tím se odstraní:"
+
+msgid "Time to start update:"
+msgstr "Čas zahájit aktualizaci:"
+
+msgid "Top"
+msgstr "Nahoře"
+
+msgid "Total channels: %(total_channels)d"
+msgstr "Celkový počet kanálů: %(total_channels)d"
+
+msgid "UPPERCASE"
+msgstr "VELKÁ PÍSMENA"
+
+msgid "Update Aborted!"
+msgstr "Aktualizace zrušena!"
+
+msgid "Update Me"
+msgstr "Aktualizovat mě"
+
+msgid "Update interval (minutes):"
+msgstr "Interval aktualizace (minuty):"
+
+msgid "Vavoo Stream Live"
+msgstr "Živý přenos Vavoo"
+
+msgid "Vavoo Stream Live - Information"
+msgstr "Vavoo Stream Live – Informace"
+
+msgid "Vavoo Stream Live Plugin"
+msgstr "Plugin pro živé streamování Vavoo"
+
+msgid "Vavoo bouquets removed successfully!"
 msgstr ""
 "Vavoo kytice úspěšně odstraněny!\n"
 "(Smazáno %s souborů)"
 
-#: plugin.py:1183
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"📊 **Plugin Information**\n"
-"• Version: %s\n"
-"• Author: %s\n"
-"• License: %s\n"
-"\n"
-"🛠️ **Technical Details**\n"
-"• Streaming protocol: HTTP Live Streaming\n"
-"• Supported formats: TS, M3U8\n"
-"• Service reference: 4097, 5001, 5002\n"
-"• Bouquet generation: Automatic\n"
-"\n"
-"👥 **Credits & Acknowledgments**\n"
-"• Graphics: @oktus\n"
-"• Technical support: Qu4k3 - @KiddaC - @giorbak \n"
-"• Community: Linuxsat-support.com- Corvoboys Forum\n"
-"\n"
-"📝 **Important Notes**\n"
-"• This plugin provides FREE content only\n"
-"• Streams are aggregated from public sources\n"
-"• No direct server hosting\n"
-"• For personal use only\n"
-"\n"
-"⚖️ **License Information**\n"
-"This software is licensed under CC BY-NC-SA 4.0\n"
-"Redistribution must maintain attribution\n"
-"Commercial use is strictly prohibited"
-msgstr ""
-"%s\n"
-"\n"
-"📊 **Informace o pluginu**\n"
-"• Verze: %s\n"
-"• Autor: %s\n"
-"• Licence: %s\n"
-"\n"
-"🛠️ **Technické detaily**\n"
-"• Streamovací protokol: HTTP Live Streaming\n"
-"• Podporované formáty: TS, M3U8\n"
-"• Referenční číslo služby: 4097, 5001, 5002\n"
-"• Generování kytice: Automatické\n"
-"\n"
-"👥 **Poděkování**\n"
-"• Grafika: @oktus\n"
-"• Technická podpora: Qu4k3 - @KiddaC - @giorbak \n"
-"• Komunita: Linuxsat-support.com- Corvoboys Forum\n"
-"\n"
-"📝 **Důležité poznámky**\n"
-"• Tento plugin poskytuje pouze BEZPLATNÝ obsah\n"
-"• Streamy jsou agregovány z veřejných zdrojů\n"
-"• Žádný přímý hosting serveru\n"
-"• Pouze pro osobní použití\n"
-"\n"
-"⚖️ **Informace o licenci**\n"
-"Tento software je licencován pod CC BY-NC-SA 4.0\n"
-"Při dalším šíření je nutné zachovat uvedení zdroje\n"
-"Komerční použití je přísně povoleno zakázáno"
+msgid "Version:"
+msgstr "Verze:"
 
-#: plugin.py:1213
-msgid "Vavoo Stream Live - Information"
-msgstr "Vavoo Stream Live – Informace"
+msgid "fixed time"
+msgstr "pevný časový"
 
-#: plugin.py:1286
-#, python-format
-msgid ""
-"New version %s is available.\n"
-"\n"
-"Changelog: %s\n"
-"\n"
-"Do you want to install it now?"
-msgstr ""
-"K dispozici je nová verze %s.\n"
-"\n"
-"Seznam změn: %s \n"
-"\n"
-"Chcete jej nainstalovat nyní?"
+msgid "interval"
+msgstr "interval"
 
-#: plugin.py:1293
-msgid "Congrats! You already have the latest version..."
-msgstr "Gratuluji! Už máte nejnovější verzi..."
-
-#: plugin.py:1309
-#, python-format
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Chcete nyní nainstalovat aktualizaci ( %s )?"
-
-#: plugin.py:1327
-msgid "Update Aborted!"
-msgstr "Aktualizace zrušena!"
-
-#: plugin.py:1375
-msgid "Export"
-msgstr "Export"
-
-#: plugin.py:1376 plugin.py:1842
-msgid "Search"
-msgstr "Hledat"
-
-#: plugin.py:1554
-#, python-format
-msgid ""
-"Do you want to export this bouquet?\n"
-"%s"
-msgstr ""
-"Chcete exportovat tuto kytici?\n"
-"%s"
-
-#: plugin.py:1632
-msgid "No channels found in search!!!"
-msgstr "Při vyhledávání nebyly nalezeny žádné kanály!!!"
-
-#: plugin.py:1726
-msgid "Search Channels:"
-msgstr "Vyhledávání kanálů:"
-
-#: plugin.py:1728
-msgid "Press TEXT button to type, BACKSPACE to delete"
-msgstr "Stiskněte tlačítko TEXT pro psaní, BACKSPACE pro smazání"
-
-#: plugin.py:1730
-msgid "Enter text to search..."
-msgstr "Zadejte text pro vyhledávání..."
-
-#: plugin.py:1731
-msgid "Clear All"
-msgstr "Vymazat vše"
-
-#: plugin.py:1732
-msgid "Keyboard"
-msgstr "Klávesnice"
-
-#: plugin.py:1733
-msgid "Backspace"
-msgstr "Zpět"
-
-#: plugin.py:1734
-msgid "Space"
-msgstr "Prostor"
-
-#: plugin.py:1853
-msgid "UPPERCASE"
-msgstr "VELKÁ PÍSMENA"
-
-#: plugin.py:1853
 msgid "lowercase"
 msgstr "malá písmena"
-
-#: plugin.py:1854
-#, python-brace-format
-msgid "Case: {}"
-msgstr "Případ: {}"
-
-#: plugin.py:1859 plugin.py:1881
-#, python-brace-format
-msgid "Search: \"{}\" - Found: {} channels"
-msgstr "Hledat: „{}“ – Nalezeno: {} kanálů"
-
-#: plugin.py:1862 plugin.py:1869
-#, python-brace-format
-msgid "Showing all channels: {}"
-msgstr "Zobrazují se všechny kanály: {}"
-
-#: plugin.py:1884
-#, python-brace-format
-msgid "Search: \"{}\" - No channels found"
-msgstr "Hledat: „{}“ – Nebyly nalezeny žádné kanály"
-
-#: plugin.py:2488 plugin.py:2506
-msgid "Vavoo Stream Live"
-msgstr "Živý přenos Vavoo"
-
-#: resolver/Console.py:74
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: resolver/Console.py:75
-msgid "Hide/Show"
-msgstr "Skrýt/zobrazit"
-
-#: resolver/Console.py:76
-msgid "Restart"
-msgstr "Reštart"
-
-#: resolver/Console.py:91
-msgid "Console"
-msgstr "Konzole"
-
-#: resolver/Console.py:113
-msgid ""
-"Execution progress\n"
-"\n"
-msgstr ""
-"Průběh exekuce\n"
-"\n"
-
-#: resolver/Console.py:168
-msgid "Cancel execution?"
-msgstr "Zrušit provedení?"

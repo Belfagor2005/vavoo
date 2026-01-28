@@ -23,4 +23,5 @@
         <convert type="ServiceName">Name</convert>
     </widget>
     <widget source="session.VideoPicture" render="Pig" position="1323,599" zPosition="20" size="550,360" backgroundColor="transparent" transparent="0" />
+    <widget name="proxy_status" position="846,909" size="450,55" font="Regular; 34" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="center" />
 </screen>

@@ -5,13 +5,17 @@ __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
 __license__ = "CC BY-NC-SA 4.0"
-__version__ = "1.43"
+__version__ = "1.45"
 
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 import gettext
 import os
+import subprocess
 
+EXPORT_IN_PROGRESS = False
+PROXY_ACTIVE = False
+PORT = 4323
 
 PluginLanguageDomain = 'vavoo'
 PluginLanguagePath = 'Extensions/vavoo/locale'
@@ -56,6 +60,8 @@ else:
 localeInit()
 language.addCallback(localeInit)
 
+file_path = "/usr/lib/enigma2/python/Plugins/Extensions/vavoo/start_proxy.sh"
+subprocess.run(["chmod", "+x", file_path])
 
 country_codes = {
     "Albania": "al",

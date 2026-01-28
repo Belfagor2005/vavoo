@@ -7,7 +7,7 @@
 #  Created by Lululla (https://github.com/Belfagor2005) #
 #  License: CC BY-NC-SA 4.0                             #
 #  https://creativecommons.org/licenses/by-nc-sa/4.0    #
-#  Last Modified: 20251118                              #
+#  Last Modified: 20260122                              #
 #                                                       #
 #  Credits:                                             #
 #  - Original concept by Lululla                        #
@@ -23,29 +23,23 @@
 #########################################################
 """
 
-# -----------------------------
-# Standard library
-# -----------------------------
 import base64
-import json
 import ssl
 import types
+from json import dump, loads, load
 from os import listdir, makedirs, remove, system, unlink
 from os.path import exists, getmtime, getsize, isfile, join, splitext
 from random import choice
 from re import compile, search, sub
 from shutil import copy2
 from sys import maxsize, version_info
-from time import time
+from time import time, sleep
 from unicodedata import normalize
-
+import requests
 import six
 from six import iteritems, unichr
 from six.moves import html_entities, html_parser
-
-import requests
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
-
 
 try:
     unicode
@@ -89,6 +83,18 @@ def get_screen_width():
         return 1920  # Default FHD
 
 
+def trace_error():
+    """error tracing and logging"""
+    import traceback
+    from sys import stdout, stderr
+    try:
+        traceback.print_exc(file=stdout)
+        with open("/tmp/vavoo.log", "a", encoding='utf-8') as log_file:
+            traceback.print_exc(file=log_file)
+    except Exception as e:
+        print("Failed to log the error:", e, file=stderr)
+
+
 class AspectManager:
     """Manages aspect ratio settings for the plugin"""
 
@@ -104,7 +110,6 @@ class AspectManager:
         """Get current aspect ratio setting"""
         try:
             aspect = AVSwitch().getAspectRatioSetting()
-            # Assicurati che sia un intero valido
             return int(aspect) if aspect is not None else 0
         except (ValueError, TypeError, Exception) as e:
             print("[ERROR] Failed to get aspect ratio:", str(e))
@@ -123,12 +128,11 @@ class AspectManager:
 
 
 aspect_manager = AspectManager()
-
-
 class_types = (type,) if PYTHON_VER == 3 else (type, types.ClassType)
 text_type = six.text_type  # unicode in Py2, str in Py3
 binary_type = six.binary_type  # str in Py2, bytes in Py3
 MAXSIZE = maxsize
+PORT = 4323
 
 _UNICODE_MAP = {
     k: unichr(v) for k,
@@ -213,30 +217,28 @@ def b64decoder(data):
         return ""
 
 
-def getUrl(url):
+def getUrl(url, timeout=30):
     """Fetch URL content with fallback SSL handling"""
     headers = {'User-Agent': RequestAgent()}
 
     try:
         if PYTHON_VER == 3:
             response = urlopen(
-                Request(
-                    url,
-                    headers=headers),
-                timeout=30,
+                Request(url, headers=headers),
+                timeout=timeout,
                 context=ssl_context)
             return response.read().decode('utf-8', errors='ignore')
         else:
-            response = urlopen(Request(url, headers=headers), timeout=30)
+            response = urlopen(Request(url, headers=headers), timeout=timeout)
             return response.read()
     except Exception as e:
-        print("URL fetch error: %s" % e)
+        print("URL fetch error (" + str(url) + "): " + str(e))
+        trace_error()
         return ""
 
 
 def get_external_ip():
     """Get external IP using multiple fallback services"""
-    import requests
     from subprocess import Popen, PIPE
 
     services = [
@@ -281,16 +283,17 @@ def set_cache(key, data, timeout):
             import io
             converted_data = convert_to_unicode(data)
             with io.open(file_path, 'w', encoding='utf-8') as cache_file:
-                json.dump(
+                dump(
                     converted_data,
                     cache_file,
                     indent=4,
                     ensure_ascii=False)
         else:
             with open(file_path, 'w', encoding='utf-8') as cache_file:
-                json.dump(data, cache_file, indent=4, ensure_ascii=False)
+                dump(data, cache_file, indent=4, ensure_ascii=False)
     except Exception as e:
         print("Error saving cache:", e)
+        trace_error()
 
 
 def convert_to_unicode(data):
@@ -330,9 +333,11 @@ def get_cache(key):
 
     except ValueError as e:
         print("Error decoding JSON from", file_path, ":", e)
+        trace_error()
     except Exception as e:
         print("Unexpected error reading cache file {}:".format(file_path), e)
         remove(file_path)
+        trace_error()
 
     return None
 
@@ -341,15 +346,15 @@ def _read_json_file(file_path):
     if PYTHON_VER < 3:
         import io
         with io.open(file_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            return load(f)
     else:
         with open(file_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            return load(f)
 
 
 def _write_json_file(file_path, data):
     with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+        dump(data, f, indent=4, ensure_ascii=False)
 
 
 def _is_cache_valid(data):
@@ -359,68 +364,231 @@ def _is_cache_valid(data):
     )
 
 
+# ============================================================================
+# FUNCTIONS FOR VAVOO PROXY
+# ============================================================================
+
 def getAuthSignature():
-    print("DEBUG: Getting auth signature...")
+    """Get authentication - ALWAYS use proxy"""
+    print("[vUtils] Using proxy authentication system")
+    return "PROXY_ACTIVE"
 
-    signfile = get_cache('signfile')
-    if signfile:
-        print("DEBUG: Found cached signature:",
-              signfile[:50] + "..." if signfile else "None")
-        return signfile
 
-    print("DEBUG: No cached signature, fetching new one...")
+"""
+def getAuthSignature():
+    print("DEBUG: Getting auth signature via proxy...")
+    try:
+        sig = get_new_auth_signature()
+        if sig and sig != "proxy_auth_ok":
+            print("DEBUG: New auth system working")
+            return sig
+    except Exception as e:
+        print("DEBUG: New auth failed: " + str(e))
 
-    veclist = get_cache("veclist")
-    if not veclist:
-        print("DEBUG: No cached veclist, fetching from GitHub...")
+    print("DEBUG: Falling back to old auth system...")
+    try:
+        local_ip = "127.0.0.1"
+        port = 4323
+        url = "http://" + local_ip + ":" + str(port) + "/catalog"
+        req = Request(url)
+        response = urlopen(req, timeout=10)
+        data = response.read()
+
+        if response.getcode() == 200:
+            channels = loads(data.decode('utf-8'))
+            if channels:
+                return "proxy_auth_ok"
+
+        return getAuthSignature()
+
+    except Exception as e:
+        print("[vUtils] New auth error: " + str(e))
+        return getAuthSignature()
+"""
+
+
+def get_new_auth_signature():
+    """
+    New Vavoo authentication system via local proxy
+    Returns a valid token for the proxy
+    """
+    try:
+        print("[vUtils] Using new proxy authentication system...")
+
         try:
-            if ssl_context:
-                req = Request(
-                    "https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json")
-                with urlopen(req, context=ssl_context) as r:
-                    veclist = json.load(r)
-            else:
-                response = requests.get(
-                    "https://raw.githubusercontent.com/Belfagor2005/vavoo/refs/heads/main/data.json",
-                    verify=False)
-                veclist = response.json()
-            print("DEBUG: Fetched veclist with", len(
-                veclist) if veclist else 0, "items")
-        except Exception as e:
-            print("[vUtils] Failed to fetch veclist:", e)
-            return None
+            req = Request("http://127.0.0.1:4323/status", timeout=5)
+            response = urlopen(req)
+            if response.getcode() == 200:
+                data = loads(response.read().decode('utf-8'))
+                if data.get("initialized", False):
+                    print("[vUtils] Proxy active and running")
+                    return "PROXY_ACTIVE"
+        except BaseException:
+            pass
 
-        set_cache("veclist", veclist, timeout=3600)
-
-    sig = None
-    i = 0
-    print("DEBUG: Trying to get signature from Vavoo API...")
-    while not sig and i < 50:
-        i += 1
-        vec = {"vec": choice(veclist)}
         try:
-            req = requests.post(
-                'https://www.vavoo.tv/api/box/ping2',
-                data=vec,
-                timeout=10).json()
-            sig = req.get('signed') or req.get(
-                'data', {}).get('signed') or req.get(
-                'response', {}).get('signed')
-            if sig:
-                print("DEBUG: Successfully got signature on attempt", i)
-                break
+            from .vavoo_proxy import run_proxy_in_background
+            print("[vUtils] Starting proxy in background...")
+            run_proxy_in_background()
+            sleep(5)
+            return "PROXY_STARTED"
         except Exception as e:
-            print("DEBUG: Attempt", i, "failed:", e)
-            continue
+            trace_error()
+            print("[vUtils] Proxy start error: " + str(e))
 
-    if sig:
-        print("DEBUG: Saving signature to cache...")
-        set_cache('signfile', convert_to_unicode(sig), timeout=3600)
-    else:
-        print("DEBUG: Failed to get signature after", i, "attempts")
+    except Exception as e:
+        trace_error()
+        print("[vUtils] New auth error: " + str(e))
 
-    return sig
+    print("[vUtils] Falling back to old authentication system")
+    return getAuthSignature()
 
+
+def get_proxy_channels(country_name):
+    """Get channels for a country from proxy - with retry"""
+    max_retries = 3
+
+    for attempt in range(max_retries):
+        try:
+            print("[vUtils] Getting channels for '" + str(country_name) +
+                  "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
+
+            # URL-encode
+            try:
+                from urllib.parse import quote
+            except ImportError:
+                from urllib import quote
+
+            encoded_country = quote(country_name)
+
+            # Build URL
+            proxy_url = "http://127.0.0.1:" + str(PORT) + "/channels?country=" + encoded_country
+            print("[vUtils] Request URL: " + proxy_url)
+
+            # Fetch with timeout
+            response = getUrl(proxy_url, timeout=15)
+
+            if not response:
+                print("[vUtils] Empty response for '" + str(country_name) + "'")
+                continue
+
+            # Parse JSON
+            import json
+            channels = json.loads(response)
+
+            if not isinstance(channels, list):
+                print("[vUtils] Invalid response format: " + str(type(channels)))
+                continue
+
+            print("[vUtils] Successfully got " + str(len(channels)) +
+                  " channels for '" + str(country_name) + "'")
+
+            # Process channels
+            processed_channels = []
+            for channel in channels:
+                if isinstance(channel, dict):
+                    channel_id = channel.get('id', '')
+                    if not channel_id:
+                        continue
+
+                    # Build proxy URL
+                    proxy_stream_url = "http://127.0.0.1:" + str(PORT) + "/vavoo?channel=" + channel_id
+
+                    processed_channels.append({
+                        'id': channel_id,
+                        'name': channel.get('name', 'Unknown'),
+                        'url': proxy_stream_url,
+                        'logo': channel.get('logo', ''),
+                        'country': channel.get('country', country_name)
+                    })
+
+            return processed_channels
+
+        except Exception as e:
+            print("[vUtils] Attempt " + str(attempt + 1) +
+                  " failed for '" + str(country_name) + "': " + str(e))
+            if attempt < max_retries - 1:
+                time.sleep(2)  # Wait before retry
+
+    print("[vUtils] All attempts failed for '" + str(country_name) + "'")
+    return []
+
+
+def get_proxy_stream_url(channel_id):
+    """Get the stream URL via proxy"""
+    return "http://127.0.0.1:4323/vavoo?channel=%s" % channel_id
+
+
+def get_proxy_catalog_url():
+    """
+    Get the proxy catalog URL
+    """
+    return "http://127.0.0.1:4323/catalog"
+
+
+def get_proxy_playlist_url():
+    """
+    Get the proxy playlist URL
+    """
+    return "http://127.0.0.1:4323/playlist.m3u"
+
+
+def get_proxy_status():
+    """Get detailed proxy status"""
+    try:
+        status_url = "http://127.0.0.1:4323/status"
+        response = requests.get(status_url, timeout=3)
+        if response.status_code == 200:
+            return response.json()
+    except BaseException:
+        return None
+    return None
+
+
+def is_proxy_running():
+    """Controlla se il proxy è in esecuzione"""
+    try:
+        import socket
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            return s.connect_ex(('127.0.0.1', 4323)) == 0
+    except BaseException:
+        return False
+
+
+def is_proxy_ready(timeout=2):
+    """Check if the proxy is ready to receive requests"""
+    try:
+        response = getUrl("http://127.0.0.1:4323/status", timeout=timeout)
+        if response:
+            data = loads(response)
+            return data.get("initialized", False)
+        return False
+    except BaseException:
+        return False
+
+
+_original_getAuthSignature = getAuthSignature
+
+
+def getAuthSignature():
+    """
+    Wrapper that uses the proxy first, then falls back to the old system
+    """
+    print("[vUtils] getAuthSignature called...")
+
+    try:
+        if is_proxy_running():
+            print("[vUtils] Proxy active, using new system")
+            return "PROXY_AUTH"
+    except BaseException:
+        trace_error()
+        pass
+
+    print("[vUtils] Falling back to old authentication system")
+    return _original_getAuthSignature()
+
+
+# ===================================
 
 def fetch_vec_list():
     """Fetch vector list from GitHub"""
@@ -820,7 +988,9 @@ def get_country_code(country_name):
     if not country_name:
         return ""
 
-    # Remove category separators and extra text
+    if any(char in country_name for char in '0123456789.'):
+        return ""
+
     separators = ["➾", "⟾", "->", "→", "»", "›"]
     for sep in separators:
         if sep in country_name:
@@ -828,34 +998,38 @@ def get_country_code(country_name):
             break
 
     country_name = country_name.strip()
+
+    if len(country_name) < 2:
+        return ""
+
     special_mapping = {
+        'America': 'us',
+        'Arabia': 'sa',
+        'Balkans': 'bk',
+        'Baltic': 'baltic',
+        'Czech Republic': 'cz',
+        'Czech': 'cz',
+        'Global': 'internat',
+        'Great Britain': 'gb',
+        'Holy See': 'va',
         'Internat': 'internat',
         'International': 'internat',
         'Internaz': 'internat',
-        'Global': 'internat',
-        'World': 'internat',
-        'Balkans': 'bk',
-        'Arabia': 'sa',
-        'Scandinavia': 'scandinavia',
-        'Baltic': 'baltic',
-        'United Kingdom': 'gb',
-        'UK': 'gb',
-        'Great Britain': 'gb',
-        'United States': 'us',
-        'USA': 'us',
-        'America': 'us',
-        'Czech Republic': 'cz',
-        'Czech': 'cz',
-        'Slovak Republic': 'sk',
-        'Slovakia': 'sk',
-        'South Korea': 'kr',
         'North Korea': 'kp',
         'Russia': 'ru',
         'Russian Federation': 'ru',
+        'Scandinavia': 'scandinavia',
+        'Slovak Republic': 'sk',
+        'Slovakia': 'sk',
+        'South Korea': 'kr',
         'UAE': 'ae',
+        'UK': 'gb',
+        'USA': 'us',
         'United Arab Emirates': 'ae',
+        'United Kingdom': 'gb',
+        'United States': 'us',
         'Vatican City': 'va',
-        'Holy See': 'va',
+        'World': 'internat',
     }
 
     if country_name in special_mapping:
@@ -863,62 +1037,51 @@ def get_country_code(country_name):
 
     # Full country map
     country_map = {
-        # Europe
-        'Albania': 'al', 'Andorra': 'ad', 'Austria': 'at', 'Belarus': 'by',
-        'Belgium': 'be', 'Bosnia': 'ba', 'Bulgaria': 'bg', 'Croatia': 'hr',
-        'Cyprus': 'cy', 'Czechia': 'cz', 'Denmark': 'dk', 'Estonia': 'ee',
-        'Finland': 'fi', 'France': 'fr', 'Germany': 'de', 'Greece': 'gr',
-        'Hungary': 'hu', 'Iceland': 'is', 'Ireland': 'ie', 'Italy': 'it',
-        'Latvia': 'lv', 'Liechtenstein': 'li', 'Lithuania': 'lt',
-        'Luxembourg': 'lu', 'Malta': 'mt', 'Moldova': 'md', 'Monaco': 'mc',
-        'Montenegro': 'me', 'Netherlands': 'nl', 'North Macedonia': 'mk',
-        'Norway': 'no', 'Poland': 'pl', 'Portugal': 'pt', 'Romania': 'ro',
-        'Russia': 'ru', 'San Marino': 'sm', 'Serbia': 'rs', 'Slovakia': 'sk',
-        'Slovenia': 'si', 'Spain': 'es', 'Sweden': 'se', 'Switzerland': 'ch',
-        'Ukraine': 'ua', 'United Kingdom': 'gb', 'Vatican': 'va',
-        # Americas
-        'Argentina': 'ar', 'Bolivia': 'bo', 'Brazil': 'br', 'Canada': 'ca',
-        'Chile': 'cl', 'Colombia': 'co', 'Costa Rica': 'cr', 'Cuba': 'cu',
-        'Dominican Republic': 'do', 'Ecuador': 'ec', 'El Salvador': 'sv',
-        'Guatemala': 'gt', 'Haiti': 'ht', 'Honduras': 'hn', 'Jamaica': 'jm',
-        'Mexico': 'mx', 'Nicaragua': 'ni', 'Panama': 'pa', 'Paraguay': 'py',
-        'Peru': 'pe', 'Puerto Rico': 'pr', 'United States': 'us',
-        'Uruguay': 'uy', 'Venezuela': 've',
-        # Asia
-        'Afghanistan': 'af', 'Armenia': 'am', 'Azerbaijan': 'az', 'Bahrain': 'bh',
-        'Bangladesh': 'bd', 'Bhutan': 'bt', 'Brunei': 'bn', 'Cambodia': 'kh',
-        'China': 'cn', 'Georgia': 'ge', 'India': 'in', 'Indonesia': 'id',
-        'Iran': 'ir', 'Iraq': 'iq', 'Israel': 'il', 'Japan': 'jp',
-        'Jordan': 'jo', 'Kazakhstan': 'kz', 'Kuwait': 'kw', 'Kyrgyzstan': 'kg',
-        'Laos': 'la', 'Lebanon': 'lb', 'Malaysia': 'my', 'Maldives': 'mv',
-        'Mongolia': 'mn', 'Myanmar': 'mm', 'Nepal': 'np', 'Oman': 'om',
-        'Pakistan': 'pk', 'Palestine': 'ps', 'Philippines': 'ph', 'Qatar': 'qa',
-        'Saudi Arabia': 'sa', 'Singapore': 'sg', 'South Korea': 'kr',
-        'Sri Lanka': 'lk', 'Syria': 'sy', 'Taiwan': 'tw', 'Tajikistan': 'tj',
-        'Thailand': 'th', 'Turkey': 'tr', 'Turkmenistan': 'tm',
-        'United Arab Emirates': 'ae', 'Uzbekistan': 'uz', 'Vietnam': 'vn',
-        'Yemen': 'ye',
-        # Africa
-        'Algeria': 'dz', 'Angola': 'ao', 'Benin': 'bj', 'Botswana': 'bw',
-        'Burkina Faso': 'bf', 'Burundi': 'bi', 'Cameroon': 'cm',
-        'Cape Verde': 'cv', 'Central African Republic': 'cf', 'Chad': 'td',
-        'Comoros': 'km', 'Congo': 'cg', 'Djibouti': 'dj', 'Egypt': 'eg',
-        'Equatorial Guinea': 'gq', 'Eritrea': 'er', 'Eswatini': 'sz',
-        'Ethiopia': 'et', 'Gabon': 'ga', 'Gambia': 'gm', 'Ghana': 'gh',
-        'Guinea': 'gn', 'Guinea-Bissau': 'gw', 'Ivory Coast': 'ci',
-        'Kenya': 'ke', 'Lesotho': 'ls', 'Liberia': 'lr', 'Libya': 'ly',
-        'Madagascar': 'mg', 'Malawi': 'mw', 'Mali': 'ml', 'Mauritania': 'mr',
-        'Mauritius': 'mu', 'Morocco': 'ma', 'Mozambique': 'mz', 'Namibia': 'na',
-        'Niger': 'ne', 'Nigeria': 'ng', 'Rwanda': 'rw', 'Senegal': 'sn',
-        'Seychelles': 'sc', 'Sierra Leone': 'sl', 'Somalia': 'so',
-        'South Africa': 'za', 'South Sudan': 'ss', 'Sudan': 'sd',
-        'Tanzania': 'tz', 'Togo': 'tg', 'Tunisia': 'tn', 'Uganda': 'ug',
-        'Zambia': 'zm', 'Zimbabwe': 'zw',
-        # Oceania
-        'Australia': 'au', 'Fiji': 'fj', 'Kiribati': 'ki', 'Marshall Islands': 'mh',
-        'Micronesia': 'fm', 'Nauru': 'nr', 'New Zealand': 'nz', 'Palau': 'pw',
-        'Papua New Guinea': 'pg', 'Samoa': 'ws', 'Solomon Islands': 'sb',
-        'Tonga': 'to', 'Tuvalu': 'tv', 'Vanuatu': 'vu'
+        # Europa
+        'Albania': 'al',
+        'Arabia': 'sa',
+        'Austria': 'at',
+        'Balkans': 'bk',
+        'Belgium': 'be',
+        'Bulgaria': 'bg',
+        'Croatia': 'hr',
+        'Czech Republic': 'cz',
+        'France': 'fr',
+        'Germany': 'de',
+        'Greece': 'gr',
+        'Hungary': 'hu',
+        'Italy': 'it',
+        'Netherlands': 'nl',
+        'Poland': 'pl',
+        'Portugal': 'pt',
+        'Romania': 'ro',
+        'Russia': 'ru',
+        'Slovakia': 'sk',
+        'Slovenia': 'si',
+        'Spain': 'es',
+        'Switzerland': 'ch',
+        'Turkey': 'tr',
+        'UK': 'gb',
+        'United Kingdom': 'gb',
+
+        # Special cases
+        'Global': 'internat',
+        'Internat': 'internat',
+        'International': 'internat',
+        'Internaz': 'internat',
+        'World': 'internat',
+
+        'Italia': 'it',
+        'Italiana': 'it',
+        'Italian': 'it',
+        'German': 'de',
+        'French': 'fr',
+        'Spanish': 'es',
+        'English': 'gb',
+        'British': 'gb',
+
+        # Default
+        'default': 'us'
     }
 
     # Exact match

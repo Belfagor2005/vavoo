@@ -1,6 +1,6 @@
 <screen name="MainVavoo" position="0,0" size="1280,720" backgroundColor="transparent" flags="wfNoBorder">
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/default.png" position="0,0" size="1280,720" alphatest="blend" zPosition="-1" />
-    <widget name="name" position="45,567" size="636,79" noWrap="1" zPosition="1" transparent="1" font="Regular; 28" valign="center" halign="left" backgroundColor="#30000000" foregroundColor="#00ffffff" />
+    <widget name="name" position="20,572" size="636,71" noWrap="1" zPosition="1" transparent="1" font="Regular; 28" valign="center" halign="left" backgroundColor="#30000000" foregroundColor="#00ffffff" />
     <widget name="menulist" position="30,121" size="480,400" itemHeight="50" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
     <widget name="version" position="914,671" size="100,30" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 20" halign="center" foregroundColor="#ffffff" />
     <widget name="red" font="cvfont; 20" halign="center" valign="center" position="15,660" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
@@ -23,4 +23,5 @@
         <convert type="ServiceName">Name</convert>
     </widget>
     <widget source="session.VideoPicture" render="Pig" position="869,389" zPosition="20" size="400,220" backgroundColor="transparent" transparent="0" />
+    <widget name="proxy_status" position="528,499" size="340,55" font="Regular; 24" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="center" />
 </screen>

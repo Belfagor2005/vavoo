@@ -1,7 +1,7 @@
 #!/bin/bash
 
-version='1.43'
-changelog='\nRemoved Flags folders\nadd flags online'
+version='1.45'
+changelog='\nNew Vavoo Proxy Online\nOffer coffee please :)'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz
