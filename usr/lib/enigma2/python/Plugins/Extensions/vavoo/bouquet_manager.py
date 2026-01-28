@@ -728,7 +728,7 @@ def _create_flat_bouquet(name, url, service, bouquet_type, server_url):
                 continue
 
             # Use proxy URL format
-            url_channel = "http://" + local_ip + ":" + \
+            url_channel = "https://" + local_ip + ":" + \
                 str(PORT) + "/vavoo?channel=" + channel_id
 
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
@@ -802,7 +802,7 @@ def _create_hierarchical_bouquet(
                 country_name +
                 ", using flat structure")
             return _create_flat_bouquet(
-                country_name, url, service, app, bouquet_type, server_url
+                country_name, url, service, bouquet_type, server_url
             )
 
         # Create category sub-bouquets (children) and track which ones were
@@ -835,7 +835,6 @@ def _create_hierarchical_bouquet(
             country_name,
             url,
             service,
-            app,
             bouquet_type,
             server_url
         )
@@ -1005,7 +1004,7 @@ def _create_category_bouquet(
                 continue
 
             # Use proxy URL format
-            url_channel = "http://" + local_ip + ":" + \
+            url_channel = "https://" + local_ip + ":" + \
                 str(PORT) + "/vavoo?channel=" + channel_id
 
             tag = "2" if bouquet_type.upper() == "RADIO" else "1"
