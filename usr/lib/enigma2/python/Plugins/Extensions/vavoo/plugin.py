@@ -3747,7 +3747,8 @@ class Playstream2(
                     proxy_host = match.group(1)
 
             # Build proxy URL WITHOUT extra parameters
-            proxy_url = "http://" + str(proxy_host) + "/vavoo?channel=" + str(channel_id)
+            proxy_url = "http://" + \
+                str(proxy_host) + "/vavoo?channel=" + str(channel_id)
             print("[Playstream2] Clean proxy URL: " + proxy_url)
 
             # Add User-Agent as fragment
