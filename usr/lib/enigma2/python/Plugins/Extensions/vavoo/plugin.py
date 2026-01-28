@@ -3548,9 +3548,12 @@ class Playstream2(
             if time_since_last_eof < 10:  # Less than 10 seconds between EOFs
                 self.eof_count += 1
                 print(
-                    f"[Playstream2] Frequent EOF #{
-                        self.eof_count}, time: {
-                        time_since_last_eof:.1f}s")
+                    "[Playstream2] Frequent EOF #" +
+                    str(self.eof_count) +
+                    ", time: " +
+                    "%.1f" % time_since_last_eof +
+                    "s"
+                )
             else:
                 self.eof_count = 1
 
@@ -3558,8 +3561,12 @@ class Playstream2(
             if self.eof_count <= 3:  # Allow up to 3 quick retries
                 delay = 2 + (self.eof_count * 2)  # 2, 4, 6 seconds
                 print(
-                    f"[Playstream2] Restarting stream in {delay} seconds (EOF #{
-                        self.eof_count})")
+                    "[Playstream2] Restarting stream in " +
+                    str(delay) +
+                    " seconds (EOF #" +
+                    str(self.eof_count) +
+                    ")"
+                )
                 self.restartStreamDelayed(delay * 1000)
             else:
                 print("[Playstream2] Too many EOFs, stopping auto-restart")
@@ -3591,15 +3598,22 @@ class Playstream2(
         if time_since_last_eof < 10:
             self.eof_count += 1
             print(
-                f"[Playstream2] __evEOF #{
-                    self.eof_count}, time: {
-                    time_since_last_eof:.1f}s")
+                "[Playstream2] __evEOF #" +
+                str(self.eof_count) +
+                ", time: " +
+                "%.1f" % time_since_last_eof +
+                "s"
+            )
         else:
             self.eof_count = 1
 
         if self.eof_count <= 3:
             delay = 2 + (self.eof_count * 2)
-            print(f"[Playstream2] Restarting from __evEOF in {delay} seconds")
+            print(
+                "[Playstream2] Restarting from __evEOF in " +
+                str(delay) +
+                " seconds"
+            )
             self.restartStreamDelayed(delay * 1000)
         else:
             print("[Playstream2] Too many EOFs in __evEOF")
@@ -3733,7 +3747,7 @@ class Playstream2(
                     proxy_host = match.group(1)
 
             # Build proxy URL WITHOUT extra parameters
-            proxy_url = f"http://{proxy_host}/vavoo?channel={channel_id}"
+            proxy_url = "http://" + str(proxy_host) + "/vavoo?channel=" + str(channel_id)
             print("[Playstream2] Clean proxy URL: " + proxy_url)
 
             # Add User-Agent as fragment
@@ -3743,7 +3757,12 @@ class Playstream2(
             encoded_url = stream_url_with_ua.replace(":", "%3a")
             encoded_name = self.name.replace(":", "%3a")
 
-            ref = f"4097:0:0:0:0:0:0:0:0:0:{encoded_url}:{encoded_name}"
+            ref = (
+                "4097:0:0:0:0:0:0:0:0:0:" +
+                encoded_url +
+                ":" +
+                encoded_name
+            )
             print("[Playstream2] Service reference: " + ref)
 
             sref = eServiceReference(ref)
