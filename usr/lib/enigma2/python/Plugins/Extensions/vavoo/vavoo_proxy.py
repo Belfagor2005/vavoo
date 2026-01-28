@@ -631,63 +631,104 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
                 try:
                     # 1. Resolve the Vavoo stream URL
+                    stream_url = proxy.resolve_with_retry(channel.get("url"))
+                    if not stream_url:
+                        self.send_error(404, "Stream not resolved")
+                        return
+
+                    # 2. Quick test to see if the stream is reachable
+                    try:
+                        test_response = proxy.session.get(stream_url, stream=True, timeout=5)
+                        test_response.raise_for_status()
+
+                        # Read first 1024 bytes to check if data exists
+                        test_chunk = next(test_response.iter_content(chunk_size=1024), None)
+                        test_response.close()
+
+                        if not test_chunk:
+                            print("[Proxy] WARNING: Upstream stream returned empty data for channel: " + channel_id)
+
+                    except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+                        print("[Proxy] CRITICAL: Cannot reach upstream stream for channel " + channel_id + ": " + str(e))
+                        self.send_error(502, "Cannot connect to video source")
+                        return
+                    except Exception as e:
+                        print("[Proxy] Warning during stream test for " + channel_id + ": " + str(e))
+                        # Proceed anyway, might be a false positive
+
+                    # 3. If the test is OK (or we decide to proceed), do a 302 REDIRECT
+                    self.send_response(302)
+                    self.send_header('Location', stream_url)
+                    self.end_headers()
+                    print("[Proxy] 302 Redirect to upstream stream for channel: " + channel_id)
+
+                except Exception as e:
+                    print("[Proxy] Error in /vavoo handler: " + str(e))
+                    self.send_error(500, "Internal proxy error")
+
+            elif parsed_path.path == '/stream':
+                """True streaming proxy with keep-alive monitoring
+                # Change from:
+                service_url = "http://127.0.0.1:4323/vavoo?channel=" + channel_id
+                # To:
+                service_url = "http://127.0.0.1:4323/stream?channel=" + channel_id
+                """
+                channel_id = query_params.get('channel', [None])[0]
+                if not channel_id:
+                    self.send_error(400, "Missing channel parameter")
+                    return
+
+                channel = None
+                if hasattr(proxy, 'all_filtered_items'):
+                    for ch in proxy.all_filtered_items:
+                        if ch.get("id") == channel_id:
+                            channel = ch
+                            break
+
+                if not channel:
+                    self.send_error(404, "Channel not found")
+                    return
+
+                try:
+                    # 1. Get stream URL
                     stream_url = proxy.resolve_with_retry(channel["url"])
                     if not stream_url:
                         self.send_error(404, "Stream not resolved")
                         return
 
-                    # 2. Open a connection to the Vavoo upstream server
-                    #    Use stream=True to download the stream in chunks
-                    upstream_response = proxy.session.get(
-                        stream_url, stream=True, timeout=15)
-                    upstream_response.raise_for_status()
+                    # 2. Connect to upstream with streaming
+                    upstream = proxy.session.get(stream_url, stream=True, timeout=30)
+                    upstream.raise_for_status()
 
-                    # 3. Send headers to the Enigma2 player
+                    # 3. Send headers to player
                     self.send_response(200)
-                    self.send_header(
-                        'Content-Type',
-                        upstream_response.headers.get(
-                            'Content-Type',
-                            'video/mp2t'))
-                    self.send_header('Connection', 'close')
+                    self.send_header('Content-Type', upstream.headers.get('Content-Type', 'video/mp2t'))
+                    self.send_header('Connection', 'keep-alive')
                     self.end_headers()
 
-                    # 4. Forward data chunk-by-chunk, checking if the source is
-                    # still active
+                    # 4. Forward data with timeout monitoring
+                    last_data_time = time.time()
                     try:
-                        for chunk in upstream_response.iter_content(
-                                chunk_size=8192):
-                            if chunk:  # If data is present...
+                        for chunk in upstream.iter_content(chunk_size=8192):
+                            if chunk:
                                 self.wfile.write(chunk)
-                                self.wfile.flush()  # Force immediate send
+                                self.wfile.flush()
+                                last_data_time = time.time()
                             else:
-                                # If the chunk is empty, the source may have
-                                # stopped
-                                print(
-                                    "[Proxy] Empty chunk from upstream, stream might have ended.")
-                                break  # Exit loop and close player connection
+                                # Empty chunk - check if upstream is dead
+                                if time.time() - last_data_time > 10:  # 10 seconds timeout
+                                    print("[Proxy Stream] Upstream timeout for channel: " + channel_id)
+                                    break
+                                time.sleep(0.1)
                     except (socket.timeout, ConnectionError, BrokenPipeError) as e:
-                        print(
-                            "[Proxy] Downstream connection error (player side): " + str(e))
+                        print("[Proxy Stream] Downstream error: " + str(e))
                     finally:
-                        # 5. Always clean up the upstream connection
-                        upstream_response.close()
-                        print(
-                            "[Proxy] Stream forwarding finished for channel: " +
-                            channel_id)
+                        upstream.close()
+                        print("[Proxy Stream] Finished for channel: " + channel_id)
 
-                except (requests.exceptions.Timeout, socket.timeout) as e:
-                    print(
-                        "[Proxy] Timeout connecting to upstream stream: " +
-                        str(e))
-                    self.send_error(504, "Upstream timeout")
-                except requests.exceptions.ConnectionError as e:
-                    print(
-                        "[Proxy] Cannot connect to upstream stream: " + str(e))
-                    self.send_error(502, "Cannot connect to source")
                 except Exception as e:
-                    print("[Proxy] Error in /vavoo handler: " + str(e))
-                    self.send_error(500, "Internal proxy error")
+                    print("[Proxy Stream] Error: " + str(e))
+                    self.send_error(500, "Streaming error")
 
             elif parsed_path.path == '/channels':
                 country = query_params.get('country', [None])[0]

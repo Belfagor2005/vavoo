@@ -549,7 +549,7 @@ def start_proxy_at_boot():
             time.sleep(2)
         else:
             print("[Vavoo] Proxy already running at boot")
-    except BaseException:
+    except:
         pass
 
 
@@ -1424,17 +1424,6 @@ class MainVavoo(Screen):
         self.proxy_monitor_timer.start(10000)  # Ogni 10 secondi
         self.cat()
 
-    # def _initialize_labels(self):
-        # """Initialize the labels on the screen."""
-        # self.menulist = []
-        # self['menulist'] = m2list([])
-        # self['red'] = Label(_('Exit'))
-        # self['green'] = Label(_('Remove') + ' Fav')
-        # self['yellow'] = Label(_('Update Me'))
-        # self["blue"] = Label(_('Reload Bouqet'))
-        # self['name'] = Label('Loading...')
-        # self['version'] = Label()
-
     def _initialize_labels(self):
         """Initialize the labels on the screen."""
         self.menulist = []
@@ -1447,7 +1436,7 @@ class MainVavoo(Screen):
         self["blue"] = Label(_('Reload Bouqet'))
         self['name'] = Label('Loading...')
         self['version'] = Label()
-        self['proxy_status'] = Label('...')
+        self['proxy_status'] = Label('Wait...')
 
     def _initialize_actions(self):
         """Initialize the actions for buttons."""
@@ -1475,11 +1464,8 @@ class MainVavoo(Screen):
             'MenuActions',
             'OkCancelActions',
             'ButtonSetupActions',
-            # 'ColorActions',
-            # "ChannelSelectInfoActions",
             'InfobarEPGActions',
             'EPGSelectActions'
-            # 'HotkeyActions'
         ]
         self['actions'] = ActionMap(actions_list, actions, -1)
 
@@ -1733,7 +1719,7 @@ class MainVavoo(Screen):
             try:
                 requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
                 time.sleep(3)
-            except BaseException:
+            except:
                 pass
 
             # Kill python processes that could be the proxy
@@ -1743,8 +1729,12 @@ class MainVavoo(Screen):
             # Restart
             return run_proxy_in_background()
 
-        except BaseException:
+        except:
             return False
+
+    def _reload_services_after_delay(self):
+        eDVBDB.getInstance().reloadBouquets()
+        eDVBDB.getInstance().reloadServicelist()
 
     def cat(self):
         self.cat_list = []
@@ -2285,11 +2275,8 @@ class vavoo(Screen):
                 'MenuActions',
                 'OkCancelActions',
                 'ButtonSetupActions',
-                # 'ColorActions',
-                # "ChannelSelectInfoActions",
                 'InfobarEPGActions',
                 'EPGSelectActions'
-                # 'HotkeyActions'
             ],
             {
                 "prevBouquet": self.chDown,
@@ -3252,7 +3239,7 @@ class VavooSearch(Screen):
                     if hasattr(self.searchTimer, 'callback'):
                         self.searchTimer.callback.remove(
                             self.updateFilteredList)
-                except BaseException:
+                except:
                     pass
 
             if hasattr(self, 'key_timer'):
@@ -3421,15 +3408,7 @@ class TvInfoBarShowHide():
             self.startHideTimer()
 
 
-class Playstream2(
-        InfoBarBase,
-        InfoBarMenu,
-        InfoBarSeek,
-        InfoBarAudioSelection,
-        InfoBarSubtitleSupport,
-        InfoBarNotifications,
-        TvInfoBarShowHide,
-        Screen):
+class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide, Screen):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
@@ -3491,9 +3470,9 @@ class Playstream2(
         self.__event_tracker = ServiceEventTracker(
             screen=self,
             eventmap={
-                iPlayableService.evStart: self.__serviceStarted,
                 iPlayableService.evEOF: self.__evEOF,
-                iPlayableService.evStopped: self.__evStopped,
+                # iPlayableService.evStart: self.__serviceStarted,
+                # iPlayableService.evStopped: self.__evStopped,
             }
         )
         self.eof_recovery_timer = eTimer()
@@ -3587,7 +3566,6 @@ class Playstream2(
 
         # Use same logic as doEofInternal
         current_time = time.time()
-
         if not hasattr(self, 'eof_count'):
             self.eof_count = 0
             self.last_eof_time = 0
@@ -3597,23 +3575,13 @@ class Playstream2(
 
         if time_since_last_eof < 10:
             self.eof_count += 1
-            print(
-                "[Playstream2] __evEOF #" +
-                str(self.eof_count) +
-                ", time: " +
-                "%.1f" % time_since_last_eof +
-                "s"
-            )
+            print(f"[Playstream2] __evEOF #{self.eof_count}, time: {time_since_last_eof:.1f}s")
         else:
             self.eof_count = 1
 
         if self.eof_count <= 3:
             delay = 2 + (self.eof_count * 2)
-            print(
-                "[Playstream2] Restarting from __evEOF in " +
-                str(delay) +
-                " seconds"
-            )
+            print(f"[Playstream2] Restarting from __evEOF in {delay} seconds")
             self.restartStreamDelayed(delay * 1000)
         else:
             print("[Playstream2] Too many EOFs in __evEOF")
@@ -3623,9 +3591,13 @@ class Playstream2(
         print("Playback started successfully")
         self.state = self.STATE_PLAYING
 
-    def __evStopped(self):
-        print("Playback stopped")
-        self.close()
+    """
+    # def __evStopped(self):
+        # print("[Playstream2] Playback stopped - checking if should restart")
+        # if self.execing and self.is_streaming:
+            # print("[Playstream2] Attempting restart after stop")
+            # self.restartAfterEOF()
+    """
 
     def startStream(self, force=False):
         """Start the stream - proxy handles authentication"""
@@ -3665,7 +3637,7 @@ class Playstream2(
             self.eof_recovery_timer = eTimer()
             try:
                 self.eof_recovery_timer.callback.append(self.restartAfterEOF)
-            except BaseException:
+            except:
                 self.eof_recovery_timer_conn = self.eof_recovery_timer.timeout.connect(
                     self.restartAfterEOF)
 
@@ -3683,7 +3655,7 @@ class Playstream2(
             time.sleep(0.5)
             self.startStream(force=True)
         except Exception as e:
-            print("[Playstream2] Error restarting after EOF:", e)
+            print("[Playstream2] Error restarting after EOF: " + str(e))
 
     def showinfo(self):
         """Show stream information"""
@@ -3832,7 +3804,7 @@ class Playstream2(
             self.session.nav.stopService()
             if self.srefInit:
                 self.session.nav.playService(self.srefInit)
-        except BaseException:
+        except:
             pass
 
     def cancel(self):
@@ -3851,7 +3823,7 @@ class Playstream2(
         # Restore aspect ratio
         try:
             aspect_manager.restore_aspect()
-        except BaseException:
+        except:
             pass
 
         self.close()
@@ -3956,7 +3928,6 @@ class AutoStartTimer:
 
     def startMain(self):
         favorite_channel = join(PLUGIN_PATH, 'Favorite.txt')
-
         if not isfile(favorite_channel):
             print("Favorite.txt not found - no bouquets to update")
             return
