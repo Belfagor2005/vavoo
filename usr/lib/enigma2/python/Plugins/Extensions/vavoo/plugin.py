@@ -1719,7 +1719,7 @@ class MainVavoo(Screen):
             try:
                 requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
                 time.sleep(3)
-            except:
+            except BaseException:
                 pass
 
             # Kill python processes that could be the proxy
@@ -1729,7 +1729,7 @@ class MainVavoo(Screen):
             # Restart
             return run_proxy_in_background()
 
-        except:
+        except BaseException:
             return False
 
     def _reload_services_after_delay(self):
@@ -3239,7 +3239,7 @@ class VavooSearch(Screen):
                     if hasattr(self.searchTimer, 'callback'):
                         self.searchTimer.callback.remove(
                             self.updateFilteredList)
-                except:
+                except BaseException:
                     pass
 
             if hasattr(self, 'key_timer'):
@@ -3408,7 +3408,15 @@ class TvInfoBarShowHide():
             self.startHideTimer()
 
 
-class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarNotifications, TvInfoBarShowHide, Screen):
+class Playstream2(
+        InfoBarBase,
+        InfoBarMenu,
+        InfoBarSeek,
+        InfoBarAudioSelection,
+        InfoBarSubtitleSupport,
+        InfoBarNotifications,
+        TvInfoBarShowHide,
+        Screen):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
@@ -3575,7 +3583,10 @@ class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, 
 
         if time_since_last_eof < 10:
             self.eof_count += 1
-            print(f"[Playstream2] __evEOF #{self.eof_count}, time: {time_since_last_eof:.1f}s")
+            print(
+                f"[Playstream2] __evEOF #{
+                    self.eof_count}, time: {
+                    time_since_last_eof:.1f}s")
         else:
             self.eof_count = 1
 
@@ -3637,7 +3648,7 @@ class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, 
             self.eof_recovery_timer = eTimer()
             try:
                 self.eof_recovery_timer.callback.append(self.restartAfterEOF)
-            except:
+            except BaseException:
                 self.eof_recovery_timer_conn = self.eof_recovery_timer.timeout.connect(
                     self.restartAfterEOF)
 
@@ -3804,7 +3815,7 @@ class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, 
             self.session.nav.stopService()
             if self.srefInit:
                 self.session.nav.playService(self.srefInit)
-        except:
+        except BaseException:
             pass
 
     def cancel(self):
@@ -3823,7 +3834,7 @@ class Playstream2(InfoBarBase, InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, 
         # Restore aspect ratio
         try:
             aspect_manager.restore_aspect()
-        except:
+        except BaseException:
             pass
 
         self.close()
