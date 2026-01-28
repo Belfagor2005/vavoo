@@ -311,7 +311,7 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" +
+                                print("[Token Monitor] Token old (" + \
                                       str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
@@ -638,29 +638,45 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
                     # 2. Quick test to see if the stream is reachable
                     try:
-                        test_response = proxy.session.get(stream_url, stream=True, timeout=5)
+                        test_response = proxy.session.get(
+                            stream_url, stream=True, timeout=5)
                         test_response.raise_for_status()
 
                         # Read first 1024 bytes to check if data exists
-                        test_chunk = next(test_response.iter_content(chunk_size=1024), None)
+                        test_chunk = next(
+                            test_response.iter_content(
+                                chunk_size=1024), None)
                         test_response.close()
 
                         if not test_chunk:
-                            print("[Proxy] WARNING: Upstream stream returned empty data for channel: " + channel_id)
+                            print(
+                                "[Proxy] WARNING: Upstream stream returned empty data for channel: " +
+                                channel_id)
 
                     except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
-                        print("[Proxy] CRITICAL: Cannot reach upstream stream for channel " + channel_id + ": " + str(e))
+                        print(
+                            "[Proxy] CRITICAL: Cannot reach upstream stream for channel " +
+                            channel_id +
+                            ": " +
+                            str(e))
                         self.send_error(502, "Cannot connect to video source")
                         return
                     except Exception as e:
-                        print("[Proxy] Warning during stream test for " + channel_id + ": " + str(e))
+                        print(
+                            "[Proxy] Warning during stream test for " +
+                            channel_id +
+                            ": " +
+                            str(e))
                         # Proceed anyway, might be a false positive
 
-                    # 3. If the test is OK (or we decide to proceed), do a 302 REDIRECT
+                    # 3. If the test is OK (or we decide to proceed), do a 302
+                    # REDIRECT
                     self.send_response(302)
                     self.send_header('Location', stream_url)
                     self.end_headers()
-                    print("[Proxy] 302 Redirect to upstream stream for channel: " + channel_id)
+                    print(
+                        "[Proxy] 302 Redirect to upstream stream for channel: " +
+                        channel_id)
 
                 except Exception as e:
                     print("[Proxy] Error in /vavoo handler: " + str(e))
@@ -697,12 +713,17 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                         return
 
                     # 2. Connect to upstream with streaming
-                    upstream = proxy.session.get(stream_url, stream=True, timeout=30)
+                    upstream = proxy.session.get(
+                        stream_url, stream=True, timeout=30)
                     upstream.raise_for_status()
 
                     # 3. Send headers to player
                     self.send_response(200)
-                    self.send_header('Content-Type', upstream.headers.get('Content-Type', 'video/mp2t'))
+                    self.send_header(
+                        'Content-Type',
+                        upstream.headers.get(
+                            'Content-Type',
+                            'video/mp2t'))
                     self.send_header('Connection', 'keep-alive')
                     self.end_headers()
 
@@ -717,14 +738,17 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                             else:
                                 # Empty chunk - check if upstream is dead
                                 if time.time() - last_data_time > 10:  # 10 seconds timeout
-                                    print("[Proxy Stream] Upstream timeout for channel: " + channel_id)
+                                    print(
+                                        "[Proxy Stream] Upstream timeout for channel: " + channel_id)
                                     break
                                 time.sleep(0.1)
                     except (socket.timeout, ConnectionError, BrokenPipeError) as e:
                         print("[Proxy Stream] Downstream error: " + str(e))
                     finally:
                         upstream.close()
-                        print("[Proxy Stream] Finished for channel: " + channel_id)
+                        print(
+                            "[Proxy Stream] Finished for channel: " +
+                            channel_id)
 
                 except Exception as e:
                     print("[Proxy Stream] Error: " + str(e))
