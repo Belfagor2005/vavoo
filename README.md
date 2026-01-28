@@ -8,6 +8,17 @@
 ## 📌 Overview
 Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousands of live TV channels from multiple countries. It features a built-in local proxy for improved reliability, automatic bouquet updates, and seamless integration with your Enigma2 receiver.
 
+## 🖼️ Screenshots
+
+| Main Interface | Categories View | Settings |
+|----------------|-----------------|----------|
+| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen3.png" width="200"> |
+
+| Player | Bouquet Export | Search |
+|--------|----------------|--------|
+| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen4.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen5.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen7.png" width="200"> |
+
+
 ## ✨ Key Features
 - **Live TV Streaming** – Watch live channels from various countries
 - **Country & Category Browsing** – Organized by country and category
