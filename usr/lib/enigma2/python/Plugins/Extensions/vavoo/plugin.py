@@ -1403,6 +1403,7 @@ class MainVavoo(Screen):
             self.proxy_monitor_timer.callback.append(
                 self._check_and_update_proxy_status)
         self.proxy_monitor_timer.start(10000)  # Ogni 10 secondi
+        self['proxy_status'].setText(_("Checking proxy..."))
         self.cat()
 
     def _initialize_labels(self):
@@ -1482,13 +1483,13 @@ class MainVavoo(Screen):
             print("[Close] Error stopping timers: %s" % str(e))
 
         try:
-            cleaned = cleanup_old_temp_files(max_age_hours=0)
+            cleaned = cleanup_old_temp_files(
+                max_age_hours=0)  # Clean ALL temp files
             print("[Cleanup] Removed %d temporary files" % cleaned)
         except Exception as e:
             print("[Cleanup] Error: %s" % str(e))
 
         self._reload_services(showMsg=False)
-
         self.close()
 
     def preload_flags_for_visible_countries(self):
@@ -1589,14 +1590,14 @@ class MainVavoo(Screen):
     def _check_and_update_proxy_status(self):
         """Check and update the proxy status periodically"""
         try:
-            self.update_proxy_status_display()
-
             if not is_proxy_ready(timeout=2):
                 self.proxy_needs_attention = True
                 print("[MainVavoo] Proxy needs attention")
             else:
                 self.proxy_needs_attention = False
 
+            self._update_proxy_status_display()
+            # self.update_proxy_status_display()
         except Exception as e:
             print("[MainVavoo] Error in proxy monitor: " + str(e))
             self['proxy_status'].setText("✗ Proxy Error")
@@ -1661,7 +1662,9 @@ class MainVavoo(Screen):
             try:
                 # Try to refresh the token
                 response = getUrl(
-                    "http://127.0.0.1:4323/refresh_token", timeout=5)
+                    "http://127.0.0.1:4323/refresh_token",
+                    timeout=5
+                )
                 if response:
                     data = loads(response)
                     if data.get("status") == "success":
@@ -1757,13 +1760,6 @@ class MainVavoo(Screen):
             print(
                 "[MainVavoo] Loaded %d channels from original source" % len(
                     self.all_data))
-
-            self['name'].setText(_("Checking proxy..."))
-
-            # 1. CHECK PROXY STATUS
-            if not self._ensure_proxy_ready():
-                self['name'].setText(_("Proxy not available"))
-                return
 
             # === 2. EXTRACT AND DISPLAY COUNTRIES (NO PROXY DEPENDENCY) ===
             if cfg.default_view.value == "countries":
@@ -2592,7 +2588,7 @@ class vavoo(Screen):
             # Wait and retry
             self.session.open(
                 MessageBox,
-                "Proxy restarting... Please wait",
+                _("Proxy restarting... Please wait"),
                 MessageBox.TYPE_INFO,
                 timeout=3)
 
@@ -3314,17 +3310,24 @@ class TvInfoBarShowHide():
         self.helpOverlay.skinAttributes = [
             ("position", "0,0"),
             ("size", "1280,50"),
-            ("font", "Regular;28"),
+            ("font", "Regular;32"),
             ("halign", "center"),
             ("valign", "center"),
-            ("foregroundColor", "#FFFFFF"),
-            ("backgroundColor", "#666666"),
+            ("foregroundColor", "#00ffffff"),
+            ("backgroundColor", "#05000603"),
             ("transparent", "0"),
-            ("zPosition", "100")
+            ("zPosition", "99")
         ]
 
         self["helpOverlay"] = self.helpOverlay
         self["helpOverlay"].hide()
+
+        self.proxy_update_timer = eTimer()
+        try:
+            self.proxy_update_timer.timeout.connect(self.update_proxy_status_overlay)
+        except BaseException:
+            self.proxy_update_timer.callback.append(self.update_proxy_status_overlay)
+
         self.hideTimer = eTimer()
         try:
             self.hideTimer.timeout.connect(self.doTimerHide)
@@ -3334,25 +3337,119 @@ class TvInfoBarShowHide():
         self.onShow.append(self.__onShow)
         self.onHide.append(self.__onHide)
 
-    def show_help_overlay(self):
-        help_text = (
-            "OK = Info | CH-/CH+ = Prev/Next | PLAY/PAUSE = Toggle | STOP = Stop | EXIT = Exit | by Lululla"
-        )
-        self["helpOverlay"].setText(help_text)
-        self["helpOverlay"].show()
+    def get_proxy_status_text(self):
+        """Get proxy status text for display"""
+        try:
+            from .vUtils import is_proxy_running, get_proxy_status
 
-        if not hasattr(self, 'help_timer'):
-            self.help_timer = eTimer()
+            if not is_proxy_running():
+                return "✗ Proxy Offline"
+
+            status = get_proxy_status()
+            if not status:
+                return "? Proxy Unknown"
+
+            if status.get("initialized", False):
+                token_age = status.get("addon_sig_age", 0)
+
+                if token_age < 300:  # < 5 minuti
+                    return "✓ Proxy OK"
+                elif token_age < 540:  # < 9 minuti
+                    ttl = 600 - token_age
+                    return f"✓ Proxy ({int(ttl)}s)"
+                else:  # In scadenza
+                    return "⚠ Proxy Expiring"
+            else:
+                return "✗ Proxy Error"
+
+        except Exception as e:
+            print("[Proxy Status] Error: " + str(e))
+            return "? Proxy Status"
+
+    def update_proxy_status_overlay(self):
+        """Update proxy status in overlay if visible"""
+        if self["helpOverlay"].visible:
             try:
-                self.help_timer.timeout.connect(self.hide_help_overlay)
-            except BaseException:
-                self.help_timer.callback.append(self.hide_help_overlay)
+                # Get current text
+                current_text = self["helpOverlay"].getText()
 
-        self.help_timer.start(5000, True)
+                # Extract base help (everything before the last "|")
+                parts = current_text.split("|")
+                if len(parts) > 1:
+                    # Remove last 2 parts (proxy status and author)
+                    base_parts = parts[:-2]
+                    base_help = "|".join(base_parts).strip()
+
+                    # Get new proxy status
+                    proxy_status = self.get_proxy_status_text()
+
+                    # Update text (NO f-string)
+                    new_text = base_help + " | " + proxy_status + " | by Lululla"
+                    self["helpOverlay"].setText(new_text)
+            except Exception as e:
+                print("[Update Proxy Overlay] Error: " + str(e))
+
+    def show_help_overlay(self):
+        """Show detailed overlay with controls and proxy status"""
+        try:
+            from .vUtils import get_proxy_status, is_proxy_running
+
+            # Get detailed proxy info
+            if is_proxy_running():
+                status = get_proxy_status()
+                if status:
+                    token_age = status.get("addon_sig_age", 0)
+                    channels = status.get("channels_count", 0)
+
+                    if token_age < 300:
+                        proxy_msg = "✓ Proxy OK"
+                    elif token_age < 540:
+                        ttl = 600 - token_age
+                        proxy_msg = "⚠ Proxy (" + str(int(ttl)) + "s)"
+                    else:
+                        proxy_msg = "✗ Proxy Expired"
+
+                    proxy_details = proxy_msg + " | Channels: " + str(channels)
+                else:
+                    proxy_details = "? Proxy Unknown"
+            else:
+                proxy_details = "✗ Proxy Offline"
+
+            # Build full text (NO f-string)
+            help_text = "OK=Info | CH±=Change | PLAY=Toggle | STOP=Exit | " + proxy_details + " | by Lululla"
+
+            # Set text
+            self["helpOverlay"].setText(help_text)
+            self["helpOverlay"].show()
+
+            # Start update timer
+            self.proxy_update_timer.start(15000, True)
+
+            # Hide timer
+            if not hasattr(self, 'help_timer'):
+                self.help_timer = eTimer()
+                try:
+                    self.help_timer.timeout.connect(self.hide_help_overlay)
+                except BaseException:
+                    self.help_timer.callback.append(self.hide_help_overlay)
+
+            self.help_timer.start(5000, True)
+
+        except Exception as e:
+            print("[Show Help] Error: " + str(e))
 
     def hide_help_overlay(self):
+        """Hide help overlay"""
         if self["helpOverlay"].visible:
+            # Stop proxy update timer
+            self.proxy_update_timer.stop()
+
+            # Hide overlay
             self["helpOverlay"].hide()
+
+            # Stop help timer
+            if hasattr(self, 'help_timer'):
+                self.help_timer.stop()
 
     def OkPressed(self):
         if self.__state == self.STATE_SHOWN:
