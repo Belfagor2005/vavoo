@@ -88,7 +88,7 @@ def get_local_ip():
         ip = s.getsockname()[0]
         s.close()
         return ip
-    except:
+    except BaseException:
         return "127.0.0.1"
 
 
@@ -339,12 +339,12 @@ def get_channels_from_proxy(name, export_type):
         # JSON parsing
         try:
             channels = json.loads(response)
-        except:
+        except BaseException:
             # Try with different encodings
             try:
                 channels = json.loads(response.decode(
                     'utf-8') if isinstance(response, bytes) else response)
-            except:
+            except BaseException:
                 print("[Proxy] Invalid JSON response for %s" % name)
                 return []
 
