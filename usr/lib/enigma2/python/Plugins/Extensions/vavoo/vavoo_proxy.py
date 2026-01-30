@@ -602,7 +602,7 @@ class VavooProxy:
             ip = s.getsockname()[0]
             s.close()
             return ip
-        except BaseException:
+        except:
             return "127.0.0.1"
 
 
@@ -1005,7 +1005,7 @@ def run_proxy_in_background():
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.settimeout(1)
                 return s.connect_ex(('127.0.0.1', PORT)) == 0
-        except BaseException:
+        except:
             return False
 
     # If already running, perform a health check
@@ -1024,7 +1024,7 @@ def run_proxy_in_background():
                 print("[Proxy] Proxy is running but not responding, killing...")
                 system("pkill -f 'python.*vavoo_proxy' 2>/dev/null")
                 time.sleep(2)
-        except BaseException:
+        except:
             # Proxy not responding, kill it
             system("pkill -f 'python.*vavoo_proxy' 2>/dev/null")
             time.sleep(2)
@@ -1045,7 +1045,7 @@ def run_proxy_in_background():
                     if data.get("initialized", False):
                         print("[Proxy] Started and initialized successfully")
                         return True
-            except BaseException:
+            except:
                 pass
         time.sleep(1)
 

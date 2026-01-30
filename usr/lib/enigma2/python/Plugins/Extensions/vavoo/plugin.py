@@ -144,7 +144,7 @@ except NameError:
 if version_info >= (2, 7, 9):
     try:
         ssl_context = ssl._create_unverified_context()
-    except BaseException:
+    except:
         ssl_context = None
 
 
@@ -157,14 +157,14 @@ except ImportError:
 try:
     aspect_manager = vUtils.AspectManager()
     current_aspect = aspect_manager.get_current_aspect()
-except BaseException:
+except:
     pass
 
 
 try:
     from Components.UsageConfig import defaultMoviePath
     downloadfree = defaultMoviePath()
-except BaseException:
+except:
     if file_exists("/usr/bin/apt-get"):
         downloadfree = ('/media/hdd/movie/')
 
@@ -214,8 +214,8 @@ tmlast = None
 
 # screen
 HALIGN = RT_HALIGN_LEFT
-screenwidth = getDesktop(0).size()
-screen_width = screenwidth.width()
+screen_real = getDesktop(0).size()
+screen_width = screen_real.width()
 BackfPath = join(PLUGIN_PATH, "skin")
 
 if screen_width == 2560:
@@ -367,7 +367,7 @@ try:
     lng = lng[:-3]
     if any(s in lngx for s in locl):
         HALIGN = RT_HALIGN_RIGHT
-except BaseException:
+except:
     lng = 'en'
     pass
 
@@ -1328,13 +1328,13 @@ class startVavoo(Screen):
             "Extensions/{}/skin/pics/presplash.png".format('vavoo'))
         self.timer = eTimer()
         if isfile('/var/lib/dpkg/status'):
-            self.timer_conn = self.timer.timeout.connect(self.decodeImage)
+            self.timer.timeout.connect(self.decodeImage)
         else:
             self.timer.callback.append(self.decodeImage)
         self.timer.start(500, True)
         self.timerx = eTimer()
         if isfile('/var/lib/dpkg/status'):
-            self.timerx_conn = self.timerx.timeout.connect(self.clsgo)
+            self.timerx.timeout.connect(self.clsgo)
         else:
             self.timerx.callback.append(self.clsgo)
         self.timerx.start(2000, True)
@@ -1376,12 +1376,10 @@ class MainVavoo(Screen):
         self.current_view = "categories"
         self.flag_refresh_timer = eTimer()
         try:
-            self.flag_refresh_timer.callback.append(
-                self.refresh_list_with_flags)
+            self.flag_refresh_timer.callback.append(self.refresh_list_with_flags)
         except Exception:
             # Fallback in case the callback attribute does not exist
-            self.flag_refresh_timer_conn = self.flag_refresh_timer.timeout.connect(
-                self.refresh_list_with_flags)
+            self.flag_refresh_timer.timeout.connect(self.refresh_list_with_flags)
 
         self.start_vavoo_proxy()
         # self.monitor_thread = keep_proxy_alive()
@@ -1389,7 +1387,7 @@ class MainVavoo(Screen):
         self.check_proxy_timer = eTimer()
         try:
             self.check_proxy_timer_conn = self.check_proxy_timer.timeout.connect(self.check_proxy_status)
-        except BaseException:
+        except:
             self.check_proxy_timer.callback.append(self.check_proxy_status)
         self.check_proxy_timer.start(5000, True)  # Check after 5 seconds
 
@@ -1405,22 +1403,18 @@ class MainVavoo(Screen):
         """
         self.proxy_watchdog_timer = eTimer()
         try:
-            self.proxy_watchdog_timer_conn = self.proxy_watchdog_timer.timeout.connect(
-                self._proxy_watchdog_check)
-        except BaseException:
-            self.proxy_watchdog_timer.callback.append(
-                self._proxy_watchdog_check)
+            self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
+        except:
+            self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
         self.proxy_watchdog_timer.start(60000)  # Check ogni 60 secondi
 
         # No need for monitor thread - proxy stays alive automatically
         # Just check if it's ready
         self.proxy_monitor_timer = eTimer()
         try:
-            self.proxy_monitor_timer_conn = self.proxy_monitor_timer.timeout.connect(
-                self._check_and_update_proxy_status)
-        except BaseException:
-            self.proxy_monitor_timer.callback.append(
-                self._check_and_update_proxy_status)
+            self.proxy_monitor_timer.timeout.connect(self._check_and_update_proxy_status)
+        except:
+            self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
         self.proxy_monitor_timer.start(10000)  # Ogni 10 secondi
         self.cat()
 
@@ -1547,7 +1541,7 @@ class MainVavoo(Screen):
                         try:
                             download_flag_online(
                                 country, screen_width=screen_width)
-                        except BaseException:
+                        except:
                             pass
 
                     print("[Background] Finished downloading remaining flags")
@@ -1719,7 +1713,7 @@ class MainVavoo(Screen):
             try:
                 requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
                 time.sleep(3)
-            except BaseException:
+            except:
                 pass
 
             # Kill python processes that could be the proxy
@@ -1729,7 +1723,7 @@ class MainVavoo(Screen):
             # Restart
             return run_proxy_in_background()
 
-        except BaseException:
+        except:
             return False
 
     def _reload_services_after_delay(self):
@@ -2297,8 +2291,8 @@ class vavoo(Screen):
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.cat)
-        except BaseException:
-            self.timer_conn = self.timer.timeout.connect(self.cat)
+        except:
+            self.timer.timeout.connect(self.cat)
         self.timer.start(500, True)
 
     def _initialize_proxy_for_country(self):
@@ -2554,19 +2548,14 @@ class vavoo(Screen):
             run_proxy_in_background()
 
             # Wait and retry
-            self.session.open(
-                MessageBox,
-                "Proxy restarting... Please wait",
-                MessageBox.TYPE_INFO,
-                timeout=3
-            )
+            self.session.open(MessageBox, "Proxy restarting... Please wait", MessageBox.TYPE_INFO, timeout=3)
 
             # Retry loading after 3 seconds
             self.timer = eTimer()
             try:
                 self.timer.callback.append(self.cat)
             except Exception:
-                self.timer_conn = self.timer.timeout.connect(self.cat)
+                self.timer.timeout.connect(self.cat)
             self.timer.start(3000, True)
 
     def start_vavoo_proxy(self):
@@ -3015,9 +3004,8 @@ class VavooSearch(Screen):
 
         self.searchTimer = eTimer()
         try:
-            self.searchTimer_conn = self.searchTimer.timeout.connect(
-                self.updateFilteredList)
-        except BaseException:
+            self.searchTimer.timeout.connect(self.updateFilteredList)
+        except:
             self.searchTimer.callback.append(self.updateFilteredList)
 
         self.numericalInput = NumericalTextInput(
@@ -3029,9 +3017,8 @@ class VavooSearch(Screen):
         self.last_key_time = 0
         self.key_timer = eTimer()
         try:
-            self.key_timer_conn = self.key_timer.timeout.connect(
-                self.finishKeyInput)
-        except BaseException:
+            self.key_timer.timeout.connect(self.finishKeyInput)
+        except:
             self.key_timer.callback.append(self.finishKeyInput)
 
         self.updateFilteredList()
@@ -3153,7 +3140,7 @@ class VavooSearch(Screen):
                     name = item.split('###')[0].lower()
                     if text in name:
                         self.filteredList.append(item)
-                except BaseException:
+                except:
                     continue
 
             if self.filteredList:
@@ -3186,7 +3173,7 @@ class VavooSearch(Screen):
                     '%0a', '').replace(
                     '%0A', '').strip("\r\n")
                 display_list.append(show_list(name, url))
-            except BaseException:
+            except:
                 continue
         self["channel_list"].l.setList(display_list)
 
@@ -3238,7 +3225,7 @@ class VavooSearch(Screen):
                     if hasattr(self.searchTimer, 'callback'):
                         self.searchTimer.callback.remove(
                             self.updateFilteredList)
-                except BaseException:
+                except:
                     pass
 
             if hasattr(self, 'key_timer'):
@@ -3294,9 +3281,8 @@ class TvInfoBarShowHide():
         self["helpOverlay"].hide()
         self.hideTimer = eTimer()
         try:
-            self.hideTimer_conn = self.hideTimer.timeout.connect(
-                self.doTimerHide)
-        except BaseException:
+            self.hideTimer.timeout.connect(self.doTimerHide)
+        except:
             self.hideTimer.callback.append(self.doTimerHide)
         self.hideTimer.start(5000, True)
         self.onShow.append(self.__onShow)
@@ -3312,9 +3298,8 @@ class TvInfoBarShowHide():
         if not hasattr(self, 'help_timer'):
             self.help_timer = eTimer()
             try:
-                self.help_timer_conn = self.help_timer.timeout.connect(
-                    self.hide_help_overlay)
-            except BaseException:
+                self.help_timer.timeout.connect(self.hide_help_overlay)
+            except:
                 self.help_timer.callback.append(self.hide_help_overlay)
 
         self.help_timer.start(5000, True)
@@ -3389,7 +3374,7 @@ class TvInfoBarShowHide():
     def lockShow(self):
         try:
             self.__locked += 1
-        except BaseException:
+        except:
             self.__locked = 0
         if self.execing:
             self.show()
@@ -3399,7 +3384,7 @@ class TvInfoBarShowHide():
     def unlockShow(self):
         try:
             self.__locked -= 1
-        except BaseException:
+        except:
             self.__locked = 0
         if self.__locked < 0:
             self.__locked = 0
@@ -3650,9 +3635,8 @@ class Playstream2(
             self.eof_recovery_timer = eTimer()
             try:
                 self.eof_recovery_timer.callback.append(self.restartAfterEOF)
-            except BaseException:
-                self.eof_recovery_timer_conn = self.eof_recovery_timer.timeout.connect(
-                    self.restartAfterEOF)
+            except:
+                self.eof_recovery_timer.timeout.connect(self.restartAfterEOF)
 
             self.eof_recovery_timer.start(delay_ms, True)
         except Exception as e:
@@ -3699,7 +3683,7 @@ class Playstream2(
             )
             self.mbox = self.session.open(
                 MessageBox, message, MessageBox.TYPE_INFO)
-        except BaseException:
+        except:
             pass
         return
 
@@ -3817,7 +3801,7 @@ class Playstream2(
             self.session.nav.stopService()
             if self.srefInit:
                 self.session.nav.playService(self.srefInit)
-        except BaseException:
+        except:
             pass
 
     def cancel(self):
@@ -3836,7 +3820,7 @@ class Playstream2(
         # Restore aspect ratio
         try:
             aspect_manager.restore_aspect()
-        except BaseException:
+        except:
             pass
 
         self.close()
@@ -3863,8 +3847,8 @@ class AutoStartTimer:
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.on_timer)
-        except BaseException:
-            self.timer_conn = self.timer.timeout.connect(self.on_timer)
+        except:
+            self.timer.timeout.connect(self.on_timer)
 
         self.timer.start(100, True)
         self.update()

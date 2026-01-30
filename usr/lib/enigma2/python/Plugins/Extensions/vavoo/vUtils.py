@@ -423,7 +423,7 @@ def get_new_auth_signature():
                 if data.get("initialized", False):
                     print("[vUtils] Proxy active and running")
                     return "PROXY_ACTIVE"
-        except BaseException:
+        except:
             pass
 
         try:
@@ -545,7 +545,7 @@ def get_proxy_status():
         response = requests.get(status_url, timeout=3)
         if response.status_code == 200:
             return response.json()
-    except BaseException:
+    except:
         return None
     return None
 
@@ -556,7 +556,7 @@ def is_proxy_running():
         import socket
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             return s.connect_ex(('127.0.0.1', 4323)) == 0
-    except BaseException:
+    except:
         return False
 
 
@@ -568,7 +568,7 @@ def is_proxy_ready(timeout=2):
             data = loads(response)
             return data.get("initialized", False)
         return False
-    except BaseException:
+    except:
         return False
 
 
@@ -585,7 +585,7 @@ def getAuthSignature():
         if is_proxy_running():
             print("[vUtils] Proxy active, using new system")
             return "PROXY_AUTH"
-    except BaseException:
+    except:
         trace_error()
         pass
 
@@ -646,7 +646,7 @@ def ReloadBouquets():
         reload_timer = eTimer()
         try:
             reload_timer.callback.append(do_reload)
-        except BaseException:
+        except:
             reload_timer.timeout.connect(
                 do_reload)
         reload_timer.start(2000, True)
@@ -666,7 +666,7 @@ def sanitizeFilename(filename):
         if isinstance(filename, str):
             filename = filename.decode('utf-8', 'ignore')
         filename = normalize('NFKD', filename).encode('ascii', 'ignore')
-    except BaseException:
+    except:
         # Python 3
         filename = normalize(
             'NFKD',
@@ -933,7 +933,7 @@ def download_flag_with_size(
                 width, height = size.split("x")
                 width = int(width)
                 height = int(height)
-            except BaseException:
+            except:
                 width, height = 40, 30
         else:
             width, height = 40, 30

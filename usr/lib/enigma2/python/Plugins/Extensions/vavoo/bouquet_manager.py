@@ -88,7 +88,7 @@ def get_local_ip():
         ip = s.getsockname()[0]
         s.close()
         return ip
-    except BaseException:
+    except:
         return "127.0.0.1"
 
 
@@ -219,11 +219,9 @@ def remove_bouquets_by_name(name=None):
     """Remove Vavoo bouquets by name. If name is None, remove all Vavoo bouquets."""
     try:
         removed_count = 0
-
         for fname in listdir(ENIGMA_PATH):
             if '.vavoo_' in fname and (
                     fname.endswith('.tv') or fname.endswith('.radio')):
-                # If name is specified, check the match
                 if name is not None:
                     name_safe = name.lower().replace(
                         ' ',
@@ -246,9 +244,7 @@ def remove_bouquets_by_name(name=None):
                     print("Error removing " + fname + ": " + str(e))
 
         deep_clean_bouquet_files()
-
         return removed_count
-
     except Exception as e:
         print("Error removing bouquets: " + str(e))
         return 0
@@ -343,12 +339,12 @@ def get_channels_from_proxy(name, export_type):
         # JSON parsing
         try:
             channels = json.loads(response)
-        except BaseException:
+        except:
             # Try with different encodings
             try:
                 channels = json.loads(response.decode(
                     'utf-8') if isinstance(response, bytes) else response)
-            except BaseException:
+            except:
                 print("[Proxy] Invalid JSON response for %s" % name)
                 return []
 
