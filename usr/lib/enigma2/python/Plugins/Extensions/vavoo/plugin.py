@@ -1382,25 +1382,6 @@ class MainVavoo(Screen):
             self.flag_refresh_timer.timeout.connect(self.refresh_list_with_flags)
 
         self.start_vavoo_proxy()
-        # self.monitor_thread = keep_proxy_alive()
-        """
-        self.check_proxy_timer = eTimer()
-        try:
-            self.check_proxy_timer_conn = self.check_proxy_timer.timeout.connect(self.check_proxy_status)
-        except:
-            self.check_proxy_timer.callback.append(self.check_proxy_status)
-        self.check_proxy_timer.start(5000, True)  # Check after 5 seconds
-
-        self.proxy_status_timer = eTimer()
-        try:
-            self.proxy_status_timer_conn = self.proxy_status_timer.timeout.connect(
-                self.update_proxy_status
-            )
-        except Exception:
-            self.proxy_status_timer.callback.append(self.update_proxy_status)
-
-        self.proxy_status_timer.start(30000)
-        """
         self.proxy_watchdog_timer = eTimer()
         try:
             self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
@@ -1484,16 +1465,24 @@ class MainVavoo(Screen):
             self.close()
 
     def closex(self):
-        print("[DEBUG] Exit from plugin. Calling _reload_services_after_delay...")
-        # Clean up temp files
+        print("[DEBUG] Exit from plugin. Cleaning up plugin timers...")
+
         try:
-            cleaned = cleanup_old_temp_files(
-                max_age_hours=0)  # Clean ALL temp files
+            if hasattr(self, 'proxy_monitor_timer'):
+                self.proxy_monitor_timer.stop()
+            if hasattr(self, 'proxy_watchdog_timer'):
+                self.proxy_watchdog_timer.stop()
+        except Exception as e:
+            print("[Close] Error stopping timers: %s" % str(e))
+
+        try:
+            cleaned = cleanup_old_temp_files(max_age_hours=0)
             print("[Cleanup] Removed %d temporary files" % cleaned)
         except Exception as e:
             print("[Cleanup] Error: %s" % str(e))
 
         self._reload_services(showMsg=False)
+
         self.close()
 
     def preload_flags_for_visible_countries(self):
@@ -1592,18 +1581,15 @@ class MainVavoo(Screen):
             print("[Watchdog] Error: " + str(e))
 
     def _check_and_update_proxy_status(self):
-        """Unified method to check proxy status and update display"""
+        """Check and update the proxy status periodically"""
         try:
-            # 1. Check proxy health
+            self.update_proxy_status_display()
+
             if not is_proxy_ready(timeout=2):
-                print("[MainVavoo] Proxy check: proxy not ready")
                 self.proxy_needs_attention = True
-                self['proxy_status'].setText("⚠ Proxy Issue")
+                print("[MainVavoo] Proxy needs attention")
             else:
                 self.proxy_needs_attention = False
-
-            # 2. Update status display
-            self._update_proxy_status_display()
 
         except Exception as e:
             print("[MainVavoo] Error in proxy monitor: " + str(e))
@@ -1649,6 +1635,7 @@ class MainVavoo(Screen):
 
         except Exception as e:
             print("[MainVavoo] Error updating proxy status: " + str(e))
+            self['proxy_status'].setText("✗ Error")
 
     def refresh_proxy(self):
         """Force proxy refresh"""
@@ -1656,7 +1643,8 @@ class MainVavoo(Screen):
             self.session.openWithCallback(
                 self._refresh_proxy_callback,
                 MessageBox,
-                "Force proxy refresh?\nThis will refresh the authentication token.",
+                _("Force proxy refresh?") + "\n" +
+                _("This will refresh the authentication token."),
                 MessageBox.TYPE_YESNO)
         except Exception as e:
             print("[MainVavoo] Refresh proxy error: " + str(e))
@@ -1665,22 +1653,30 @@ class MainVavoo(Screen):
         """Callback for proxy refresh"""
         if result:
             try:
-                response = getUrl(
-                    "http://127.0.0.1:4323/refresh_token",
-                    timeout=5
-                )
+                # Try to refresh the token
+                response = getUrl("http://127.0.0.1:4323/refresh_token", timeout=5)
                 if response:
-                    self.session.open(
-                        MessageBox,
-                        "Proxy token refreshed successfully",
-                        MessageBox.TYPE_INFO,
-                        timeout=3
-                    )
-                    self.update_proxy_status()
+                    data = loads(response)
+                    if data.get("status") == "success":
+                        self.session.open(
+                            MessageBox,
+                            _("Proxy token refreshed successfully"),
+                            MessageBox.TYPE_INFO,
+                            timeout=3
+                        )
+                        self._update_proxy_status_display()
+                    else:
+                        self.session.open(
+                            MessageBox,
+                            _("Failed to refresh proxy token"),
+                            MessageBox.TYPE_ERROR,
+                            timeout=3
+                        )
             except Exception as e:
+                print("[Refresh Proxy] Error: " + str(e))
                 self.session.open(
                     MessageBox,
-                    "Failed to refresh proxy: " + str(e),
+                    _("Failed to refresh proxy: ") + str(e),
                     MessageBox.TYPE_ERROR,
                     timeout=3
                 )
@@ -1754,6 +1750,13 @@ class MainVavoo(Screen):
             print(
                 "[MainVavoo] Loaded %d channels from original source" % len(
                     self.all_data))
+
+            self['name'].setText(_("Checking proxy..."))
+
+            # 1. CHECK PROXY STATUS
+            if not self._ensure_proxy_ready():
+                self['name'].setText(_("Proxy not available"))
+                return
 
             # === 2. EXTRACT AND DISPLAY COUNTRIES (NO PROXY DEPENDENCY) ===
             if cfg.default_view.value == "countries":
@@ -1940,13 +1943,23 @@ class MainVavoo(Screen):
                 return
 
             name = current_item[0][0]  # Country name (e.g., "Italy")
-
             print("[MainVavoo] Selected: " + str(name))
 
             # Pass ONLY the country name to the vavoo class
             # The vavoo class will handle the proxy internally
             try:
-                self.session.open(vavoo, name, None)  # URL is no longer needed
+                if not is_proxy_running():
+                    self.session.open(
+                        MessageBox,
+                        _("Proxy is not running. Please start the proxy first.") + "\n" +
+                        _("You can start it from the menu or by pressing the TEXT button."),
+                        MessageBox.TYPE_WARNING,
+                        timeout=5
+                    )
+                    return
+
+                # Pass ONLY the country name to the vavoo class
+                self.session.open(vavoo, name, None)
             except Exception as error:
                 print("Error opening vavoo screen: " + str(error))
                 trace_error()
@@ -2438,6 +2451,25 @@ class vavoo(Screen):
             )
         except Exception:
             pass
+
+    def _ensure_proxy_ready(self, timeout=10):
+        """Ensures the proxy is ready"""
+        for i in range(timeout):
+            if is_proxy_ready(timeout=2):
+                return True
+
+            if i == 0:
+                self['name'].setText(_("Waiting for proxy..."))
+
+            time.sleep(1)
+
+        self.session.open(
+            MessageBox,
+            _("Proxy not responding after") + " " + str(timeout) + " " + _("seconds"),
+            MessageBox.TYPE_ERROR,
+            timeout=5
+        )
+        return False
 
     def _check_and_ensure_proxy_ready(self):
         """Check proxy status and try to fix issues if needed"""
