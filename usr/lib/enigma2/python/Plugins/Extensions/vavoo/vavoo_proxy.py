@@ -311,7 +311,7 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" +
+                                print("[Token Monitor] Token old (" + \
                                       str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
@@ -602,7 +602,7 @@ class VavooProxy:
             ip = s.getsockname()[0]
             s.close()
             return ip
-        except:
+        except BaseException:
             return "127.0.0.1"
 
 
@@ -1005,7 +1005,7 @@ def run_proxy_in_background():
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.settimeout(1)
                 return s.connect_ex(('127.0.0.1', PORT)) == 0
-        except:
+        except BaseException:
             return False
 
     # If already running, perform a health check
@@ -1024,7 +1024,7 @@ def run_proxy_in_background():
                 print("[Proxy] Proxy is running but not responding, killing...")
                 system("pkill -f 'python.*vavoo_proxy' 2>/dev/null")
                 time.sleep(2)
-        except:
+        except BaseException:
             # Proxy not responding, kill it
             system("pkill -f 'python.*vavoo_proxy' 2>/dev/null")
             time.sleep(2)
@@ -1045,7 +1045,7 @@ def run_proxy_in_background():
                     if data.get("initialized", False):
                         print("[Proxy] Started and initialized successfully")
                         return True
-            except:
+            except BaseException:
                 pass
         time.sleep(1)
 

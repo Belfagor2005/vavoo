@@ -3324,9 +3324,11 @@ class TvInfoBarShowHide():
 
         self.proxy_update_timer = eTimer()
         try:
-            self.proxy_update_timer.timeout.connect(self.update_proxy_status_overlay)
+            self.proxy_update_timer.timeout.connect(
+                self.update_proxy_status_overlay)
         except BaseException:
-            self.proxy_update_timer.callback.append(self.update_proxy_status_overlay)
+            self.proxy_update_timer.callback.append(
+                self.update_proxy_status_overlay)
 
         self.hideTimer = eTimer()
         try:
@@ -3416,7 +3418,8 @@ class TvInfoBarShowHide():
                 proxy_details = "✗ Proxy Offline"
 
             # Build full text (NO f-string)
-            help_text = "OK=Info | CH±=Change | PLAY=Toggle | STOP=Exit | " + proxy_details + " | by Lululla"
+            help_text = "OK=Info | CH±=Change | PLAY=Toggle | STOP=Exit | " + \
+                proxy_details + " | by Lululla"
 
             # Set text
             self["helpOverlay"].setText(help_text)
