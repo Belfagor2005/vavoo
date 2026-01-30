@@ -1660,7 +1660,8 @@ class MainVavoo(Screen):
         if result:
             try:
                 # Try to refresh the token
-                response = getUrl("http://127.0.0.1:4323/refresh_token", timeout=5)
+                response = getUrl(
+                    "http://127.0.0.1:4323/refresh_token", timeout=5)
                 if response:
                     data = loads(response)
                     if data.get("status") == "success":
@@ -1957,11 +1958,11 @@ class MainVavoo(Screen):
                 if not is_proxy_running():
                     self.session.open(
                         MessageBox,
-                        _("Proxy is not running. Please start the proxy first.") + "\n" +
+                        _("Proxy is not running. Please start the proxy first.") +
+                        "\n" +
                         _("You can start it from the menu or by pressing the TEXT button."),
                         MessageBox.TYPE_WARNING,
-                        timeout=5
-                    )
+                        timeout=5)
                     return
 
                 # Pass ONLY the country name to the vavoo class
@@ -2471,10 +2472,13 @@ class vavoo(Screen):
 
         self.session.open(
             MessageBox,
-            _("Proxy not responding after") + " " + str(timeout) + " " + _("seconds"),
+            _("Proxy not responding after") +
+            " " +
+            str(timeout) +
+            " " +
+            _("seconds"),
             MessageBox.TYPE_ERROR,
-            timeout=5
-        )
+            timeout=5)
         return False
 
     def _check_and_ensure_proxy_ready(self):
