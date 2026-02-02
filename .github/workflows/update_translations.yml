@@ -1,0 +1,60 @@
+# .github/workflows/update-translations.yml
+name: Update Plugin Translations
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**/*.py'
+      - '**/*.xml'
+      - '**/locale/**'
+  schedule:
+    - cron: '0 0 1 * *'  # Il 1° di ogni mese
+  workflow_dispatch:
+
+jobs:
+  process-translations:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gettext python3-lxml
+        
+    - name: Find and run update scripts
+      run: |
+        # Cerca TUTTI gli script update_translations.py nel repo
+        find . -name "update_translations.py" -type f ! -path "./.git/*" | while read script; do
+          plugin_dir=$(dirname "$script")
+          echo "📦 Processing: $(basename "$plugin_dir")"
+          echo "📁 Directory: $plugin_dir"
+          
+          cd "$plugin_dir"
+          
+          # Esegue lo script
+          if python3 update_translations.py; then
+            echo "✅ Success"
+          else
+            echo "⚠️ Script had issues"
+          fi
+          
+          cd - > /dev/null
+          echo "---"
+        done
+        
+    - name: Commit changes
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        
+        if git diff --name-only | grep -E '\.(po|mo|pot)$'; then
+          git add --all
+          git commit -m "🌍 Auto-update translations [$(date +'%Y-%m-%d')]"
+          git push
+        else
+          echo "No translation files changed"
+        fi
