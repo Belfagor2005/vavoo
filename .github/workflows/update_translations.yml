@@ -1,0 +1,48 @@
+name: Update Translations
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # Important: useremo GITHUB_TOKEN manualmente
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install gettext (msgmerge, msgfmt)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+
+      - name: Run translation updaters
+        run: |
+          # Loop through all subfolders looking for update_translations.py
+          for pyfile in $(find . -type f -name "update_translations.py"); do
+            plugin_dir=$(dirname "$pyfile")
+            echo "Running translation updater in $plugin_dir"
+            cd "$plugin_dir"
+            python3 update_translations.py
+            cd - > /dev/null
+          done
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Update translations via workflow"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          git push origin main

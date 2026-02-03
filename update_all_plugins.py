@@ -1,282 +1,400 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-find_locale_dirs.py - Trova tutte le cartelle locale nei plugin
+MAIN SCRIPT - Processes ALL Enigma2 plugins in the repository.
+Finds all locale directories and updates translations automatically.
 """
+
+import os
+import re
 import sys
 import json
-import re
 import subprocess
 from pathlib import Path
+from typing import List, Dict
 
 
-def find_all_locale_directories(root_dir="."):
+def find_all_plugins(root_dir: str = ".") -> List[Dict]:
     """
-    Trova ricorsivamente tutte le cartelle 'locale' con vari pattern
+    Find ALL plugins in the repository by searching for locale directories.
+    Returns list of plugins with their info.
     """
-    locale_dirs = []
+    plugins = []
+    root_path = Path(root_dir)
 
-    # Estensioni dei file di traduzione
-    translation_extensions = ['.po', '.mo', '.pot']
+    print("🔍 Scanning repository for plugins...")
 
-    for path in Path(root_dir).rglob("*"):
-        if not path.is_dir():
+    # Search for all locale directories
+    for locale_dir in root_path.rglob("*"):
+        if not locale_dir.is_dir():
             continue
 
-        # Salta directory nascoste e di sistema
-        if any(part.startswith('.') for part in path.parts):
-            continue
-        if any(
-            part in [
-                '__pycache__',
-                'venv',
-                'node_modules',
-                'build',
-                'dist'] for part in path.parts):
-            continue
+        dir_name = locale_dir.name.lower()
 
-        dir_name = path.name.lower()
+        # Check if this is a locale directory
+        is_locale = any(pattern in dir_name for pattern in [
+            'locale', 'locales', 'po', 'translations', 'i18n'
+        ])
 
-        # Controlla se è una cartella locale
-        is_locale_dir = (
-            dir_name in [
-                'locale',
-                'locales',
-                'i18n',
-                'translations',
-                'po'] or any(
-                file.suffix.lower() in translation_extensions for file in path.iterdir()))
+        if is_locale:
+            # Determine plugin directory (2-3 levels up from locale)
+            plugin_dir = locale_dir
+            for _ in range(3):  # Try going up 3 levels
+                plugin_dir = plugin_dir.parent
 
-        if is_locale_dir:
-            # Trova la directory del plugin (due livelli sopra per LC_MESSAGES)
-            plugin_path = path
-            for _ in range(3):  # locale/xx/LC_MESSAGES -> plugin root
-                plugin_path = plugin_path.parent
+            # Verify it's a plugin (has Python files or setup.xml)
+            has_py = any(plugin_dir.rglob("*.py"))
+            has_xml = any(plugin_dir.rglob("setup*.xml"))
 
-            translation_files = []
-            for f in path.rglob('*'):
-                if f.suffix.lower() in translation_extensions:
-                    try:
-                        translation_files.append(str(f.relative_to(path)))
-                    except ValueError:
-                        pass
+            if has_py or has_xml:
+                plugin_info = {
+                    'plugin_dir': str(plugin_dir),
+                    'plugin_name': plugin_dir.name,
+                    'locale_dir': str(locale_dir),
+                    'has_py': has_py,
+                    'has_xml': has_xml,
+                    'py_files': len(list(plugin_dir.rglob("*.py"))),
+                    'xml_files': len(list(plugin_dir.rglob("setup*.xml")))
+                }
 
-            locale_dirs.append({
-                'locale_path': str(path),
-                'plugin_dir': str(plugin_path),
-                'plugin_name': plugin_path.name,
-                'relative_path': str(path.relative_to(root_dir)),
-                'has_lc_messages': any('LC_MESSAGES' in str(p) for p in path.rglob('*')),
-                'translation_files': translation_files
+                # Avoid duplicates
+                if not any(p['plugin_dir'] == plugin_info['plugin_dir']
+                           for p in plugins):
+                    plugins.append(plugin_info)
+
+    # Also find plugins without locale directories (create them)
+    for potential_plugin in root_path.rglob("plugin.py"):
+        plugin_dir = potential_plugin.parent
+        plugin_name = plugin_dir.name
+
+        # Check if already in list
+        if not any(p['plugin_dir'] == str(plugin_dir) for p in plugins):
+            plugins.append({
+                'plugin_dir': str(plugin_dir),
+                'plugin_name': plugin_name,
+                'locale_dir': str(plugin_dir / "locale"),  # Will create
+                'has_py': True,
+                'has_xml': any(plugin_dir.rglob("setup*.xml")),
+                'py_files': len(list(plugin_dir.rglob("*.py"))),
+                'xml_files': len(list(plugin_dir.rglob("setup*.xml")))
             })
 
-    return locale_dirs
+    return plugins
 
 
-def extract_strings_from_py(plugin_dir):
-    """Estrai stringhe dai file Python"""
-    plugin_path = Path(plugin_dir)
-    py_files = list(plugin_path.rglob("*.py"))
+def process_single_plugin(plugin_info: Dict) -> Dict:
+    """
+    Process translations for a single plugin.
+    This function contains the logic from your universal script.
+    """
+    results = {
+        'plugin_name': plugin_info['plugin_name'],
+        'success': False,
+        'new_strings': 0,
+        'updated_po': 0,
+        'compiled_mo': 0,
+        'errors': []
+    }
 
-    if not py_files:
-        print("⚠️ No Python files found")
-        return []
+    plugin_dir = Path(plugin_info['plugin_dir'])
+    locale_dir = Path(plugin_info['locale_dir'])
 
-    print(f"🔍 Found {len(py_files)} Python files")
+    print(f"\n{'=' * 60}")
+    print(f"📦 Processing: {plugin_info['plugin_name']}")
+    print(f"📁 Directory: {plugin_dir}")
+    print(f"{'=' * 60}")
 
-    # Usa xgettext per estrarre le stringhe
-    temp_pot = plugin_path / "temp.pot"
+    # Ensure locale directory exists
+    if not locale_dir.exists():
+        print(f"⚠️  Creating locale directory: {locale_dir}")
+        locale_dir.mkdir(parents=True, exist_ok=True)
 
     try:
-        cmd = [
-            'xgettext', '--no-wrap', '-L', 'Python',
-            '--from-code=UTF-8', '-o', str(temp_pot)
-        ] + [str(f) for f in py_files]
+        # 1. Change to plugin directory
+        original_cwd = os.getcwd()
+        os.chdir(plugin_dir)
 
-        subprocess.run(cmd, check=True, capture_output=True, text=True)
+        # 2. Extract strings from XML
+        xml_strings = extract_from_xml(plugin_dir)
 
-        if temp_pot.exists():
-            with open(temp_pot, 'r', encoding='utf-8') as f:
-                content = f.read()
+        # 3. Extract strings from Python
+        py_strings = extract_from_python(plugin_dir)
 
-            # Estrai msgid
-            strings = re.findall(r'msgid "([^"]+)"', content)
-            temp_pot.unlink()
+        # 4. Update POT file
+        pot_file = locale_dir / f"{plugin_info['plugin_name']}.pot"
+        results['new_strings'] = update_pot_file(
+            xml_strings,
+            py_strings,
+            pot_file,
+            locale_dir,
+            plugin_info['plugin_name'])
 
-            return [s for s in strings if s.strip()]
+        # 5. Update PO files
+        results['updated_po'] = update_po_files(pot_file, locale_dir)
 
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Error extracting strings: {e}")
+        # 6. Compile MO files
+        results['compiled_mo'] = compile_mo_files(locale_dir)
+
+        # 7. Return to original directory
+        os.chdir(original_cwd)
+
+        results['success'] = True
+
     except Exception as e:
-        print(f"❌ Unexpected error: {e}")
+        results['errors'].append(str(e))
+        print(f"❌ Error processing {plugin_info['plugin_name']}: {e}")
 
-    return []
-
-
-def update_po_files(locale_dir, strings):
-    """Aggiorna i file .po"""
-    locale_path = Path(locale_dir)
-
-    # Cerca tutti i file .po
-    po_files = list(locale_path.rglob("*.po"))
-
-    if not po_files:
-        print("ℹ️ No .po files found, creating template...")
-        return
-
-    print(f"📄 Found {len(po_files)} .po files")
-
-    for po_file in po_files:
-        print(f"  • {po_file.relative_to(locale_path)}")
-        # Qui aggiungi la logica per aggiornare i file .po
+    return results
 
 
-def create_translation_update_script(plugin_info):
-    """
-    Crea uno script di aggiornamento traduzioni personalizzato per il plugin
-    """
-    template = '''#!/usr/bin/env python3
-"""
-Auto-generated translation updater for: {plugin_name}
-Locale directory: {relative_path}
-"""
-import os
-import sys
-import subprocess
-import re
-from pathlib import Path
+def extract_from_xml(plugin_dir: Path) -> List[str]:
+    """Extract strings from setup XML files"""
+    strings = set()
+    xml_files = list(plugin_dir.glob("setup*.xml"))
 
-PLUGIN_NAME = "{plugin_name}"
-LOCALE_DIR = Path("{locale_path}")
-PLUGIN_DIR = Path("{plugin_dir}")
-
-def extract_strings_from_py():
-    """Estrai stringhe dai file Python"""
-    py_files = list(PLUGIN_DIR.rglob("*.py"))
-
-    if not py_files:
-        print("⚠️ No Python files found")
+    if not xml_files:
         return []
 
-    print(f"🔍 Found {{len(py_files)}} Python files")
+    try:
+        import xml.etree.ElementTree as ET
 
-    # Usa xgettext per estrarre le stringhe
-    temp_pot = PLUGIN_DIR / "temp.pot"
+        for xml_file in xml_files:
+            try:
+                tree = ET.parse(xml_file)
+                root = tree.getroot()
+
+                for elem in root.iter():
+                    for attr in [
+                        'text',
+                        'description',
+                        'title',
+                        'caption',
+                        'value',
+                            'summary']:
+                        if attr in elem.attrib:
+                            text = elem.attrib[attr].strip()
+                            if text and not re.match(
+                                    r'^#[0-9a-fA-F]{6,8}$', text):
+                                strings.add(text)
+            except Exception as e:
+                print(f"⚠️  Could not parse {xml_file.name}: {e}")
+
+    except ImportError:
+        print("⚠️  xml.etree.ElementTree not available")
+
+    return sorted(strings)
+
+
+def extract_from_python(plugin_dir: Path) -> List[str]:
+    """Extract strings from Python files using xgettext"""
+    py_files = list(plugin_dir.rglob("*.py"))
+
+    if not py_files:
+        return []
+
+    strings = set()
+    temp_pot = plugin_dir / "temp.pot"
 
     try:
-        cmd = [
-            'xgettext', '--no-wrap', '-L', 'Python',
-            '--from-code=UTF-8', '-o', str(temp_pot)
-        ] + [str(f) for f in py_files]
+        rel_paths = [str(f.relative_to(plugin_dir)) for f in py_files]
 
-        subprocess.run(cmd, check=True, capture_output=True)
+        cmd = [
+            'xgettext',
+            '--no-wrap',
+            '-L', 'Python',
+            '--from-code=UTF-8',
+            '-o', str(temp_pot),
+        ] + rel_paths[:20]  # Limit to 20 files to avoid command line limits
+
+        subprocess.run(cmd, capture_output=True, text=True)
 
         if temp_pot.exists():
-            with open(temp_pot, 'r', encoding='utf-8') as f:
+            with open(temp_pot, 'r', encoding='utf-8', errors='ignore') as f:
                 content = f.read()
+                for match in re.finditer(r'msgid "([^"]+)"', content):
+                    text = match.group(1)
+                    if text and text.strip():
+                        strings.add(text.strip())
 
-            # Estrai msgid
-            strings = re.findall(r'msgid "([^"]+)"', content)
             temp_pot.unlink()
 
-            return [s for s in strings if s.strip()]
-
     except Exception as e:
-        print(f"❌ Error extracting strings: {{e}}")
+        print(f"⚠️  Error extracting Python strings: {e}")
 
-    return []
+    return sorted(strings)
 
-def update_po_files(strings):
-    """Aggiorna i file .po"""
-    # Cerca tutti i file .po
-    po_files = list(LOCALE_DIR.rglob("*.po"))
+
+def update_pot_file(xml_strings: List[str], py_strings: List[str],
+                    pot_file: Path, locale_dir: Path, plugin_name: str) -> int:
+    """Update or create POT file"""
+    all_strings = sorted(set(xml_strings + py_strings))
+
+    if not all_strings:
+        return 0
+
+    locale_dir.mkdir(parents=True, exist_ok=True)
+
+    # Read existing strings
+    existing_strings = set()
+    if pot_file.exists():
+        try:
+            with open(pot_file, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+                for match in re.finditer(r'msgid "([^"]+)"', content):
+                    existing_strings.add(match.group(1))
+        except Exception:
+            pass
+
+    # Find new strings
+    new_strings = [s for s in all_strings if s not in existing_strings]
+
+    if not new_strings:
+        return 0
+
+    # Write to POT file
+    mode = 'a' if pot_file.exists() else 'w'
+    with open(pot_file, mode, encoding='utf-8') as f:
+        if mode == 'w':
+            f.write(f'''# {plugin_name} translations
+# Copyright (C) {plugin_name} Team
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: {plugin_name}\\n"
+"POT-Creation-Date: \\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+
+''')
+
+        for text in new_strings:
+            escaped = text.replace('"', '\\"')
+            f.write(f'msgid "{escaped}"\n')
+            f.write('msgstr ""\n\n')
+
+    return len(new_strings)
+
+
+def update_po_files(pot_file: Path, locale_dir: Path) -> int:
+    """Update all PO files with msgmerge"""
+    if not pot_file.exists():
+        return 0
+
+    po_files = list(locale_dir.rglob("*.po"))
 
     if not po_files:
-        print("ℹ️ No .po files found, creating template...")
-        return
+        return 0
 
-    print(f"📄 Found {{len(po_files)}} .po files")
-
+    updated = 0
     for po_file in po_files:
-        print(f"  • {{po_file.relative_to(LOCALE_DIR)}}")
-        # Qui aggiungi la logica per aggiornare i file .po
+        try:
+            cmd = [
+                'msgmerge',
+                '--update',
+                '--backup=none',
+                '--no-wrap',
+                str(po_file),
+                str(pot_file)
+            ]
+
+            result = subprocess.run(cmd, capture_output=True, text=True)
+
+            if result.returncode == 0:
+                updated += 1
+
+        except Exception:
+            pass
+
+    return updated
+
+
+def compile_mo_files(locale_dir: Path) -> int:
+    """Compile PO files to MO files"""
+    po_files = list(locale_dir.rglob("*.po"))
+
+    if not po_files:
+        return 0
+
+    compiled = 0
+    for po_file in po_files:
+        try:
+            mo_file = po_file.with_suffix('.mo')
+            cmd = ['msgfmt', '-o', str(mo_file), str(po_file)]
+            subprocess.run(cmd, capture_output=True, text=True)
+
+            if mo_file.exists():
+                compiled += 1
+
+        except Exception:
+            pass
+
+    return compiled
+
 
 def main():
-    print(f"🚀 Updating translations for: {{PLUGIN_NAME}}")
-    print(f"📁 Plugin directory: {{PLUGIN_DIR}}")
-    print(f"🌍 Locale directory: {{LOCALE_DIR}}")
+    """Main function - Process ALL plugins"""
+    print("UNIVERSAL PLUGIN TRANSLATION UPDATER")
+    print("=" * 60)
 
-    # 1. Estrai stringhe
-    strings = extract_strings_from_py()
-    print(f"📝 Found {{len(strings)}} translatable strings")
+    # Find all plugins
+    plugins = find_all_plugins()
 
-    # 2. Aggiorna file .po
-    update_po_files(strings)
-
-    # 3. Compila .mo
-    print("✅ Translation update completed")
-
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(main())
-'''.format(plugin_name=plugin_info['plugin_name'],
-           relative_path=plugin_info['relative_path'],
-           locale_path=plugin_info['locale_path'],
-           plugin_dir=plugin_info['plugin_dir']
-           )
-
-    script_path = Path(plugin_info['plugin_dir']) / "update_translations.py"
-    script_path.write_text(template, encoding='utf-8')
-    script_path.chmod(0o755)
-
-    return str(script_path)
-
-
-def main():
-    print("🔍 Scanning for locale directories...")
-
-    locale_dirs = find_all_locale_directories()
-
-    if not locale_dirs:
-        print("❌ No locale directories found")
+    if not plugins:
+        print("No plugins found in repository")
         return 1
 
-    print(f"\n✅ Found {len(locale_dirs)} locale directories:\n")
+    print("Found {} plugin(s):".format(len(plugins)))
+    for i, plugin in enumerate(plugins, 1):
+        print("  {:2}. {}".format(i, plugin['plugin_name']))
+        print("      Directory: {}".format(plugin['plugin_dir']))
+        print("      {} Python files, {} XML files".format(
+            plugin['py_files'], plugin['xml_files']))
 
-    for i, locale in enumerate(locale_dirs, 1):
-        print(f"{i:2}. {locale['plugin_name']}")
-        print(f"    📍 {locale['relative_path']}")
-        print(f"    📁 Plugin: {locale['plugin_dir']}")
-        print(
-            f"    📄 Files: {len(locale['translation_files'])} translation files")
-        if locale['has_lc_messages']:
-            print("    ✓ Has LC_MESSAGES structure")
-        print()
+    # Process each plugin
+    print("\nProcessing {} plugin(s)...".format(len(plugins)))
 
-    # Salva in JSON
-    with open('locale_scan_report.json', 'w', encoding='utf-8') as f:
-        json.dump(locale_dirs, f, indent=2, ensure_ascii=False)
+    all_results = []
+    successful = 0
 
-    # Crea script per plugin senza
-    plugins_without_script = []
-    for locale in locale_dirs:
-        plugin_dir = Path(locale['plugin_dir'])
-        update_script = plugin_dir / "update_translations.py"
+    for plugin in plugins:
+        result = process_single_plugin(plugin)
+        all_results.append(result)
 
-        if not update_script.exists():
-            plugins_without_script.append(locale)
+        if result['success']:
+            successful += 1
+            status = "SUCCESS"
+        else:
+            status = "FAILED"
 
-    if plugins_without_script:
-        print(
-            f"\n⚠️  {
-                len(plugins_without_script)} plugins without update script:")
-        for plugin in plugins_without_script:
-            script_path = create_translation_update_script(plugin)
-            print(f"   • Created: {script_path}")
+        print("{} {}: {} new strings, {} PO updated, {} MO compiled".format(
+            status, result['plugin_name'],
+            result['new_strings'], result['updated_po'], result['compiled_mo']
+        ))
 
-    print("\n📊 Report saved to: locale_scan_report.json")
+    # Generate report
+    print("\n" + "=" * 60)
+    print("FINAL REPORT")
+    print("=" * 60)
+    print("Total plugins: {}".format(len(plugins)))
+    print("Successful: {}".format(successful))
+    print("Failed: {}".format(len(plugins) - successful))
 
-    return 0
+    # Save detailed report
+    report = {
+        'timestamp': subprocess.check_output(['date', '+%Y-%m-%d %H:%M:%S'], text=True).strip(),
+        'total_plugins': len(plugins),
+        'successful': successful,
+        'failed': len(plugins) - successful,
+        'details': all_results
+    }
+
+    with open('translation_update_report.json', 'w', encoding='utf-8') as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+
+    print("\nDetailed report saved to: translation_update_report.json")
+
+    return 0 if successful > 0 else 1
 
 
 if __name__ == "__main__":
