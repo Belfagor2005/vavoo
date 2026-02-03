@@ -1,0 +1,466 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enigma 2\n"
+"PO-Revision-Date: 2026-02-03 13:05+0000\n"
+"Last-Translator:  <EMAIL@ADDRESS>\n"
+"Language-Team: Gujarati\n"
+"Language: gu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "(%(count)d channels)"
+msgstr ""
+
+msgid "(%d channels)?"
+msgstr ""
+
+msgid "(%s files deleted)"
+msgstr ""
+
+msgid "- Auto token refresh every 9 minutes"
+msgstr ""
+
+msgid "- Automatic bouquet generation"
+msgstr ""
+
+msgid "- Category bouquets"
+msgstr ""
+
+msgid "- Commercial use is strictly prohibited"
+msgstr ""
+
+msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+msgstr ""
+
+msgid "- Container bouquets"
+msgstr ""
+
+msgid "- Country bouquets"
+msgstr ""
+
+msgid "- For personal use only"
+msgstr ""
+
+msgid "- Free content only"
+msgstr ""
+
+msgid "- Graphics: @oktus"
+msgstr ""
+
+msgid "- HTTP Live Streaming"
+msgstr ""
+
+msgid "- Integrated proxy system"
+msgstr ""
+
+msgid "- No direct server hosting"
+msgstr ""
+
+msgid "- Redistribution must maintain attribution"
+msgstr ""
+
+msgid "- Service references: 4097, 5001, 5002"
+msgstr ""
+
+msgid "- Streams from public sources"
+msgstr ""
+
+msgid "- TS/M3U8 formats"
+msgstr ""
+
+msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
+msgstr ""
+
+msgid "Active Automatic Bouquet Update"
+msgstr ""
+
+msgid "Active or Disactive lan Ipv6."
+msgstr ""
+
+msgid "All countries (%d)"
+msgstr ""
+
+msgid "At an interval of hours or at a fixed time"
+msgstr ""
+
+msgid "Author:"
+msgstr ""
+
+msgid "Auto-refresh stream (minutes):"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Backspace"
+msgstr ""
+
+msgid "Bottom"
+msgstr ""
+
+msgid "Bouquet '%(name)s' created successfully!"
+msgstr ""
+
+msgid "Bouquet Position in List"
+msgstr ""
+
+msgid "Bouquet creation error: %s"
+msgstr ""
+
+msgid "Bouquets reorganized successfully!"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cancel execution?"
+msgstr ""
+
+msgid "Case: {}"
+msgstr ""
+
+msgid "Changelog: {changelog}"
+msgstr ""
+
+msgid "Channels: %d"
+msgstr ""
+
+msgid "Checking proxy..."
+msgstr ""
+
+msgid "Clear All"
+msgstr ""
+
+msgid "Configuration saved successfully!"
+msgstr ""
+
+msgid "Configure Dns Server for Box."
+msgstr ""
+
+msgid "Configure Fonts."
+msgstr ""
+
+msgid "Configure Main Background Image."
+msgstr ""
+
+msgid "Configure at a fixed time"
+msgstr ""
+
+msgid "Configure every interval of minutes from now"
+msgstr ""
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr ""
+
+msgid "Congrats! You already have the latest version..."
+msgstr ""
+
+msgid "Console"
+msgstr ""
+
+msgid "Countries"
+msgstr ""
+
+msgid "Countries: %(generated)d/%(total)d"
+msgstr ""
+
+msgid "Country: %s"
+msgstr ""
+
+msgid "Credits:"
+msgstr ""
+
+msgid "Default View"
+msgstr ""
+
+msgid "Default view when opening the plugin"
+msgstr ""
+
+msgid "Do you want to export this bouquet?"
+msgstr ""
+
+msgid "Do you want to install it now?"
+msgstr ""
+
+msgid "Do you want to install update ( %s ) now?"
+msgstr ""
+
+msgid "Eg: Arabic or other language."
+msgstr ""
+
+msgid "Enter text to search..."
+msgstr ""
+
+msgid "Error starting channel"
+msgstr ""
+
+msgid "Error: %s"
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Failed to refresh proxy token"
+msgstr ""
+
+msgid "Failed to refresh proxy:"
+msgstr ""
+
+msgid "Failed: %(failed)d"
+msgstr ""
+
+msgid "Force proxy refresh?"
+msgstr ""
+
+msgid "Found: {} channels"
+msgstr ""
+
+msgid "Generate .m3u file for:"
+msgstr ""
+
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr ""
+
+msgid "Generate .m3u files and save to device %s."
+msgstr ""
+
+msgid "Generate .m3u files and save to device %s?"
+msgstr ""
+
+msgid "Generate .m3u files for ALL %d countries?"
+msgstr ""
+
+msgid "Hide/Show"
+msgstr ""
+
+msgid "Important Notes:"
+msgstr ""
+
+msgid "Ipv6 State Of Lan (On/Off)"
+msgstr ""
+
+msgid "Keyboard"
+msgstr ""
+
+msgid "Last channel update: %s"
+msgstr ""
+
+msgid "License:"
+msgstr ""
+
+msgid "License: CC BY-NC-SA 4.0"
+msgstr ""
+
+msgid "Link in Main Menu"
+msgstr ""
+
+msgid "Lower = less interruption but more refreshes"
+msgstr ""
+
+msgid "M3U file generated successfully!"
+msgstr ""
+
+msgid "M3U generation completed!"
+msgstr ""
+
+msgid "M3U generation error: %s"
+msgstr ""
+
+msgid "Movie Services Reference"
+msgstr ""
+
+msgid "New version {version} is available."
+msgstr ""
+
+msgid "No channels found"
+msgstr ""
+
+msgid "No channels found for '%(name)s'"
+msgstr ""
+
+msgid "No channels found for: %s"
+msgstr ""
+
+msgid "No channels found in search!!!"
+msgstr ""
+
+msgid "No valid channels for: %s"
+msgstr ""
+
+msgid "Now %s"
+msgstr ""
+
+msgid "Only one specific country"
+msgstr ""
+
+msgid "Please try another channel."
+msgstr ""
+
+msgid "Position of Vavoo bouquets in the main list"
+msgstr ""
+
+msgid "Press TEXT button to type, BACKSPACE to delete"
+msgstr ""
+
+msgid "Proxy is not running. Please start the proxy first."
+msgstr ""
+
+msgid "Proxy not active. Unable to generate M3U file."
+msgstr ""
+
+msgid "Proxy not responding after"
+msgstr ""
+
+msgid "Proxy restarting... Please wait"
+msgstr ""
+
+msgid "Proxy token refreshed successfully"
+msgstr ""
+
+msgid "Really close without saving settings?"
+msgstr ""
+
+msgid "Recommended: 5-8 minutes"
+msgstr ""
+
+msgid "Refresh stream every X minutes (1-15)"
+msgstr ""
+
+msgid "Reload Bouqet"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Remove ALL Vavoo bouquets?"
+msgstr ""
+
+msgid "Restart"
+msgstr ""
+
+msgid "SELECT YOUR CHOICE"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Saved in: %(path)s"
+msgstr ""
+
+msgid "Saved in: %s"
+msgstr ""
+
+msgid "Schedule type:"
+msgstr ""
+
+msgid "Scheduled List Update:"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search Channels:"
+msgstr ""
+
+msgid "Search..."
+msgstr ""
+
+msgid "Search:"
+msgstr ""
+
+msgid "Select Background"
+msgstr ""
+
+msgid "Select DNS Server"
+msgstr ""
+
+msgid "Select Fonts"
+msgstr ""
+
+msgid "Select M3U export mode:"
+msgstr ""
+
+msgid "Select country to export M3U:"
+msgstr ""
+
+msgid "Server for Player Used"
+msgstr ""
+
+msgid "Server for player."
+msgstr ""
+
+msgid "Showing all channels: {}"
+msgstr ""
+
+msgid "Space"
+msgstr ""
+
+msgid "Stream ended. Too many connection issues."
+msgstr ""
+
+msgid "Technical Features:"
+msgstr ""
+
+msgid "This will refresh the authentication token."
+msgstr ""
+
+msgid "This will remove:"
+msgstr ""
+
+msgid "Time to start update:"
+msgstr ""
+
+msgid "Top"
+msgstr ""
+
+msgid "Total channels: %(total_channels)d"
+msgstr ""
+
+msgid "UPPERCASE"
+msgstr ""
+
+msgid "Update Aborted!"
+msgstr ""
+
+msgid "Update Me"
+msgstr ""
+
+msgid "Update interval (minutes):"
+msgstr ""
+
+msgid "Vavoo Stream Live"
+msgstr ""
+
+msgid "Vavoo Stream Live - Information"
+msgstr ""
+
+msgid "Vavoo Stream Live Plugin"
+msgstr ""
+
+msgid "Vavoo bouquets removed successfully!"
+msgstr ""
+
+msgid "Version:"
+msgstr ""
+
+msgid "Waiting for proxy..."
+msgstr ""
+
+msgid "You can start it from the menu or by pressing the TEXT button."
+msgstr ""
+
+msgid "fixed time"
+msgstr ""
+
+msgid "interval"
+msgstr ""
+
+msgid "lowercase"
+msgstr ""
+
+msgid "seconds"
+msgstr ""

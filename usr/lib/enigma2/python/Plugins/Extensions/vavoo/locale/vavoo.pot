@@ -13,6 +13,7 @@
 
 
 
+
 msgid "(%(count)d channels)"
 msgstr ""
 
@@ -20,9 +21,6 @@ msgid "(%d channels)?"
 msgstr ""
 
 msgid "(%s files deleted)"
-msgstr ""
-
-msgid "- - - -"
 msgstr ""
 
 msgid "- Auto token refresh every 9 minutes"
@@ -133,6 +131,9 @@ msgstr ""
 msgid "Channels: %d"
 msgstr ""
 
+msgid "Checking proxy..."
+msgstr ""
+
 msgid "Clear All"
 msgstr ""
 
@@ -199,9 +200,6 @@ msgstr ""
 msgid "Error starting channel"
 msgstr ""
 
-msgid "Error starting stream via proxy"
-msgstr ""
-
 msgid "Error: %s"
 msgstr ""
 
@@ -211,7 +209,16 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
+msgid "Failed to refresh proxy token"
+msgstr ""
+
+msgid "Failed to refresh proxy:"
+msgstr ""
+
 msgid "Failed: %(failed)d"
+msgstr ""
+
+msgid "Force proxy refresh?"
 msgstr ""
 
 msgid "Found: {} channels"
@@ -304,7 +311,19 @@ msgstr ""
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
+msgid "Proxy is not running. Please start the proxy first."
+msgstr ""
+
 msgid "Proxy not active. Unable to generate M3U file."
+msgstr ""
+
+msgid "Proxy not responding after"
+msgstr ""
+
+msgid "Proxy restarting... Please wait"
+msgstr ""
+
+msgid "Proxy token refreshed successfully"
 msgstr ""
 
 msgid "Really close without saving settings?"
@@ -341,9 +360,6 @@ msgid "Saved in: %s"
 msgstr ""
 
 msgid "Schedule type:"
-msgstr ""
-
-msgid "Scheduled Bouquet Update:"
 msgstr ""
 
 msgid "Scheduled List Update:"
@@ -394,6 +410,9 @@ msgstr ""
 msgid "Technical Features:"
 msgstr ""
 
+msgid "This will refresh the authentication token."
+msgstr ""
+
 msgid "This will remove:"
 msgstr ""
 
@@ -433,6 +452,12 @@ msgstr ""
 msgid "Version:"
 msgstr ""
 
+msgid "Waiting for proxy..."
+msgstr ""
+
+msgid "You can start it from the menu or by pressing the TEXT button."
+msgstr ""
+
 msgid "fixed time"
 msgstr ""
 
@@ -440,4 +465,7 @@ msgid "interval"
 msgstr ""
 
 msgid "lowercase"
+msgstr ""
+
+msgid "seconds"
 msgstr ""

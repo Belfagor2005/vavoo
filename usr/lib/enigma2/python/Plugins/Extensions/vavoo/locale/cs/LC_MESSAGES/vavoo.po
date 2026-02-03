@@ -20,9 +20,6 @@ msgstr "(%d kanálů)?"
 msgid "(%s files deleted)"
 msgstr "(Smazáno souborů: %s)"
 
-msgid "- - - -"
-msgstr "- - - -"
-
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Automatická aktualizace tokenu každých 9 minut"
 
@@ -131,6 +128,9 @@ msgstr "Seznam změn: {changelog}"
 msgid "Channels: %d"
 msgstr "Kanály: %d"
 
+msgid "Checking proxy..."
+msgstr ""
+
 msgid "Clear All"
 msgstr "Vymazat vše"
 
@@ -202,9 +202,6 @@ msgstr "Zadejte text pro vyhledávání..."
 msgid "Error starting channel"
 msgstr "Chyba při spuštění kanálu"
 
-msgid "Error starting stream via proxy"
-msgstr "Chyba při spuštění streamu přes proxy"
-
 msgid "Error: %s"
 msgstr "Chyba: %s"
 
@@ -214,8 +211,17 @@ msgstr "Odejít"
 msgid "Export"
 msgstr "Export"
 
+msgid "Failed to refresh proxy token"
+msgstr ""
+
+msgid "Failed to refresh proxy:"
+msgstr ""
+
 msgid "Failed: %(failed)d"
 msgstr "Selhalo: %(failed)d"
+
+msgid "Force proxy refresh?"
+msgstr ""
 
 msgid "Found: {} channels"
 msgstr "Nalezeno {} kanálů"
@@ -307,8 +313,23 @@ msgstr "Pozice kytic Vavoo v hlavním seznamu"
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Stiskněte tlačítko TEXT pro psaní, BACKSPACE pro smazání"
 
+msgid "Proxy is not running. Please start the proxy first."
+msgstr ""
+
 msgid "Proxy not active. Unable to generate M3U file."
 msgstr "Proxy není aktivní. Nelze vygenerovat soubor M3U."
+
+msgid "Proxy not responding after"
+msgstr ""
+
+msgid "Proxy restarting... Please wait"
+msgstr ""
+
+#, fuzzy
+msgid "Proxy token refreshed successfully"
+msgstr ""
+"Vavoo kytice úspěšně odstraněny!\n"
+"(Smazáno %s souborů)"
 
 msgid "Really close without saving settings?"
 msgstr "Opravdu zavřít bez uložení nastavení?"
@@ -345,9 +366,6 @@ msgstr "Uloženo v: %s"
 
 msgid "Schedule type:"
 msgstr "Typ rozvrhu:"
-
-msgid "Scheduled Bouquet Update:"
-msgstr "Plánovaná aktualizace kytice:"
 
 msgid "Scheduled List Update:"
 msgstr "Plánovaná aktualizace seznamu:"
@@ -397,6 +415,9 @@ msgstr "Stream skončil. Příliš mnoho problémů s připojením."
 msgid "Technical Features:"
 msgstr "Technické vlastnosti:"
 
+msgid "This will refresh the authentication token."
+msgstr ""
+
 msgid "This will remove:"
 msgstr "Tím se odstraní:"
 
@@ -438,6 +459,12 @@ msgstr ""
 msgid "Version:"
 msgstr "Verze:"
 
+msgid "Waiting for proxy..."
+msgstr ""
+
+msgid "You can start it from the menu or by pressing the TEXT button."
+msgstr ""
+
 msgid "fixed time"
 msgstr "pevný časový"
 
@@ -446,3 +473,15 @@ msgstr "interval"
 
 msgid "lowercase"
 msgstr "malá písmena"
+
+msgid "seconds"
+msgstr ""
+
+#~ msgid "- - - -"
+#~ msgstr "- - - -"
+
+#~ msgid "Error starting stream via proxy"
+#~ msgstr "Chyba při spuštění streamu přes proxy"
+
+#~ msgid "Scheduled Bouquet Update:"
+#~ msgstr "Plánovaná aktualizace kytice:"
