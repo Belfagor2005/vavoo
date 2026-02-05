@@ -439,7 +439,8 @@ class VavooProxy:
             # First, obtain a valid token
             sig = self.refresh_addon_sig_if_needed()
             if not sig:
-                print("[Proxy] Warning: Could not get a valid token, but continuing anyway")
+                print(
+                    "[Proxy] Warning: Could not get a valid token, but continuing anyway")
                 # We may continue with an old token or no token at all
 
             # Load the catalog
@@ -517,7 +518,9 @@ class VavooProxy:
 
                 for attempt in range(max_retries):
                     try:
-                        print(f"[Proxy] Fetching catalog page {page} (attempt {attempt + 1}/{max_retries})")
+                        print(
+                            f"[Proxy] Fetching catalog page {page} (attempt {
+                                attempt + 1}/{max_retries})")
 
                         r_catalog = self.session.post(
                             CATALOG_URL,
@@ -527,12 +530,16 @@ class VavooProxy:
                         )
 
                         if r_catalog.status_code == 502:
-                            print(f"[Proxy] 502 Bad Gateway on page {page}, attempt {attempt + 1}")
+                            print(
+                                f"[Proxy] 502 Bad Gateway on page {page}, attempt {
+                                    attempt + 1}")
                             if attempt < max_retries - 1:
-                                time.sleep(2 ** attempt)  # Backoff esponenziale
+                                # Backoff esponenziale
+                                time.sleep(2 ** attempt)
                                 continue
                             else:
-                                print(f"[Proxy] Giving up on page {page} after {max_retries} attempts")
+                                print(
+                                    f"[Proxy] Giving up on page {page} after {max_retries} attempts")
                                 break
 
                         r_catalog.raise_for_status()
@@ -560,7 +567,8 @@ class VavooProxy:
                             break
 
                 if not success:
-                    print(f"[Proxy] Failed to load page {page}, stopping catalog download")
+                    print(
+                        f"[Proxy] Failed to load page {page}, stopping catalog download")
                     if last_exception:
                         print(f"[Proxy] Last error: {last_exception}")
                     break
@@ -581,7 +589,8 @@ class VavooProxy:
                         separators = ["➾", "⟾", "->", "→", "»", "›"]
                         for sep in separators:
                             if sep in base_country:
-                                base_country = base_country.split(sep)[0].strip()
+                                base_country = base_country.split(sep)[
+                                    0].strip()
                                 break
 
                         if not base_country:
@@ -599,7 +608,9 @@ class VavooProxy:
                         all_channels.append(channel_data)
                         items_processed += 1
 
-                print(f"[Proxy] Page {page}: processed {items_processed} items, total {len(all_channels)} channels")
+                print(
+                    f"[Proxy] Page {page}: processed {items_processed} items, total {
+                        len(all_channels)} channels")
 
                 cursor = catalog_data.get("nextCursor")
                 if not cursor:
@@ -611,7 +622,10 @@ class VavooProxy:
                 if page % 5 == 0:
                     time.sleep(1)
 
-            print(f"[Proxy] Catalog loaded: {len(all_channels)} channels in {page - 1} pages")
+            print(
+                f"[Proxy] Catalog loaded: {
+                    len(all_channels)} channels in {
+                    page - 1} pages")
             return all_channels
 
         except Exception as e:
@@ -619,7 +633,9 @@ class VavooProxy:
             from .vUtils import trace_error
             trace_error()
             if all_channels:
-                print(f"[Proxy] Returning {len(all_channels)} channels already loaded")
+                print(
+                    f"[Proxy] Returning {
+                        len(all_channels)} channels already loaded")
                 return all_channels
             return None
 
