@@ -75,7 +75,11 @@ Description: Returns a list of all unique countries available in the catalog.
 URL: http://127.0.0.1:4323/refresh_token
 Description: Forces a refresh of the authentication token (addonSig).
 
-7. /shutdown - Shutdown proxy
+7. /health - Monitors proxy
+URL: http://127.0.0.1:4323/health
+Description: Monitors proxy health and restarts it if necessary.
+
+8. /shutdown - Shutdown proxy
 URL: http://127.0.0.1:4323/shutdown
 Description: Gracefully shuts down the proxy server.
 """
@@ -311,7 +315,7 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" + \
+                                print("[Token Monitor] Token old (" +
                                       str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
@@ -358,7 +362,7 @@ class VavooProxy:
         with self.addon_sig_lock:
             now = time.time()
             if not force and self.addon_sig_data["sig"] and (
-                    now - self.addon_sig_data["ts"] < 480):  # 8 minutes
+                    now - self.addon_sig_data["ts"] < 300):  # 8 minutes
                 return self.addon_sig_data["sig"]
 
             try:
@@ -607,7 +611,35 @@ class VavooProxy:
 
 
 class VavooHTTPHandler(BaseHTTPRequestHandler):
+    timeout = 10
+
+    def safe_write(self, data):
+        """Safe write that handles BrokenPipeError"""
+        try:
+            if isinstance(data, str):
+                data = data.encode('utf-8')
+            self.wfile.write(data)
+            self.wfile.flush()
+        except (BrokenPipeError, ConnectionResetError):
+            print("[Proxy] Client disconnected during write - ignoring")
+            return False
+        return True
+
+    def safe_send_response(self, code, message=None):
+        """Safe response sending"""
+        try:
+            if message:
+                self.send_response(code, message)
+            else:
+                self.send_response(code)
+        except (BrokenPipeError, ConnectionResetError):
+            print("[Proxy] Client disconnected during response - ignoring")
+            return False
+        return True
+
     def do_GET(self):
+        client_address = self.client_address[0]
+        print(f"[Proxy] Request from {client_address}: {self.path}")
         try:
             parsed_path = urlparse(self.path)
             query_params = parse_qs(parsed_path.query)
@@ -671,7 +703,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
                     # 3. If the test is OK (or we decide to proceed), do a 302
                     # REDIRECT
-                    self.send_response(302)
+                    if not self.safe_send_response(302):
+                        return
+
                     self.send_header('Location', stream_url)
                     self.end_headers()
                     print(
@@ -718,7 +752,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     upstream.raise_for_status()
 
                     # 3. Send headers to player
-                    self.send_response(200)
+                    if not self.safe_send_response(200):
+                        return
                     self.send_header(
                         'Content-Type',
                         upstream.headers.get(
@@ -783,19 +818,21 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                             "country": channel.get("country", country)
                         })
 
-                self.send_response(200)
+                if not self.safe_send_response(200):
+                    return
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(dumps(response_channels).encode('utf-8'))
+                if not self.safe_write(dumps(response_channels)):
+                    return
 
             elif parsed_path.path == '/catalog':
                 if hasattr(proxy, 'all_filtered_items'):
-                    self.send_response(200)
+                    if not self.safe_send_response(200):
+                        return
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
-                    self.wfile.write(
-                        dumps(
-                            proxy.all_filtered_items).encode('utf-8'))
+                    if not self.safe_write(dumps(proxy.all_filtered_items)):
+                        return
                 else:
                     self.send_error(404, "No catalog loaded")
 
@@ -808,26 +845,31 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                             countries.add(country)
 
                 countries_list = sorted(list(countries))
-                self.send_response(200)
+                if not self.safe_send_response(200):
+                    return
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(dumps(countries_list).encode('utf-8'))
+                if not self.safe_write(dumps(countries_list)):
+                    return
 
             elif parsed_path.path == '/status':
                 status = {
                     "initialized": proxy.initialized,
-                    "channels_count": len(
-                        proxy.all_filtered_items),
+                    "channels_count": len(proxy.all_filtered_items),
                     "addon_sig_valid": proxy.addon_sig_data["sig"] is not None,
-                    "addon_sig_age": int(
-                        time.time() -
-                        proxy.addon_sig_data["ts"]),
+                    "addon_sig_age": int(time.time() - proxy.addon_sig_data["ts"]),
                     "local_ip": proxy.get_local_ip(),
-                    "port": PORT}
-                self.send_response(200)
+                    "port": PORT
+                }
+
+                if not self.safe_send_response(200):
+                    return
+
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(dumps(status).encode('utf-8'))
+
+                if not self.safe_write(dumps(status)):
+                    return
 
             elif parsed_path.path == '/health':
                 """Health check endpoint with detailed status"""
@@ -835,7 +877,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     now = time.time()
                     token_age = now - proxy.addon_sig_data["ts"]
                     token_valid = proxy.addon_sig_data["sig"] is not None
-                    needs_refresh = token_age > 480  # 8 minutes
+                    needs_refresh = token_age > 300  # 8 minutes
 
                     # Calculate token expiration
                     ttl = max(0, TOKEN_ADDON_SIG - int(token_age))
@@ -873,7 +915,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                         proxy_status["token"]["refreshed"] = sig is not None
                         proxy_status["message"] = "Token refreshed" if sig else "Token refresh failed"
 
-                    self.send_response(200)
+                    # self.send_response(200)
+                    if not self.safe_send_response(200):
+                        return
                     self.send_header('Content-Type', 'application/json')
                     self.send_header(
                         'Cache-Control',
@@ -881,34 +925,40 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_header('Pragma', 'no-cache')
                     self.send_header('Expires', '0')
                     self.end_headers()
-                    self.wfile.write(dumps(proxy_status).encode('utf-8'))
-
+                    if not self.safe_write(dumps(proxy_status)):
+                        return
                 except Exception as e:
                     error_response = {
                         "status": "error",
                         "message": str(e),
                         "timestamp": time.time()
                     }
-                    self.send_response(500)
+                    if not self.safe_send_response(500):
+                        return
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
-                    self.wfile.write(dumps(error_response).encode('utf-8'))
+                    if not self.safe_write(dumps(error_response)):
+                        return
 
             elif parsed_path.path == '/refresh_token':
                 sig = proxy.refresh_addon_sig_if_needed(force=True)
                 response = {
                     "status": "success" if sig else "error",
                     "message": "Token refreshed" if sig else "Failed to refresh token"}
-                self.send_response(200)
+                if not self.safe_send_response(200):
+                    return
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(dumps(response).encode('utf-8'))
+                if not self.safe_write(dumps(response)):
+                    return
 
             elif parsed_path.path == '/shutdown':
-                self.send_response(200)
+                if not self.safe_send_response(200):
+                    return
                 self.send_header('Content-Type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"Proxy shutting down...")
+                if not self.safe_write(b"Proxy shutting down..."):
+                    return
 
                 def shutdown_server():
                     time.sleep(1)
@@ -920,9 +970,44 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             else:
                 self.send_error(404, "Not Found")
 
+        except BrokenPipeError:
+            print("[Proxy] Client disconnected (BrokenPipeError)")
+            return
+        except ConnectionResetError:
+            print("[Proxy] Connection reset by client")
+            return
         except Exception as e:
             print("[Handler] Error: %s" % str(e))
-            self.send_error(500, "Internal Server Error")
+            try:
+                self.send_error(500, "Internal Server Error")
+            except (BrokenPipeError, ConnectionResetError):
+                print("[Proxy] Client gone while sending error")
+                return
+
+    def handle_one_request(self):
+        """Gestisci una singola richiesta con cleanup garantito"""
+        try:
+            BaseHTTPRequestHandler.handle_one_request(self)
+        except (socket.timeout, socket.error) as e:
+            print("[Proxy] Socket error in request: " + str(e))
+            try:
+                self.connection.close()
+            except:
+                pass
+        except Exception as e:
+            print("[Proxy] Unexpected error in request: " + str(e))
+
+    def finish(self):
+        """Override finish per gestire cleanup"""
+        try:
+            BaseHTTPRequestHandler.finish(self)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
+
+    def setup(self):
+        """Setup con timeout"""
+        BaseHTTPRequestHandler.setup(self)
+        self.request.settimeout(self.timeout)
 
     def log_message(self, format, *args):
         pass
@@ -956,11 +1041,14 @@ def start_proxy():
                     return False
 
             server = HTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
+            server.timeout = 30
+            server.request_queue_size = 10
             proxy.server = server
             local_ip = proxy.get_local_ip()
 
             print("[✓] Channels: " + str(len(proxy.all_filtered_items)))
             print("[✓] IP: " + str(local_ip) + ":" + str(PORT))
+            print("[✓] Timeout: " + str(server.timeout) + "s")
             print("[✓] Ready")
             print("=" * 50)
 
@@ -968,7 +1056,7 @@ def start_proxy():
             restart_count = 0
 
             try:
-                server.serve_forever()
+                server.serve_forever(poll_interval=0.5)
             except KeyboardInterrupt:
                 print("\n[!] Proxy stopped by user")
                 break

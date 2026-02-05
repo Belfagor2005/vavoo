@@ -1628,7 +1628,7 @@ class MainVavoo(Screen):
                                 status_text = "✓ Proxy (" + \
                                     str(int(ttl)) + "s)"
                             else:
-                                status_text = "⚠ Proxy (expiring)"
+                                status_text = "Proxy (expiring)"
                         else:
                             status_text = "✗ Proxy Error"
                     else:
@@ -2510,7 +2510,7 @@ class vavoo(Screen):
                 return status
 
             token_age = proxy_data.get("addon_sig_age", 0)
-            if token_age > 540:
+            if token_age > 420:
                 print(
                     "[vavoo] Token old (" +
                     str(token_age) +
@@ -3356,7 +3356,7 @@ class TvInfoBarShowHide():
 
                 if token_age < 300:  # < 5 minuti
                     return "✓ Proxy OK"
-                elif token_age < 540:  # < 9 minuti
+                elif token_age < 420:  # < 9 minuti
                     ttl = 600 - token_age
                     return f"✓ Proxy ({int(ttl)}s)"
                 else:  # In scadenza
@@ -3405,7 +3405,7 @@ class TvInfoBarShowHide():
 
                     if token_age < 300:
                         proxy_msg = "✓ Proxy OK"
-                    elif token_age < 540:
+                    elif token_age < 420:
                         ttl = 600 - token_age
                         proxy_msg = "⚠ Proxy (" + str(int(ttl)) + "s)"
                     else:
