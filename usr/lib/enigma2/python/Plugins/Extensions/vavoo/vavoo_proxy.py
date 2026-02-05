@@ -315,7 +315,7 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" +
+                                print("[Token Monitor] Token old (" + \
                                       str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
@@ -855,12 +855,14 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             elif parsed_path.path == '/status':
                 status = {
                     "initialized": proxy.initialized,
-                    "channels_count": len(proxy.all_filtered_items),
+                    "channels_count": len(
+                        proxy.all_filtered_items),
                     "addon_sig_valid": proxy.addon_sig_data["sig"] is not None,
-                    "addon_sig_age": int(time.time() - proxy.addon_sig_data["ts"]),
+                    "addon_sig_age": int(
+                        time.time() -
+                        proxy.addon_sig_data["ts"]),
                     "local_ip": proxy.get_local_ip(),
-                    "port": PORT
-                }
+                    "port": PORT}
 
                 if not self.safe_send_response(200):
                     return
@@ -992,7 +994,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             print("[Proxy] Socket error in request: " + str(e))
             try:
                 self.connection.close()
-            except:
+            except BaseException:
                 pass
         except Exception as e:
             print("[Proxy] Unexpected error in request: " + str(e))
