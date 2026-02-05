@@ -315,7 +315,7 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" + \
+                                print("[Token Monitor] Token old (" +
                                       str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
@@ -432,18 +432,27 @@ class VavooProxy:
                 return None
 
     def initialize_proxy(self):
-        """Initialize the proxy by loading the catalog"""
+        """Initialize the proxy by loading the catalog with fallback"""
         try:
             print("[Proxy] Initializing...")
 
+            # First, obtain a valid token
             sig = self.refresh_addon_sig_if_needed()
             if not sig:
-                return False
+                print("[Proxy] Warning: Could not get a valid token, but continuing anyway")
+                # We may continue with an old token or no token at all
 
             # Load the catalog
+            print("[Proxy] Attempting to load catalog...")
             all_channels = self.load_catalog(sig)
+
             if not all_channels or len(all_channels) == 0:
-                return False
+                print("[Proxy] Warning: Catalog is empty or failed to load")
+                # Create an empty list but mark as initialized
+                self.all_filtered_items = []
+                self.initialized = True
+                print("[Proxy] Initialized with empty catalog")
+                return True
 
             self.all_filtered_items = all_channels
             self.initialized = True
@@ -457,15 +466,20 @@ class VavooProxy:
 
             print(
                 "[Proxy] ✓ Initialized: %d channels, %d countries" %
-                (len(all_channels), len(countries)))
+                (len(all_channels), len(countries))
+            )
             return True
 
         except Exception as e:
             print("[Proxy] Initialization error: %s" % str(e))
-            return False
+            # Even in case of error, try to continue with an empty catalog
+            print("[Proxy] Continuing with empty catalog")
+            self.all_filtered_items = []
+            self.initialized = True
+            return True  # Always return True; the proxy can work even without a catalog
 
     def load_catalog(self, sig):
-        """Load the complete catalog"""
+        """Load the complete catalog with better error handling"""
         try:
             catalog_headers = {
                 "content-type": "application/json; charset=utf-8",
@@ -480,6 +494,9 @@ class VavooProxy:
             all_channels = []
             cursor = None
             page = 1
+            max_retries = 3
+
+            print("[Proxy] Loading catalog...")
 
             while True:
                 catalog_payload = {
@@ -495,19 +512,66 @@ class VavooProxy:
                     "clientVersion": "3.0.2"
                 }
 
-                r_catalog = self.session.post(
-                    CATALOG_URL,
-                    json=catalog_payload,
-                    headers=catalog_headers,
-                    timeout=30
-                )
-                r_catalog.raise_for_status()
-                catalog_data = decode_response(r_catalog)
+                success = False
+                last_exception = None
+
+                for attempt in range(max_retries):
+                    try:
+                        print(f"[Proxy] Fetching catalog page {page} (attempt {attempt + 1}/{max_retries})")
+
+                        r_catalog = self.session.post(
+                            CATALOG_URL,
+                            json=catalog_payload,
+                            headers=catalog_headers,
+                            timeout=30
+                        )
+
+                        if r_catalog.status_code == 502:
+                            print(f"[Proxy] 502 Bad Gateway on page {page}, attempt {attempt + 1}")
+                            if attempt < max_retries - 1:
+                                time.sleep(2 ** attempt)  # Backoff esponenziale
+                                continue
+                            else:
+                                print(f"[Proxy] Giving up on page {page} after {max_retries} attempts")
+                                break
+
+                        r_catalog.raise_for_status()
+                        catalog_data = decode_response(r_catalog)
+                        success = True
+                        break
+
+                    except requests.exceptions.HTTPError as e:
+                        last_exception = e
+                        print(f"[Proxy] HTTP error on page {page}: {e}")
+
+                        if e.response.status_code == 502 and attempt < max_retries - 1:
+                            time.sleep(2 ** attempt)
+                            continue
+                        else:
+                            break
+
+                    except Exception as e:
+                        last_exception = e
+                        print(f"[Proxy] Error on page {page}: {e}")
+                        if attempt < max_retries - 1:
+                            time.sleep(2 ** attempt)
+                            continue
+                        else:
+                            break
+
+                if not success:
+                    print(f"[Proxy] Failed to load page {page}, stopping catalog download")
+                    if last_exception:
+                        print(f"[Proxy] Last error: {last_exception}")
+                    break
 
                 items = catalog_data.get("items", [])
                 if not items:
+                    print(f"[Proxy] No more items on page {page}")
                     break
 
+                # Process items
+                items_processed = 0
                 for item in items:
                     if item.get("type") == "iptv":
                         group = item.get("group", "")
@@ -517,8 +581,7 @@ class VavooProxy:
                         separators = ["➾", "⟾", "->", "→", "»", "›"]
                         for sep in separators:
                             if sep in base_country:
-                                base_country = base_country.split(sep)[
-                                    0].strip()
+                                base_country = base_country.split(sep)[0].strip()
                                 break
 
                         if not base_country:
@@ -534,27 +597,44 @@ class VavooProxy:
                         }
 
                         all_channels.append(channel_data)
+                        items_processed += 1
+
+                print(f"[Proxy] Page {page}: processed {items_processed} items, total {len(all_channels)} channels")
 
                 cursor = catalog_data.get("nextCursor")
                 if not cursor:
+                    print("[Proxy] No more pages, catalog complete")
                     break
 
-                page += 1  # Do not limit the number of pages
+                page += 1
 
+                if page % 5 == 0:
+                    time.sleep(1)
+
+            print(f"[Proxy] Catalog loaded: {len(all_channels)} channels in {page - 1} pages")
             return all_channels
 
         except Exception as e:
             print("[Proxy] Catalog load error: %s" % str(e))
             from .vUtils import trace_error
             trace_error()
+            if all_channels:
+                print(f"[Proxy] Returning {len(all_channels)} channels already loaded")
+                return all_channels
             return None
 
-    def resolve_with_retry(self, channel_url, max_retries=2):
-        """Resolve URLs with retries"""
+    def resolve_with_retry(self, channel_url, max_retries=3):
+        """Resolve URLs with retries and improved error handling"""
+        if not channel_url:
+            print("[Proxy] No channel URL provided")
+            return None
+
         for attempt in range(max_retries):
             try:
-                # Refresh token if needed
-                self.refresh_addon_sig_if_needed()
+                # First, try to obtain a fresh token if needed
+                if attempt > 0:
+                    self.refresh_addon_sig_if_needed(force=True)
+
                 resolve_headers = {
                     "content-type": "application/json; charset=utf-8",
                     "mediahubmx-signature": self.addon_sig_data["sig"],
@@ -572,15 +652,30 @@ class VavooProxy:
                     "clientVersion": "3.0.2"
                 }
 
-                r_resolve = self._robust_request("POST", RESOLVE_URL,
-                                                 json=resolve_payload,
-                                                 headers=resolve_headers,
-                                                 timeout=15)
+                print(
+                    "[Proxy] Resolving channel URL (attempt %d/%d)" %
+                    (attempt + 1, max_retries)
+                )
 
-                if r_resolve.status_code == 403:
-                    # Token expired, refresh and retry
-                    self.refresh_addon_sig_if_needed(force=True)
-                    continue
+                r_resolve = self.session.post(
+                    RESOLVE_URL,
+                    json=resolve_payload,
+                    headers=resolve_headers,
+                    timeout=15
+                )
+
+                # Handle HTTP errors
+                if r_resolve.status_code == 502:
+                    print(
+                        "[Proxy] 502 Bad Gateway on resolve, attempt %d" %
+                        (attempt + 1)
+                    )
+                    if attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)
+                        continue
+                    else:
+                        print("[Proxy] Giving up on resolve after max retries")
+                        return None
 
                 r_resolve.raise_for_status()
                 result = decode_response(r_resolve)
@@ -588,14 +683,40 @@ class VavooProxy:
                 if result and len(result) > 0:
                     stream_url = result[0].get("url")
                     if stream_url:
+                        print("[Proxy] Successfully resolved channel URL")
                         return stream_url
+                    else:
+                        print("[Proxy] No stream URL in response")
+                else:
+                    print("[Proxy] Empty response from resolve")
+
+            except requests.exceptions.HTTPError as e:
+                print(
+                    "[Proxy] HTTP error in resolve attempt %d: %s" %
+                    (attempt + 1, str(e))
+                )
+                if (
+                    e.response is not None and
+                    e.response.status_code == 502 and
+                    attempt < max_retries - 1
+                ):
+                    time.sleep(2 ** attempt)
+                    continue
+                else:
+                    break
 
             except Exception as e:
-                print("[Proxy] Resolve attempt " +
-                      str(attempt + 1) + " failed: " + str(e))
+                print(
+                    "[Proxy] Error in resolve attempt %d: %s" %
+                    (attempt + 1, str(e))
+                )
                 if attempt < max_retries - 1:
-                    time.sleep(1)
+                    time.sleep(2 ** attempt)
+                    continue
+                else:
+                    break
 
+        print("[Proxy] Failed to resolve channel URL after all retries")
         return None
 
     def get_local_ip(self):

@@ -302,6 +302,22 @@ except Exception as e:
     print(e)
 
 
+def check_vavoo_connectivity():
+    """Test connectivity to vavoo.to"""
+    try:
+        test_url = "https://vavoo.to"
+        response = requests.get(test_url, timeout=5)
+        if response.status_code == 200:
+            print("[Connectivity] vavoo.to is reachable")
+            return True
+        else:
+            print(f"[Connectivity] vavoo.to returned {response.status_code}")
+            return False
+    except Exception as e:
+        print(f"[Connectivity] Cannot reach vavoo.to: {e}")
+        return False
+
+
 # config section
 # --- Live search input field integrated in plugin config ---
 class ConfigSearchText(ConfigText):
@@ -2371,45 +2387,89 @@ class vavoo(Screen):
             print("[DEBUG] Error checking proxy: " + str(e))
 
     def cat(self):
-        """Load channels for selected country with proxy verification"""
+        """Load channels for the selected country with proxy verification and fallback"""
         print("[DEBUG] vavoo.cat() called for country: " + str(self.country_name))
 
         try:
-            # 1. CHECK PROXY STATUS
-            proxy_status = self._check_and_ensure_proxy_ready()
-            if not proxy_status["ready"]:
-                self._show_proxy_error(proxy_status)
-                return
+            # 1. TRY THE PROXY FIRST
+            try:
+                country_encoded = quote(self.country_name)
+                proxy_url = (
+                    "http://127.0.0.1:" +
+                    str(PORT) +
+                    "/channels?country=" +
+                    country_encoded
+                )
+                print("[DEBUG] Fetching from proxy: " + proxy_url)
 
-            # 2. GET CHANNELS FROM PROXY
-            country_encoded = quote(self.country_name)
-            proxy_url = "http://127.0.0.1:" + \
-                str(PORT) + "/channels?country=" + country_encoded
-            print("[DEBUG] Fetching from proxy: " + proxy_url)
+                content = getUrl(proxy_url, timeout=10)
 
-            content = getUrl(proxy_url, timeout=10)
-
-            if not content or content.strip() == "" or content == "null":
-                print("[ERROR] Proxy returned empty response for " +
-                      str(self.country_name))
-
-                # Recovery attempt
-                if self._try_proxy_recovery():
-                    self.cat()  # Retry
+                if content and content.strip() and content != "null":
+                    channels_data = loads(content)
+                    self._build_channel_list(channels_data)
                     return
+                else:
+                    print("[DEBUG] Proxy returned empty response, trying fallback...")
+            except Exception as proxy_error:
+                print("[DEBUG] Proxy error: " + str(proxy_error))
 
-                self['name'].setText("No channels for " +
-                                     str(self.country_name))
-                return
-
-            # 3. PROCESS CHANNELS
-            channels_data = loads(content)
-            self._build_channel_list(channels_data)
+            # 2. FALLBACK: use the original method
+            self._fallback_to_original_method()
 
         except Exception as e:
             print("[ERROR] CRITICAL in cat(): " + str(e))
             trace_error()
             self._handle_cat_error(e)
+
+    def _fallback_to_original_method(self):
+        """Fallback to the original method without using the proxy"""
+        try:
+            print("[Fallback] Using original data source...")
+
+            # Retrieve data directly from vavoo.to
+            url = vUtils.b64decoder(stripurl)
+            content = getUrl(url, timeout=10)
+
+            if not content:
+                self['name'].setText(to_string("Error: No data received"))
+                return
+
+            data = loads(content)
+            self.cat_list = []
+
+            for entry in data:
+                country = unquote(entry.get("country", "")).strip("\r\n")
+                if self.country_name in country:  # Partial match
+                    name = entry.get("name", "")
+                    url = entry.get("url", "")
+
+                    if name and url:
+                        self.cat_list.append(
+                            show_list(name, url, is_channel=True)
+                        )
+
+            if not self.cat_list:
+                self['name'].setText(
+                    to_string("No channels found for " + self.country_name)
+                )
+                return
+
+            self.itemlist = [
+                item[0][0] + "###" + item[0][1]
+                for item in self.cat_list
+            ]
+            self.update_menu()
+            print(
+                "[Fallback] Loaded " +
+                str(len(self.cat_list)) +
+                " channels"
+            )
+
+        except Exception as e:
+            print("[Fallback] Error: " + str(e))
+            self['name'].setText(
+                to_string("Error loading channels")
+            )
 
     def _build_channel_list(self, channels_data):
         """Build channel list from proxy data"""
