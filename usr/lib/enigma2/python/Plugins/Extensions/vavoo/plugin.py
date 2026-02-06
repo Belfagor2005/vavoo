@@ -1588,7 +1588,7 @@ class MainVavoo(Screen):
         try:
             if not is_proxy_running():
                 print("[Watchdog] Proxy not running, attempting restart...")
-                self['proxy_status'].setText("⚠ Restarting...")
+                self['proxy_status'].setText(" Restarting...")
 
                 # Try restart
                 success = run_proxy_in_background()
@@ -2409,8 +2409,7 @@ class vavoo(Screen):
                     self._build_channel_list(channels_data)
                     return
                 else:
-                    print(
-                        "[DEBUG] Proxy returned empty response, trying fallback...")
+                    print("[DEBUG] Proxy returned empty response, trying fallback...")
             except Exception as proxy_error:
                 print("[DEBUG] Proxy error: " + str(proxy_error))
 
@@ -3421,7 +3420,7 @@ class TvInfoBarShowHide():
                     ttl = 600 - token_age
                     return f"✓ Proxy ({int(ttl)}s)"
                 else:  # In scadenza
-                    return "⚠ Proxy Expiring"
+                    return "! Proxy Expiring"
             else:
                 return "✗ Proxy Error"
 
@@ -3468,7 +3467,7 @@ class TvInfoBarShowHide():
                         proxy_msg = "✓ Proxy OK"
                     elif token_age < 420:
                         ttl = 600 - token_age
-                        proxy_msg = "⚠ Proxy (" + str(int(ttl)) + "s)"
+                        proxy_msg = " Proxy (" + str(int(ttl)) + "s)"
                     else:
                         proxy_msg = "✗ Proxy Expired"
 
@@ -3479,7 +3478,7 @@ class TvInfoBarShowHide():
                 proxy_details = "✗ Proxy Offline"
 
             # Build full text (NO f-string)
-            help_text = "OK=Info | CH±=Change | PLAY=Toggle | STOP=Exit | " + \
+            help_text = "CH±=Change | PLAY=Toggle | STOP=Exit | " + \
                 proxy_details + " | by Lululla"
 
             # Set text
