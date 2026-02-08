@@ -57,6 +57,7 @@ PYTHON_VER = version_info.major
 
 if PYTHON_VER == 3:
     from urllib.request import urlopen, Request
+    from urllib.error import URLError
     ssl_context = ssl.create_default_context()
     # Disabilita SSLv2, SSLv3, TLS1.0 e TLS1.1 esplicitamente
     ssl_context.options |= ssl.OP_NO_SSLv2
@@ -66,6 +67,7 @@ if PYTHON_VER == 3:
     unichr_func = unichr
 else:
     from urllib2 import urlopen, Request
+    from urllib2 import URLError
     ssl_context = None
     unichr_func = chr
 
@@ -217,24 +219,40 @@ def b64decoder(data):
         return ""
 
 
-def getUrl(url, timeout=30):
-    """Fetch URL content with fallback SSL handling"""
+def getUrl(url, timeout=30, retries=3, backoff=2):
+    """Fetch URL with exponential backoff retry logic"""
+    import time
+    import socket
     headers = {'User-Agent': RequestAgent()}
+    for i in range(retries):
+        try:
+            socket.setdefaulttimeout(timeout)
 
-    try:
-        if PYTHON_VER == 3:
-            response = urlopen(
-                Request(url, headers=headers),
-                timeout=timeout,
-                context=ssl_context)
-            return response.read().decode('utf-8', errors='ignore')
-        else:
-            response = urlopen(Request(url, headers=headers), timeout=timeout)
-            return response.read()
-    except Exception as e:
-        print("URL fetch error (" + str(url) + "): " + str(e))
-        trace_error()
-        return ""
+            if PYTHON_VER == 3:
+                response = urlopen(
+                    Request(url, headers=headers),
+                    timeout=timeout,
+                    context=ssl_context)
+                return response.read().decode('utf-8', errors='ignore')
+            else:
+                response = urlopen(Request(url, headers=headers), timeout=timeout)
+                return response.read()
+
+        except (TimeoutError, socket.timeout, URLError) as e:
+            if i < retries - 1:
+                wait_time = backoff ** i  # Exponential backoff
+                print(f"Attempt {i + 1} failed, retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+                continue
+            else:
+                print(f"Failed after {retries} attempts for URL: {url}")
+                print(f"Error: {e}")
+                return ""
+
+        except Exception as e:
+            print(f"Unexpected error for URL {url}: {e}")
+            trace_error()
+            return ""
 
 
 def get_external_ip():
@@ -450,7 +468,7 @@ def get_proxy_channels(country_name):
 
     for attempt in range(max_retries):
         try:
-            print("[vUtils] Getting channels for '" + str(country_name) + \
+            print("[vUtils] Getting channels for '" + str(country_name) +
                   "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
 
             # URL-encode
