@@ -235,13 +235,20 @@ def getUrl(url, timeout=30, retries=3, backoff=2):
                     context=ssl_context)
                 return response.read().decode('utf-8', errors='ignore')
             else:
-                response = urlopen(Request(url, headers=headers), timeout=timeout)
+                response = urlopen(
+                    Request(
+                        url,
+                        headers=headers),
+                    timeout=timeout)
                 return response.read()
 
         except (TimeoutError, socket.timeout, URLError) as e:
             if i < retries - 1:
                 wait_time = backoff ** i  # Exponential backoff
-                print(f"Attempt {i + 1} failed, retrying in {wait_time} seconds...")
+                print(
+                    f"Attempt {
+                        i +
+                        1} failed, retrying in {wait_time} seconds...")
                 time.sleep(wait_time)
                 continue
             else:
@@ -468,7 +475,7 @@ def get_proxy_channels(country_name):
 
     for attempt in range(max_retries):
         try:
-            print("[vUtils] Getting channels for '" + str(country_name) +
+            print("[vUtils] Getting channels for '" + str(country_name) + \
                   "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
 
             # URL-encode
