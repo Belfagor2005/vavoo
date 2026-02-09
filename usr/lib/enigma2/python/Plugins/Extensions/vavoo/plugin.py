@@ -2409,7 +2409,8 @@ class vavoo(Screen):
                     self._build_channel_list(channels_data)
                     return
                 else:
-                    print("[DEBUG] Proxy returned empty response, trying fallback...")
+                    print(
+                        "[DEBUG] Proxy returned empty response, trying fallback...")
             except Exception as proxy_error:
                 print("[DEBUG] Proxy error: " + str(proxy_error))
 
@@ -4317,8 +4318,7 @@ def main(session, **kwargs):
             session.open(
                 MessageBox,
                 _("No Internet connection detected. Please check your network."),
-                MessageBox.TYPE_INFO
-            )
+                MessageBox.TYPE_INFO)
             return
         if isfile('/tmp/vavoo.log'):
             remove('/tmp/vavoo.log')

@@ -286,6 +286,9 @@ msgstr "Référence des services"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "Aucune chaîne trouvée dans la recherche !"

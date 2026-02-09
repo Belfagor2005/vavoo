@@ -280,6 +280,9 @@ msgstr "Service Reference del Player"
 msgid "New version {version} is available."
 msgstr "È disponibile la nuova versione {version}."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "Nessun canale trovato"
 

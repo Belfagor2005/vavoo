@@ -283,6 +283,9 @@ msgstr "Справочник киносервисов"
 msgid "New version {version} is available."
 msgstr "Доступна новая версия {version}."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "Не найдено каналлов"
 

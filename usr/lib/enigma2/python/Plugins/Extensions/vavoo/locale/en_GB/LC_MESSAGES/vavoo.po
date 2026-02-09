@@ -278,6 +278,9 @@ msgstr "Movie Services Reference"
 msgid "New version {version} is available."
 msgstr "New version {version} is available."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "No channels found"
 
