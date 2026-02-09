@@ -282,6 +282,9 @@ msgstr "Referência de serviços de filmes"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "Nenhum canal encontrado na pesquisa!!!"

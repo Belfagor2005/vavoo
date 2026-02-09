@@ -288,6 +288,9 @@ msgstr "电影服务参考"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "搜索中未找到频道！"

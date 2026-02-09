@@ -289,6 +289,9 @@ msgstr "Reproductor de películas"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "No se han encontrado canales!!!"

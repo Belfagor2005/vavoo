@@ -283,6 +283,9 @@ msgstr "Filmszolgáltatások referencia"
 msgid "New version {version} is available."
 msgstr "Új verzió ({version}) érhető el."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "Nem található csatorna a következőhöz: {}"
 

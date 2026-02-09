@@ -283,6 +283,9 @@ msgstr "Odkaz na filmové služby"
 msgid "New version {version} is available."
 msgstr "Nová verzia {version} je k dispozícii."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "Nenašli sa žiadne kanály: {}"
 

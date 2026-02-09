@@ -279,6 +279,9 @@ msgstr "Αναφορά υπηρεσιών ταινιών"
 msgid "New version {version} is available."
 msgstr "Νέα έκδοση {version} είναι διαθέσιμη."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "Δεν βρέθηκαν κανάλια"
 

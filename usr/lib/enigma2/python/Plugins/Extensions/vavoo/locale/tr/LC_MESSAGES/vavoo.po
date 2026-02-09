@@ -283,6 +283,9 @@ msgstr "Film Hizmetleri Referansı"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "Aramada kanal bulunamadı!!!"
