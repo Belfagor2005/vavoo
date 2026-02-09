@@ -2409,8 +2409,7 @@ class vavoo(Screen):
                     self._build_channel_list(channels_data)
                     return
                 else:
-                    print(
-                        "[DEBUG] Proxy returned empty response, trying fallback...")
+                    print("[DEBUG] Proxy returned empty response, trying fallback...")
             except Exception as proxy_error:
                 print("[DEBUG] Proxy error: " + str(proxy_error))
 
@@ -4300,8 +4299,27 @@ def cfgmain(menuid, **kwargs):
         return []
 
 
+def checkInternet():
+    try:
+        import socket
+        socket.setdefaulttimeout(0.5)
+        socket.socket(
+            socket.AF_INET, socket.SOCK_STREAM).connect(
+            ('8.8.8.8', 53))
+        return True
+    except BaseException:
+        return False
+
+
 def main(session, **kwargs):
     try:
+        if not checkInternet():
+            session.open(
+                MessageBox,
+                _("No Internet connection detected. Please check your network."),
+                MessageBox.TYPE_INFO
+            )
+            return
         if isfile('/tmp/vavoo.log'):
             remove('/tmp/vavoo.log')
         add_skin_font()
