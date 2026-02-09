@@ -439,8 +439,7 @@ class VavooProxy:
             # First, obtain a valid token
             sig = self.refresh_addon_sig_if_needed()
             if not sig:
-                print(
-                    "[Proxy] Warning: Could not get a valid token, but continuing anyway")
+                print("[Proxy] Warning: Could not get a valid token, but continuing anyway")
                 # We may continue with an old token or no token at all
 
             # Load the catalog
@@ -518,9 +517,8 @@ class VavooProxy:
 
                 for attempt in range(max_retries):
                     try:
-                        print(
-                            f"[Proxy] Fetching catalog page {page} (attempt {
-                                attempt + 1}/{max_retries})")
+                        print("[Proxy] Fetching catalog page {0} (attempt {1}/{2})"
+                              .format(page, attempt + 1, max_retries))
 
                         r_catalog = self.session.post(
                             CATALOG_URL,
@@ -530,16 +528,14 @@ class VavooProxy:
                         )
 
                         if r_catalog.status_code == 502:
-                            print(
-                                f"[Proxy] 502 Bad Gateway on page {page}, attempt {
-                                    attempt + 1}")
+                            print("[Proxy] 502 Bad Gateway on page {0}, attempt {1}"
+                                  .format(page, attempt + 1))
                             if attempt < max_retries - 1:
-                                # Backoff esponenziale
-                                time.sleep(2 ** attempt)
+                                time.sleep(2 ** attempt)  # Backoff esponenziale
                                 continue
                             else:
-                                print(
-                                    f"[Proxy] Giving up on page {page} after {max_retries} attempts")
+                                print("[Proxy] Giving up on page {0} after {1} attempts"
+                                      .format(page, max_retries))
                                 break
 
                         r_catalog.raise_for_status()
@@ -549,7 +545,8 @@ class VavooProxy:
 
                     except requests.exceptions.HTTPError as e:
                         last_exception = e
-                        print(f"[Proxy] HTTP error on page {page}: {e}")
+                        print("[Proxy] HTTP error on page {0}: {1}"
+                              .format(page, e))
 
                         if e.response.status_code == 502 and attempt < max_retries - 1:
                             time.sleep(2 ** attempt)
@@ -559,7 +556,8 @@ class VavooProxy:
 
                     except Exception as e:
                         last_exception = e
-                        print(f"[Proxy] Error on page {page}: {e}")
+                        print("[Proxy] Error on page {0}: {1}"
+                              .format(page, e))
                         if attempt < max_retries - 1:
                             time.sleep(2 ** attempt)
                             continue
@@ -567,15 +565,17 @@ class VavooProxy:
                             break
 
                 if not success:
-                    print(
-                        f"[Proxy] Failed to load page {page}, stopping catalog download")
+                    print("[Proxy] Failed to load page {0}, stopping catalog download"
+                          .format(page))
                     if last_exception:
-                        print(f"[Proxy] Last error: {last_exception}")
+                        print("[Proxy] Last error: {0}"
+                              .format(last_exception))
                     break
 
                 items = catalog_data.get("items", [])
                 if not items:
-                    print(f"[Proxy] No more items on page {page}")
+                    print("[Proxy] No more items on page {0}"
+                          .format(page))
                     break
 
                 # Process items
@@ -589,8 +589,7 @@ class VavooProxy:
                         separators = ["➾", "⟾", "->", "→", "»", "›"]
                         for sep in separators:
                             if sep in base_country:
-                                base_country = base_country.split(sep)[
-                                    0].strip()
+                                base_country = base_country.split(sep)[0].strip()
                                 break
 
                         if not base_country:
@@ -608,9 +607,8 @@ class VavooProxy:
                         all_channels.append(channel_data)
                         items_processed += 1
 
-                print(
-                    f"[Proxy] Page {page}: processed {items_processed} items, total {
-                        len(all_channels)} channels")
+                print("[Proxy] Page {0}: processed {1} items, total {2} channels"
+                      .format(page, items_processed, len(all_channels)))
 
                 cursor = catalog_data.get("nextCursor")
                 if not cursor:
@@ -622,20 +620,16 @@ class VavooProxy:
                 if page % 5 == 0:
                     time.sleep(1)
 
-            print(
-                f"[Proxy] Catalog loaded: {
-                    len(all_channels)} channels in {
-                    page - 1} pages")
+            print("[Proxy] Catalog loaded: {0} channels in {1} pages"
+                  .format(len(all_channels), page - 1))
             return all_channels
-
         except Exception as e:
             print("[Proxy] Catalog load error: %s" % str(e))
             from .vUtils import trace_error
             trace_error()
             if all_channels:
-                print(
-                    f"[Proxy] Returning {
-                        len(all_channels)} channels already loaded")
+                print("[Proxy] Returning {0} channels already loaded"
+                      .format(len(all_channels)))
                 return all_channels
             return None
 
@@ -776,7 +770,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         client_address = self.client_address[0]
-        print(f"[Proxy] Request from {client_address}: {self.path}")
+        print("[Proxy] Request from {0}: {1}"
+              .format(client_address, self.path))
         try:
             parsed_path = urlparse(self.path)
             query_params = parse_qs(parsed_path.query)
