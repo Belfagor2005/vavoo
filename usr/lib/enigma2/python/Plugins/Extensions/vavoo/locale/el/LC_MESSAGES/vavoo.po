@@ -130,7 +130,7 @@ msgid "Channels: %d"
 msgstr "Κανάλια: %d"
 
 msgid "Checking proxy..."
-msgstr ""
+msgstr "Έλεγχος proxy..."
 
 msgid "Clear All"
 msgstr "Καθαρισμός όλων"
@@ -208,16 +208,16 @@ msgid "Export"
 msgstr "Εξαγωγή"
 
 msgid "Failed to refresh proxy token"
-msgstr ""
+msgstr "Αποτυχία ανανέωσης του token του proxy"
 
 msgid "Failed to refresh proxy:"
-msgstr ""
+msgstr "Αποτυχία ανανέωσης proxy:"
 
 msgid "Failed: %(failed)d"
 msgstr "Απέτυχαν: %(failed)d"
 
 msgid "Force proxy refresh?"
-msgstr ""
+msgstr "Εξαναγκασμένη ανανέωση proxy;"
 
 msgid "Found: {} channels"
 msgstr "Βρέθηκαν: {} κανάλια"
@@ -226,7 +226,7 @@ msgid "Generate .m3u file for:"
 msgstr "Δημιουργία αρχείου .m3u για:"
 
 msgid "Generate .m3u files (Ok for Exec)"
-msgstr "Δημιουργία αρχείων .m3u (κουμπί OK)"
+msgstr "Δημιουργία αρχείων .m3u (πιέστε OK)"
 
 msgid "Generate .m3u files and save to device %s."
 msgstr "Δημιουργία αρχείων .m3u και αποθήκευση στο %s."
@@ -262,7 +262,7 @@ msgid "Link in Main Menu"
 msgstr "Σύνδεσμος στο κύριο μενού"
 
 msgid "Lower = less interruption but more refreshes"
-msgstr "Χαμηλότερο = λιγότερες διακοπές αλλά περισσότερες ανανεώσεις"
+msgstr "Χαμηλό = λίγες διακοπές, πολλές ανανεώσεις"
 
 msgid "M3U file generated successfully!"
 msgstr "Το αρχείο M3U δημιουργήθηκε με επιτυχία!"
@@ -280,7 +280,7 @@ msgid "New version {version} is available."
 msgstr "Νέα έκδοση {version} είναι διαθέσιμη."
 
 msgid "No Internet connection detected. Please check your network."
-msgstr ""
+msgstr "Δεν εντοπίστηκε σύνδεση στο Διαδίκτυο. Παρακαλώ ελέγξτε το δίκτυό σας."
 
 msgid "No channels found"
 msgstr "Δεν βρέθηκαν κανάλια"
@@ -313,20 +313,19 @@ msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Πατήστε το κουμπί TEXT για πληκτρολόγηση, BACKSPACE για διαγραφή"
 
 msgid "Proxy is not running. Please start the proxy first."
-msgstr ""
+msgstr "Ο proxy δεν εκτελείται. Παρακαλώ εκκινήστε πρώτα τον proxy."
 
 msgid "Proxy not active. Unable to generate M3U file."
-msgstr "Ο διακομιστής μεσολάβησης δεν είναι ενεργός. Αδυναμία δημιουργίας αρχείου M3U."
+msgstr "Ο proxy δεν είναι ενεργός. Αδυναμία δημιουργίας αρχείου M3U."
 
 msgid "Proxy not responding after"
-msgstr ""
+msgstr "Ο proxy δεν ανταποκρίνεται μετά από"
 
 msgid "Proxy restarting... Please wait"
-msgstr ""
+msgstr "Επανεκκίνηση proxy... Παρακαλώ περιμένετε"
 
-#, fuzzy
 msgid "Proxy token refreshed successfully"
-msgstr "Τα μπουκέτα Vavoo αφαιρέθηκαν με επιτυχία!"
+msgstr "Το token του proxy ανανεώθηκε με επιτυχία"
 
 msgid "Really close without saving settings?"
 msgstr "Θέλετε πραγματικά να κλείσετε χωρίς αποθήκευση των ρυθμίσεων;"
@@ -362,11 +361,10 @@ msgid "Saved in: %s"
 msgstr "Αποθηκεύτηκε σε: %s"
 
 msgid "Schedule type:"
-msgstr "Τύπος προγράμματος:"
+msgstr "Τύπος προγραμματισμού:"
 
-#, fuzzy
 msgid "Scheduled List Update:"
-msgstr "Πρόγραμμα ενημέρωσης μπουκέτου:"
+msgstr "Προγραμματισμός ενημέρωσης λίστας:"
 
 msgid "Search"
 msgstr "Αναζήτηση"
@@ -414,7 +412,7 @@ msgid "Technical Features:"
 msgstr "Τεχνικά χαρακτηριστικά:"
 
 msgid "This will refresh the authentication token."
-msgstr ""
+msgstr "Αυτό θα ανανεώσει το token πιστοποίησης."
 
 msgid "This will remove:"
 msgstr "Αυτό θα αφαιρέσει:"
@@ -456,10 +454,10 @@ msgid "Version:"
 msgstr "Έκδοση:"
 
 msgid "Waiting for proxy..."
-msgstr ""
+msgstr "Αναμονή για τον proxy..."
 
 msgid "You can start it from the menu or by pressing the TEXT button."
-msgstr ""
+msgstr "Μπορείτε να τον εκκινήσετε από το μενού ή πατώντας το κουμπί TEXT."
 
 msgid "fixed time"
 msgstr "καθορισμένη ώρα"
@@ -471,13 +469,4 @@ msgid "lowercase"
 msgstr "πεζά"
 
 msgid "seconds"
-msgstr ""
-
-#~ msgid "- - - -"
-#~ msgstr "- - - -"
-
-#~ msgid "Error starting stream via proxy"
-#~ msgstr "Σφάλμα εκκίνησης ροής μέσω proxy"
-
-#~ msgid "Scheduled Bouquet Update:"
-#~ msgstr "Πρόγραμμα ενημέρωσης μπουκέτου:"
+msgstr "δευτερόλεπτα"
