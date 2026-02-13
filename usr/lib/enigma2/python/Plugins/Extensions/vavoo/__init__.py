@@ -11,7 +11,12 @@ from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 import gettext
 import os
-import subprocess
+import sys
+
+if sys.version_info[0] >= 3:
+    import subprocess
+else:
+    import subprocess
 
 EXPORT_IN_PROGRESS = False
 PROXY_ACTIVE = False
@@ -61,7 +66,13 @@ localeInit()
 language.addCallback(localeInit)
 
 file_path = "/usr/lib/enigma2/python/Plugins/Extensions/vavoo/start_proxy.sh"
-subprocess.run(["chmod", "+x", file_path])
+try:
+    subprocess.run(["chmod", "+x", file_path])
+except AttributeError:
+    try:
+        subprocess.call(["chmod", "+x", file_path])
+    except OSError:
+        os.system("chmod +x {0}".format(file_path))
 
 country_codes = {
     "Albania": "al",

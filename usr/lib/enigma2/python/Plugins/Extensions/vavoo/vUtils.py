@@ -23,6 +23,7 @@
 #########################################################
 """
 
+from __future__ import print_function
 import base64
 import ssl
 import types
@@ -90,9 +91,14 @@ def trace_error():
     import traceback
     from sys import stdout, stderr
     try:
-        traceback.print_exc(file=stdout)
-        with open("/tmp/vavoo.log", "a", encoding='utf-8') as log_file:
-            traceback.print_exc(file=log_file)
+        if sys.version_info[0] >= 3:
+            traceback.print_exc(file=stdout)
+            with open("/tmp/vavoo.log", "a", encoding='utf-8') as log_file:
+                traceback.print_exc(file=log_file)
+        else:
+            traceback.print_exc(file=stdout)
+            with open("/tmp/vavoo.log", "a") as log_file:
+                traceback.print_exc(file=log_file)
     except Exception as e:
         print("Failed to log the error:", e, file=stderr)
 
