@@ -311,10 +311,10 @@ def check_vavoo_connectivity():
             print("[Connectivity] vavoo.to is reachable")
             return True
         else:
-            print("[Connectivity] vavoo.to returned {0}".format(response.status_code))
+            print("[Connectivity] vavoo.to returned {}".format(response.status_code))
             return False
     except Exception as e:
-        print("[Connectivity] Cannot reach vavoo.to: {0}".format(e))
+        print("[Connectivity] Cannot reach vavoo.to: {}".format(e))
         return False
 
 
@@ -4373,3 +4373,4 @@ def Plugins(**kwargs):
         result.append(main_descriptor)
 
     return result
+
