@@ -11,12 +11,7 @@ from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 import gettext
 import os
-import sys
-
-if sys.version_info[0] >= 3:
-    import subprocess
-else:
-    import subprocess
+import subprocess
 
 EXPORT_IN_PROGRESS = False
 PROXY_ACTIVE = False
@@ -92,3 +87,4 @@ country_codes = {
     "Turkey": "tr",
     "United Kingdom": "gb"
 }
+
