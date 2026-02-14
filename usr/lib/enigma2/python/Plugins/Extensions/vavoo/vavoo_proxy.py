@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 
@@ -123,9 +123,8 @@ class ProxyHealthMonitor:
         """Start the background health monitor"""
         self.running = True
         self.monitor_thread = threading.Thread(
-            target=self._monitor_loop,
-            daemon=True
-        )
+            target=self._monitor_loop)
+        self.monitor_thread.setDaemon(True)
         self.monitor_thread.start()
         print("[Proxy Health Monitor] Started")
 
@@ -231,9 +230,9 @@ class ProxyHealthMonitor:
 
                 # Start server in a separate thread
                 server_thread = threading.Thread(
-                    target=server.serve_forever,
-                    daemon=True
+                    target=server.serve_forever
                 )
+                server_thread.setDaemon(True)
                 server_thread.start()
 
                 print("[Health Monitor] Proxy restarted successfully")
@@ -331,7 +330,8 @@ class VavooProxy:
                     print("[Token Monitor] Error: " + str(e))
 
         monitor_thread = threading.Thread(
-            target=token_monitor_loop, daemon=True)
+            target=token_monitor_loop)
+        monitor_thread.setDaemon(True)
         monitor_thread.start()
         print("[Proxy] Token monitor started (with heartbeat)")
 
@@ -341,7 +341,7 @@ class VavooProxy:
             self.refresh_timer.cancel()
 
         self.refresh_timer = threading.Timer(480, self._periodic_refresh_task)
-        self.refresh_timer.daemon = True
+        self.refresh_timer.setDaemon(True)
         self.refresh_timer.start()
         print("[Proxy] Periodic refresh scheduled (480s)")
 
@@ -424,9 +424,9 @@ class VavooProxy:
                             break  # Found, exit loop
                         else:
                             print(
-                                f"[AddonSig] No addonSig received from {url}")
+                                "[AddonSig] No addonSig received from {}".format(url))
                     except Exception as e:
-                        print(f"[AddonSig] Request to {url} failed: {e}")
+                        print("[AddonSig] Request to {} failed: {}".format(url, e))
 
                 if sig:
                     self.addon_sig_data["sig"] = sig
@@ -1130,7 +1130,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     if proxy.server:
                         proxy.server.shutdown()
 
-                threading.Thread(target=shutdown_server, daemon=True).start()
+                t = threading.Thread(target=shutdown_server)
+                t.setDaemon(True)
+                t.start()
 
             else:
                 self.send_error(404, "Not Found")
@@ -1283,7 +1285,8 @@ def run_proxy_in_background():
             time.sleep(2)
 
     # Start new proxy
-    proxy_thread = threading.Thread(target=start_proxy, daemon=True)
+    proxy_thread = threading.Thread(target=start_proxy)
+    proxy_thread.setDaemon(True)
     proxy_thread.start()
 
     # Wait for startup with longer timeout

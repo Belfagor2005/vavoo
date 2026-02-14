@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 
@@ -311,10 +311,10 @@ def check_vavoo_connectivity():
             print("[Connectivity] vavoo.to is reachable")
             return True
         else:
-            print(f"[Connectivity] vavoo.to returned {response.status_code}")
+            print("[Connectivity] vavoo.to returned {}".format(response.status_code))
             return False
     except Exception as e:
-        print(f"[Connectivity] Cannot reach vavoo.to: {e}")
+        print("[Connectivity] Cannot reach vavoo.to: {}".format(e))
         return False
 
 
@@ -608,7 +608,8 @@ def keep_proxy_alive():
             time.sleep(60)
 
     # Start monitor thread
-    monitor_thread = threading.Thread(target=monitor_proxy, daemon=True)
+    monitor_thread = threading.Thread(target=monitor_proxy)
+    monitor_thread.setDaemon(True)
     monitor_thread.start()
     return monitor_thread
 
@@ -1836,7 +1837,8 @@ class MainVavoo(Screen):
 
                 import threading
                 bg_thread = threading.Thread(
-                    target=start_bg_proxy, daemon=True)
+                    target=start_bg_proxy)
+                bg_thread.setDaemon(True)
                 bg_thread.start()
                 self._proxy_bg_started = True
 
@@ -3223,7 +3225,8 @@ class VavooSearch(Screen):
             # Separa in parti senza virgolette
             part1 = _("Search:")
             part2 = _('Found: {} channels').format(len(self.filteredList))
-            message = f'{part1} "{self.search_text}" - {part2}'
+            message = '{} "{}" - {}'.format(part1, self.search_text, part2)
+
             self["status"].setText(message)
         else:
             self["status"].setText(
@@ -3250,13 +3253,13 @@ class VavooSearch(Screen):
                 # Separa in parti senza virgolette
                 part1 = _("Search:")
                 part2 = _("Found: {} channels").format(len(self.filteredList))
-                message = f'{part1} "{self.search_text}" - {part2}'
+                message = '{} "{}" - {}'.format(part1, self.search_text, part2)
                 self["status"].setText(message)
             else:
                 # Separa in parti senza virgolette
                 part1 = _("Search:")
                 part2 = _("No channels found")
-                message = f'{part1} "{self.search_text}" - {part2}'
+                message = '{} "{}" - {}'.format(part1, self.search_text, part2)
                 self["status"].setText(message)
 
         self.updateChannelList()
@@ -3419,7 +3422,7 @@ class TvInfoBarShowHide():
                     return "✓ Proxy OK"
                 elif token_age < 420:  # < 9 minuti
                     ttl = 600 - token_age
-                    return f"✓ Proxy ({int(ttl)}s)"
+                    return u"✓ Proxy ({}s)".format(int(ttl))
                 else:  # In scadenza
                     return "! Proxy Expiring"
             else:
@@ -3786,7 +3789,7 @@ class Playstream2(
 
         if self.eof_count <= 3:
             delay = 2 + (self.eof_count * 2)
-            print(f"[Playstream2] Restarting from __evEOF in {delay} seconds")
+            print("[Playstream2] Restarting from __evEOF in {0} seconds".format(delay))
             self.restartStreamDelayed(delay * 1000)
         else:
             print("[Playstream2] Too many EOFs in __evEOF")
@@ -4370,3 +4373,4 @@ def Plugins(**kwargs):
         result.append(main_descriptor)
 
     return result
+
