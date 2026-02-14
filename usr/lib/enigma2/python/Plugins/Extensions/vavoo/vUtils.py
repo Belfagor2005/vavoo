@@ -97,7 +97,7 @@ def trace_error():
                 traceback.print_exc(file=log_file)
         else:
             traceback.print_exc(file=stdout)
-            with open("/tmp/vavoo.log", "a") as log_file:
+            with open("/tmp/vavoo.log", "w+") as log_file:
                 traceback.print_exc(file=log_file)
     except Exception as e:
         print("Failed to log the error:", e, file=stderr)
@@ -1252,3 +1252,4 @@ def preload_country_flags(country_list, cache_dir="/tmp/vavoo_flags"):
         threads.append(t)
 
     return threads
+
