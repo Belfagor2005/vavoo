@@ -35,9 +35,9 @@ from re import compile
 from sys import version_info
 
 try:
-    from urllib import unquote
-except ImportError:
     from urllib.parse import unquote
+except ImportError:
+    from urllib import unquote
 
 from enigma import eDVBDB, eTimer
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
@@ -320,6 +320,7 @@ def get_channels_from_proxy(name, export_type):
     """Get channels from the proxy"""
     try:
         import json
+
         from urllib.parse import quote
 
         # Encode the name
