@@ -83,14 +83,12 @@ msgstr "Активный или деактивированный IPv6 в лок�
 msgid "All countries (%d)"
 msgstr "Все страны (%d)"
 
-msgid "At an interval of hours or at a fixed time"
+#, fuzzy
+msgid "At an interval hours or fixed time"
 msgstr "С интервалом в несколько часов или в фиксированное время"
 
 msgid "Author:"
 msgstr "Автор:"
-
-msgid "Auto-refresh stream (minutes):"
-msgstr "Автоматическое обновление потока (в минутах):"
 
 msgid "Back"
 msgstr "Назад"
@@ -137,9 +135,6 @@ msgstr "Очистить все"
 msgid "Configuration saved successfully!"
 msgstr "Конфигурация успешно сохранена!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Настройте DNS-сервер для Box."
-
 msgid "Configure Fonts."
 msgstr "Настройка шрифтов."
 
@@ -149,7 +144,8 @@ msgstr "Настройте основное фоновое изображени�
 msgid "Configure at a fixed time"
 msgstr "Настройка в фиксированное время"
 
-msgid "Configure every interval of minutes from now"
+#, fuzzy
+msgid "Configure interval minutes from now"
 msgstr "Настройте каждый интервал минут с этого момента"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -195,6 +191,9 @@ msgstr "Хотите установить обновление ( %s ) сейча
 
 msgid "Eg: Arabic or other language."
 msgstr "Например: арабский или другой язык."
+
+msgid "Enable or disable proxy."
+msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Введите текст для поиска..."
@@ -316,6 +315,21 @@ msgstr "Положение букетов Vavoo в основном списке
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Нажмите кнопку ТЕКСТ для ввода текста, BACKSPACE для удаления"
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -339,6 +353,10 @@ msgstr "Серьёзно закрыть без сохранения настро
 
 msgid "Recommended: 5-8 minutes"
 msgstr "Рекомендуемое время: 5-8 минут"
+
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Автоматическое обновление потока (в минутах):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Обновляйте поток каждые X минут (1-15)"
@@ -387,9 +405,6 @@ msgstr "Поиск:"
 
 msgid "Select Background"
 msgstr "Выберите фон"
-
-msgid "Select DNS Server"
-msgstr "Выберите DNS-сервер"
 
 msgid "Select Fonts"
 msgstr "Выберите шрифты"
@@ -479,6 +494,12 @@ msgstr "строчные буквы"
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Настройте DNS-сервер для Box."
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Выберите DNS-сервер"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"

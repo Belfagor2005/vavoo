@@ -84,14 +84,12 @@ msgstr "Ενεργοποίηση ή απενεργοποίηση lan Ipv6."
 msgid "All countries (%d)"
 msgstr "Όλες οι χώρες (%d)"
 
-msgid "At an interval of hours or at a fixed time"
+#, fuzzy
+msgid "At an interval hours or fixed time"
 msgstr "Σε διάστημα ωρών ή σε καθορισμένη ώρα"
 
 msgid "Author:"
 msgstr "Συγγραφέας:"
-
-msgid "Auto-refresh stream (minutes):"
-msgstr "Αυτόματη ανανέωση ροής (λεπτά):"
 
 msgid "Back"
 msgstr "Πίσω"
@@ -138,9 +136,6 @@ msgstr "Καθαρισμός όλων"
 msgid "Configuration saved successfully!"
 msgstr "Η ρύθμιση αποθηκεύτηκε με επιτυχία!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Ρύθμιση διακομιστή Dns για τον δέκτη."
-
 msgid "Configure Fonts."
 msgstr "Ρύθμιση γραμματοσειρών."
 
@@ -150,7 +145,8 @@ msgstr "Ρύθμιση της κύριας εικόνας φόντου."
 msgid "Configure at a fixed time"
 msgstr "Ρύθμιση σε καθορισμένη ώρα"
 
-msgid "Configure every interval of minutes from now"
+#, fuzzy
+msgid "Configure interval minutes from now"
 msgstr "Ρύθμιση διαστήματος λεπτών από τώρα"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -191,6 +187,9 @@ msgstr "Θέλετε να εγκαταστήσετε την ενημέρωση (
 
 msgid "Eg: Arabic or other language."
 msgstr "Π.χ.: Αραβικά ή άλλη γλώσσα."
+
+msgid "Enable or disable proxy."
+msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Εισάγετε κείμενο για αναζήτηση..."
@@ -312,6 +311,21 @@ msgstr "Θέση των μπουκέτων Vavoo στην κύρια λίστα"
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Πατήστε το κουμπί TEXT για πληκτρολόγηση, BACKSPACE για διαγραφή"
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr "Ο proxy δεν εκτελείται. Παρακαλώ εκκινήστε πρώτα τον proxy."
 
@@ -332,6 +346,10 @@ msgstr "Θέλετε πραγματικά να κλείσετε χωρίς απ�
 
 msgid "Recommended: 5-8 minutes"
 msgstr "Προτεινόμενο: 5-8 λεπτά"
+
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Αυτόματη ανανέωση ροής (λεπτά):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Ανανέωση ροής κάθε X λεπτά (1-15)"
@@ -380,9 +398,6 @@ msgstr "Αναζήτηση:"
 
 msgid "Select Background"
 msgstr "Επιλογή φόντου"
-
-msgid "Select DNS Server"
-msgstr "Επιλογή διακομιστή DNS"
 
 msgid "Select Fonts"
 msgstr "Επιλογή γραμματοσειρών"
@@ -470,3 +485,9 @@ msgstr "πεζά"
 
 msgid "seconds"
 msgstr "δευτερόλεπτα"
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Ρύθμιση διακομιστή Dns για τον δέκτη."
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Επιλογή διακομιστή DNS"
