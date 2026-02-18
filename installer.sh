@@ -1,7 +1,7 @@
 #!/bin/bash
 
-version='1.47'
-changelog='\nProxy emproved: No Lock\nOffer coffee please :)'
+version='1.48'
+changelog='\nProxy ON/OFF: No Lock\nOffer coffee please :)'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz
