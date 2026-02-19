@@ -243,7 +243,7 @@ developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvdmF2b28
 myser = [("https://vavoo.to", "vavoo"), ("https://oha.tooha-tv", "oha"),
          ("https://kool.to", "kool"), ("https://huhu.to", "huhu")]
 # mydns = [("None", "Default"), ("google", "Google"),
-# ("coudfire", "Coudfire"), ("quad9", "Quad9")]
+         # ("coudfire", "Coudfire"), ("quad9", "Quad9")]
 modemovie = [("4097", "4097")]
 if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "5001"))
@@ -329,7 +329,8 @@ class ConfigSearchText(ConfigText):
 
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
-cfg.proxy_enabled = NoSave(ConfigEnableDisable(default=False))
+cfg.proxy_enabled = ConfigEnableDisable(default=False)
+# cfg.proxy_enabled = NoSave(ConfigEnableDisable(default=False))
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.genm3u = NoSave(ConfigYesNo(default=False))
 cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
@@ -727,10 +728,10 @@ class vavoo_config(Screen, ConfigListScreen):
             )
         )
         # self.list.append(
-        # getConfigListEntry(
-        # _("Select DNS Server"),
-        # cfg.dns,
-        # _("Configure Dns Server for Box.")))
+            # getConfigListEntry(
+                # _("Select DNS Server"),
+                # cfg.dns,
+                # _("Configure Dns Server for Box.")))
         self.list.append(
             getConfigListEntry(
                 _("Select Background"),
@@ -4396,7 +4397,8 @@ def main(session, **kwargs):
             session.open(
                 MessageBox,
                 _("No Internet connection detected. Please check your network."),
-                MessageBox.TYPE_INFO)
+                MessageBox.TYPE_INFO
+            )
             return
         if isfile('/tmp/vavoo.log'):
             remove('/tmp/vavoo.log')
