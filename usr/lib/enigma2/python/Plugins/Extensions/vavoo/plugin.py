@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 
@@ -36,8 +36,27 @@ from re import compile, DOTALL
 from json import loads
 from sys import version_info
 
-import requests
-from requests.adapters import HTTPAdapter, Retry
+try:
+    import requests
+except Exception:
+    requests = None
+
+try:
+    from urllib.request import Request as UrlRequest, urlopen
+except ImportError:
+    from urllib2 import Request as UrlRequest, urlopen
+try:
+    from requests.adapters import HTTPAdapter
+except Exception:
+    HTTPAdapter = None
+
+try:
+    from urllib3.util.retry import Retry
+except Exception:
+    try:
+        from requests.packages.urllib3.util.retry import Retry
+    except Exception:
+        Retry = None
 
 try:
     from Components.AVSwitch import AVSwitch
@@ -129,16 +148,18 @@ PY3 = version_info[0] == 3
 
 try:
     # Python 3
-    from urllib.parse import quote
+    from urllib.parse import quote as _url_quote, unquote as _url_unquote
 except ImportError:
     # Python 2
-    from urllib import quote
+    from urllib import quote as _url_quote, unquote as _url_unquote
 
 
 try:
-    unicode
+    text_type = unicode
+    binary_type = str
 except NameError:
-    unicode = str
+    text_type = str
+    binary_type = bytes
 
 
 if version_info >= (2, 7, 9):
@@ -148,10 +169,66 @@ if version_info >= (2, 7, 9):
         ssl_context = None
 
 
-try:
-    from urllib import unquote
-except ImportError:
-    from urllib.parse import unquote
+def to_text(value, encoding="utf-8", errors="ignore"):
+    """Return a text string under both Python 2 and Python 3."""
+    if value is None:
+        return text_type()
+
+    if isinstance(value, text_type):
+        return value
+
+    if isinstance(value, binary_type):
+        try:
+            return value.decode(encoding, errors)
+        except Exception:
+            return value.decode("latin-1", "ignore")
+
+    try:
+        converted = str(value)
+    except Exception:
+        try:
+            return text_type(value)
+        except Exception:
+            return text_type()
+
+    if isinstance(converted, text_type):
+        return converted
+
+    try:
+        return converted.decode(encoding, errors)
+    except Exception:
+        return converted.decode("latin-1", "ignore")
+
+
+def url_quote(value):
+    """Quote URL fragments in a Python 2/3 safe way."""
+    if PY2:
+        value = to_text(value).encode("utf-8")
+    else:
+        value = to_text(value)
+
+    return _url_quote(value)
+
+
+def url_unquote(value):
+    """Unquote URL fragments and normalize text in a Python 2/3 safe way."""
+    if value is None:
+        return text_type()
+
+    if PY2 and isinstance(value, text_type):
+        value = value.encode("utf-8")
+    elif PY3 and isinstance(value, binary_type):
+        value = value.decode("utf-8", "ignore")
+
+    decoded = _url_unquote(value)
+
+    if PY2 and isinstance(decoded, binary_type):
+        try:
+            return decoded.decode("utf-8")
+        except Exception:
+            return decoded.decode("latin-1", "ignore")
+
+    return decoded
 
 
 try:
@@ -160,19 +237,12 @@ try:
 except BaseException:
     pass
 
-
 try:
     from Components.UsageConfig import defaultMoviePath
     downloadfree = defaultMoviePath()
 except BaseException:
     if file_exists("/usr/bin/apt-get"):
         downloadfree = ('/media/hdd/movie/')
-
-
-try:
-    unicode
-except NameError:
-    unicode = str
 
 
 def get_enigma2_path():
@@ -276,12 +346,12 @@ def to_string(text):
         return ""
 
     # If it's already a unicode string (Python 2) or str (Python 3)
-    if isinstance(text, unicode):
+    if isinstance(text, text_type):
         return text.encode('utf-8', 'ignore') if PY2 else text
 
-    # If it's bytes (Python 3)
-    if PY3 and isinstance(text, bytes):
-        return text.decode('utf-8', 'ignore')
+    # If it's bytes/binary
+    if isinstance(text, binary_type):
+        return text.decode('utf-8', 'ignore') if PY3 else text
 
     # For other types, convert to string
     return str(text)
@@ -305,18 +375,25 @@ except Exception as e:
 def check_vavoo_connectivity():
     """Test connectivity to vavoo.to"""
     try:
-        test_url = "https://vavoo.to"
-        response = requests.get(test_url, timeout=5)
-        if response.status_code == 200:
-            print("[Connectivity] vavoo.to is reachable")
-            return True
+        test_url = "https://huhu.to"
+        if requests is not None:
+            response = requests.get(test_url, timeout=5)
+            status_code = response.status_code
         else:
-            print(
-                "[Connectivity] vavoo.to returned {0}".format(
-                    response.status_code))
-            return False
+            req = UrlRequest(
+                test_url, headers={
+                    'User-Agent': vUtils.RequestAgent()})
+            response = urlopen(req, timeout=5)
+            status_code = getattr(response, 'getcode', lambda: 0)() or 0
+
+        if status_code == 200:
+            print("[Connectivity] huhu.to is reachable")
+            return True
+
+        print("[Connectivity] huhu.to returned {0}".format(status_code))
+        return False
     except Exception as e:
-        print("[Connectivity] Cannot reach vavoo.to: {0}".format(e))
+        print("[Connectivity] Cannot reach huhu.to: {0}".format(e))
         return False
 
 
@@ -330,10 +407,9 @@ class ConfigSearchText(ConfigText):
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
 cfg.proxy_enabled = ConfigEnableDisable(default=False)
-# cfg.proxy_enabled = NoSave(ConfigEnableDisable(default=False))
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.genm3u = NoSave(ConfigYesNo(default=False))
-cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
+cfg.server = ConfigSelection(default="https://huhu.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timerupdate = ConfigSelectionNumber(default=5, min=1, max=60, stepwidth=1)
 cfg.timetype = ConfigSelection(
@@ -379,13 +455,25 @@ locl = (
     "ss", "sy", "tn", "ye", "hr"
 )
 
-global lngx
-lngx = 'en'
+
+def normalize_language_code(language):
+    """Normalize Enigma2 language identifiers to a comparable short code."""
+    if not language:
+        return "en"
+
+    language = to_text(language).strip().lower()
+    if "_" in language:
+        language = language.split("_", 1)[0]
+    elif "-" in language:
+        language = language.split("-", 1)[0]
+
+    return language or "en"
+
+
 try:
     from Components.config import config
-    lng = config.osd.language.value
-    lng = lng[:-3]
-    if any(s in lngx for s in locl):
+    lng = normalize_language_code(config.osd.language.value)
+    if lng in locl:
         HALIGN = RT_HALIGN_RIGHT
 except BaseException:
     lng = 'en'
@@ -396,27 +484,40 @@ except BaseException:
 def raises(url):
     """Attempts to fetch a URL with retries and error handling"""
     try:
-        retries = Retry(total=1, backoff_factor=1)
-        adapter = HTTPAdapter(max_retries=retries)
-        http = requests.Session()
-        http.mount("http://", adapter)
-        http.mount("https://", adapter)
+        if requests is not None:
+            http = requests.Session()
+            if HTTPAdapter is not None:
+                if Retry is not None:
+                    retries = Retry(total=1, backoff_factor=1)
+                    adapter = HTTPAdapter(max_retries=retries)
+                else:
+                    adapter = HTTPAdapter(max_retries=1)
+                http.mount("http://", adapter)
+                http.mount("https://", adapter)
 
-        r = http.get(
-            url,
-            headers={'User-Agent': vUtils.RequestAgent()},
-            timeout=(3, 10),
-            verify=True,
-            stream=True,
-            allow_redirects=False
-        )
-        r.raise_for_status()
+            r = http.get(
+                url,
+                headers={'User-Agent': vUtils.RequestAgent()},
+                timeout=(3, 10),
+                verify=True,
+                stream=True,
+                allow_redirects=False
+            )
+            r.raise_for_status()
 
-        if r.status_code == requests.codes.ok:
-            for xc in r.iter_content(1024):
-                pass
-            r.close()
-            return True
+            if r.status_code == requests.codes.ok:
+                for xc in r.iter_content(1024):
+                    pass
+                r.close()
+                return True
+        else:
+            req = UrlRequest(
+                url, headers={
+                    'User-Agent': vUtils.RequestAgent()})
+            resp = urlopen(req, timeout=10)
+            status_code = getattr(resp, 'getcode', lambda: 0)() or 0
+            if status_code == 200:
+                return True
 
     except Exception as error:
         print("Server check failed:", error)
@@ -437,7 +538,7 @@ def zServer(opt=0, server=None, port=None):
             return str(server)
     except HTTPError as err:
         print(err.code)
-        return 'https://vavoo.to'
+        return 'https://huhu.to'
 
 
 # menulist
@@ -467,7 +568,7 @@ def show_list(name, link, is_category=False, is_channel=False):
     global HALIGN
 
     # Text alignment based on language
-    if any(s in lng for s in locl):
+    if lng in locl:
         HALIGN = RT_HALIGN_RIGHT
     else:
         HALIGN = RT_HALIGN_LEFT
@@ -612,7 +713,8 @@ def keep_proxy_alive():
             time.sleep(60)
 
     # Start monitor thread
-    monitor_thread = threading.Thread(target=monitor_proxy, daemon=True)
+    monitor_thread = threading.Thread(target=monitor_proxy)
+    monitor_thread.setDaemon(True)
     monitor_thread.start()
     return monitor_thread
 
@@ -727,11 +829,6 @@ class vavoo_config(Screen, ConfigListScreen):
                 help_text
             )
         )
-        # self.list.append(
-        # getConfigListEntry(
-        # _("Select DNS Server"),
-        # cfg.dns,
-        # _("Configure Dns Server for Box.")))
         self.list.append(
             getConfigListEntry(
                 _("Select Background"),
@@ -1100,7 +1197,7 @@ class vavoo_config(Screen, ConfigListScreen):
 
             # Write file
             try:
-                with open(m3u_path, 'w', encoding='utf-8') as f:
+                with codecs.open(m3u_path, 'w', encoding='utf-8') as f:
                     f.write(m3u_content)
                 print(
                     "[M3U] File created: %s (%d channels)" %
@@ -1121,7 +1218,7 @@ class vavoo_config(Screen, ConfigListScreen):
     def get_channels_for_country(self, country_name):
         """Get channels for a country from the proxy"""
         try:
-            encoded_country = quote(country_name)
+            encoded_country = url_quote(country_name)
             proxy_url = "http://127.0.0.1:%d/channels?country=%s" % (
                 PORT, encoded_country)
 
@@ -1560,7 +1657,7 @@ class MainVavoo(Screen):
             # Estrai lista paesi
             countries = set()
             for entry in self.all_data:
-                country = unquote(entry["country"]).strip("\r\n")
+                country = url_unquote(entry["country"]).strip("\r\n")
                 if "➾" not in country:
                     countries.add(country)
 
@@ -1601,7 +1698,7 @@ class MainVavoo(Screen):
 
                     print("[Background] Finished downloading remaining flags")
                 thread = threading.Thread(target=download_rest)
-                thread.daemon = True
+                thread.setDaemon(True)
                 thread.start()
 
         except Exception as e:
@@ -1789,7 +1886,14 @@ class MainVavoo(Screen):
         try:
             # Try to stop the existing proxy
             try:
-                requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
+                if requests is not None:
+                    requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
+                else:
+                    req = UrlRequest(
+                        "http://127.0.0.1:4323/shutdown",
+                        headers={
+                            'User-Agent': vUtils.RequestAgent()})
+                    urlopen(req, timeout=2)
                 time.sleep(3)
             except BaseException:
                 pass
@@ -1841,7 +1945,7 @@ class MainVavoo(Screen):
                 # Extract ONLY main countries (exclude ➾ categories)
                 countries = set()
                 for entry in self.all_data:
-                    country = unquote(entry["country"]).strip("\r\n")
+                    country = url_unquote(entry["country"]).strip("\r\n")
                     # CRITICAL FILTER: exclude "default" and problematic
                     # strings
                     if "➾" not in country and country.lower() != "default" and len(country) > 1:
@@ -1895,7 +1999,8 @@ class MainVavoo(Screen):
 
                 import threading
                 bg_thread = threading.Thread(
-                    target=start_bg_proxy, daemon=True)
+                    target=start_bg_proxy)
+                bg_thread.setDaemon(True)
                 bg_thread.start()
                 self._proxy_bg_started = True
 
@@ -1922,7 +2027,7 @@ class MainVavoo(Screen):
 
             countries = set()
             for entry in self.all_data:
-                country = unquote(entry["country"]).strip("\r\n")
+                country = url_unquote(entry["country"]).strip("\r\n")
                 if "➾" not in country:
                     countries.add(country)
 
@@ -1990,7 +2095,7 @@ class MainVavoo(Screen):
 
         categories = set()
         for entry in self.all_data:
-            country = unquote(entry["country"]).strip("\r\n")
+            country = url_unquote(entry["country"]).strip("\r\n")
             if "➾" in country:
                 categories.add(country)
 
@@ -2011,7 +2116,7 @@ class MainVavoo(Screen):
 
         countries = set()
         for entry in self.all_data:
-            country = unquote(entry["country"]).strip("\r\n")
+            country = url_unquote(entry["country"]).strip("\r\n")
             if "➾" not in country:
                 countries.add(country)
 
@@ -2214,10 +2319,7 @@ class MainVavoo(Screen):
             vUtils.b64decoder(installer_url), headers={
                 'User-Agent': 'Mozilla/5.0'})
         page = vUtils.urlopen(req).read()
-        if PY3:
-            data = page.decode("utf-8")
-        else:
-            data = page.encode("utf-8")
+        data = ensure_str(page)
         if data:
             lines = data.split("\n")
             for line in lines:
@@ -2469,7 +2571,7 @@ class vavoo(Screen):
         try:
             # 1. TRY THE PROXY FIRST
             try:
-                country_encoded = quote(self.country_name)
+                country_encoded = url_quote(self.country_name)
                 proxy_url = (
                     "http://127.0.0.1:" +
                     str(PORT) +
@@ -2515,7 +2617,7 @@ class vavoo(Screen):
             self.cat_list = []
 
             for entry in data:
-                country = unquote(entry.get("country", "")).strip("\r\n")
+                country = url_unquote(entry.get("country", "")).strip("\r\n")
                 if self.country_name in country:  # Partial match
                     name = entry.get("name", "")
                     url = entry.get("url", "")
@@ -2772,7 +2874,7 @@ class vavoo(Screen):
         country_field: country field from JSON (ex: "France" or "France ➾ Sports")
         selected_name: what user selected (ex: "France" or "France ➾ Sports")
         """
-        country_field = unquote(country_field).strip("\r\n")
+        country_field = url_unquote(country_field).strip("\r\n")
         selected_name = selected_name.strip()
 
         # If user selected main country (without ➾)
