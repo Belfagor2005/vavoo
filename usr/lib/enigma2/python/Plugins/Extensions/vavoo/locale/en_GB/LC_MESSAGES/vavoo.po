@@ -1,8 +1,6 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: enigma 2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
 "PO-Revision-Date: 2026-01-27 13:22+0100\n"
 "Last-Translator: root <EMAIL@ADDRESS>\n"
 "Language-Team: English (British) <(nothing)>\n"
@@ -89,8 +87,16 @@ msgstr "All countries (%d)"
 msgid "At an interval hours or fixed time"
 msgstr "At an interval of hours or at a fixed time"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "At an interval of hours or at a fixed time"
+
 msgid "Author:"
 msgstr "Author:"
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "Auto-refresh stream (minutes):"
 
 msgid "Back"
 msgstr "Back"
@@ -137,6 +143,9 @@ msgstr "Clear All"
 msgid "Configuration saved successfully!"
 msgstr "Configuration saved successfully!"
 
+msgid "Configure Dns Server for Box."
+msgstr "Configure Dns Server for Box."
+
 msgid "Configure Fonts."
 msgstr "Configure Fonts."
 
@@ -145,6 +154,10 @@ msgstr "Configure Main Background Image."
 
 msgid "Configure at a fixed time"
 msgstr "Configure at a fixed time"
+
+#, fuzzy
+msgid "Configure every interval of minutes from now"
+msgstr "Configure every interval of minutes from now"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -402,6 +415,9 @@ msgstr "Search:"
 msgid "Select Background"
 msgstr "Select Background"
 
+msgid "Select DNS Server"
+msgstr "Select DNS Server"
+
 msgid "Select Fonts"
 msgstr "Select Fonts"
 
@@ -488,12 +504,6 @@ msgstr "lowercase"
 
 msgid "seconds"
 msgstr ""
-
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Configure Dns Server for Box."
-
-#~ msgid "Select DNS Server"
-#~ msgstr "Select DNS Server"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"
