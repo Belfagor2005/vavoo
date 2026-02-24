@@ -501,19 +501,3 @@ msgstr "πεζά"
 
 msgid "seconds"
 msgstr "δευτερόλεπτα"
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "Σε χρονικό διάστημα ωρών ή σε σταθερή ώρα"
-
-#, fuzzy
-#~ msgid "Auto-refresh stream (minutes):"
-#~ msgstr "Ανανέωση ροής (λεπτά):"
-
-#, fuzzy
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
-
-#, fuzzy
-#~ msgid "Configure every interval of minutes from now"
-#~ msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
