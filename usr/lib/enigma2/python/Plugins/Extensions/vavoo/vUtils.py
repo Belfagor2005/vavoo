@@ -50,12 +50,12 @@ import socket
 _original_getaddrinfo = socket.getaddrinfo
 
 
-def _force_ipv4(host, port, family=0, type=0, proto=0, flags=0):
-    return _original_getaddrinfo(
-        host, port, socket.AF_INET, type, proto, flags)
+# def _force_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+    # return _original_getaddrinfo(
+        # host, port, socket.AF_INET, type, proto, flags)
 
 
-socket.getaddrinfo = _force_ipv4
+# socket.getaddrinfo = _force_ipv4
 
 try:
     unicode
@@ -560,12 +560,10 @@ def get_proxy_channels(country_name):
                 'utf-8')) if PY2 else quote(country_name)
 
             # Build URL
-            proxy_url = "http://127.0.0.1:" + \
-                str(PORT) + "/channels?country=" + encoded_country
-            print("[vUtils] Request URL: " + proxy_url)
-
+            proxy_url = "http://127.0.0.1:{}/channels?country={}".format(PORT, encoded_country)
             # Fetch with timeout
             response = getUrl(proxy_url, timeout=15)
+            print("[vUtils] Request URL: " + proxy_url)
 
             if not response:
                 print(
@@ -594,9 +592,7 @@ def get_proxy_channels(country_name):
                         continue
 
                     # Build proxy URL
-                    proxy_stream_url = "http://127.0.0.1:" + \
-                        str(PORT) + "/vavoo?channel=" + channel_id
-
+                    proxy_stream_url = "http://127.0.0.1:{}/vavoo?channel={}".format(PORT, channel_id)
                     processed_channels.append({
                         'id': channel_id,
                         'name': channel.get('name', 'Unknown'),

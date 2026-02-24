@@ -373,27 +373,23 @@ except Exception as e:
 
 
 def check_vavoo_connectivity():
-    """Test connectivity to vavoo.to"""
     try:
-        test_url = "https://huhu.to"
+        test_url = "https://vavoo.to"
         if requests is not None:
             response = requests.get(test_url, timeout=5)
             status_code = response.status_code
         else:
-            req = UrlRequest(
-                test_url, headers={
-                    'User-Agent': vUtils.RequestAgent()})
+            req = UrlRequest(test_url, headers={'User-Agent': vUtils.RequestAgent()})
             response = urlopen(req, timeout=5)
             status_code = getattr(response, 'getcode', lambda: 0)() or 0
-
         if status_code == 200:
-            print("[Connectivity] huhu.to is reachable")
+            print("[Connectivity] vavoo.to is reachable")
             return True
 
-        print("[Connectivity] huhu.to returned {0}".format(status_code))
+        print("[Connectivity] vavoo.to returned {0}".format(status_code))
         return False
     except Exception as e:
-        print("[Connectivity] Cannot reach huhu.to: {0}".format(e))
+        print("[Connectivity] Cannot reach vavoo.to: {0}".format(e))
         return False
 
 
@@ -406,10 +402,10 @@ class ConfigSearchText(ConfigText):
 
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
-cfg.proxy_enabled = ConfigEnableDisable(default=False)
+cfg.proxy_enabled = ConfigEnableDisable(default=True)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.genm3u = NoSave(ConfigYesNo(default=False))
-cfg.server = ConfigSelection(default="https://huhu.to", choices=myser)
+cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timerupdate = ConfigSelectionNumber(default=5, min=1, max=60, stepwidth=1)
 cfg.timetype = ConfigSelection(
@@ -538,7 +534,7 @@ def zServer(opt=0, server=None, port=None):
             return str(server)
     except HTTPError as err:
         print(err.code)
-        return 'https://huhu.to'
+        return 'https://vavoo.to'
 
 
 # menulist
@@ -1219,9 +1215,7 @@ class vavoo_config(Screen, ConfigListScreen):
         """Get channels for a country from the proxy"""
         try:
             encoded_country = url_quote(country_name)
-            proxy_url = "http://127.0.0.1:%d/channels?country=%s" % (
-                PORT, encoded_country)
-
+            proxy_url = "http://127.0.0.1:{}/channels?country={}".format(PORT, encoded_country)
             response = getUrl(proxy_url, timeout=15)
             if not response:
                 print("[M3U] No response for %s" % country_name)
@@ -1360,9 +1354,6 @@ class vavoo_config(Screen, ConfigListScreen):
 
             if old_position and old_position != cfg.list_position.value:
                 self._reorganize_bouquets_position()
-
-            for x in self["config"].list:
-                x[1].save()
 
             if self.v6 != cfg.ipv6.value:
                 # Se il valore di ipv6 è cambiato, applica i cambiamenti
@@ -1775,8 +1766,7 @@ class MainVavoo(Screen):
                 return
             if is_proxy_running():
                 try:
-                    response = getUrl(
-                        "http://127.0.0.1:4323/status", timeout=2)
+                    response = getUrl("http://127.0.0.1:4323/status", timeout=2)
                     if response:
                         status_data = loads(response)
 
@@ -1828,10 +1818,7 @@ class MainVavoo(Screen):
         if result:
             try:
                 # Try to refresh the token
-                response = getUrl(
-                    "http://127.0.0.1:4323/refresh_token",
-                    timeout=5
-                )
+                response = getUrl("http://127.0.0.1:4323/refresh_token", timeout=5)
                 if response:
                     data = loads(response)
                     if data.get("status") == "success":
@@ -2512,9 +2499,7 @@ class vavoo(Screen):
                   str(self.country_name))
 
             # URL to initialize the proxy for the specific country
-            init_url = "http://127.0.0.1:4323/initialize_country?country=" + \
-                str(self.country_name)
-
+            init_url = "http://127.0.0.1:4323/initialize_country?country={}".format(self.country_name)
             content = getUrl(init_url, timeout=10)
             if content:
                 if PY3:
@@ -2567,17 +2552,15 @@ class vavoo(Screen):
     def cat(self):
         """Load channels for the selected country with proxy verification and fallback"""
         print("[DEBUG] vavoo.cat() called for country: " + str(self.country_name))
-
+        if not cfg.proxy_enabled.value:
+            print("[vavoo] Proxy disabled, using fallback directly")
+            self._fallback_to_original_method()
+            return
         try:
             # 1. TRY THE PROXY FIRST
             try:
                 country_encoded = url_quote(self.country_name)
-                proxy_url = (
-                    "http://127.0.0.1:" +
-                    str(PORT) +
-                    "/channels?country=" +
-                    country_encoded
-                )
+                proxy_url = "http://127.0.0.1:{}/channels?country={}".format(PORT, country_encoded)
                 print("[DEBUG] Fetching from proxy: " + proxy_url)
 
                 content = getUrl(proxy_url, timeout=10)
@@ -2761,8 +2744,7 @@ class vavoo(Screen):
                     str(token_age) +
                     "s), forcing refresh...")
                 try:
-                    refresh_url = "http://127.0.0.1:" + \
-                        str(PORT) + "/refresh_token"
+                    refresh_url = "http://127.0.0.1:{}/refresh_token".format(PORT)
                     getUrl(refresh_url, timeout=3)
                 except Exception:
                     pass
@@ -2785,8 +2767,7 @@ class vavoo(Screen):
 
             # 1. Try token refresh
             try:
-                refresh_url = "http://127.0.0.1:" + \
-                    str(PORT) + "/refresh_token"
+                refresh_url = "http://127.0.0.1:{}/refresh_token".format(PORT)
                 getUrl(refresh_url, timeout=3)
                 print("[vavoo] Token refresh attempted")
             except Exception:
