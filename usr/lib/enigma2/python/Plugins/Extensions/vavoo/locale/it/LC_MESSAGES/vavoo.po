@@ -85,14 +85,17 @@ msgstr "Attivare o disattivare Lan Ipv6."
 msgid "All countries (%d)"
 msgstr "Tutti i paesi (%d)"
 
+msgid "At an interval hours or fixed time"
+msgstr "A intervalli di ore o tempo fisso"
+
 msgid "At an interval of hours or at a fixed time"
-msgstr "A intervalli di ore o ora fissa"
+msgstr "A intervalli di ore o orario fisso"
 
 msgid "Author:"
 msgstr "Autore:"
 
 msgid "Auto-refresh stream (minutes):"
-msgstr "Aggiornamento automatico del flusso (minuti):"
+msgstr "Aggiornamento automatico flusso (minuti):"
 
 msgid "Back"
 msgstr "Torna"
@@ -131,7 +134,7 @@ msgid "Channels: %d"
 msgstr "Canali: %d"
 
 msgid "Checking proxy..."
-msgstr ""
+msgstr "Controllo del proxy..."
 
 msgid "Clear All"
 msgstr "Pulisci Tutto"
@@ -152,7 +155,10 @@ msgid "Configure at a fixed time"
 msgstr "Configura a un'ora fissa"
 
 msgid "Configure every interval of minutes from now"
-msgstr "Configura ogni intervallo di minuti da ora in poi"
+msgstr "Configura ogni intervallo di minuti da adesso"
+
+msgid "Configure interval minutes from now"
+msgstr "Configura l'intervallo in minuti da adesso"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Impostare il Referenze per il Player. Iptv-Gstreamer-Exteplayer3"
@@ -193,6 +199,9 @@ msgstr "Vuoi installare l'aggiornamento ( %s ) ora?"
 msgid "Eg: Arabic or other language."
 msgstr "Es: arabo o altra lingua."
 
+msgid "Enable or disable proxy."
+msgstr "Abilita o disabilita il proxy."
+
 msgid "Enter text to search..."
 msgstr "Inserisci testo da cercare..."
 
@@ -209,16 +218,16 @@ msgid "Export"
 msgstr "Esporta"
 
 msgid "Failed to refresh proxy token"
-msgstr ""
+msgstr "Impossibile aggiornare il token proxy"
 
 msgid "Failed to refresh proxy:"
-msgstr ""
+msgstr "Impossibile aggiornare il proxy:"
 
 msgid "Failed: %(failed)d"
 msgstr "Fallito: %(failed)d"
 
 msgid "Force proxy refresh?"
-msgstr ""
+msgstr "Forzare l'aggiornamento del proxy?"
 
 msgid "Found: {} channels"
 msgstr "Trovati: {} canali"
@@ -280,6 +289,9 @@ msgstr "Service Reference del Player"
 msgid "New version {version} is available."
 msgstr "È disponibile la nuova versione {version}."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr "Nessuna connessione Internet rilevata. Controlla la tua rete."
+
 msgid "No channels found"
 msgstr "Nessun canale trovato"
 
@@ -310,27 +322,44 @@ msgstr "Posizione dei bouquet Vavoo nell'elenco principale"
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Premere il tasto TESTO per digitare, BACKSPACE per eliminare"
 
+msgid "Proxy Disabled"
+msgstr "Proxy Disabilitato"
+
+msgid "Proxy Enabled"
+msgstr "Proxy Abilitato"
+
+msgid "Proxy disabled"
+msgstr "Proxy disabilitato"
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr "Il proxy è disabilitato. Per prima cosa, impostalo su On. -- Configurazione menu --"
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr "Il proxy è disabilitato. Abilitalo nella configurazione."
+
 msgid "Proxy is not running. Please start the proxy first."
-msgstr ""
+msgstr "Il proxy non è in esecuzione. Avviare prima il proxy."
 
 msgid "Proxy not active. Unable to generate M3U file."
 msgstr "Proxy non attivo. Impossibile generare il file M3U."
 
 msgid "Proxy not responding after"
-msgstr ""
+msgstr "Il proxy non risponde dopo"
 
 msgid "Proxy restarting... Please wait"
-msgstr ""
+msgstr "Riavvio del proxy... Attendi"
 
-#, fuzzy
 msgid "Proxy token refreshed successfully"
-msgstr "Bouquet Vavoo rimossi con successo!"
+msgstr "Token proxy aggiornato correttamente"
 
 msgid "Really close without saving settings?"
 msgstr "Chiudi davvero senza salvare le impostazioni?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr "Consigliato: 5-8 minuti"
+
+msgid "Refresh stream (minutes):"
+msgstr "Aggiorna flusso (minuti):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Aggiorna lo streaming ogni X minuti (1-15)"
@@ -411,7 +440,7 @@ msgid "Technical Features:"
 msgstr "Caratteristiche tecniche:"
 
 msgid "This will refresh the authentication token."
-msgstr ""
+msgstr "Questo aggiornerà il token di autenticazione."
 
 msgid "This will remove:"
 msgstr "Questo rimuoverà:"
@@ -453,10 +482,10 @@ msgid "Version:"
 msgstr "Versione:"
 
 msgid "Waiting for proxy..."
-msgstr ""
+msgstr "In attesa del proxy..."
 
 msgid "You can start it from the menu or by pressing the TEXT button."
-msgstr ""
+msgstr "È possibile avviarlo dal menu oppure premendo il pulsante TESTO."
 
 msgid "fixed time"
 msgstr "orario predefinito"
@@ -468,7 +497,7 @@ msgid "lowercase"
 msgstr "minuscola"
 
 msgid "seconds"
-msgstr ""
+msgstr "secondi"
 
 #~ msgid "Error starting stream via proxy"
 #~ msgstr "Errore durante l'avvio dello streaming tramite proxy"

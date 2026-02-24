@@ -86,6 +86,11 @@ msgstr ""
 msgid "All countries (%d)"
 msgstr ""
 
+#, fuzzy
+msgid "At an interval hours or fixed time"
+msgstr "Em um intervalo de horas ou em um horário fixo"
+
+#, fuzzy
 msgid "At an interval of hours or at a fixed time"
 msgstr "Em um intervalo de horas ou em um horário fixo"
 
@@ -141,8 +146,9 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+#, fuzzy
 msgid "Configure Dns Server for Box."
-msgstr ""
+msgstr "Configurar cada intervalo de minutos a partir de agora"
 
 msgid "Configure Fonts."
 msgstr ""
@@ -153,7 +159,12 @@ msgstr ""
 msgid "Configure at a fixed time"
 msgstr "Configurar um horário fixo"
 
+#, fuzzy
 msgid "Configure every interval of minutes from now"
+msgstr "Configurar cada intervalo de minutos a partir de agora"
+
+#, fuzzy
+msgid "Configure interval minutes from now"
 msgstr "Configurar cada intervalo de minutos a partir de agora"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -193,6 +204,9 @@ msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
 msgid "Eg: Arabic or other language."
+msgstr ""
+
+msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
@@ -282,6 +296,9 @@ msgstr "Referência de serviços de filmes"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "Nenhum canal encontrado na pesquisa!!!"
@@ -313,6 +330,21 @@ msgstr ""
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -333,6 +365,10 @@ msgstr "Saír sem guardar as configurações?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr ""
+
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Intervalo de atualização (minutos):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr ""
