@@ -98,16 +98,8 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "Në një interval orësh ose në një kohë të caktuar"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "Në një interval orësh ose në një kohë të caktuar"
-
 msgid "Author:"
 msgstr ""
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Intervali i përditësimit (minuta):"
 
 msgid "Back"
 msgstr "Mbrapa"
@@ -154,10 +146,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-#, fuzzy
-msgid "Configure Dns Server for Box."
-msgstr "Konfiguro çdo interval prej minutash nga tani"
-
 msgid "Configure Fonts."
 msgstr ""
 
@@ -166,10 +154,6 @@ msgstr ""
 
 msgid "Configure at a fixed time"
 msgstr "Konfiguro në një kohë të caktuar"
-
-#, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Konfiguro çdo interval prej minutash nga tani"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -429,9 +413,6 @@ msgstr "Kërko"
 msgid "Select Background"
 msgstr ""
 
-msgid "Select DNS Server"
-msgstr ""
-
 msgid "Select Fonts"
 msgstr "Vendose llion e shkrimit"
 
@@ -519,3 +500,19 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "Në një interval orësh ose në një kohë të caktuar"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Intervali i përditësimit (minuta):"
+
+#, fuzzy
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Konfiguro çdo interval prej minutash nga tani"
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Konfiguro çdo interval prej minutash nga tani"
