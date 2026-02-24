@@ -83,12 +83,14 @@ msgstr "Aktív vagy inaktív LAN Ipv6."
 msgid "All countries (%d)"
 msgstr "Minden ország (%d)"
 
-#, fuzzy
-msgid "At an interval hours or fixed time"
+msgid "At an interval of hours or at a fixed time"
 msgstr "Órák időközönként vagy meghatározott időpontban"
 
 msgid "Author:"
 msgstr "Szerző:"
+
+msgid "Auto-refresh stream (minutes):"
+msgstr "Automatikus frissítésű stream (perc):"
 
 msgid "Back"
 msgstr "Vissza"
@@ -135,6 +137,9 @@ msgstr "Összes törlése"
 msgid "Configuration saved successfully!"
 msgstr "Konfiguráció sikeresen mentve!"
 
+msgid "Configure Dns Server for Box."
+msgstr "Konfigurálja a DNS-kiszolgálót a Box számára."
+
 msgid "Configure Fonts."
 msgstr "Betűtípusok konfigurálása."
 
@@ -144,8 +149,7 @@ msgstr "Állítsa be a fő háttérképet."
 msgid "Configure at a fixed time"
 msgstr "Konfigurálás meghatározott időpontban"
 
-#, fuzzy
-msgid "Configure interval minutes from now"
+msgid "Configure every interval of minutes from now"
 msgstr "Mostantól minden percnyi intervallum konfigurálása"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -191,9 +195,6 @@ msgstr "Szeretné most telepíteni a frissítést (%s)?"
 
 msgid "Eg: Arabic or other language."
 msgstr "Pl.: arab vagy más nyelv."
-
-msgid "Enable or disable proxy."
-msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Írjon be szöveget a kereséshez..."
@@ -282,9 +283,6 @@ msgstr "Filmszolgáltatások referencia"
 msgid "New version {version} is available."
 msgstr "Új verzió ({version}) érhető el."
 
-msgid "No Internet connection detected. Please check your network."
-msgstr ""
-
 msgid "No channels found"
 msgstr "Nem található csatorna a következőhöz: {}"
 
@@ -315,21 +313,6 @@ msgstr "A Vavoo csokrok helye a fő listában"
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Nyomja meg a TEXT gombot a gépeléshez, a BACKSPACE gombot a törléshez"
 
-msgid "Proxy Disabled"
-msgstr ""
-
-msgid "Proxy Enabled"
-msgstr ""
-
-msgid "Proxy disabled"
-msgstr ""
-
-msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
-msgstr ""
-
-msgid "Proxy is disabled. Please enable it in the configuration."
-msgstr ""
-
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -354,10 +337,6 @@ msgstr "Tényleg bezárja a beállítások mentése nélkül?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr "Ajánlott: 5-8 perc"
-
-#, fuzzy
-msgid "Refresh stream (minutes):"
-msgstr "Automatikus frissítésű stream (perc):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Stream frissítése X percenként (1-15)"
@@ -406,6 +385,9 @@ msgstr "Keresés:"
 
 msgid "Select Background"
 msgstr "Háttér kiválasztása"
+
+msgid "Select DNS Server"
+msgstr "Válassza a DNS-kiszolgálót"
 
 msgid "Select Fonts"
 msgstr "Válassza a Betűtípusok lehetőséget"
@@ -496,12 +478,6 @@ msgstr "kisbetűk"
 
 msgid "seconds"
 msgstr ""
-
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Konfigurálja a DNS-kiszolgálót a Box számára."
-
-#~ msgid "Select DNS Server"
-#~ msgstr "Válassza a DNS-kiszolgálót"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - - -"

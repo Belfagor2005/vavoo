@@ -607,17 +607,17 @@ def show_list(name, link, is_category=False, is_channel=False):
                 pass
 
     if screen_width >= 2560:
-        icon_size = (80, 60)
+        icon_size = (60, 40)
         icon_pos = (10, 10)
         text_size = (750, 60)
         text_pos = (icon_size[0] + 20, 0)
     elif screen_width >= 1920:
-        icon_size = (60, 45)
-        icon_pos = (10, 10)
+        icon_size = (60, 40)
+        icon_pos = (10, 5)
         text_size = (540, 50)
         text_pos = (icon_size[0] + 20, 0)
     else:
-        icon_size = (40, 30)
+        icon_size = (60, 40)
         icon_pos = (10, 5)
         text_size = (380, 50)
         text_pos = (icon_size[0] + 20, 0)
