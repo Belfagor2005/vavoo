@@ -310,7 +310,8 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > TOKEN_REFRESH_AGE:
-                                print("[Token Monitor] Token old (" + str(int(token_age)) + "s), refreshing...")
+                                print("[Token Monitor] Token old (" +
+                                      str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
                     # ALSO: Send heartbeat to keep connections alive
@@ -333,7 +334,8 @@ class VavooProxy:
         if self.refresh_timer:
             self.refresh_timer.cancel()
 
-        self.refresh_timer = threading.Timer(TOKEN_REFRESH_AGE, self._periodic_refresh_task)
+        self.refresh_timer = threading.Timer(
+            TOKEN_REFRESH_AGE, self._periodic_refresh_task)
         self.refresh_timer.daemon = True
         self.refresh_timer.start()
         print("[Proxy] Periodic refresh scheduled (480s)")
