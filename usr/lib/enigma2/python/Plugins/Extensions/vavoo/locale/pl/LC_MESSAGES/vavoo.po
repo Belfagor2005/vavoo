@@ -92,15 +92,12 @@ msgstr ""
 msgid "All countries (%d)"
 msgstr ""
 
-msgid "At an interval of hours or at a fixed time"
+#, fuzzy
+msgid "At an interval hours or fixed time"
 msgstr "W odstępie minut lub o ustalonej porze"
 
 msgid "Author:"
 msgstr ""
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Częstotliwość aktualizacji (minuty):"
 
 msgid "Back"
 msgstr "Wstecz"
@@ -147,9 +144,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-msgid "Configure Dns Server for Box."
-msgstr "Skonfiguruj serwer DNS dla Box."
-
 msgid "Configure Fonts."
 msgstr ""
 
@@ -159,7 +153,8 @@ msgstr "Skonfiguruj główny obraz tła."
 msgid "Configure at a fixed time"
 msgstr "Skonfiguruj o ustalonej godzinie"
 
-msgid "Configure every interval of minutes from now"
+#, fuzzy
+msgid "Configure interval minutes from now"
 msgstr "Od teraz skonfiguruj każdy interwał minutowy"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -204,6 +199,9 @@ msgid "Eg: Arabic or other language."
 msgstr ""
 "Skonfiguruj czcionki.\n"
 "Np.: arabski lub inny język."
+
+msgid "Enable or disable proxy."
+msgstr ""
 
 msgid "Enter text to search..."
 msgstr ""
@@ -292,6 +290,9 @@ msgstr "Referencje usług"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "W wyszukiwaniu nie znaleziono żadnych kanałów!!!"
@@ -323,6 +324,21 @@ msgstr ""
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -343,6 +359,10 @@ msgstr "Naprawdę zamknąć bez zapisywania ustawień?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr ""
+
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Częstotliwość aktualizacji (minuty):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr ""
@@ -394,9 +414,6 @@ msgstr "Szukaj"
 
 msgid "Select Background"
 msgstr "Wybierz tło"
-
-msgid "Select DNS Server"
-msgstr "Wybierz serwer DNS"
 
 msgid "Select Fonts"
 msgstr "Wybierz czcionki"
@@ -488,6 +505,12 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Skonfiguruj serwer DNS dla Box."
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Wybierz serwer DNS"
 
 #~ msgid "Scheduled Bouquet Update:"
 #~ msgstr "Zaplanowana aktualizacja bukietów:"

@@ -91,13 +91,11 @@ msgstr ""
 msgid "All countries (%d)"
 msgstr ""
 
-msgid "At an interval of hours or at a fixed time"
+#, fuzzy
+msgid "At an interval hours or fixed time"
 msgstr "A intervalles d'heures ou à heure fixe"
 
 msgid "Author:"
-msgstr ""
-
-msgid "Auto-refresh stream (minutes):"
 msgstr ""
 
 msgid "Back"
@@ -145,9 +143,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-msgid "Configure Dns Server for Box."
-msgstr ""
-
 msgid "Configure Fonts."
 msgstr ""
 
@@ -157,7 +152,7 @@ msgstr ""
 msgid "Configure at a fixed time"
 msgstr "Configurer à heure fixe"
 
-msgid "Configure every interval of minutes from now"
+msgid "Configure interval minutes from now"
 msgstr ""
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -197,6 +192,9 @@ msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
 msgid "Eg: Arabic or other language."
+msgstr ""
+
+msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
@@ -286,6 +284,9 @@ msgstr "Référence des services"
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 #, fuzzy
 msgid "No channels found"
 msgstr "Aucune chaîne trouvée dans la recherche !"
@@ -317,6 +318,21 @@ msgstr ""
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -336,6 +352,9 @@ msgid "Really close without saving settings?"
 msgstr "Vraiment fermer sans enregistrer les paramètres ?"
 
 msgid "Recommended: 5-8 minutes"
+msgstr ""
+
+msgid "Refresh stream (minutes):"
 msgstr ""
 
 msgid "Refresh stream every X minutes (1-15)"
@@ -387,9 +406,6 @@ msgid "Search:"
 msgstr "Rechercher"
 
 msgid "Select Background"
-msgstr ""
-
-msgid "Select DNS Server"
 msgstr ""
 
 msgid "Select Fonts"
