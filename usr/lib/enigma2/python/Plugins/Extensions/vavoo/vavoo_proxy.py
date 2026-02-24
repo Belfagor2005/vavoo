@@ -36,6 +36,11 @@ import threading
 import socket
 from json import loads, dumps
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
 socket.setdefaulttimeout(30)
 
 try:
