@@ -83,14 +83,12 @@ msgstr "Aktívna alebo neaktívna LAN IPv6."
 msgid "All countries (%d)"
 msgstr "Všetky krajiny (%d)"
 
-msgid "At an interval of hours or at a fixed time"
+#, fuzzy
+msgid "At an interval hours or fixed time"
 msgstr "V intervale hodín alebo v pevne stanovenom čase"
 
 msgid "Author:"
 msgstr "Autor:"
-
-msgid "Auto-refresh stream (minutes):"
-msgstr "Automatické obnovovanie streamu (minúty):"
 
 msgid "Back"
 msgstr "Späť"
@@ -137,9 +135,6 @@ msgstr "Zmazať všetko"
 msgid "Configuration saved successfully!"
 msgstr "Konfigurácia bola úspešne uložená!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Nakonfigurujte server DNS pre Box."
-
 msgid "Configure Fonts."
 msgstr "Konfigurovať písma."
 
@@ -149,7 +144,8 @@ msgstr "Konfigurácia hlavného obrázka na pozadí."
 msgid "Configure at a fixed time"
 msgstr "Konfigurujte v pevnom čase"
 
-msgid "Configure every interval of minutes from now"
+#, fuzzy
+msgid "Configure interval minutes from now"
 msgstr "Odteraz konfigurujte každý interval minút"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -195,6 +191,9 @@ msgstr "Chcete teraz nainštalovať aktualizáciu ( %s )?"
 
 msgid "Eg: Arabic or other language."
 msgstr "Napr.: arabčina alebo iný jazyk."
+
+msgid "Enable or disable proxy."
+msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Zadajte text na vyhľadávanie..."
@@ -283,6 +282,9 @@ msgstr "Odkaz na filmové služby"
 msgid "New version {version} is available."
 msgstr "Nová verzia {version} je k dispozícii."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "Nenašli sa žiadne kanály: {}"
 
@@ -313,6 +315,21 @@ msgstr "Pozícia kytíc Vavoo v hlavnom zozname"
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Stlačte tlačidlo TEXT pre písanie, BACKSPACE pre vymazanie"
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -336,6 +353,10 @@ msgstr "Naozaj zavrieť bez uloženia nastavení?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr "Odporúčané: 5 – 8 minút"
+
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Automatické obnovovanie streamu (minúty):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Obnoviť stream každých X minút (1-15)"
@@ -384,9 +405,6 @@ msgstr "Vyhľadať:"
 
 msgid "Select Background"
 msgstr "Vyberte pozadie"
-
-msgid "Select DNS Server"
-msgstr "Vyberte Server DNS"
 
 msgid "Select Fonts"
 msgstr "Vyberte položku Písma"
@@ -476,6 +494,12 @@ msgstr "malé písmo"
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Nakonfigurujte server DNS pre Box."
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Vyberte Server DNS"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"
