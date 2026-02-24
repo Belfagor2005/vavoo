@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2026-01-27 20:28+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -85,14 +86,12 @@ msgstr "Attivare o disattivare Lan Ipv6."
 msgid "All countries (%d)"
 msgstr "Tutti i paesi (%d)"
 
-msgid "At an interval of hours or at a fixed time"
+#, fuzzy
+msgid "At an interval hours or fixed time"
 msgstr "A intervalli di ore o ora fissa"
 
 msgid "Author:"
 msgstr "Autore:"
-
-msgid "Auto-refresh stream (minutes):"
-msgstr "Aggiornamento automatico del flusso (minuti):"
 
 msgid "Back"
 msgstr "Torna"
@@ -139,9 +138,6 @@ msgstr "Pulisci Tutto"
 msgid "Configuration saved successfully!"
 msgstr "Configurazione salvata con successo!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Configurare il server DNS per Box."
-
 msgid "Configure Fonts."
 msgstr "Configura Fonts."
 
@@ -151,7 +147,8 @@ msgstr "Configura Immagine di Background."
 msgid "Configure at a fixed time"
 msgstr "Configura a un'ora fissa"
 
-msgid "Configure every interval of minutes from now"
+#, fuzzy
+msgid "Configure interval minutes from now"
 msgstr "Configura ogni intervallo di minuti da ora in poi"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -192,6 +189,9 @@ msgstr "Vuoi installare l'aggiornamento ( %s ) ora?"
 
 msgid "Eg: Arabic or other language."
 msgstr "Es: arabo o altra lingua."
+
+msgid "Enable or disable proxy."
+msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Inserisci testo da cercare..."
@@ -280,6 +280,9 @@ msgstr "Service Reference del Player"
 msgid "New version {version} is available."
 msgstr "È disponibile la nuova versione {version}."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "Nessun canale trovato"
 
@@ -310,6 +313,21 @@ msgstr "Posizione dei bouquet Vavoo nell'elenco principale"
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Premere il tasto TESTO per digitare, BACKSPACE per eliminare"
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -331,6 +349,10 @@ msgstr "Chiudi davvero senza salvare le impostazioni?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr "Consigliato: 5-8 minuti"
+
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Aggiornamento automatico del flusso (minuti):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Aggiorna lo streaming ogni X minuti (1-15)"
@@ -379,9 +401,6 @@ msgstr "Cerca:"
 
 msgid "Select Background"
 msgstr "Seleziona Sfondo"
-
-msgid "Select DNS Server"
-msgstr "Seleziona Server DNS"
 
 msgid "Select Fonts"
 msgstr "Seleziona Fonts"
@@ -469,6 +488,12 @@ msgstr "minuscola"
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Configurare il server DNS per Box."
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Seleziona Server DNS"
 
 #~ msgid "Error starting stream via proxy"
 #~ msgstr "Errore durante l'avvio dello streaming tramite proxy"

@@ -1,12 +1,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: enigma 2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: 2026-02-03 13:05+0000\n"
 "Last-Translator:  <EMAIL@ADDRESS>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -82,13 +84,10 @@ msgstr ""
 msgid "All countries (%d)"
 msgstr ""
 
-msgid "At an interval of hours or at a fixed time"
+msgid "At an interval hours or fixed time"
 msgstr ""
 
 msgid "Author:"
-msgstr ""
-
-msgid "Auto-refresh stream (minutes):"
 msgstr ""
 
 msgid "Back"
@@ -136,9 +135,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-msgid "Configure Dns Server for Box."
-msgstr ""
-
 msgid "Configure Fonts."
 msgstr ""
 
@@ -148,7 +144,7 @@ msgstr ""
 msgid "Configure at a fixed time"
 msgstr ""
 
-msgid "Configure every interval of minutes from now"
+msgid "Configure interval minutes from now"
 msgstr ""
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -188,6 +184,9 @@ msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
 msgid "Eg: Arabic or other language."
+msgstr ""
+
+msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
@@ -277,6 +276,9 @@ msgstr ""
 msgid "New version {version} is available."
 msgstr ""
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr ""
 
@@ -307,6 +309,21 @@ msgstr ""
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -326,6 +343,9 @@ msgid "Really close without saving settings?"
 msgstr ""
 
 msgid "Recommended: 5-8 minutes"
+msgstr ""
+
+msgid "Refresh stream (minutes):"
 msgstr ""
 
 msgid "Refresh stream every X minutes (1-15)"
@@ -374,9 +394,6 @@ msgid "Search:"
 msgstr ""
 
 msgid "Select Background"
-msgstr ""
-
-msgid "Select DNS Server"
 msgstr ""
 
 msgid "Select Fonts"

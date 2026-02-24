@@ -1,12 +1,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: enigma 2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: 2026-01-27 13:22+0100\n"
 "Last-Translator: root <EMAIL@ADDRESS>\n"
 "Language-Team: English\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -83,14 +85,12 @@ msgstr "Active or Disactive lan Ipv6."
 msgid "All countries (%d)"
 msgstr "All countries (%d)"
 
-msgid "At an interval of hours or at a fixed time"
+#, fuzzy
+msgid "At an interval hours or fixed time"
 msgstr "At an interval of hours or at a fixed time"
 
 msgid "Author:"
 msgstr "Author:"
-
-msgid "Auto-refresh stream (minutes):"
-msgstr "Auto-refresh stream (minutes):"
 
 msgid "Back"
 msgstr "Back"
@@ -137,9 +137,6 @@ msgstr "Clear All"
 msgid "Configuration saved successfully!"
 msgstr "Configuration saved successfully!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Configure Dns Server for Box."
-
 msgid "Configure Fonts."
 msgstr "Configure Fonts."
 
@@ -149,7 +146,8 @@ msgstr "Configure Main Background Image."
 msgid "Configure at a fixed time"
 msgstr "Configure at a fixed time"
 
-msgid "Configure every interval of minutes from now"
+#, fuzzy
+msgid "Configure interval minutes from now"
 msgstr "Configure every interval of minutes from now"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -190,6 +188,9 @@ msgstr "Do you want to install update ( %s ) now?"
 
 msgid "Eg: Arabic or other language."
 msgstr "Eg: Arabic or other language."
+
+msgid "Enable or disable proxy."
+msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Enter text to search..."
@@ -278,6 +279,9 @@ msgstr "Movie Services Reference"
 msgid "New version {version} is available."
 msgstr "New version {version} is available."
 
+msgid "No Internet connection detected. Please check your network."
+msgstr ""
+
 msgid "No channels found"
 msgstr "No channels found"
 
@@ -308,6 +312,21 @@ msgstr "Position of Vavoo bouquets in the main list"
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Press TEXT button to type, BACKSPACE to delete"
 
+msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr ""
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr ""
+
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -329,6 +348,10 @@ msgstr "Really close without saving settings?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr "Recommended: 5-8 minutes"
+
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Auto-refresh stream (minutes):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Refresh stream every X minutes (1-15)"
@@ -378,9 +401,6 @@ msgstr "Search:"
 
 msgid "Select Background"
 msgstr "Select Background"
-
-msgid "Select DNS Server"
-msgstr "Select DNS Server"
 
 msgid "Select Fonts"
 msgstr "Select Fonts"
@@ -468,6 +488,12 @@ msgstr "lowercase"
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Configure Dns Server for Box."
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Select DNS Server"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"
