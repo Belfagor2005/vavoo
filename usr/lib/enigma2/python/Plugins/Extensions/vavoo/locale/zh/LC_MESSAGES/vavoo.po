@@ -1,8 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2026-01-26 21:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: 沙鸥 lexlong <804381256@qq.com>\n"
 "Language-Team: \n"
@@ -93,8 +92,16 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "每隔几个小时或固定时间"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "每隔几个小时或固定时间"
+
 msgid "Author:"
 msgstr ""
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "更新间隔（分钟） ："
 
 msgid "Back"
 msgstr "返回"
@@ -142,6 +149,10 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+#, fuzzy
+msgid "Configure Dns Server for Box."
+msgstr "从现在起每隔几分钟配置一次"
+
 msgid "Configure Fonts."
 msgstr ""
 
@@ -151,6 +162,10 @@ msgstr "在固定时间配置"
 
 msgid "Configure at a fixed time"
 msgstr "在固定时间配置"
+
+#, fuzzy
+msgid "Configure every interval of minutes from now"
+msgstr "从现在起每隔几分钟配置一次"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -414,6 +429,9 @@ msgstr "搜索"
 #, fuzzy
 msgid "Select Background"
 msgstr "选择字体"
+
+msgid "Select DNS Server"
+msgstr ""
 
 msgid "Select Fonts"
 msgstr "选择字体"
