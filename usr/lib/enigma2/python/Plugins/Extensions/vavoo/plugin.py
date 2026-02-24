@@ -1969,27 +1969,27 @@ class MainVavoo(Screen):
             # === 3. UPDATE INTERFACE ===
             self._update_ui()
 
-            # === 4. START PROXY IN BACKGROUND (ONLY FOR NEXT PHASE) ===
-            # Does NOT block UI, handles its own errors internally
-            if not hasattr(self, '_proxy_bg_started'):
-                def start_bg_proxy():
-                    try:
-                        print(
-                            "[BG] Starting proxy for future channel resolution...")
-                        # Important: do not call initialize_for_country("default")!
-                        # Let the proxy start with its base configuration.
-                        self.start_vavoo_proxy()
-                    except Exception as bg_e:
-                        print(
-                            "[BG] Proxy background start non-critical: %s" %
-                            str(bg_e))
+            # # === 4. START PROXY IN BACKGROUND (ONLY FOR NEXT PHASE) ===
+            # # Does NOT block UI, handles its own errors internally
+            # if not hasattr(self, '_proxy_bg_started'):
+                # def start_bg_proxy():
+                    # try:
+                        # print(
+                            # "[BG] Starting proxy for future channel resolution...")
+                        # # Important: do not call initialize_for_country("default")!
+                        # # Let the proxy start with its base configuration.
+                        # self.start_vavoo_proxy()
+                    # except Exception as bg_e:
+                        # print(
+                            # "[BG] Proxy background start non-critical: %s" %
+                            # str(bg_e))
 
-                import threading
-                bg_thread = threading.Thread(
-                    target=start_bg_proxy)
-                bg_thread.setDaemon(True)
-                bg_thread.start()
-                self._proxy_bg_started = True
+                # import threading
+                # bg_thread = threading.Thread(
+                    # target=start_bg_proxy)
+                # bg_thread.setDaemon(True)
+                # bg_thread.start()
+                # self._proxy_bg_started = True
 
         except Exception as error:
             print("[MainVavoo] Critical error in cat(): %s" % str(error))
@@ -2829,25 +2829,24 @@ class vavoo(Screen):
             self.timer.start(3000, True)
 
     def start_vavoo_proxy(self):
-        """Start the proxy only if it is not already running"""
-        try:
-            if is_proxy_running():
-                print("[MainVavoo] Proxy already running")
-                return True
-
-            print("[MainVavoo] Starting proxy...")
-            success = run_proxy_in_background()
-
-            if success:
-                print("[MainVavoo] Proxy started")
-                return True
-            else:
-                print("[Vavoo] Proxy start error")
-                return False
-
-        except Exception as e:
-            print("[MainVavoo] Error: {0}".format(e))
+        if not cfg.proxy_enabled.value:
             return False
+        if is_proxy_running():
+            print("[MainVavoo] Proxy already running")
+            return True
+
+        print("[MainVavoo] Starting proxy...")
+        success = run_proxy_in_background()
+        if success:
+            for i in range(10):
+                if is_proxy_ready(timeout=1):
+                    print("[MainVavoo] Proxy ready")
+                    return True
+                time.sleep(1)
+            print("[MainVavoo] Proxy started but not ready after 10s")
+        else:
+            print("[MainVavoo] Proxy start error")
+        return False
 
     def _matches_selection(self, country_field, selected_name):
         """
