@@ -1305,7 +1305,8 @@ def run_proxy_in_background():
         if is_proxy_running():
             from os import system
             try:
-                response = requests.get("http://127.0.0.1:{}/status".format(PORT), timeout=2)
+                response = requests.get(
+                    "http://127.0.0.1:{}/status".format(PORT), timeout=2)
                 if response.status_code == 200:
                     return True
                 else:
@@ -1327,7 +1328,8 @@ def run_proxy_in_background():
             if is_proxy_running():
                 try:
                     # Health check
-                    response = requests.get("http://127.0.0.1:{}/status".format(PORT), timeout=2)
+                    response = requests.get(
+                        "http://127.0.0.1:{}/status".format(PORT), timeout=2)
                     if response.status_code == 200:
                         data = response.json()
                         if data.get("initialized", False):
@@ -1342,6 +1344,7 @@ def run_proxy_in_background():
     finally:
         with _starting_lock:
             _starting = False
+
 
 if __name__ == "__main__":
     start_proxy()
