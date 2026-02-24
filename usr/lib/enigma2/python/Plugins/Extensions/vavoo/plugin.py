@@ -384,6 +384,7 @@ def check_vavoo_connectivity():
                     'User-Agent': vUtils.RequestAgent()})
             response = urlopen(req, timeout=5)
             status_code = getattr(response, 'getcode', lambda: 0)() or 0
+
         if status_code == 200:
             print("[Connectivity] vavoo.to is reachable")
             return True
@@ -404,7 +405,7 @@ class ConfigSearchText(ConfigText):
 
 config.plugins.vavoo = ConfigSubsection()
 cfg = config.plugins.vavoo
-cfg.proxy_enabled = ConfigEnableDisable(default=True)
+cfg.proxy_enabled = ConfigEnableDisable(default=False)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.genm3u = NoSave(ConfigYesNo(default=False))
 cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
