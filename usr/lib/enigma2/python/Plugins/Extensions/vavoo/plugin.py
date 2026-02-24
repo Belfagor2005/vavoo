@@ -379,7 +379,9 @@ def check_vavoo_connectivity():
             response = requests.get(test_url, timeout=5)
             status_code = response.status_code
         else:
-            req = UrlRequest(test_url, headers={'User-Agent': vUtils.RequestAgent()})
+            req = UrlRequest(
+                test_url, headers={
+                    'User-Agent': vUtils.RequestAgent()})
             response = urlopen(req, timeout=5)
             status_code = getattr(response, 'getcode', lambda: 0)() or 0
         if status_code == 200:
@@ -1215,7 +1217,8 @@ class vavoo_config(Screen, ConfigListScreen):
         """Get channels for a country from the proxy"""
         try:
             encoded_country = url_quote(country_name)
-            proxy_url = "http://127.0.0.1:{}/channels?country={}".format(PORT, encoded_country)
+            proxy_url = "http://127.0.0.1:{}/channels?country={}".format(
+                PORT, encoded_country)
             response = getUrl(proxy_url, timeout=15)
             if not response:
                 print("[M3U] No response for %s" % country_name)
@@ -1766,7 +1769,8 @@ class MainVavoo(Screen):
                 return
             if is_proxy_running():
                 try:
-                    response = getUrl("http://127.0.0.1:4323/status", timeout=2)
+                    response = getUrl(
+                        "http://127.0.0.1:4323/status", timeout=2)
                     if response:
                         status_data = loads(response)
 
@@ -1818,7 +1822,8 @@ class MainVavoo(Screen):
         if result:
             try:
                 # Try to refresh the token
-                response = getUrl("http://127.0.0.1:4323/refresh_token", timeout=5)
+                response = getUrl(
+                    "http://127.0.0.1:4323/refresh_token", timeout=5)
                 if response:
                     data = loads(response)
                     if data.get("status") == "success":
@@ -2499,7 +2504,8 @@ class vavoo(Screen):
                   str(self.country_name))
 
             # URL to initialize the proxy for the specific country
-            init_url = "http://127.0.0.1:4323/initialize_country?country={}".format(self.country_name)
+            init_url = "http://127.0.0.1:4323/initialize_country?country={}".format(
+                self.country_name)
             content = getUrl(init_url, timeout=10)
             if content:
                 if PY3:
@@ -2560,7 +2566,8 @@ class vavoo(Screen):
             # 1. TRY THE PROXY FIRST
             try:
                 country_encoded = url_quote(self.country_name)
-                proxy_url = "http://127.0.0.1:{}/channels?country={}".format(PORT, country_encoded)
+                proxy_url = "http://127.0.0.1:{}/channels?country={}".format(
+                    PORT, country_encoded)
                 print("[DEBUG] Fetching from proxy: " + proxy_url)
 
                 content = getUrl(proxy_url, timeout=10)
@@ -2744,7 +2751,8 @@ class vavoo(Screen):
                     str(token_age) +
                     "s), forcing refresh...")
                 try:
-                    refresh_url = "http://127.0.0.1:{}/refresh_token".format(PORT)
+                    refresh_url = "http://127.0.0.1:{}/refresh_token".format(
+                        PORT)
                     getUrl(refresh_url, timeout=3)
                 except Exception:
                     pass

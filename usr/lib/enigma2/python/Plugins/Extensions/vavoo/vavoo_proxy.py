@@ -159,7 +159,8 @@ class ProxyHealthMonitor:
         """Check proxy health status"""
         try:
             # 1. Check if proxy responds
-            response = requests.get("http://127.0.0.1:{}/health".format(PORT), timeout=2)
+            response = requests.get(
+                "http://127.0.0.1:{}/health".format(PORT), timeout=2)
 
             if response.status_code == 200:
                 data = response.json()
@@ -206,7 +207,9 @@ class ProxyHealthMonitor:
         try:
             # 1. Try to shut down the current proxy
             try:
-                requests.get("http://127.0.0.1:{}/shutdown".format(PORT), timeout=2)
+                requests.get(
+                    "http://127.0.0.1:{}/shutdown".format(PORT),
+                    timeout=2)
                 time.sleep(2)
             except Exception:
                 pass
@@ -228,7 +231,8 @@ class ProxyHealthMonitor:
             if proxy.initialize_proxy():
                 server = HTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
                 proxy.server = server
-                server_thread = threading.Thread(target=server.serve_forever, daemon=True)
+                server_thread = threading.Thread(
+                    target=server.serve_forever, daemon=True)
                 server_thread.start()
                 print("[Health Monitor] Proxy restarted successfully")
                 return True
@@ -306,7 +310,7 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > 480:
-                                print("[Token Monitor] Token old (" +
+                                print("[Token Monitor] Token old (" + \
                                       str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
@@ -405,16 +409,20 @@ class VavooProxy:
                 sig = None
                 for url in urls:
                     try:
-                        r = self._robust_request("POST", url, json=payload, timeout=15)
+                        r = self._robust_request(
+                            "POST", url, json=payload, timeout=15)
                         r.raise_for_status()
                         data = decode_response(r)
                         sig = data.get("addonSig")
                         if sig:
                             break  # Found, exit loop
                         else:
-                            print("[AddonSig] No addonSig received from {}".format(url))
+                            print(
+                                "[AddonSig] No addonSig received from {}".format(url))
                     except Exception as e:
-                        print("[AddonSig] Request to {} failed: {}".format(url, e))
+                        print(
+                            "[AddonSig] Request to {} failed: {}".format(
+                                url, e))
 
                 if sig:
                     self.addon_sig_data["sig"] = sig
@@ -451,7 +459,8 @@ class VavooProxy:
             # First, obtain a valid token
             sig = self.refresh_addon_sig_if_needed()
             if not sig:
-                print("[Proxy] Warning: Could not get a valid token, but continuing anyway")
+                print(
+                    "[Proxy] Warning: Could not get a valid token, but continuing anyway")
                 # We may continue with an old token or no token at all
 
             # Load the catalog
@@ -529,8 +538,9 @@ class VavooProxy:
 
                 for attempt in range(max_retries):
                     try:
-                        print("[Proxy] Fetching catalog page {0} (attempt {1}/{2})"
-                              .format(page, attempt + 1, max_retries))
+                        print(
+                            "[Proxy] Fetching catalog page {0} (attempt {1}/{2})" .format(
+                                page, attempt + 1, max_retries))
 
                         r_catalog = self.session.post(
                             CATALOG_URL,
@@ -540,14 +550,17 @@ class VavooProxy:
                         )
 
                         if r_catalog.status_code == 502:
-                            print("[Proxy] 502 Bad Gateway on page {0}, attempt {1}"
-                                  .format(page, attempt + 1))
+                            print(
+                                "[Proxy] 502 Bad Gateway on page {0}, attempt {1}" .format(
+                                    page, attempt + 1))
                             if attempt < max_retries - 1:
-                                time.sleep(2 ** attempt)  # Backoff esponenziale
+                                # Backoff esponenziale
+                                time.sleep(2 ** attempt)
                                 continue
                             else:
-                                print("[Proxy] Giving up on page {0} after {1} attempts"
-                                      .format(page, max_retries))
+                                print(
+                                    "[Proxy] Giving up on page {0} after {1} attempts" .format(
+                                        page, max_retries))
                                 break
 
                         r_catalog.raise_for_status()
@@ -577,8 +590,8 @@ class VavooProxy:
                             break
 
                 if not success:
-                    print("[Proxy] Failed to load page {0}, stopping catalog download"
-                          .format(page))
+                    print(
+                        "[Proxy] Failed to load page {0}, stopping catalog download" .format(page))
                     if last_exception:
                         print("[Proxy] Last error: {0}"
                               .format(last_exception))
@@ -601,7 +614,8 @@ class VavooProxy:
                         separators = ["➾", "⟾", "->", "→", "»", "›"]
                         for sep in separators:
                             if sep in base_country:
-                                base_country = base_country.split(sep)[0].strip()
+                                base_country = base_country.split(sep)[
+                                    0].strip()
                                 break
 
                         if not base_country:
@@ -619,8 +633,9 @@ class VavooProxy:
                         all_channels.append(channel_data)
                         items_processed += 1
 
-                print("[Proxy] Page {0}: processed {1} items, total {2} channels"
-                      .format(page, items_processed, len(all_channels)))
+                print(
+                    "[Proxy] Page {0}: processed {1} items, total {2} channels" .format(
+                        page, items_processed, len(all_channels)))
 
                 cursor = catalog_data.get("nextCursor")
                 if not cursor:
@@ -1165,7 +1180,8 @@ proxy = VavooProxy()
 def shutdown_proxy():
     """Shutdown the proxy server if running."""
     try:
-        response = requests.get("http://127.0.0.1:{}/shutdown".format(PORT), timeout=2)
+        response = requests.get(
+            "http://127.0.0.1:{}/shutdown".format(PORT), timeout=2)
         if response.status_code == 200:
             print("[Proxy] Shutdown request sent successfully")
             return True
