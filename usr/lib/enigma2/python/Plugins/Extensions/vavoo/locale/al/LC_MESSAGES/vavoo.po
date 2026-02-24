@@ -94,12 +94,15 @@ msgstr ""
 msgid "All countries (%d)"
 msgstr ""
 
-#, fuzzy
-msgid "At an interval hours or fixed time"
+msgid "At an interval of hours or at a fixed time"
 msgstr "Në një interval orësh ose në një kohë të caktuar"
 
 msgid "Author:"
 msgstr ""
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "Intervali i përditësimit (minuta):"
 
 msgid "Back"
 msgstr "Mbrapa"
@@ -146,6 +149,9 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+msgid "Configure Dns Server for Box."
+msgstr ""
+
 msgid "Configure Fonts."
 msgstr ""
 
@@ -155,8 +161,7 @@ msgstr ""
 msgid "Configure at a fixed time"
 msgstr "Konfiguro në një kohë të caktuar"
 
-#, fuzzy
-msgid "Configure interval minutes from now"
+msgid "Configure every interval of minutes from now"
 msgstr "Konfiguro çdo interval prej minutash nga tani"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
@@ -196,9 +201,6 @@ msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
 msgid "Eg: Arabic or other language."
-msgstr ""
-
-msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
@@ -288,9 +290,6 @@ msgstr "Referenca e Shërbimeve të Filmit"
 msgid "New version {version} is available."
 msgstr ""
 
-msgid "No Internet connection detected. Please check your network."
-msgstr ""
-
 #, fuzzy
 msgid "No channels found"
 msgstr "Nuk u gjet asnjë kanal në kërkim"
@@ -322,21 +321,6 @@ msgstr ""
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
-msgid "Proxy Disabled"
-msgstr ""
-
-msgid "Proxy Enabled"
-msgstr ""
-
-msgid "Proxy disabled"
-msgstr ""
-
-msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
-msgstr ""
-
-msgid "Proxy is disabled. Please enable it in the configuration."
-msgstr ""
-
 msgid "Proxy is not running. Please start the proxy first."
 msgstr ""
 
@@ -357,10 +341,6 @@ msgstr "Doni të mbylleni pa ruajtur cilësimet?"
 
 msgid "Recommended: 5-8 minutes"
 msgstr ""
-
-#, fuzzy
-msgid "Refresh stream (minutes):"
-msgstr "Intervali i përditësimit (minuta):"
 
 msgid "Refresh stream every X minutes (1-15)"
 msgstr ""
@@ -411,6 +391,9 @@ msgid "Search:"
 msgstr "Kërko"
 
 msgid "Select Background"
+msgstr ""
+
+msgid "Select DNS Server"
 msgstr ""
 
 msgid "Select Fonts"
