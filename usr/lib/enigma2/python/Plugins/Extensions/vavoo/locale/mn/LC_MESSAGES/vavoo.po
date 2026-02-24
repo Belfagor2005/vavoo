@@ -1,14 +1,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: enigma 2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
 "PO-Revision-Date: 2026-02-03 13:05+0000\n"
 "Last-Translator:  <EMAIL@ADDRESS>\n"
 "Language-Team: Mongolian <openmn-translation@lists.sourceforge.net>\n"
 "Language: mn\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "(%(count)d channels)"
@@ -86,7 +84,13 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr ""
 
+msgid "At an interval of hours or at a fixed time"
+msgstr ""
+
 msgid "Author:"
+msgstr ""
+
+msgid "Auto-refresh stream (minutes):"
 msgstr ""
 
 msgid "Back"
@@ -134,6 +138,9 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+msgid "Configure Dns Server for Box."
+msgstr ""
+
 msgid "Configure Fonts."
 msgstr ""
 
@@ -141,6 +148,9 @@ msgid "Configure Main Background Image."
 msgstr ""
 
 msgid "Configure at a fixed time"
+msgstr ""
+
+msgid "Configure every interval of minutes from now"
 msgstr ""
 
 msgid "Configure interval minutes from now"
@@ -393,6 +403,9 @@ msgid "Search:"
 msgstr ""
 
 msgid "Select Background"
+msgstr ""
+
+msgid "Select DNS Server"
 msgstr ""
 
 msgid "Select Fonts"
