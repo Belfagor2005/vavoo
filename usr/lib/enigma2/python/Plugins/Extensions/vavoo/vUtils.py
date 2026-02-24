@@ -562,6 +562,7 @@ def get_proxy_channels(country_name):
             # Build URL
             proxy_url = "http://127.0.0.1:{}/channels?country={}".format(
                 PORT, encoded_country)
+
             # Fetch with timeout
             response = getUrl(proxy_url, timeout=15)
             print("[vUtils] Request URL: " + proxy_url)
