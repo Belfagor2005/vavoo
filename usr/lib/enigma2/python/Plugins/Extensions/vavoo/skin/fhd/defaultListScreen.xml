@@ -15,7 +15,7 @@
         <convert type="ClockToText">Default</convert>
     </widget>
     <eLabel name="" position="0,0" size="1920,1080" backgroundColor="#30000000" transparent="1" zPosition="-9" foregroundColor="#00ffffff" />
-    <widget source="session.CurrentService" render="Label" position="954,603" size="550,45" font="Regular;26" backgroundColor="background" transparent="1" halign="left" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
+    <widget source="session.CurrentService" render="Label" position="959,598" size="550,45" font="Regular;26" backgroundColor="background" transparent="1" halign="left" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
     <widget source="session.VideoPicture" render="Pig" position="959,660" zPosition="20" size="435,245" backgroundColor="#ff000000" transparent="0" />

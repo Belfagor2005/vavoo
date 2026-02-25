@@ -11,7 +11,7 @@
     <widget source="global.CurrentTime" render="Label" position="890,30" size="250,84" font="Lcdx; 60" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <widget source="session.CurrentService" render="Label" position="619,411" size="400,26" font="Regular; 22" backgroundColor="background" transparent="1" halign="center" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
+    <widget source="session.CurrentService" render="Label" position="619,406" size="400,26" font="Regular; 22" backgroundColor="background" transparent="1" halign="left" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
     <widget source="session.VideoPicture" render="Pig" position="625,450" zPosition="20" size="315,178" backgroundColor="#ff000000" transparent="0" />
