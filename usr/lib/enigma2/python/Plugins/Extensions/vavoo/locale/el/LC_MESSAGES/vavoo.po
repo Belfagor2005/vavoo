@@ -87,16 +87,8 @@ msgstr "Όλες οι χώρες (%d)"
 msgid "At an interval hours or fixed time"
 msgstr "Σε χρονικό διάστημα ωρών ή σε σταθερή ώρα"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "Σε χρονικό διάστημα ωρών ή σε σταθερή ώρα"
-
 msgid "Author:"
 msgstr "Συγγραφέας:"
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Ανανέωση ροής (λεπτά):"
 
 msgid "Back"
 msgstr "Πίσω"
@@ -143,10 +135,6 @@ msgstr "Καθαρισμός όλων"
 msgid "Configuration saved successfully!"
 msgstr "Η ρύθμιση αποθηκεύτηκε με επιτυχία!"
 
-#, fuzzy
-msgid "Configure Dns Server for Box."
-msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
-
 msgid "Configure Fonts."
 msgstr "Ρύθμιση γραμματοσειρών."
 
@@ -155,10 +143,6 @@ msgstr "Ρύθμιση της κύριας εικόνας φόντου."
 
 msgid "Configure at a fixed time"
 msgstr "Ρύθμιση σε σταθερή ώρα"
-
-#, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
 
 msgid "Configure interval minutes from now"
 msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
@@ -412,9 +396,6 @@ msgstr "Αναζήτηση:"
 msgid "Select Background"
 msgstr "Επιλογή φόντου"
 
-msgid "Select DNS Server"
-msgstr ""
-
 msgid "Select Fonts"
 msgstr "Επιλογή γραμματοσειρών"
 
@@ -501,3 +482,19 @@ msgstr "πεζά"
 
 msgid "seconds"
 msgstr "δευτερόλεπτα"
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "Σε χρονικό διάστημα ωρών ή σε σταθερή ώρα"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Ανανέωση ροής (λεπτά):"
+
+#, fuzzy
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"

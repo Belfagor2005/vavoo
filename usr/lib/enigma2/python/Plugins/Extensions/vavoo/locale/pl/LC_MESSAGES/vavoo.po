@@ -96,16 +96,8 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "W odstępie minut lub o ustalonej porze"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "W odstępie minut lub o ustalonej porze"
-
 msgid "Author:"
 msgstr ""
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Częstotliwość aktualizacji (minuty):"
 
 msgid "Back"
 msgstr "Wstecz"
@@ -152,9 +144,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-msgid "Configure Dns Server for Box."
-msgstr "Skonfiguruj serwer DNS dla Box."
-
 msgid "Configure Fonts."
 msgstr ""
 
@@ -163,10 +152,6 @@ msgstr "Skonfiguruj główny obraz tła."
 
 msgid "Configure at a fixed time"
 msgstr "Skonfiguruj o ustalonej godzinie"
-
-#, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Od teraz skonfiguruj każdy interwał minutowy"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -430,9 +415,6 @@ msgstr "Szukaj"
 msgid "Select Background"
 msgstr "Wybierz tło"
 
-msgid "Select DNS Server"
-msgstr "Wybierz serwer DNS"
-
 msgid "Select Fonts"
 msgstr "Wybierz czcionki"
 
@@ -523,6 +505,24 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "W odstępie minut lub o ustalonej porze"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Częstotliwość aktualizacji (minuty):"
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Skonfiguruj serwer DNS dla Box."
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Od teraz skonfiguruj każdy interwał minutowy"
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Wybierz serwer DNS"
 
 #~ msgid "Scheduled Bouquet Update:"
 #~ msgstr "Zaplanowana aktualizacja bukietów:"
