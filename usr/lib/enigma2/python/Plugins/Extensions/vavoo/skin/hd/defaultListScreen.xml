@@ -14,14 +14,9 @@
     <widget source="global.CurrentTime" render="Label" position="890,30" size="250,84" font="Lcdx; 60" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <eLabel backgroundColor="#00ffffff" position="0,656" size="1280,2" zPosition="2" />
-    <eLabel name="" position="1122,670" size="54,25" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 17" zPosition="3" text="MENU" />
-    <eLabel name="" position="1176,670" size="60,25" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 17" zPosition="3" text="INFO" />
-    <eLabel name="" position="1082,670" size="40,25" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 17" zPosition="3" text="CH+" />
-    <eLabel name="" position="1042,670" size="40,25" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 17" zPosition="3" text="CH-" />
-    <widget source="session.CurrentService" render="Label" position="587,630" size="400,26" font="Regular; 22" backgroundColor="background" transparent="1" halign="center" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
+    <widget source="session.CurrentService" render="Label" position="619,411" size="400,26" font="Regular; 22" backgroundColor="background" transparent="1" halign="center" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
-    <widget source="session.VideoPicture" render="Pig" position="621,447" zPosition="20" size="322,180" backgroundColor="#ff000000" transparent="0" />
+    <widget source="session.VideoPicture" render="Pig" position="625,450" zPosition="20" size="315,178" backgroundColor="#ff000000" transparent="0" />
     <widget name="proxy_status" position="112,604" size="340,45" font="Regular; 24" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="center" />
 </screen>

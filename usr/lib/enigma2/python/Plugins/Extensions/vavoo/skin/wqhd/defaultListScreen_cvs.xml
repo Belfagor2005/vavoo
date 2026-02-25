@@ -14,10 +14,6 @@
     <widget source="global.CurrentTime" render="Label" position="1932,105" size="422,130" font="Lcdx; 100" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <eLabel name="" position="2392,1340" size="124,50" backgroundColor="transparent" halign="center" valign="center" transparent="1" font="Regular;28" zPosition="3" text="MENU" />
-    <eLabel name="" position="2285,1340" size="110,50" backgroundColor="transparent" halign="center" valign="center" transparent="1" font="Regular;28" zPosition="3" text="INFO" />
-    <eLabel name="" position="2175,1340" size="110,50" backgroundColor="transparent" halign="center" valign="center" transparent="1" font="cvfont;28" zPosition="3" text="CH+" />
-    <eLabel name="" position="2065,1340" size="110,50" backgroundColor="transparent" halign="center" valign="center" transparent="1" font="cvfont;28" zPosition="3" text="CH-" />
     <eLabel backgroundColor="#30000000" position="0,0" size="1920,1080" transparent="0" zPosition="-9" foregroundColor="#00ffffff" />
     <widget source="session.CurrentService" render="Label" position="1271,1236" size="600,50" font="Regular;26" backgroundColor="background" transparent="1" halign="left" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>

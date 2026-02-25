@@ -95,7 +95,14 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "A intervalles d'heures ou à heure fixe"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "A intervalles d'heures ou à heure fixe"
+
 msgid "Author:"
+msgstr ""
+
+msgid "Auto-refresh stream (minutes):"
 msgstr ""
 
 msgid "Back"
@@ -143,6 +150,9 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+msgid "Configure Dns Server for Box."
+msgstr ""
+
 msgid "Configure Fonts."
 msgstr ""
 
@@ -151,6 +161,9 @@ msgstr ""
 
 msgid "Configure at a fixed time"
 msgstr "Configurer à heure fixe"
+
+msgid "Configure every interval of minutes from now"
+msgstr ""
 
 msgid "Configure interval minutes from now"
 msgstr ""
@@ -408,6 +421,9 @@ msgstr "Rechercher"
 msgid "Select Background"
 msgstr ""
 
+msgid "Select DNS Server"
+msgstr ""
+
 msgid "Select Fonts"
 msgstr ""
 
@@ -495,7 +511,3 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "A intervalles d'heures ou à heure fixe"

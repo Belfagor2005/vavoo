@@ -15,13 +15,9 @@
         <convert type="ClockToText">Default</convert>
     </widget>
     <eLabel name="" position="0,0" size="1920,1080" backgroundColor="#30000000" transparent="1" zPosition="-9" foregroundColor="#00ffffff" />
-    <eLabel name="" position="1798,1000" size="75,40" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 24" zPosition="3" text="MENU" />
-    <eLabel name="" position="1711,1000" size="75,40" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 24" zPosition="3" text="INFO" />
-    <eLabel name="" position="1636,1000" size="64,40" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 24" zPosition="3" text="CH+" />
-    <eLabel name="" position="1560,1000" size="64,40" backgroundColor="#ff000000" halign="center" valign="center" transparent="1" font="cvfont; 24" zPosition="3" text="CH-" />
-    <widget source="session.CurrentService" render="Label" position="947,925" size="550,45" font="Regular;26" backgroundColor="background" transparent="1" halign="left" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
+    <widget source="session.CurrentService" render="Label" position="954,603" size="550,45" font="Regular;26" backgroundColor="background" transparent="1" halign="left" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
-    <widget source="session.VideoPicture" render="Pig" position="959,658" zPosition="20" size="434,248" backgroundColor="#ff000000" transparent="0" />
+    <widget source="session.VideoPicture" render="Pig" position="959,660" zPosition="20" size="435,245" backgroundColor="#ff000000" transparent="0" />
     <widget name="proxy_status" position="245,931" size="450,55" font="Regular; 34" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="center" />
 </screen>

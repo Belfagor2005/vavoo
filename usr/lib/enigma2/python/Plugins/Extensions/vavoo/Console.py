@@ -3,7 +3,7 @@
 # RAED & mfaraj57 &  (c) 2018
 # mod Lululla 20251113
 
-from __future__ import print_function, unicode_literals
+from __future__ import print_function
 from enigma import eConsoleAppContainer
 from Screens.Screen import Screen
 from Components.Label import Label

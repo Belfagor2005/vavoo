@@ -3,7 +3,7 @@
     <widget name="description" position="21,568" size="636,79" noWrap="1" zPosition="1" transparent="1" font="Regular; 26" valign="center" halign="left" backgroundColor="#30000000" foregroundColor="#00ffffff" />
     <widget name="config" position="30,121" size="480,400" itemHeight="50" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
     <widget name="version" position="1089,693" size="100,30" zPosition="1" backgroundColor="#30000000" transparent="1" font="Regular; 20" halign="center" foregroundColor="yellow" />
-	<widget name="statusbar" position="407,661" size="830,40" font="Regular; 22" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="right" />
+	<widget name="statusbar" position="407,661" size="830,40" font="Regular; 22" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="left" />
     <widget name="red" font="cvfont; 20" halign="center" valign="center" position="15,660" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <widget name="green" font="cvfont; 20" halign="center" valign="center" position="195,660" size="148,38" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <eLabel backgroundColor="#00ff0000" position="15,700" size="150,6" zPosition="4" />
@@ -11,9 +11,8 @@
     <widget source="global.CurrentTime" render="Label" position="890,30" size="250,84" font="Lcdx; 60" halign="right" backgroundColor="#914167" transparent="1" valign="center" foregroundColor="#00ffffff">
         <convert type="ClockToText">Default</convert>
     </widget>
-    <eLabel backgroundColor="#00ffffff" position="0,654" size="1280,2" zPosition="2" />
-    <widget source="session.CurrentService" render="Label" position="622,628" size="400,26" font="Regular; 22" backgroundColor="background" transparent="1" halign="center" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
+    <widget source="session.CurrentService" render="Label" position="619,411" size="400,26" font="Regular; 22" backgroundColor="background" transparent="1" halign="center" foregroundColor="white" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
-    <widget source="session.VideoPicture" render="Pig" position="621,447" zPosition="20" size="322,180" backgroundColor="#ff000000" transparent="0" />
+    <widget source="session.VideoPicture" render="Pig" position="625,450" zPosition="20" size="315,178" backgroundColor="#ff000000" transparent="0" />
 </screen>

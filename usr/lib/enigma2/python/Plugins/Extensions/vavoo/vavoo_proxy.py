@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 
@@ -35,6 +35,7 @@ import time
 import threading
 import socket
 from json import loads, dumps
+import threading
 
 _starting_lock = threading.Lock()
 _starting = False
@@ -95,7 +96,6 @@ Description: Gracefully shuts down the proxy server.
 
 # API Endpoints
 TOKEN_ADDON_SIG = 600  # 10 minutes - TOKEN EXPIRES EVERY 10 MINUTES!
-TOKEN_REFRESH_AGE = 480  # 8 minutes
 PORT = 4323
 GEOIP_URL = "https://www.vavoo.tv/geoip"
 PING_URL = "https://www.lokke.app/api/app/ping"
@@ -309,8 +309,9 @@ class VavooProxy:
                         if self.addon_sig_data["sig"]:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
-                            if token_age > TOKEN_REFRESH_AGE:
-                                print("[Token Monitor] Token old (" + str(int(token_age)) + "s), refreshing...")
+                            if token_age > 480:
+                                print("[Token Monitor] Token old (" + \
+                                      str(int(token_age)) + "s), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
                     # ALSO: Send heartbeat to keep connections alive
@@ -333,15 +334,13 @@ class VavooProxy:
         if self.refresh_timer:
             self.refresh_timer.cancel()
 
-        self.refresh_timer = threading.Timer(TOKEN_REFRESH_AGE, self._periodic_refresh_task)
+        self.refresh_timer = threading.Timer(480, self._periodic_refresh_task)
         self.refresh_timer.daemon = True
         self.refresh_timer.start()
         print("[Proxy] Periodic refresh scheduled (480s)")
 
     def _periodic_refresh_task(self):
         """Periodic task to refresh token"""
-        if not self.running:
-            return
         try:
             print("[Proxy] Periodic refresh task running...")
             sig = self.refresh_addon_sig_if_needed(force=True)
@@ -358,7 +357,7 @@ class VavooProxy:
         with self.addon_sig_lock:
             now = time.time()
             if not force and self.addon_sig_data["sig"] and (
-                    now - self.addon_sig_data["ts"] < TOKEN_REFRESH_AGE):  # 8 minutes
+                    now - self.addon_sig_data["ts"] < 300):  # 8 minutes
                 return self.addon_sig_data["sig"]
 
             try:
@@ -1039,7 +1038,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     now = time.time()
                     token_age = now - proxy.addon_sig_data["ts"]
                     token_valid = proxy.addon_sig_data["sig"] is not None
-                    needs_refresh = token_age > TOKEN_REFRESH_AGE  # 8 minutes
+                    needs_refresh = token_age > 300  # 8 minutes
 
                     # Calculate token expiration
                     ttl = max(0, TOKEN_ADDON_SIG - int(token_age))
@@ -1321,7 +1320,8 @@ def run_proxy_in_background():
                 time.sleep(2)
 
         # Start new proxy
-        proxy_thread = threading.Thread(target=start_proxy, daemon=True)
+        proxy_thread = threading.Thread(target=start_proxy)
+        proxy_thread.setDaemon(True)
         proxy_thread.start()
 
         # Wait for startup with longer timeout

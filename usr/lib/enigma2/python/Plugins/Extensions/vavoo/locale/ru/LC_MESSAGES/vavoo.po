@@ -87,8 +87,16 @@ msgstr "Все страны (%d)"
 msgid "At an interval hours or fixed time"
 msgstr "С интервалом в несколько часов или в фиксированное время"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "С интервалом в несколько часов или в фиксированное время"
+
 msgid "Author:"
 msgstr "Автор:"
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "Автоматическое обновление потока (в минутах):"
 
 msgid "Back"
 msgstr "Назад"
@@ -135,6 +143,9 @@ msgstr "Очистить все"
 msgid "Configuration saved successfully!"
 msgstr "Конфигурация успешно сохранена!"
 
+msgid "Configure Dns Server for Box."
+msgstr "Настройте DNS-сервер для Box."
+
 msgid "Configure Fonts."
 msgstr "Настройка шрифтов."
 
@@ -143,6 +154,10 @@ msgstr "Настройте основное фоновое изображени�
 
 msgid "Configure at a fixed time"
 msgstr "Настройка в фиксированное время"
+
+#, fuzzy
+msgid "Configure every interval of minutes from now"
+msgstr "Настройте каждый интервал минут с этого момента"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -406,6 +421,9 @@ msgstr "Поиск:"
 msgid "Select Background"
 msgstr "Выберите фон"
 
+msgid "Select DNS Server"
+msgstr "Выберите DNS-сервер"
+
 msgid "Select Fonts"
 msgstr "Выберите шрифты"
 
@@ -494,24 +512,6 @@ msgstr "строчные буквы"
 
 msgid "seconds"
 msgstr ""
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "С интервалом в несколько часов или в фиксированное время"
-
-#, fuzzy
-#~ msgid "Auto-refresh stream (minutes):"
-#~ msgstr "Автоматическое обновление потока (в минутах):"
-
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Настройте DNS-сервер для Box."
-
-#, fuzzy
-#~ msgid "Configure every interval of minutes from now"
-#~ msgstr "Настройте каждый интервал минут с этого момента"
-
-#~ msgid "Select DNS Server"
-#~ msgstr "Выберите DNS-сервер"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"

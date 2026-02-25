@@ -3,7 +3,7 @@
     <widget name="description" position="150,1135" size="960,180" zPosition="1" transparent="1" font="cvfont;56" halign="center" backgroundColor="#30000000" foregroundColor="#00ffffff" />
     <widget name="config" position="195,240" size="870,780" itemHeight="60" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#ffffff" foregroundColor="#ffccff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffcc" />
     <widget name="version" position="2225,1391" size="150,50" font="Regular; 34" halign="center" zPosition="1" backgroundColor="#30000000" transparent="1" foregroundColor="#00ffff00" />
-    <widget name="statusbar" position="1241,1337" size="1267,50" font="Regular;40" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="right" />
+    <widget name="statusbar" position="1271,1337" size="1267,50" font="Regular;40" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" halign="left" />
     <widget name="red" font="cvfont;40" halign="center" valign="center" position="185,1325" size="396,79" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <widget name="green" font="cvfont;40" halign="center" valign="center" position="681,1325" size="396,79" backgroundColor="#30000000" foregroundColor="#00ffffff" transparent="1" zPosition="1" />
     <eLabel backgroundColor="#00ff0000" position="185,1409" size="400,8" zPosition="4" />
