@@ -87,8 +87,16 @@ msgstr "Všechny země (%d)"
 msgid "At an interval hours or fixed time"
 msgstr "V intervalu hodin nebo v pevně stanovený čas"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "V intervalu hodin nebo v pevně stanovený čas"
+
 msgid "Author:"
 msgstr "Autor:"
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "Automatické obnovení streamu (minuty):"
 
 msgid "Back"
 msgstr "Zpět"
@@ -135,6 +143,9 @@ msgstr "Vymazat vše"
 msgid "Configuration saved successfully!"
 msgstr "Konfigurace byla úspěšně uložena!"
 
+msgid "Configure Dns Server for Box."
+msgstr "Nakonfigurujte DNS server pro Box."
+
 msgid "Configure Fonts."
 msgstr "Konfigurace písem."
 
@@ -143,6 +154,10 @@ msgstr "Nakonfigurujte hlavní obrázek na pozadí."
 
 msgid "Configure at a fixed time"
 msgstr "Nakonfigurujte v pevně stanovený čas"
+
+#, fuzzy
+msgid "Configure every interval of minutes from now"
+msgstr "Od této chvíle konfigurujte každý interval minut"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -406,6 +421,9 @@ msgstr "Hledat:"
 msgid "Select Background"
 msgstr "Vyberte Pozadí"
 
+msgid "Select DNS Server"
+msgstr "Vyberte DNS Server"
+
 msgid "Select Fonts"
 msgstr "Vyberte Písma"
 
@@ -494,24 +512,6 @@ msgstr "malá písmena"
 
 msgid "seconds"
 msgstr ""
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "V intervalu hodin nebo v pevně stanovený čas"
-
-#, fuzzy
-#~ msgid "Auto-refresh stream (minutes):"
-#~ msgstr "Automatické obnovení streamu (minuty):"
-
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Nakonfigurujte DNS server pro Box."
-
-#, fuzzy
-#~ msgid "Configure every interval of minutes from now"
-#~ msgstr "Od této chvíle konfigurujte každý interval minut"
-
-#~ msgid "Select DNS Server"
-#~ msgstr "Vyberte DNS Server"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"
