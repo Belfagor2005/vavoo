@@ -335,8 +335,7 @@ class VavooProxy:
         if self.refresh_timer:
             self.refresh_timer.cancel()
 
-        self.refresh_timer = threading.Timer(
-            TOKEN_REFRESH_AGE, self._periodic_refresh_task)
+        self.refresh_timer = threading.Timer(TOKEN_REFRESH_AGE, self._periodic_refresh_task)
         self.refresh_timer.daemon = True
         self.refresh_timer.start()
         print("[Proxy] Periodic refresh scheduled (480s)")
