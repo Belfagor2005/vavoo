@@ -4459,12 +4459,7 @@ def add_skin_font():
     from enigma import addFont
     addFont(FNT_Path + '/Lcdx.ttf', 'Lcdx', 100, 1)
     addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-    addFont(
-        join(
-            str(FNT_Path),
-            'Inconsolata-Regular.ttf'),
-        'vav',
-        100,
+    addFont(join(str(FNT_Path),'/Inconsolata-Regular.ttf'), 'vav', 100,
         1)  # lcd
 
 
