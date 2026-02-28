@@ -4457,10 +4457,9 @@ def add_skin_back(bakk):
 def add_skin_font():
     print('**********addFont')
     from enigma import addFont
-    addFont(FNT_Path + '/Lcdx.ttf', 'Lcdx', 100, 1)
+    addFont(join(FNT_Path, 'Lcdx.ttf'), 'Lcdx', 100, 1)
     addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-    addFont(join(str(FNT_Path), '/Inconsolata-Regular.ttf'), 'vav', 100,
-            1)  # lcd
+    addFont(join(FNT_Path, 'Inconsolata-Regular.ttf'), 'vav', 100, 1)
 
 
 def cfgmain(menuid, **kwargs):
