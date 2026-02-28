@@ -4463,7 +4463,7 @@ def add_skin_font():
         join(
             str(FNT_Path),
             'Inconsolata-Regular.ttf'),
-        'Vav',
+        'vav',
         100,
         1)  # lcd
 
