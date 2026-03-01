@@ -77,6 +77,10 @@ msgstr "- Technikai támogatás: Qu4k3, @KiddaC, @giorbak"
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktív automatikus csokorfrissítés"
 
+#, fuzzy
+msgid "Active or Disactive Ipv6."
+msgstr "Aktív vagy inaktív LAN Ipv6."
+
 msgid "Active or Disactive lan Ipv6."
 msgstr "Aktív vagy inaktív LAN Ipv6."
 
@@ -87,8 +91,16 @@ msgstr "Minden ország (%d)"
 msgid "At an interval hours or fixed time"
 msgstr "Órák időközönként vagy meghatározott időpontban"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "Órák időközönként vagy meghatározott időpontban"
+
 msgid "Author:"
 msgstr "Szerző:"
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "Automatikus frissítésű stream (perc):"
 
 msgid "Back"
 msgstr "Vissza"
@@ -135,6 +147,9 @@ msgstr "Összes törlése"
 msgid "Configuration saved successfully!"
 msgstr "Konfiguráció sikeresen mentve!"
 
+msgid "Configure Dns Server for Box."
+msgstr "Konfigurálja a DNS-kiszolgálót a Box számára."
+
 msgid "Configure Fonts."
 msgstr "Betűtípusok konfigurálása."
 
@@ -143,6 +158,10 @@ msgstr "Állítsa be a fő háttérképet."
 
 msgid "Configure at a fixed time"
 msgstr "Konfigurálás meghatározott időpontban"
+
+#, fuzzy
+msgid "Configure every interval of minutes from now"
+msgstr "Mostantól minden percnyi intervallum konfigurálása"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -392,6 +411,10 @@ msgstr "Menetrend típusa:"
 msgid "Scheduled List Update:"
 msgstr "Ütemezett lista frissítése:"
 
+#, fuzzy
+msgid "Scheduled List:"
+msgstr "Ütemezett lista frissítése:"
+
 msgid "Search"
 msgstr "Keresés"
 
@@ -406,6 +429,9 @@ msgstr "Keresés:"
 
 msgid "Select Background"
 msgstr "Háttér kiválasztása"
+
+msgid "Select DNS Server"
+msgstr "Válassza a DNS-kiszolgálót"
 
 msgid "Select Fonts"
 msgstr "Válassza a Betűtípusok lehetőséget"
@@ -496,24 +522,6 @@ msgstr "kisbetűk"
 
 msgid "seconds"
 msgstr ""
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "Órák időközönként vagy meghatározott időpontban"
-
-#, fuzzy
-#~ msgid "Auto-refresh stream (minutes):"
-#~ msgstr "Automatikus frissítésű stream (perc):"
-
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Konfigurálja a DNS-kiszolgálót a Box számára."
-
-#, fuzzy
-#~ msgid "Configure every interval of minutes from now"
-#~ msgstr "Mostantól minden percnyi intervallum konfigurálása"
-
-#~ msgid "Select DNS Server"
-#~ msgstr "Válassza a DNS-kiszolgálót"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - - -"

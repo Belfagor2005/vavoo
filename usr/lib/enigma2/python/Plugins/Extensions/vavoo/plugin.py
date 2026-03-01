@@ -420,7 +420,7 @@ cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
 # cfg.dns = ConfigSelection(default="Default", choices=mydns)
-cfg.fonts = ConfigSelection(default='vav', choices=fonts)
+cfg.fonts = ConfigSelection(default='MavenPro-Regular', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
 """
 cfg.default_view = ConfigSelection(
@@ -841,7 +841,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 help_text2
             )
         )
-        help_part1 = _("Active or Disactive lan Ipv6.")
+        help_part1 = _("Active or Disactive Ipv6.")
         help_part2 = _("Now %s") % cfg.ipv6.value
         help_text3 = help_part1 + "\n" + help_part2
 
@@ -854,7 +854,7 @@ class vavoo_config(Screen, ConfigListScreen):
         )
         self.list.append(
             getConfigListEntry(
-                _("Scheduled List Update:"),
+                _("Scheduled List:"),
                 cfg.autobouquetupdate,
                 _("Active Automatic Bouquet Update")))
         if cfg.autobouquetupdate.value is True:

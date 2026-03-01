@@ -85,6 +85,9 @@ msgstr ""
 msgid "Active Automatic Bouquet Update"
 msgstr ""
 
+msgid "Active or Disactive Ipv6."
+msgstr ""
+
 msgid "Active or Disactive lan Ipv6."
 msgstr ""
 
@@ -94,7 +97,13 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr ""
 
+msgid "At an interval of hours or at a fixed time"
+msgstr ""
+
 msgid "Author:"
+msgstr ""
+
+msgid "Auto-refresh stream (minutes):"
 msgstr ""
 
 msgid "Back"
@@ -142,6 +151,9 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+msgid "Configure Dns Server for Box."
+msgstr ""
+
 msgid "Configure Fonts."
 msgstr ""
 
@@ -149,6 +161,9 @@ msgid "Configure Main Background Image."
 msgstr ""
 
 msgid "Configure at a fixed time"
+msgstr ""
+
+msgid "Configure every interval of minutes from now"
 msgstr ""
 
 msgid "Configure interval minutes from now"
@@ -388,6 +403,9 @@ msgstr ""
 msgid "Scheduled List Update:"
 msgstr ""
 
+msgid "Scheduled List:"
+msgstr ""
+
 msgid "Search"
 msgstr ""
 
@@ -401,6 +419,9 @@ msgid "Search:"
 msgstr ""
 
 msgid "Select Background"
+msgstr ""
+
+msgid "Select DNS Server"
 msgstr ""
 
 msgid "Select Fonts"
