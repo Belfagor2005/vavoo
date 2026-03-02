@@ -84,9 +84,6 @@ msgstr "Aktif Otomatik Buket Güncelleme"
 msgid "Active or Disactive Ipv6."
 msgstr ""
 
-msgid "Active or Disactive lan Ipv6."
-msgstr ""
-
 msgid "All countries (%d)"
 msgstr ""
 
@@ -94,16 +91,8 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "Saatler aralığında veya sabit bir zamanda"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "Saatler aralığında veya sabit bir zamanda"
-
 msgid "Author:"
 msgstr ""
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Güncelleme aralığı (dakika):"
 
 msgid "Back"
 msgstr "Geri"
@@ -150,10 +139,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-#, fuzzy
-msgid "Configure Dns Server for Box."
-msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
-
 msgid "Configure Fonts."
 msgstr ""
 
@@ -162,10 +147,6 @@ msgstr ""
 
 msgid "Configure at a fixed time"
 msgstr "Sabit bir zamanda yapılandırın"
-
-#, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -405,10 +386,6 @@ msgid "Schedule type:"
 msgstr "Zamanlama türü:"
 
 #, fuzzy
-msgid "Scheduled List Update:"
-msgstr "Zamanlama türü:"
-
-#, fuzzy
 msgid "Scheduled List:"
 msgstr "Zamanlama türü:"
 
@@ -427,9 +404,6 @@ msgid "Search:"
 msgstr "Arama"
 
 msgid "Select Background"
-msgstr ""
-
-msgid "Select DNS Server"
 msgstr ""
 
 msgid "Select Fonts"
@@ -519,3 +493,23 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "Saatler aralığında veya sabit bir zamanda"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Güncelleme aralığı (dakika):"
+
+#, fuzzy
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
+
+#, fuzzy
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Zamanlama türü:"
