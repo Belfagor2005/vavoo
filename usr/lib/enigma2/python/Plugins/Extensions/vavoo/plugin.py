@@ -420,7 +420,7 @@ cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
 # cfg.dns = ConfigSelection(default="Default", choices=mydns)
-cfg.fonts = ConfigSelection(default='MavenPro-Regular', choices=fonts)
+cfg.fonts = ConfigSelection(default='MavenPro-Medium', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
 """
 cfg.default_view = ConfigSelection(
@@ -551,7 +551,7 @@ class m2list(MenuList):
             text_font_size = 34
         else:
             item_height = 50
-            text_font_size = 28
+            text_font_size = 22
         self.l.setItemHeight(item_height)
         self.l.setFont(0, gFont('Regular', text_font_size))
 
@@ -4459,7 +4459,7 @@ def add_skin_font():
     from enigma import addFont
     addFont(join(FNT_Path, 'Lcdx.ttf'), 'Lcdx', 100, 1)
     addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-    addFont(join(FNT_Path, 'Inconsolata-Regular.ttf'), 'vav', 100, 1)
+    addFont(join(FNT_Path, 'MavenPro-Medium.ttf'), 'vav', 100, 1)
 
 
 def cfgmain(menuid, **kwargs):
