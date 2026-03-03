@@ -295,10 +295,12 @@ class VavooProxy:
         if not self.base_sites:
             return
         old = self.base_sites[self.base_site_index]
-        self.base_site_index = (self.base_site_index + 1) % len(self.base_sites)
+        self.base_site_index = (self.base_site_index +
+                                1) % len(self.base_sites)
         self._update_endpoints()
         new = self.base_sites[self.base_site_index]
-        print("[Proxy] Switching base site: {0} -> {1} {2}".format(old, new, reason))
+        print(
+            "[Proxy] Switching base site: {0} -> {1} {2}".format(old, new, reason))
 
     def _robust_request(self, method, url, **kwargs):
         """Simplified and safer version"""
@@ -333,13 +335,15 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > TOKEN_REFRESH_AGE:
-                                print("[Token Monitor] Token old (" + str(int(token_age)) + "), refreshing...")
+                                print("[Token Monitor] Token old (" +
+                                      str(int(token_age)) + "), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
                     # ALSO: Send heartbeat to keep connections alive
                     try:
                         # Use current base site for heartbeat
-                        hb = self.base_sites[self.base_site_index].rstrip('/') + "/"
+                        hb = self.base_sites[self.base_site_index].rstrip(
+                            '/') + "/"
                         self.session.head(hb, timeout=5)
                         self.last_heartbeat = now
                     except Exception as e:
@@ -613,7 +617,8 @@ class VavooProxy:
 
                         try:
                             if e.response is not None and e.response.status_code == 451:
-                                self._switch_to_next_base("(HTTP 451 on catalog HTTPError)")
+                                self._switch_to_next_base(
+                                    "(HTTP 451 on catalog HTTPError)")
                                 if attempt < max_retries - 1:
                                     continue
                         except Exception:
@@ -795,7 +800,8 @@ class VavooProxy:
 
                 try:
                     if e.response is not None and e.response.status_code == 451:
-                        self._switch_to_next_base("(HTTP 451 on resolve HTTPError)")
+                        self._switch_to_next_base(
+                            "(HTTP 451 on resolve HTTPError)")
                         if attempt < max_retries - 1:
                             time.sleep(1)
                             continue

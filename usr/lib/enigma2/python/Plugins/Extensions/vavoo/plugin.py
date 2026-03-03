@@ -2090,8 +2090,7 @@ class MainVavoo(Screen):
                     fallback_url = FALLBACK_BASE_URL.rstrip("/") + "/channels"
 
                 print(
-                    "[PROXY] Primary source blocked/empty, trying mirror: {0}".format(
-                        fallback_url))
+                    "[PROXY] Primary source blocked/empty, trying mirror: {0}".format(fallback_url))
                 content2 = _try(fallback_url)
                 if content2 and content2 != HTTP_451_SENTINEL:
                     return content2
@@ -2645,7 +2644,9 @@ class vavoo(Screen):
             # 451-aware mirror fallback
             if (not content) or (content == HTTP_451_SENTINEL):
                 fb = url.replace("https://vavoo.to", FALLBACK_BASE_URL)
-                print("[Fallback] Primary source blocked/empty, trying mirror: %s" % fb)
+                print(
+                    "[Fallback] Primary source blocked/empty, trying mirror: %s" %
+                    fb)
                 content = getUrl(fb, timeout=10)
                 if content == HTTP_451_SENTINEL:
                     content = ""
