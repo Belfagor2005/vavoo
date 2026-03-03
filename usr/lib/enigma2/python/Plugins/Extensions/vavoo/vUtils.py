@@ -74,7 +74,7 @@ PY3 = version_info[0] == 3
 
 if PY3:
     from urllib.request import urlopen, Request
-    from urllib.error import URLError
+    from urllib.error import URLError, HTTPError
     ssl_context = ssl.create_default_context()
     # Disable old protocols when supported by current OpenSSL build.
     for _ssl_opt in (
@@ -85,7 +85,7 @@ if PY3:
         ssl_context.options |= getattr(ssl, _ssl_opt, 0)
     unichr_func = unichr
 else:
-    from urllib2 import urlopen, Request, URLError
+    from urllib2 import urlopen, Request, URLError, HTTPError
     ssl = None
     ssl_context = None
     unichr_func = chr
@@ -252,6 +252,9 @@ def getUrl(url, timeout=30, retries=3, backoff=2):
     """Fetch URL with exponential backoff retry logic"""
     import time
 
+    # detect 451
+    HTTP_451_SENTINEL = "__HTTP451__"
+
     headers = {'User-Agent': RequestAgent()}
 
     if not url:
@@ -280,6 +283,27 @@ def getUrl(url, timeout=30, retries=3, backoff=2):
                     timeout=timeout)
                 data = response.read()
                 return data
+
+        except HTTPError as e:
+
+            # detect 451
+            code = getattr(e, 'code', None)
+            if code == 451:
+                print("HTTP 451 for URL: {0}".format(url))
+                return HTTP_451_SENTINEL
+
+            if i < retries - 1:
+                wait_time = backoff ** i
+                print(
+                    "HTTP error {0} on attempt {1}, retrying in {2} seconds...".format(
+                        code, i + 1, wait_time))
+                time.sleep(wait_time)
+                continue
+            print(
+                "Failed after {0} attempts for URL: {1}".format(
+                    retries, url))
+            print("HTTPError: {0}".format(e))
+            return ""
 
         except (URLError, socket.timeout, socket.error) as e:
             err_no = getattr(e, 'errno', None)

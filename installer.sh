@@ -1,7 +1,7 @@
 #!/bin/bash
 
-version='1.50'
-changelog='\nFix Openwebif\nOffer coffee please :)'
+version='1.51'
+changelog='\nFix Error 501 Proxy - thanks Qua4k3\nOffer coffee please :)'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz

@@ -36,6 +36,7 @@ from re import compile, DOTALL
 from json import loads
 from sys import version_info
 
+
 try:
     import requests
 except Exception:
@@ -306,6 +307,10 @@ print('folder back: ', BackPath)
 
 # system
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
+# If vavoo.to returns HTTP 451 (Unavailable For Legal Reasons),
+# fall back to this mirror.
+FALLBACK_BASE_URL = "https://kool.to"
+HTTP_451_SENTINEL = "__HTTP451__"
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS92YXZvby9tYWluL2luc3RhbGxlci5zaA=='
 developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvdmF2b28='
@@ -2010,6 +2015,16 @@ class MainVavoo(Screen):
             if PY3:
                 content = ensure_str(content)
 
+            # 451-aware mirror fallback
+            if (not content) or (content == HTTP_451_SENTINEL):
+                fb = self.url.replace("https://vavoo.to", FALLBACK_BASE_URL)
+                print("[PROXY] HTTP 451: trying mirror %s" % fb)
+                content = getUrl(fb)
+                if PY3:
+                    content = ensure_str(content)
+                if content == HTTP_451_SENTINEL:
+                    content = ""
+
             if not content:
                 self["name"].setText(to_string("Error: No data received"))
                 return
@@ -2054,10 +2069,38 @@ class MainVavoo(Screen):
         return options
 
     def _get_content(self):
-        """Get data directly from vavoo.to"""
-        content = getUrl(self.url)
-        if PY3:
-            content = ensure_str(content)
+        """Get catalog content with 451-aware fallback to kool.to"""
+
+        def _try(url):
+            data = getUrl(url)
+            if PY3:
+                data = ensure_str(data)
+            return data
+
+        content = _try(self.url)
+
+        # Detect 451 or empty payload and try mirror
+        if (not content) or (content == HTTP_451_SENTINEL):
+            try:
+                if "vavoo.to" in self.url:
+                    fallback_url = self.url.replace(
+                        "https://vavoo.to", FALLBACK_BASE_URL)
+                else:
+                    # If self.url was altered somewhere, still try mirror
+                    fallback_url = FALLBACK_BASE_URL.rstrip("/") + "/channels"
+
+                print(
+                    "[PROXY] Primary source blocked/empty, trying mirror: {0}".format(
+                        fallback_url))
+                content2 = _try(fallback_url)
+                if content2 and content2 != HTTP_451_SENTINEL:
+                    return content2
+            except Exception as e:
+                print("[PROXY] Mirror fallback failed: %s" % str(e))
+
+        # If still blocked, return empty so UI shows the existing error
+        if content == HTTP_451_SENTINEL:
+            return ""
         return content
 
     def _parse_json(self, content):
@@ -2598,6 +2641,14 @@ class vavoo(Screen):
             # Retrieve data directly from vavoo.to
             url = vUtils.b64decoder(stripurl)
             content = getUrl(url, timeout=10)
+
+            # 451-aware mirror fallback
+            if (not content) or (content == HTTP_451_SENTINEL):
+                fb = url.replace("https://vavoo.to", FALLBACK_BASE_URL)
+                print("[Fallback] Primary source blocked/empty, trying mirror: %s" % fb)
+                content = getUrl(fb, timeout=10)
+                if content == HTTP_451_SENTINEL:
+                    content = ""
 
             if not content:
                 self['name'].setText(to_string("Error: No data received"))

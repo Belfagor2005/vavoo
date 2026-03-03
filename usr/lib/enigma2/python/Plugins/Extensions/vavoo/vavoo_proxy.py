@@ -35,7 +35,7 @@ import time
 import threading
 import socket
 from json import loads, dumps
-import threading
+# import threading
 
 _starting_lock = threading.Lock()
 _starting = False
@@ -101,8 +101,9 @@ PORT = 4323
 GEOIP_URL = "https://www.vavoo.tv/geoip"
 PING_URL = "https://www.lokke.app/api/app/ping"
 PING_URL2 = "https://www.vavoo.tv/api/app/ping"
-CATALOG_URL = "https://vavoo.to/mediahubmx-catalog.json"
-RESOLVE_URL = "https://vavoo.to/mediahubmx-resolve.json"
+
+# Primary + mirror. Some regions get HTTP 451 from the primary.
+BASE_SITES = ["https://vavoo.to", "https://kool.to"]
 
 HEADERS = {
     "accept": "*/*",
@@ -273,10 +274,31 @@ class VavooProxy:
         self.server = None
         self.start_time = time.time()
 
+        # Mirror-aware endpoints
+        self.base_sites = list(BASE_SITES)
+        self.base_site_index = 0
+        self._update_endpoints()
+
         # 3. Start periodic refresh and Token Monitor
         self.start_periodic_refresh()
         self.start_token_monitor()
         print("[Proxy] Initialized at " + time.ctime())
+
+    def _update_endpoints(self):
+        """Update API endpoints from the current base site."""
+        base = self.base_sites[self.base_site_index].rstrip('/')
+        self.catalog_url = base + "/mediahubmx-catalog.json"
+        self.resolve_url = base + "/mediahubmx-resolve.json"
+
+    def _switch_to_next_base(self, reason=""):
+        """Switch to next mirror base site."""
+        if not self.base_sites:
+            return
+        old = self.base_sites[self.base_site_index]
+        self.base_site_index = (self.base_site_index + 1) % len(self.base_sites)
+        self._update_endpoints()
+        new = self.base_sites[self.base_site_index]
+        print("[Proxy] Switching base site: {0} -> {1} {2}".format(old, new, reason))
 
     def _robust_request(self, method, url, **kwargs):
         """Simplified and safer version"""
@@ -311,13 +333,14 @@ class VavooProxy:
                             token_age = now - self.addon_sig_data["ts"]
                             # Refresh if token older than 8 minutes (480s)
                             if token_age > TOKEN_REFRESH_AGE:
-                                print("[Token Monitor] Token old (" + \
-                                      str(int(token_age)) + "s), refreshing...")
+                                print("[Token Monitor] Token old (" + str(int(token_age)) + "), refreshing...")
                                 self.refresh_addon_sig_if_needed(force=True)
 
                     # ALSO: Send heartbeat to keep connections alive
                     try:
-                        self.session.head("https://vavoo.to/", timeout=5)
+                        # Use current base site for heartbeat
+                        hb = self.base_sites[self.base_site_index].rstrip('/') + "/"
+                        self.session.head(hb, timeout=5)
                         self.last_heartbeat = now
                     except Exception as e:
                         print("[Token Monitor] Heartbeat error: " + str(e))
@@ -545,11 +568,24 @@ class VavooProxy:
                                 page, attempt + 1, max_retries))
 
                         r_catalog = self.session.post(
-                            CATALOG_URL,
+                            self.catalog_url,
                             json=catalog_payload,
                             headers=catalog_headers,
                             timeout=30
                         )
+
+                        # 451 -> try mirror immediately
+                        if r_catalog.status_code == 451:
+                            self._switch_to_next_base("(HTTP 451 on catalog)")
+                            if attempt < max_retries - 1:
+                                continue
+                            # last attempt: try once on the new base
+                            r_catalog = self.session.post(
+                                self.catalog_url,
+                                json=catalog_payload,
+                                headers=catalog_headers,
+                                timeout=30
+                            )
 
                         if r_catalog.status_code == 502:
                             print(
@@ -574,6 +610,14 @@ class VavooProxy:
                         last_exception = e
                         print("[Proxy] HTTP error on page {0}: {1}"
                               .format(page, e))
+
+                        try:
+                            if e.response is not None and e.response.status_code == 451:
+                                self._switch_to_next_base("(HTTP 451 on catalog HTTPError)")
+                                if attempt < max_retries - 1:
+                                    continue
+                        except Exception:
+                            pass
 
                         if e.response.status_code == 502 and attempt < max_retries - 1:
                             time.sleep(2 ** attempt)
@@ -697,11 +741,25 @@ class VavooProxy:
                 )
 
                 r_resolve = self.session.post(
-                    RESOLVE_URL,
+                    self.resolve_url,
                     json=resolve_payload,
                     headers=resolve_headers,
                     timeout=15
                 )
+
+                # 451 -> switch mirror and retry
+                if r_resolve.status_code == 451:
+                    self._switch_to_next_base("(HTTP 451 on resolve)")
+                    if attempt < max_retries - 1:
+                        time.sleep(1)
+                        continue
+                    # last attempt: try once more on the new base
+                    r_resolve = self.session.post(
+                        self.resolve_url,
+                        json=resolve_payload,
+                        headers=resolve_headers,
+                        timeout=15
+                    )
 
                 # Handle HTTP errors
                 if r_resolve.status_code == 502:
@@ -734,6 +792,15 @@ class VavooProxy:
                     "[Proxy] HTTP error in resolve attempt %d: %s" %
                     (attempt + 1, str(e))
                 )
+
+                try:
+                    if e.response is not None and e.response.status_code == 451:
+                        self._switch_to_next_base("(HTTP 451 on resolve HTTPError)")
+                        if attempt < max_retries - 1:
+                            time.sleep(1)
+                            continue
+                except Exception:
+                    pass
                 if (
                     e.response is not None and
                     e.response.status_code == 502 and

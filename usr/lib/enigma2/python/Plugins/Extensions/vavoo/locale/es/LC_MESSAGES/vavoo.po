@@ -89,6 +89,9 @@ msgstr "Activar Actualización Automática de Bouquet"
 msgid "Active or Disactive Ipv6."
 msgstr ""
 
+msgid "Active or Disactive lan Ipv6."
+msgstr ""
+
 msgid "All countries (%d)"
 msgstr ""
 
@@ -96,8 +99,16 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "Con un intervalo de tiempo o una hora fija"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "Con un intervalo de tiempo o una hora fija"
+
 msgid "Author:"
 msgstr ""
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "Intervalo de actualización (minutos):"
 
 msgid "Back"
 msgstr "Volver"
@@ -145,6 +156,10 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+#, fuzzy
+msgid "Configure Dns Server for Box."
+msgstr "Configurar los intervalo de minutos a partir de ahora"
+
 msgid "Configure Fonts."
 msgstr ""
 
@@ -153,6 +168,10 @@ msgstr ""
 
 msgid "Configure at a fixed time"
 msgstr "Configurar hora fija"
+
+#, fuzzy
+msgid "Configure every interval of minutes from now"
+msgstr "Configurar los intervalo de minutos a partir de ahora"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -394,6 +413,10 @@ msgid "Schedule type:"
 msgstr "Tipo Programación:"
 
 #, fuzzy
+msgid "Scheduled List Update:"
+msgstr "Tipo Programación:"
+
+#, fuzzy
 msgid "Scheduled List:"
 msgstr "Tipo Programación:"
 
@@ -412,6 +435,9 @@ msgid "Search:"
 msgstr "Buscar"
 
 msgid "Select Background"
+msgstr ""
+
+msgid "Select DNS Server"
 msgstr ""
 
 msgid "Select Fonts"
@@ -501,26 +527,6 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "Con un intervalo de tiempo o una hora fija"
-
-#, fuzzy
-#~ msgid "Auto-refresh stream (minutes):"
-#~ msgstr "Intervalo de actualización (minutos):"
-
-#, fuzzy
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Configurar los intervalo de minutos a partir de ahora"
-
-#, fuzzy
-#~ msgid "Configure every interval of minutes from now"
-#~ msgstr "Configurar los intervalo de minutos a partir de ahora"
-
-#, fuzzy
-#~ msgid "Scheduled List Update:"
-#~ msgstr "Tipo Programación:"
 
 #, fuzzy, python-brace-format
 #~| msgid ""
