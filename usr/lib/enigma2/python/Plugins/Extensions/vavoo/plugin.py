@@ -2090,8 +2090,7 @@ class MainVavoo(Screen):
                     fallback_url = FALLBACK_BASE_URL.rstrip("/") + "/channels"
 
                 print(
-                    "[PROXY] Primary source blocked/empty, trying mirror: {0}".format(
-                        fallback_url))
+                    "[PROXY] Primary source blocked/empty, trying mirror: {0}".format(fallback_url))
                 content2 = _try(fallback_url)
                 if content2 and content2 != HTTP_451_SENTINEL:
                     return content2
