@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2026-01-27 20:28+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -82,23 +83,14 @@ msgstr "Attivare aggiornamento automatico del bouquet"
 msgid "Active or Disactive Ipv6."
 msgstr "Attivare o disattivare Ipv6."
 
-msgid "Active or Disactive lan Ipv6."
-msgstr "Attivare o disattivare Lan Ipv6."
-
 msgid "All countries (%d)"
 msgstr "Tutti i paesi (%d)"
 
 msgid "At an interval hours or fixed time"
 msgstr "A intervalli di ore o tempo fisso"
 
-msgid "At an interval of hours or at a fixed time"
-msgstr "A intervalli di ore o orario fisso"
-
 msgid "Author:"
 msgstr "Autore:"
-
-msgid "Auto-refresh stream (minutes):"
-msgstr "Aggiornamento automatico flusso (minuti):"
 
 msgid "Back"
 msgstr "Torna"
@@ -145,9 +137,6 @@ msgstr "Pulisci Tutto"
 msgid "Configuration saved successfully!"
 msgstr "Configurazione salvata con successo!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Configurare il server DNS per Box."
-
 msgid "Configure Fonts."
 msgstr "Configura Fonts."
 
@@ -156,9 +145,6 @@ msgstr "Configura Immagine di Background."
 
 msgid "Configure at a fixed time"
 msgstr "Configura a un'ora fissa"
-
-msgid "Configure every interval of minutes from now"
-msgstr "Configura ogni intervallo di minuti da adesso"
 
 msgid "Configure interval minutes from now"
 msgstr "Configura l'intervallo in minuti da adesso"
@@ -394,9 +380,6 @@ msgstr "Salvato in: %s"
 msgid "Schedule type:"
 msgstr "Tipo programmazione:"
 
-msgid "Scheduled List Update:"
-msgstr "Aggiornamento Liste Programmato:"
-
 msgid "Scheduled List:"
 msgstr "Aggiornamento Liste:"
 
@@ -414,9 +397,6 @@ msgstr "Cerca:"
 
 msgid "Select Background"
 msgstr "Seleziona Sfondo"
-
-msgid "Select DNS Server"
-msgstr "Seleziona Server DNS"
 
 msgid "Select Fonts"
 msgstr "Seleziona Fonts"
@@ -504,6 +484,27 @@ msgstr "minuscola"
 
 msgid "seconds"
 msgstr "secondi"
+
+#~ msgid "Active or Disactive lan Ipv6."
+#~ msgstr "Attivare o disattivare Lan Ipv6."
+
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "A intervalli di ore o orario fisso"
+
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Aggiornamento automatico flusso (minuti):"
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Configurare il server DNS per Box."
+
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Configura ogni intervallo di minuti da adesso"
+
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Aggiornamento Liste Programmato:"
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Seleziona Server DNS"
 
 #~ msgid "Error starting stream via proxy"
 #~ msgstr "Errore durante l'avvio dello streaming tramite proxy"

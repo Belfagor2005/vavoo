@@ -2,7 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: vavoo\n"
-"POT-Creation-Date: 2026-01-26 21:57+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: \n"
@@ -89,12 +90,6 @@ msgstr ""
 "Aktywna lub nieaktywna sieć LAN Ipv6.\n"
 "Teraz %s"
 
-#, fuzzy
-msgid "Active or Disactive lan Ipv6."
-msgstr ""
-"Aktywna lub nieaktywna sieć LAN Ipv6.\n"
-"Teraz %s"
-
 msgid "All countries (%d)"
 msgstr ""
 
@@ -102,16 +97,8 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "W odstępie minut lub o ustalonej porze"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "W odstępie minut lub o ustalonej porze"
-
 msgid "Author:"
 msgstr ""
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Częstotliwość aktualizacji (minuty):"
 
 msgid "Back"
 msgstr "Wstecz"
@@ -158,9 +145,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-msgid "Configure Dns Server for Box."
-msgstr "Skonfiguruj serwer DNS dla Box."
-
 msgid "Configure Fonts."
 msgstr ""
 
@@ -169,10 +153,6 @@ msgstr "Skonfiguruj główny obraz tła."
 
 msgid "Configure at a fixed time"
 msgstr "Skonfiguruj o ustalonej godzinie"
-
-#, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Od teraz skonfiguruj każdy interwał minutowy"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -416,10 +396,6 @@ msgid "Schedule type:"
 msgstr "Typ harmonogramu:"
 
 #, fuzzy
-msgid "Scheduled List Update:"
-msgstr "Zaplanowana aktualizacja bukietów:"
-
-#, fuzzy
 msgid "Scheduled List:"
 msgstr "Zaplanowana aktualizacja bukietów:"
 
@@ -439,9 +415,6 @@ msgstr "Szukaj"
 
 msgid "Select Background"
 msgstr "Wybierz tło"
-
-msgid "Select DNS Server"
-msgstr "Wybierz serwer DNS"
 
 msgid "Select Fonts"
 msgstr "Wybierz czcionki"
@@ -533,6 +506,34 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Active or Disactive lan Ipv6."
+#~ msgstr ""
+#~ "Aktywna lub nieaktywna sieć LAN Ipv6.\n"
+#~ "Teraz %s"
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "W odstępie minut lub o ustalonej porze"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Częstotliwość aktualizacji (minuty):"
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Skonfiguruj serwer DNS dla Box."
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Od teraz skonfiguruj każdy interwał minutowy"
+
+#, fuzzy
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Zaplanowana aktualizacja bukietów:"
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Wybierz serwer DNS"
 
 #~ msgid "Scheduled Bouquet Update:"
 #~ msgstr "Zaplanowana aktualizacja bukietów:"
