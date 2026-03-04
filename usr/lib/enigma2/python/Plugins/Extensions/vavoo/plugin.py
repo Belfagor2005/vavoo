@@ -1602,7 +1602,8 @@ class MainVavoo(Screen):
             'OkCancelActions',
             'ButtonSetupActions',
             'InfobarEPGActions',
-            'EPGSelectActions'
+            'EPGSelectActions',
+            'ColorActions'
         ]
         self['actions'] = ActionMap(actions_list, actions, -1)
 
@@ -2090,7 +2091,8 @@ class MainVavoo(Screen):
                     fallback_url = FALLBACK_BASE_URL.rstrip("/") + "/channels"
 
                 print(
-                    "[PROXY] Primary source blocked/empty, trying mirror: {0}".format(fallback_url))
+                    "[PROXY] Primary source blocked/empty, trying mirror: {0}".format(
+                        fallback_url))
                 content2 = _try(fallback_url)
                 if content2 and content2 != HTTP_451_SENTINEL:
                     return content2
@@ -2513,7 +2515,8 @@ class vavoo(Screen):
                 'OkCancelActions',
                 'ButtonSetupActions',
                 'InfobarEPGActions',
-                'EPGSelectActions'
+                'EPGSelectActions',
+                'ColorActions'
             ],
             {
                 "prevBouquet": self.chDown,
