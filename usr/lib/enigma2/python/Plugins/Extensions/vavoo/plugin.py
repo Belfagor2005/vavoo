@@ -4467,26 +4467,35 @@ def autostart(reason, session=None, **kwargs):
     global auto_start_timer
     global _session
 
+    # Enigma2: reason == 0 means startup/session start
     if reason == 0 and _session is None:
         if session is not None:
             _session = session
 
+            # Always ensure proxy is running when plugin starts (if enabled)
+            if cfg.proxy_enabled.value:
+                try:
+                    from .vUtils import is_proxy_running, is_proxy_ready
+                    from .vavoo_proxy import run_proxy_in_background
+
+                    if not is_proxy_running():
+                        print("[Vavoo] Proxy not running at startup -> starting...")
+                        run_proxy_in_background()
+                    else:
+                        # If running but not ready, try restarting once
+                        if not is_proxy_ready(timeout=2):
+                            print("[Vavoo] Proxy running but not ready -> restarting...")
+                            run_proxy_in_background()
+                except Exception as e:
+                    print("[Vavoo] Startup proxy check error: " + str(e))
+
+            # Keep existing autobouquet logic as-is
             if cfg.autobouquetupdate.value and cfg.proxy_enabled.value:
-                from .vavoo_proxy import run_proxy_in_background
-
-                # Start proxy in background
-                run_proxy_in_background()
-
-                # Start AutoStartTimer if not already running
                 if auto_start_timer is None:
                     auto_start_timer = AutoStartTimer()
             else:
-                print(
-                    "[Vavoo] Auto-update disabled or proxy disabled"
-                )
-
+                print("[Vavoo] Auto-update disabled or proxy disabled")
     return
-
 
 def check_configuring():
     """Check for new config values for auto start"""
