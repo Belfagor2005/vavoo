@@ -261,6 +261,20 @@ def get_enigma2_path():
             return path.rstrip('/')
     return '/etc/enigma2'
 
+def _is_vavoo_already_open(session):
+    try:
+        # dialog_stack entries are usually tuples like (dialog, ...)
+        for entry in getattr(session, "dialog_stack", []):
+            dlg = entry[0] if isinstance(entry, (list, tuple)) and entry else entry
+            if dlg is None:
+                continue
+            name = dlg.__class__.__name__
+            if name in ("startVavoo", "MainVavoo", "vavoo"):
+                return True
+    except Exception:
+        pass
+    return False
+
 
 # set plugin
 global HALIGN, BackPath, FONTSTYPE, FNTPath
@@ -1480,15 +1494,13 @@ class startVavoo(Screen):
         self["version"].setText(to_string("V." + __version__))
 
     def clsgo(self):
+        global first
         if first is True:
-            self.session.openWithCallback(self.passe, MainVavoo)
+            first = False
+            self.session.open(MainVavoo)
+            self.close()
         else:
             self.close()
-
-    def passe(self, rest=None):
-        global first
-        first = False
-        self.close()
 
 
 class MainVavoo(Screen):
@@ -4608,6 +4620,14 @@ def checkInternet():
 
 def main(session, **kwargs):
     try:
+        if _is_vavoo_already_open(session):
+            session.open(
+                MessageBox,
+                _("Vavoo is already running."),
+                MessageBox.TYPE_INFO,
+                timeout=5
+            )
+            return
         if not checkInternet():
             session.open(
                 MessageBox,
