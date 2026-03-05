@@ -72,6 +72,20 @@ except ImportError:
     print("[Proxy] Python 3 detected")
 
 
+# Threaded HTTP server (prevents one streaming client from blocking others)
+try:
+    # Py3
+    from socketserver import ThreadingMixIn
+except ImportError:
+    # Py2
+    from SocketServer import ThreadingMixIn
+
+
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+
+
 # ========== CONFIGURAZIONE ==========
 """
 VAVOO PROXY ENDPOINTS (127.0.0.1:4323)
@@ -243,7 +257,7 @@ class ProxyHealthMonitor:
             proxy = VavooProxy()
 
             if proxy.initialize_proxy():
-                server = HTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
+                server = ThreadedHTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
                 proxy.server = server
                 server_thread = threading.Thread(target=server.serve_forever)
                 server_thread.setDaemon(True)
@@ -1354,7 +1368,7 @@ def start_proxy():
                     print("[✗] Max restart attempts reached")
                     return False
 
-            server = HTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
+            server = ThreadedHTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
             server.timeout = 30
             server.request_queue_size = 10
             proxy.server = server
