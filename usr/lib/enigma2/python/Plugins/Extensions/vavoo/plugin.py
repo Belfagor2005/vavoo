@@ -2249,8 +2249,70 @@ class MainVavoo(Screen):
                 print("Error in deleteBouquets: " + str(error))
 
     def goConfig(self):
-        self.session.open(vavoo_config)
+        self.session.openWithCallback(self._on_config_closed, vavoo_config)
 
+    def _on_config_closed(self, *args, **kwargs):
+        # called when user exits config
+        self._apply_proxy_setting_and_refresh_ui()
+
+    def _apply_proxy_setting_and_refresh_ui(self):
+        try:
+            if cfg.proxy_enabled.value:
+                # Start proxy (already also done in config.save, but safe)
+                self.start_vavoo_proxy()
+
+                # Start timers if they don't exist or were stopped
+                if not hasattr(self, "proxy_watchdog_timer"):
+                    self.proxy_watchdog_timer = eTimer()
+                    try:
+                        self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
+                    except BaseException:
+                        self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
+
+                if not hasattr(self, "proxy_monitor_timer"):
+                    self.proxy_monitor_timer = eTimer()
+                    try:
+                        self.proxy_monitor_timer.timeout.connect(self._check_and_update_proxy_status)
+                    except BaseException:
+                        self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
+
+                # (Re)start them
+                self.proxy_watchdog_timer.start(60000)
+                self.proxy_monitor_timer.start(10000)
+
+                # Refresh labels + list
+                self["proxy_status"].setText(_("Checking proxy..."))
+                try:
+                    self._update_proxy_status_display()
+                except Exception:
+                    pass
+
+                # If previously proxy disabled, cat() would have returned early.
+                # Rebuild list now that proxy is enabled.
+                self.cat()
+
+            else:
+                # Stop timers if running
+                for tname in ("proxy_watchdog_timer", "proxy_monitor_timer"):
+                    if hasattr(self, tname):
+                        try:
+                            getattr(self, tname).stop()
+                        except Exception:
+                            pass
+
+                # Stop proxy process
+                from .vavoo_proxy import shutdown_proxy
+                shutdown_proxy()
+
+                # Update UI immediately
+                self["proxy_status"].setText(_("Proxy Disabled"))
+                self["name"].setText(_("Proxy disabled"))
+                self.cat_list = []
+                self._update_ui()
+
+        except Exception as e:
+            print("[MainVavoo] Error applying proxy setting: " + str(e))
+        
     def info(self):
         """Display plugin information"""
         message_parts = []
