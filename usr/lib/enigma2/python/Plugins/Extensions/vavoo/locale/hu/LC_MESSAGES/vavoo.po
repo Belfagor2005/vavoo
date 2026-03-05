@@ -479,6 +479,9 @@ msgstr ""
 "\n"
 "(%s fájl törölve)"
 
+msgid "Vavoo is already running."
+msgstr ""
+
 msgid "Version:"
 msgstr "Verzió:"
 

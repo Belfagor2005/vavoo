@@ -477,6 +477,9 @@ msgstr ""
 "Vavoo kytice úspěšně odstraněny!\n"
 "(Smazáno %s souborů)"
 
+msgid "Vavoo is already running."
+msgstr ""
+
 msgid "Version:"
 msgstr "Verze:"
 

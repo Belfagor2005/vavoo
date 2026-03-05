@@ -6,6 +6,7 @@
 
 
 
+
 msgid "(%(count)d channels)"
 msgstr ""
 
@@ -454,6 +455,9 @@ msgid "Vavoo Stream Live Plugin"
 msgstr ""
 
 msgid "Vavoo bouquets removed successfully!"
+msgstr ""
+
+msgid "Vavoo is already running."
 msgstr ""
 
 msgid "Version:"

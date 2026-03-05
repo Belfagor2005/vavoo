@@ -469,6 +469,9 @@ msgstr "Vavoo Stream Live Plugin"
 msgid "Vavoo bouquets removed successfully!"
 msgstr "Vavoo bouquets removed successfully!"
 
+msgid "Vavoo is already running."
+msgstr ""
+
 msgid "Version:"
 msgstr "Version:"
 

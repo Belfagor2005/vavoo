@@ -476,6 +476,9 @@ msgstr "Vavoo Diffusion en direct"
 msgid "Vavoo bouquets removed successfully!"
 msgstr ""
 
+msgid "Vavoo is already running."
+msgstr ""
+
 msgid "Version:"
 msgstr ""
 

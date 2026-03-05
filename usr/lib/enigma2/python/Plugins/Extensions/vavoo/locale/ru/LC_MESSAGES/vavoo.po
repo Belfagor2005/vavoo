@@ -477,6 +477,9 @@ msgstr ""
 "Букеты Vavoo успешно удалены!\n"
 "(Удалено %s файлов)"
 
+msgid "Vavoo is already running."
+msgstr ""
+
 msgid "Version:"
 msgstr "Версия:"
 

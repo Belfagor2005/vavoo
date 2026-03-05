@@ -485,6 +485,9 @@ msgstr "Vavoo直播"
 msgid "Vavoo bouquets removed successfully!"
 msgstr ""
 
+msgid "Vavoo is already running."
+msgstr ""
+
 msgid "Version:"
 msgstr ""
 
