@@ -1,7 +1,7 @@
 #!/bin/bash
 
-version='1.52'
-changelog='\nFix Export Bouquet\nOffer coffee please :)'
+version='1.53'
+changelog='\nProxy Improvements\nPy2 minimal fix\nThanks Qu4k3\nOffer coffee please :)'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz

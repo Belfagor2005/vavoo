@@ -261,6 +261,20 @@ def get_enigma2_path():
             return path.rstrip('/')
     return '/etc/enigma2'
 
+def _is_vavoo_already_open(session):
+    try:
+        # dialog_stack entries are usually tuples like (dialog, ...)
+        for entry in getattr(session, "dialog_stack", []):
+            dlg = entry[0] if isinstance(entry, (list, tuple)) and entry else entry
+            if dlg is None:
+                continue
+            name = dlg.__class__.__name__
+            if name in ("startVavoo", "MainVavoo", "vavoo"):
+                return True
+    except Exception:
+        pass
+    return False
+
 
 # set plugin
 global HALIGN, BackPath, FONTSTYPE, FNTPath
@@ -1480,15 +1494,13 @@ class startVavoo(Screen):
         self["version"].setText(to_string("V." + __version__))
 
     def clsgo(self):
+        global first
         if first is True:
-            self.session.openWithCallback(self.passe, MainVavoo)
+            first = False
+            self.session.open(MainVavoo)
+            self.close()
         else:
             self.close()
-
-    def passe(self, rest=None):
-        global first
-        first = False
-        self.close()
 
 
 class MainVavoo(Screen):
@@ -2249,8 +2261,70 @@ class MainVavoo(Screen):
                 print("Error in deleteBouquets: " + str(error))
 
     def goConfig(self):
-        self.session.open(vavoo_config)
+        self.session.openWithCallback(self._on_config_closed, vavoo_config)
 
+    def _on_config_closed(self, *args, **kwargs):
+        # called when user exits config
+        self._apply_proxy_setting_and_refresh_ui()
+
+    def _apply_proxy_setting_and_refresh_ui(self):
+        try:
+            if cfg.proxy_enabled.value:
+                # Start proxy (already also done in config.save, but safe)
+                self.start_vavoo_proxy()
+
+                # Start timers if they don't exist or were stopped
+                if not hasattr(self, "proxy_watchdog_timer"):
+                    self.proxy_watchdog_timer = eTimer()
+                    try:
+                        self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
+                    except BaseException:
+                        self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
+
+                if not hasattr(self, "proxy_monitor_timer"):
+                    self.proxy_monitor_timer = eTimer()
+                    try:
+                        self.proxy_monitor_timer.timeout.connect(self._check_and_update_proxy_status)
+                    except BaseException:
+                        self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
+
+                # (Re)start them
+                self.proxy_watchdog_timer.start(60000)
+                self.proxy_monitor_timer.start(10000)
+
+                # Refresh labels + list
+                self["proxy_status"].setText(_("Checking proxy..."))
+                try:
+                    self._update_proxy_status_display()
+                except Exception:
+                    pass
+
+                # If previously proxy disabled, cat() would have returned early.
+                # Rebuild list now that proxy is enabled.
+                self.cat()
+
+            else:
+                # Stop timers if running
+                for tname in ("proxy_watchdog_timer", "proxy_monitor_timer"):
+                    if hasattr(self, tname):
+                        try:
+                            getattr(self, tname).stop()
+                        except Exception:
+                            pass
+
+                # Stop proxy process
+                from .vavoo_proxy import shutdown_proxy
+                shutdown_proxy()
+
+                # Update UI immediately
+                self["proxy_status"].setText(_("Proxy Disabled"))
+                self["name"].setText(_("Proxy disabled"))
+                self.cat_list = []
+                self._update_ui()
+
+        except Exception as e:
+            print("[MainVavoo] Error applying proxy setting: " + str(e))
+        
     def info(self):
         """Display plugin information"""
         message_parts = []
@@ -4467,26 +4541,35 @@ def autostart(reason, session=None, **kwargs):
     global auto_start_timer
     global _session
 
+    # Enigma2: reason == 0 means startup/session start
     if reason == 0 and _session is None:
         if session is not None:
             _session = session
 
+            # Always ensure proxy is running when plugin starts (if enabled)
+            if cfg.proxy_enabled.value:
+                try:
+                    from .vUtils import is_proxy_running, is_proxy_ready
+                    from .vavoo_proxy import run_proxy_in_background
+
+                    if not is_proxy_running():
+                        print("[Vavoo] Proxy not running at startup -> starting...")
+                        run_proxy_in_background()
+                    else:
+                        # If running but not ready, try restarting once
+                        if not is_proxy_ready(timeout=2):
+                            print("[Vavoo] Proxy running but not ready -> restarting...")
+                            run_proxy_in_background()
+                except Exception as e:
+                    print("[Vavoo] Startup proxy check error: " + str(e))
+
+            # Keep existing autobouquet logic as-is
             if cfg.autobouquetupdate.value and cfg.proxy_enabled.value:
-                from .vavoo_proxy import run_proxy_in_background
-
-                # Start proxy in background
-                run_proxy_in_background()
-
-                # Start AutoStartTimer if not already running
                 if auto_start_timer is None:
                     auto_start_timer = AutoStartTimer()
             else:
-                print(
-                    "[Vavoo] Auto-update disabled or proxy disabled"
-                )
-
+                print("[Vavoo] Auto-update disabled or proxy disabled")
     return
-
 
 def check_configuring():
     """Check for new config values for auto start"""
@@ -4537,6 +4620,14 @@ def checkInternet():
 
 def main(session, **kwargs):
     try:
+        if _is_vavoo_already_open(session):
+            session.open(
+                MessageBox,
+                _("Vavoo is already running."),
+                MessageBox.TYPE_INFO,
+                timeout=5
+            )
+            return
         if not checkInternet():
             session.open(
                 MessageBox,
