@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 
@@ -396,7 +396,7 @@ class VavooProxy:
 
         self.refresh_timer = threading.Timer(
             TOKEN_REFRESH_AGE, self._periodic_refresh_task)
-        self.refresh_timer.daemon = True
+        self.refresh_timer.setDaemon(True)
         self.refresh_timer.start()
         print("[Proxy] Periodic refresh scheduled (480s)")
 

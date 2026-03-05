@@ -61,7 +61,12 @@ localeInit()
 language.addCallback(localeInit)
 
 file_path = "/usr/lib/enigma2/python/Plugins/Extensions/vavoo/start_proxy.sh"
-subprocess.run(["chmod", "+x", file_path])
+try:
+    subprocess.run(["chmod", "+x", file_path])
+except AttributeError:
+    subprocess.call(["chmod", "+x", file_path])
+except Exception:
+    pass
 
 country_codes = {
     "Albania": "al",
