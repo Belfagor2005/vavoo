@@ -261,11 +261,13 @@ def get_enigma2_path():
             return path.rstrip('/')
     return '/etc/enigma2'
 
+
 def _is_vavoo_already_open(session):
     try:
         # dialog_stack entries are usually tuples like (dialog, ...)
         for entry in getattr(session, "dialog_stack", []):
-            dlg = entry[0] if isinstance(entry, (list, tuple)) and entry else entry
+            dlg = entry[0] if isinstance(
+                entry, (list, tuple)) and entry else entry
             if dlg is None:
                 continue
             name = dlg.__class__.__name__
@@ -2277,16 +2279,20 @@ class MainVavoo(Screen):
                 if not hasattr(self, "proxy_watchdog_timer"):
                     self.proxy_watchdog_timer = eTimer()
                     try:
-                        self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.timeout.connect(
+                            self._proxy_watchdog_check)
                     except BaseException:
-                        self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.callback.append(
+                            self._proxy_watchdog_check)
 
                 if not hasattr(self, "proxy_monitor_timer"):
                     self.proxy_monitor_timer = eTimer()
                     try:
-                        self.proxy_monitor_timer.timeout.connect(self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.timeout.connect(
+                            self._check_and_update_proxy_status)
                     except BaseException:
-                        self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.callback.append(
+                            self._check_and_update_proxy_status)
 
                 # (Re)start them
                 self.proxy_watchdog_timer.start(60000)
@@ -2324,7 +2330,7 @@ class MainVavoo(Screen):
 
         except Exception as e:
             print("[MainVavoo] Error applying proxy setting: " + str(e))
-        
+
     def info(self):
         """Display plugin information"""
         message_parts = []
@@ -4558,7 +4564,8 @@ def autostart(reason, session=None, **kwargs):
                     else:
                         # If running but not ready, try restarting once
                         if not is_proxy_ready(timeout=2):
-                            print("[Vavoo] Proxy running but not ready -> restarting...")
+                            print(
+                                "[Vavoo] Proxy running but not ready -> restarting...")
                             run_proxy_in_background()
                 except Exception as e:
                     print("[Vavoo] Startup proxy check error: " + str(e))
@@ -4570,6 +4577,7 @@ def autostart(reason, session=None, **kwargs):
             else:
                 print("[Vavoo] Auto-update disabled or proxy disabled")
     return
+
 
 def check_configuring():
     """Check for new config values for auto start"""
