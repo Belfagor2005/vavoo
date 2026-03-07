@@ -45,6 +45,7 @@ import six
 from six import iteritems, unichr
 from six.moves import html_entities, html_parser
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
+from . import PORT
 import socket
 
 _original_getaddrinfo = socket.getaddrinfo
@@ -153,7 +154,6 @@ class_types = (type,) if PY3 else (type, types.ClassType)
 text_type = six.text_type  # unicode in Py2, str in Py3
 binary_type = six.binary_type  # str in Py2, bytes in Py3
 MAXSIZE = maxsize
-PORT = 4323
 
 _UNICODE_MAP = {
     k: unichr(v) for k,
@@ -508,7 +508,7 @@ def getAuthSignature():
     print("DEBUG: Falling back to old auth system...")
     try:
         local_ip = "127.0.0.1"
-        port = 4323
+        port = PORT
         url = "http://" + local_ip + ":" + str(port) + "/catalog"
         req = Request(url)
         response = urlopen(req, timeout=10)
@@ -536,7 +536,7 @@ def get_new_auth_signature():
         print("[vUtils] Using new proxy authentication system...")
 
         try:
-            req = Request("http://127.0.0.1:4323/status")
+            req = Request("http://127.0.0.1:{}/status".format(PORT))
             response = urlopen(req, timeout=5)
             if response.getcode() == 200:
                 data = loads(response.read().decode('utf-8'))
@@ -641,27 +641,27 @@ def get_proxy_channels(country_name):
 
 def get_proxy_stream_url(channel_id):
     """Get the stream URL via proxy"""
-    return "http://127.0.0.1:4323/vavoo?channel=%s" % channel_id
+    return "http://127.0.0.1:{}/vavoo?channel=%s".format(PORT) % channel_id
 
 
 def get_proxy_catalog_url():
     """
     Get the proxy catalog URL
     """
-    return "http://127.0.0.1:4323/catalog"
+    return "http://127.0.0.1:{}/catalog".format(PORT)
 
 
 def get_proxy_playlist_url():
     """
     Get the proxy playlist URL
     """
-    return "http://127.0.0.1:4323/playlist.m3u"
+    return "http://127.0.0.1:{}/playlist.m3u".format(PORT)
 
 
 def get_proxy_status():
     """Get detailed proxy status"""
     try:
-        status_url = "http://127.0.0.1:4323/status"
+        status_url = "http://127.0.0.1:{}/status".format(PORT)
         if requests is not None:
             response = requests.get(status_url, timeout=3)
             if response.status_code == 200:
@@ -682,7 +682,7 @@ def is_proxy_running():
         import socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            return s.connect_ex(('127.0.0.1', 4323)) == 0
+            return s.connect_ex(('127.0.0.1', PORT)) == 0
         finally:
             s.close()
     except BaseException:
@@ -692,7 +692,7 @@ def is_proxy_running():
 def is_proxy_ready(timeout=2):
     """Check if the proxy is ready to receive requests"""
     try:
-        response = getUrl("http://127.0.0.1:4323/status", timeout=timeout)
+        response = getUrl("http://127.0.0.1:{}/status".format(PORT), timeout=timeout)
         if response:
             data = loads(response)
             return data.get("initialized", False)

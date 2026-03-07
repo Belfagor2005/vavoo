@@ -35,6 +35,7 @@ import time
 import threading
 import socket
 from json import loads, dumps
+from . import PORT
 from .vUtils import is_proxy_running
 
 _starting_lock = threading.Lock()
@@ -86,44 +87,43 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 # ========== CONFIGURAZIONE ==========
 """
-VAVOO PROXY ENDPOINTS (127.0.0.1:4323)
+VAVOO PROXY ENDPOINTS (127.0.0.1:{PORT})
 1. /status - Proxy status
-URL: http://127.0.0.1:4323/status
+URL: http://127.0.0.1:{PORT}/status
 Description: Returns the current status of the proxy, including initialization, number of channels, addonSig validity, local IP and port.
 
 2. /channels?country=CountryName - Get channels for a country
-URL: http://127.0.0.1:4323/channels?country=Italy
+URL: http://127.0.0.1:{PORT}/channels?country=Italy
 Description: Returns the list of channels for the specified country. Country names must be URL-encoded.
 
 3. /vavoo?channel=ChannelID - Resolve a channel by ID
-URL: http://127.0.0.1:4323/vavoo?channel=abc123
+URL: http://127.0.0.1:{PORT}/vavoo?channel=abc123
 Description: Returns a 302 redirect to the stream URL for the given channel ID. This is the primary endpoint for playback.
 
 4. /catalog - Full catalog
-URL: http://127.0.0.1:4323/catalog
+URL: http://127.0.0.1:{PORT}/catalog
 Description: Returns the entire channel catalog in JSON format (all channels with proxy URLs).
 
 5. /countries - List all countries
-URL: http://127.0.0.1:4323/countries
+URL: http://127.0.0.1:{PORT}/countries
 Description: Returns a list of all unique countries available in the catalog.
 
 6. /refresh_token - Refresh addonSig token
-URL: http://127.0.0.1:4323/refresh_token
+URL: http://127.0.0.1:{PORT}/refresh_token
 Description: Forces a refresh of the authentication token (addonSig).
 
 7. /health - Monitors proxy
-URL: http://127.0.0.1:4323/health
+URL: http://127.0.0.1:{PORT}/health
 Description: Monitors proxy health and restarts it if necessary.
 
 8. /shutdown - Shutdown proxy
-URL: http://127.0.0.1:4323/shutdown
+URL: http://127.0.0.1:{PORT}/shutdown
 Description: Gracefully shuts down the proxy server.
 """
 
 # API Endpoints
 TOKEN_ADDON_SIG = 600  # 10 minutes - TOKEN EXPIRES EVERY 10 MINUTES!
 TOKEN_REFRESH_AGE = 480
-PORT = 4323
 GEOIP_URL = "https://www.vavoo.tv/geoip"
 PING_URL = "https://www.lokke.app/api/app/ping"
 PING_URL2 = "https://www.vavoo.tv/api/app/ping"
@@ -1002,9 +1002,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             elif parsed_path.path == '/stream':
                 """True streaming proxy with keep-alive monitoring
                 # Change from:
-                service_url = "http://127.0.0.1:4323/vavoo?channel=" + channel_id
+                service_url = "http://127.0.0.1:{}/vavoo?channel=".format(PORT) + channel_id
                 # To:
-                service_url = "http://127.0.0.1:4323/stream?channel=" + channel_id
+                service_url = "http://127.0.0.1:{}/stream?channel=".format(PORT) + channel_id
                 """
                 channel_id = query_params.get('channel', [None])[0]
                 if not channel_id:

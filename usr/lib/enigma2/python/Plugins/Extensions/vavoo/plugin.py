@@ -675,7 +675,7 @@ def start_proxy_at_boot():
         # Check if proxy is already running
         import socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = s.connect_ex(('127.0.0.1', 4323))
+        result = s.connect_ex(('127.0.0.1', PORT))
         s.close()
 
         if result != 0:  # Port not in use
@@ -704,7 +704,7 @@ def is_port_in_use(port):
 def get_proxy_stream_url(channel_id):
     """Get the stream URL via proxy"""
     local_ip = "127.0.0.1"
-    # port = 4323
+    # port = PORT
     return "http://" + str(local_ip) + ":" + str(PORT) + \
         "/resolve?id=" + str(channel_id)
 
@@ -1273,7 +1273,7 @@ class vavoo_config(Screen, ConfigListScreen):
     def get_countries_from_proxy(self):
         """Get country list from the proxy"""
         try:
-            response = getUrl("http://127.0.0.1:4323/countries", timeout=10)
+            response = getUrl("http://127.0.0.1:{}/countries".format(PORT), timeout=10)
             if response:
                 return loads(response)
 
@@ -1788,7 +1788,7 @@ class MainVavoo(Screen):
             if is_proxy_running():
                 try:
                     response = getUrl(
-                        "http://127.0.0.1:4323/status", timeout=2)
+                        "http://127.0.0.1:{}/status".format(PORT), timeout=2)
                     if response:
                         status_data = loads(response)
 
@@ -1841,7 +1841,7 @@ class MainVavoo(Screen):
             try:
                 # Try to refresh the token
                 response = getUrl(
-                    "http://127.0.0.1:4323/refresh_token", timeout=5)
+                    "http://127.0.0.1:{}/refresh_token".format(PORT), timeout=5)
                 if response:
                     data = loads(response)
                     if data.get("status") == "success":
@@ -1897,10 +1897,10 @@ class MainVavoo(Screen):
             # Try to stop the existing proxy
             try:
                 if requests is not None:
-                    requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
+                    requests.get("http://127.0.0.1:{}/shutdown".format(PORT), timeout=2)
                 else:
                     req = UrlRequest(
-                        "http://127.0.0.1:4323/shutdown",
+                        "http://127.0.0.1:{}/shutdown".format(PORT),
                         headers={
                             'User-Agent': vUtils.RequestAgent()})
                     urlopen(req, timeout=2)
@@ -2622,7 +2622,7 @@ class vavoo(Screen):
                   str(self.country_name))
 
             # URL to initialize the proxy for the specific country
-            init_url = "http://127.0.0.1:4323/initialize_country?country={}".format(
+            init_url = "http://127.0.0.1:{}/initialize_country?country={{}}".format(PORT, 
                 self.country_name)
             content = getUrl(init_url, timeout=10)
             if content:
@@ -2650,19 +2650,19 @@ class vavoo(Screen):
                 self.country_name)
 
             # 1. Check status
-            status_url = "http://127.0.0.1:4323/status"
+            status_url = "http://127.0.0.1:{}/status".format(PORT)
             status = getUrl(status_url, timeout=3)
             if status:
                 print("[DEBUG] Proxy Status: " + status[:200])
 
             # 2. Check countries list
-            countries_url = "http://127.0.0.1:4323/countries"
+            countries_url = "http://127.0.0.1:{}/countries".format(PORT)
             countries = getUrl(countries_url, timeout=3)
             if countries:
                 print("[DEBUG] Available countries: " + countries[:200])
 
             # 3. Try to get channels
-            test_url = "http://127.0.0.1:4323/channels?country=Italy"
+            test_url = "http://127.0.0.1:{}/channels?country=Italy".format(PORT)
             channels = getUrl(test_url, timeout=5)
             print("[DEBUG] Channels response length: " +
                   str(len(channels) if channels else 0))
@@ -2854,7 +2854,7 @@ class vavoo(Screen):
             return status
 
         try:
-            proxy_response = getUrl("http://127.0.0.1:4323/status", timeout=3)
+            proxy_response = getUrl("http://127.0.0.1:{}/status".format(PORT), timeout=3)
             if not proxy_response:
                 status["message"] = "Cannot get proxy status"
                 status["needs_restart"] = True
@@ -3049,7 +3049,7 @@ class vavoo(Screen):
             """
             # DEBUG: controlla se è un URL del proxy
             if isinstance(url, str):
-                if "127.0.0.1:4323" in url or "/resolve?id=" in url:
+                if "127.0.0.1:{}".format(PORT) in url or "/resolve?id=" in url:
                     print("[vavoo] ✓ This is a PROXY URL!")
                     print("[vavoo] Should use playDirectStream()")
                 else:
@@ -4135,13 +4135,13 @@ class Playstream2(
         if "/live2/play/" in self.url and self.url.endswith(".ts"):
             print("[Playstream2] Converting to proxy format")
             channel_id = self.url.split("/live2/play/")[1].replace(".ts", "")
-            self.url = "http://127.0.0.1:4323/vavoo?channel=" + channel_id
+            self.url = "http://127.0.0.1:{}/vavoo?channel=".format(PORT) + channel_id
 
         # Determine playback method - FIXED LOGIC
         print("[Playstream2] DEBUG URL: " + self.url)
 
         # Check if it's ANY proxy URL (localhost or network IP)
-        if ":4323/vavoo" in self.url or ":4323/resolve" in self.url:
+        if ":{}/vavoo".format(PORT) in self.url or ":{}/resolve".format(PORT) in self.url:
             print("[Playstream2] Proxy URL detected")
             self.playProxyStream()
         else:
@@ -4231,7 +4231,7 @@ class Playstream2(
                 return
 
             # Get proxy host from URL or use default
-            proxy_host = "127.0.0.1:4323"
+            proxy_host = "127.0.0.1:{}".format(PORT)
             if "://" in self.url:
                 import re
                 match = re.search(r'://([^/]+)', self.url)
