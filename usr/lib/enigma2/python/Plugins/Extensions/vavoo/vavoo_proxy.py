@@ -35,7 +35,10 @@ import time
 import threading
 import socket
 from json import loads, dumps
-from . import PORT
+from . import (
+    PORT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL, PROXY_SHUTDOWN_URL,
+    PRIMARY_BASE_URL, FALLBACK_BASE_URL, BASE_SITES
+)
 from .vUtils import is_proxy_running
 
 _starting_lock = threading.Lock()
@@ -129,7 +132,6 @@ PING_URL = "https://www.lokke.app/api/app/ping"
 PING_URL2 = "https://www.vavoo.tv/api/app/ping"
 
 # Primary + mirror. Some regions get HTTP 451 from the primary.
-BASE_SITES = ["https://vavoo.to", "https://kool.to"]
 
 HEADERS = {
     "accept": "*/*",
@@ -186,7 +188,7 @@ class ProxyHealthMonitor:
         try:
             # 1. Check if proxy responds
             response = requests.get(
-                "http://127.0.0.1:{}/health".format(PORT), timeout=2)
+                PROXY_BASE_URL + "/health", timeout=2)
 
             if response.status_code == 200:
                 data = response.json()
@@ -234,7 +236,7 @@ class ProxyHealthMonitor:
             # 1. Try to shut down the current proxy
             try:
                 requests.get(
-                    "http://127.0.0.1:{}/shutdown".format(PORT),
+                    PROXY_SHUTDOWN_URL,
                     timeout=2)
                 time.sleep(2)
             except Exception:
@@ -870,7 +872,7 @@ class VavooProxy:
             s.close()
             return ip
         except BaseException:
-            return "127.0.0.1"
+            return PROXY_HOST
 
 
 
@@ -1002,9 +1004,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             elif parsed_path.path == '/stream':
                 """True streaming proxy with keep-alive monitoring
                 # Change from:
-                service_url = "http://127.0.0.1:{}/vavoo?channel=".format(PORT) + channel_id
+                service_url = PROXY_BASE_URL + "/vavoo?channel=" + channel_id
                 # To:
-                service_url = "http://127.0.0.1:{}/stream?channel=".format(PORT) + channel_id
+                service_url = PROXY_BASE_URL + "/stream?channel=" + channel_id
                 """
                 channel_id = query_params.get('channel', [None])[0]
                 if not channel_id:
@@ -1321,7 +1323,7 @@ def shutdown_proxy():
     """Shutdown the proxy server if running."""
     try:
         response = requests.get(
-            "http://127.0.0.1:{}/shutdown".format(PORT), timeout=2)
+            PROXY_SHUTDOWN_URL, timeout=2)
         if response.status_code == 200:
             print("[Proxy] Shutdown request sent successfully")
             return True
@@ -1456,7 +1458,7 @@ def run_proxy_in_background():
             from os import system
             try:
                 response = requests.get(
-                    "http://127.0.0.1:{}/status".format(PORT), timeout=2)
+                    PROXY_STATUS_URL, timeout=2)
                 if response.status_code == 200:
                     return True
                 else:
@@ -1480,7 +1482,7 @@ def run_proxy_in_background():
                 try:
                     # Health check
                     response = requests.get(
-                        "http://127.0.0.1:{}/status".format(PORT), timeout=2)
+                        PROXY_STATUS_URL, timeout=2)
                     if response.status_code == 200:
                         data = response.json()
                         if data.get("initialized", False):
