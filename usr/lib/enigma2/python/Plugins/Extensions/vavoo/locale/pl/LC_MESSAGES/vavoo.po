@@ -39,16 +39,13 @@ msgstr ""
 msgid "- Commercial use is strictly prohibited"
 msgstr ""
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr ""
 
 msgid "- Container bouquets"
 msgstr ""
 
 msgid "- Country bouquets"
-msgstr ""
-
-msgid "- For personal use only"
 msgstr ""
 
 msgid "- Free content only"
