@@ -266,11 +266,13 @@ def get_enigma2_path():
             return path.rstrip('/')
     return '/etc/enigma2'
 
+
 def _is_vavoo_already_open(session):
     try:
         # dialog_stack entries are usually tuples like (dialog, ...)
         for entry in getattr(session, "dialog_stack", []):
-            dlg = entry[0] if isinstance(entry, (list, tuple)) and entry else entry
+            dlg = entry[0] if isinstance(
+                entry, (list, tuple)) and entry else entry
             if dlg is None:
                 continue
             name = dlg.__class__.__name__
@@ -610,7 +612,8 @@ def show_list(name, link, is_category=False, is_channel=False):
             try:
                 country_code = get_country_code(country_name)
                 if country_code:
-                    cache_file = "%s/%s.png" % (FLAG_CACHE_DIR, country_code.lower())
+                    cache_file = "%s/%s.png" % (FLAG_CACHE_DIR,
+                                                country_code.lower())
 
                     # Use cache if exists and valid
                     if file_exists(cache_file):
@@ -1240,7 +1243,8 @@ class vavoo_config(Screen, ConfigListScreen):
         """Get channels for a country from the proxy"""
         try:
             encoded_country = url_quote(country_name)
-            proxy_url = PROXY_BASE_URL + "/channels?country={}".format(encoded_country)
+            proxy_url = PROXY_BASE_URL + \
+                "/channels?country={}".format(encoded_country)
             response = getUrl(proxy_url, timeout=15)
             if not response:
                 print("[M3U] No response for %s" % country_name)
@@ -2280,16 +2284,20 @@ class MainVavoo(Screen):
                 if not hasattr(self, "proxy_watchdog_timer"):
                     self.proxy_watchdog_timer = eTimer()
                     try:
-                        self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.timeout.connect(
+                            self._proxy_watchdog_check)
                     except BaseException:
-                        self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.callback.append(
+                            self._proxy_watchdog_check)
 
                 if not hasattr(self, "proxy_monitor_timer"):
                     self.proxy_monitor_timer = eTimer()
                     try:
-                        self.proxy_monitor_timer.timeout.connect(self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.timeout.connect(
+                            self._check_and_update_proxy_status)
                     except BaseException:
-                        self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.callback.append(
+                            self._check_and_update_proxy_status)
 
                 # (Re)start them
                 self.proxy_watchdog_timer.start(60000)
@@ -2327,7 +2335,7 @@ class MainVavoo(Screen):
 
         except Exception as e:
             print("[MainVavoo] Error applying proxy setting: " + str(e))
-        
+
     def info(self):
         """Display plugin information"""
         message_parts = []
@@ -2622,8 +2630,8 @@ class vavoo(Screen):
                   str(self.country_name))
 
             # URL to initialize the proxy for the specific country
-            init_url = PROXY_BASE_URL + "/initialize_country?country={}".format(
-                self.country_name)
+            init_url = PROXY_BASE_URL + \
+                "/initialize_country?country={}".format(self.country_name)
             content = getUrl(init_url, timeout=10)
             if content:
                 if PY3:
@@ -2684,7 +2692,8 @@ class vavoo(Screen):
             # 1. TRY THE PROXY FIRST
             try:
                 country_encoded = url_quote(self.country_name)
-                proxy_url = PROXY_BASE_URL + "/channels?country={}".format(country_encoded)
+                proxy_url = PROXY_BASE_URL + \
+                    "/channels?country={}".format(country_encoded)
                 print("[DEBUG] Fetching from proxy: " + proxy_url)
 
                 content = getUrl(proxy_url, timeout=10)
@@ -4534,6 +4543,7 @@ class AutoStartTimer:
 
 delayed_start_timer = None
 
+
 def delayed_boot_tasks():
     global auto_start_timer
     try:
@@ -4564,6 +4574,7 @@ def autostart(reason, session=None, **kwargs):
             delayed_start_timer.timeout.connect(delayed_boot_tasks)
 
         delayed_start_timer.startLongTimer(30)   # run 30 seconds after boot
+
 
 def check_configuring():
     """Check for new config values for auto start"""

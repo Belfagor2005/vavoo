@@ -574,7 +574,7 @@ def get_proxy_channels(country_name):
 
     for attempt in range(max_retries):
         try:
-            print("[vUtils] Getting channels for '" + str(country_name) +
+            print("[vUtils] Getting channels for '" + str(country_name) + \
                   "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
 
             # URL-encode
@@ -587,7 +587,8 @@ def get_proxy_channels(country_name):
                 'utf-8')) if PY2 else quote(country_name)
 
             # Build URL
-            proxy_url = PROXY_BASE_URL + "/channels?country={}".format(encoded_country)
+            proxy_url = PROXY_BASE_URL + \
+                "/channels?country={}".format(encoded_country)
             # Fetch with timeout
             response = getUrl(proxy_url, timeout=15)
             print("[vUtils] Request URL: " + proxy_url)
@@ -619,7 +620,8 @@ def get_proxy_channels(country_name):
                         continue
 
                     # Build proxy URL
-                    proxy_stream_url = PROXY_BASE_URL + "/vavoo?channel={}".format(channel_id)
+                    proxy_stream_url = PROXY_BASE_URL + \
+                        "/vavoo?channel={}".format(channel_id)
                     processed_channels.append({
                         'id': channel_id,
                         'name': channel.get('name', 'Unknown'),
