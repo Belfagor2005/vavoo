@@ -18,6 +18,6 @@
     <widget source="session.CurrentService" render="Label" position="629,398" size="366,30" font="cvfont;17" foregroundColor="#ffffff" backgroundColor="#181b2e" transparent="1" halign="left" valign="center" zPosition="30" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
-    <widget source="session.VideoPicture" render="Pig" position="627,445" zPosition="20" size="310,180" backgroundColor="#000000" transparent="0" />
+    <widget source="session.VideoPicture" render="Pig" position="627,445" zPosition="20" size="310,180" backgroundColor="#ff000000" transparent="0" />
     <widget name="proxy_status" position="128,620" size="300,36" font="cvfont; 22" backgroundColor="#181b2e" foregroundColor="#ffff00" halign="center" valign="center" transparent="1" zPosition="3" />
 </screen>
