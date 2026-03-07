@@ -33,7 +33,8 @@ msgstr "- Kategória csokrok"
 msgid "- Commercial use is strictly prohibited"
 msgstr "- Kereskedelmi célú felhasználás szigorúan tilos"
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#, fuzzy
+msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr "- Közösség: Linuxsat-support.com, Corvoboys Fórum"
 
 msgid "- Container bouquets"
@@ -41,9 +42,6 @@ msgstr "- Konténeres csokrok"
 
 msgid "- Country bouquets"
 msgstr "- Vidéki csokrok"
-
-msgid "- For personal use only"
-msgstr "- Csak személyes használatra"
 
 msgid "- Free content only"
 msgstr "- Csak ingyenes tartalom"
@@ -502,6 +500,9 @@ msgstr "kisbetűk"
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "- For personal use only"
+#~ msgstr "- Csak személyes használatra"
 
 #~ msgid "Active or Disactive lan Ipv6."
 #~ msgstr "Aktív vagy inaktív LAN Ipv6."

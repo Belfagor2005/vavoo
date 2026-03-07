@@ -35,7 +35,8 @@ msgstr "- Bouquets Categorie"
 msgid "- Commercial use is strictly prohibited"
 msgstr "- L'uso commerciale è severamente vietato"
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#, fuzzy
+msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr "- Comunità: Linuxsat-support.com, Forum Corvoboys"
 
 msgid "- Container bouquets"
@@ -43,9 +44,6 @@ msgstr "- Bouquets in contenitore"
 
 msgid "- Country bouquets"
 msgstr "- Bouquets Paese"
-
-msgid "- For personal use only"
-msgstr "- Solo per uso personale"
 
 msgid "- Free content only"
 msgstr "- Solo contenuti gratuiti"
@@ -487,6 +485,9 @@ msgstr "minuscola"
 
 msgid "seconds"
 msgstr "secondi"
+
+#~ msgid "- For personal use only"
+#~ msgstr "- Solo per uso personale"
 
 #~ msgid "Active or Disactive lan Ipv6."
 #~ msgstr "Attivare o disattivare Lan Ipv6."
