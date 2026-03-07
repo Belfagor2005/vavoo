@@ -1,7 +1,7 @@
 #!/bin/bash
 
-version='1.55'
-changelog='\nSkin fix\nThanks @Oktus\nOffer coffee please :)'
+version='1.56'
+changelog='\nLittle fix\n\nOffer coffee please :)'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz
