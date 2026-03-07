@@ -36,7 +36,7 @@ import threading
 import socket
 from json import loads, dumps
 from . import (
-    PORT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL, PROXY_SHUTDOWN_URL,
+    PORT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL, PROXY_HEALTH_URL, PROXY_SHUTDOWN_URL,
     PRIMARY_BASE_URL, FALLBACK_BASE_URL, BASE_SITES
 )
 from .vUtils import is_proxy_running
@@ -188,7 +188,7 @@ class ProxyHealthMonitor:
         try:
             # 1. Check if proxy responds
             response = requests.get(
-                PROXY_BASE_URL + "/health", timeout=2)
+                PROXY_HEALTH_URL, timeout=2)
 
             if response.status_code == 200:
                 data = response.json()

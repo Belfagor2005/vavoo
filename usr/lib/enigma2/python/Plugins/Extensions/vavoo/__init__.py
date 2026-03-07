@@ -21,6 +21,7 @@ PLUGIN_ROOT = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format(PLUGIN_ID))
 PROXY_HOST = "127.0.0.1"
 PROXY_BASE_URL = "http://{}:{}".format(PROXY_HOST, PORT)
 PROXY_STATUS_URL = PROXY_BASE_URL + "/status"
+PROXY_HEALTH_URL = PROXY_BASE_URL + "/health"
 PROXY_COUNTRIES_URL = PROXY_BASE_URL + "/countries"
 PROXY_REFRESH_URL = PROXY_BASE_URL + "/refresh_token"
 PROXY_SHUTDOWN_URL = PROXY_BASE_URL + "/shutdown"
