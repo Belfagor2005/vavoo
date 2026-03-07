@@ -277,8 +277,8 @@ class VavooProxy:
 
         # 1. ADAPTER IMPROVED: more intelligent retries
         adapter = requests.adapters.HTTPAdapter(
-            pool_connections=5,
-            pool_maxsize=5,
+            pool_connections=20,
+            pool_maxsize=20,
             max_retries=2,
             pool_block=False
         )
@@ -291,6 +291,10 @@ class VavooProxy:
         self.addon_sig_lock = threading.Lock()
         self.addon_sig_data = {"sig": None, "ts": 0}
         self.all_filtered_items = []
+        self.channels_by_id = {}
+        self.local_ip = PROXY_HOST
+        self.resolve_cache = {}
+        self.resolve_cache_ttl = 30
         self.initialized = False
         self.current_language = "en"
         self.current_region = "US"
@@ -308,6 +312,11 @@ class VavooProxy:
         self.base_sites = list(BASE_SITES)
         self.base_site_index = 0
         self._update_endpoints()
+
+        try:
+            self.local_ip = self._detect_local_ip()
+        except Exception:
+            self.local_ip = PROXY_HOST
 
         # 3. Start periodic refresh and Token Monitor
         self.start_periodic_refresh()
@@ -749,6 +758,14 @@ class VavooProxy:
             print("[Proxy] No channel URL provided")
             return None
 
+        now = time.time()
+        cached = self.resolve_cache.get(channel_url)
+        if cached and now - cached.get("ts", 0) <= self.resolve_cache_ttl:
+            stream_url = cached.get("url")
+            if stream_url:
+                print("[Proxy] Resolve cache hit")
+                return stream_url
+
         for attempt in range(max_retries):
             try:
                 # First, try to obtain a fresh token if needed
@@ -817,6 +834,8 @@ class VavooProxy:
                 if result and len(result) > 0:
                     stream_url = result[0].get("url")
                     if stream_url:
+                        self.resolve_cache[channel_url] = {"url": stream_url, "ts": time.time()}
+                        self._prune_resolve_cache()
                         print("[Proxy] Successfully resolved channel URL")
                         return stream_url
                     else:
@@ -863,8 +882,8 @@ class VavooProxy:
         print("[Proxy] Failed to resolve channel URL after all retries")
         return None
 
-    def get_local_ip(self):
-        """Get local IP"""
+    def _detect_local_ip(self):
+        """Detect the current LAN IP once and reuse it."""
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect(("8.8.8.8", 80))
@@ -873,6 +892,44 @@ class VavooProxy:
             return ip
         except BaseException:
             return PROXY_HOST
+
+    def _prune_resolve_cache(self):
+        """Remove expired resolve cache entries."""
+        now = time.time()
+        expired = []
+        for cache_key, entry in self.resolve_cache.items():
+            if now - entry.get("ts", 0) > self.resolve_cache_ttl:
+                expired.append(cache_key)
+        for cache_key in expired:
+            try:
+                del self.resolve_cache[cache_key]
+            except Exception:
+                pass
+
+    def get_channel_by_id(self, channel_id):
+        """Fast channel lookup by id with fallback rebuild."""
+        if not channel_id:
+            return None
+
+        channel = self.channels_by_id.get(channel_id)
+        if channel:
+            return channel
+
+        if self.all_filtered_items and not self.channels_by_id:
+            self.channels_by_id = {}
+            for item in self.all_filtered_items:
+                item_id = item.get("id")
+                if item_id:
+                    self.channels_by_id[item_id] = item
+            return self.channels_by_id.get(channel_id)
+
+        return None
+
+    def get_local_ip(self):
+        """Get cached local IP."""
+        if not getattr(self, 'local_ip', None) or self.local_ip == PROXY_HOST:
+            self.local_ip = self._detect_local_ip()
+        return self.local_ip
 
 
 
@@ -935,59 +992,18 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = None
-                if hasattr(proxy, 'all_filtered_items'):
-                    for ch in proxy.all_filtered_items:
-                        if ch.get("id") == channel_id:
-                            channel = ch
-                            break
+                channel = proxy.get_channel_by_id(channel_id)
 
                 if not channel:
                     self.send_error(404, "Channel not found")
                     return
 
                 try:
-                    # 1. Resolve the Vavoo stream URL
                     stream_url = proxy.resolve_with_retry(channel.get("url"))
                     if not stream_url:
                         self.send_error(404, "Stream not resolved")
                         return
 
-                    # 2. Quick test to see if the stream is reachable
-                    try:
-                        test_response = proxy.session.get(
-                            stream_url, stream=True, timeout=5)
-                        test_response.raise_for_status()
-
-                        # Read first 1024 bytes to check if data exists
-                        test_chunk = next(
-                            test_response.iter_content(
-                                chunk_size=1024), None)
-                        test_response.close()
-
-                        if not test_chunk:
-                            print(
-                                "[Proxy] WARNING: Upstream stream returned empty data for channel: " +
-                                channel_id)
-
-                    except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
-                        print(
-                            "[Proxy] CRITICAL: Cannot reach upstream stream for channel " +
-                            channel_id +
-                            ": " +
-                            str(e))
-                        self.send_error(502, "Cannot connect to video source")
-                        return
-                    except Exception as e:
-                        print(
-                            "[Proxy] Warning during stream test for " +
-                            channel_id +
-                            ": " +
-                            str(e))
-                        # Proceed anyway, might be a false positive
-
-                    # 3. If the test is OK (or we decide to proceed), do a 302
-                    # REDIRECT
                     if not self.safe_send_response(302):
                         return
 
@@ -1013,12 +1029,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = None
-                if hasattr(proxy, 'all_filtered_items'):
-                    for ch in proxy.all_filtered_items:
-                        if ch.get("id") == channel_id:
-                            channel = ch
-                            break
+                channel = proxy.get_channel_by_id(channel_id)
 
                 if not channel:
                     self.send_error(404, "Channel not found")
@@ -1196,11 +1207,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                         "message": "Proxy is running normally" if initialized else "Proxy not initialized"
                     }
 
-                    # Refresh token if needed
-                    if needs_refresh and token_valid:
-                        sig = proxy.refresh_addon_sig_if_needed(force=True)
-                        proxy_status["token"]["refreshed"] = sig is not None
-                        proxy_status["message"] = "Token refreshed" if sig else "Token refresh failed"
+                    # Health is read-only; background workers handle refreshes.
+                    proxy_status["token"]["refreshed"] = False
 
                     # self.send_response(200)
                     if not self.safe_send_response(200):

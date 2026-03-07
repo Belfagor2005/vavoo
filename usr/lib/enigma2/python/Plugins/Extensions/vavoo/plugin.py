@@ -708,9 +708,8 @@ def is_port_in_use(port):
 def get_proxy_stream_url(channel_id):
     """Get the stream URL via proxy"""
     local_ip = PROXY_HOST
-    # port = PORT
     return "http://" + str(local_ip) + ":" + str(PORT) + \
-        "/resolve?id=" + str(channel_id)
+        "/vavoo?channel=" + str(channel_id)
 
 
 def keep_proxy_alive():
