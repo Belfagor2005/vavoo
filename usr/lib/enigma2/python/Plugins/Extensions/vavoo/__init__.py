@@ -5,7 +5,7 @@ __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
 __license__ = "CC BY-NC-SA 4.0"
-__version__ = "1.56"
+__version__ = "1.57"
 
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
@@ -16,9 +16,24 @@ import subprocess
 EXPORT_IN_PROGRESS = False
 PROXY_ACTIVE = False
 PORT = 4323
+PLUGIN_ID = 'vavoo'
+PLUGIN_ROOT = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format(PLUGIN_ID))
+PROXY_HOST = "127.0.0.1"
+PROXY_BASE_URL = "http://{}:{}".format(PROXY_HOST, PORT)
+PROXY_STATUS_URL = PROXY_BASE_URL + "/status"
+PROXY_HEALTH_URL = PROXY_BASE_URL + "/health"
+PROXY_COUNTRIES_URL = PROXY_BASE_URL + "/countries"
+PROXY_REFRESH_URL = PROXY_BASE_URL + "/refresh_token"
+PROXY_SHUTDOWN_URL = PROXY_BASE_URL + "/shutdown"
+FLAG_CACHE_DIR = "/tmp/vavoo_flags"
+LOG_FILE = "/tmp/vavoo.log"
+PRIMARY_BASE_URL = "https://vavoo.to"
+FALLBACK_BASE_URL = "https://kool.to"
+BASE_SITES = [PRIMARY_BASE_URL, FALLBACK_BASE_URL]
+START_PROXY_SCRIPT = os.path.join(PLUGIN_ROOT, "start_proxy.sh")
 
-PluginLanguageDomain = 'vavoo'
-PluginLanguagePath = 'Extensions/vavoo/locale'
+PluginLanguageDomain = PLUGIN_ID
+PluginLanguagePath = 'Extensions/{}/locale'.format(PLUGIN_ID)
 
 
 def paypal():
@@ -60,11 +75,10 @@ else:
 localeInit()
 language.addCallback(localeInit)
 
-file_path = "/usr/lib/enigma2/python/Plugins/Extensions/vavoo/start_proxy.sh"
 try:
-    subprocess.run(["chmod", "+x", file_path])
+    subprocess.run(["chmod", "+x", START_PROXY_SCRIPT])
 except AttributeError:
-    subprocess.call(["chmod", "+x", file_path])
+    subprocess.call(["chmod", "+x", START_PROXY_SCRIPT])
 except Exception:
     pass
 

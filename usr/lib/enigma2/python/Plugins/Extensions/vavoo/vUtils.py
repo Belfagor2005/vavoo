@@ -45,6 +45,10 @@ import six
 from six import iteritems, unichr
 from six.moves import html_entities, html_parser
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
+from . import (
+    PORT, PLUGIN_ROOT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL,
+    FLAG_CACHE_DIR, LOG_FILE
+)
 import socket
 
 _original_getaddrinfo = socket.getaddrinfo
@@ -68,7 +72,7 @@ except ImportError:
     from Components.AVSwitch import eAVControl as AVSwitch
 
 
-PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/vavoo")
+PLUGIN_PATH = PLUGIN_ROOT
 PY2 = version_info[0] == 2
 PY3 = version_info[0] == 3
 
@@ -110,7 +114,7 @@ def trace_error():
     from sys import stdout, stderr
     try:
         traceback.print_exc(file=stdout)
-        with open("/tmp/vavoo.log", "a") as log_file:
+        with open(LOG_FILE, "a") as log_file:
             traceback.print_exc(file=log_file)
     except Exception as e:
         print("Failed to log the error:", e, file=stderr)
@@ -153,7 +157,6 @@ class_types = (type,) if PY3 else (type, types.ClassType)
 text_type = six.text_type  # unicode in Py2, str in Py3
 binary_type = six.binary_type  # str in Py2, bytes in Py3
 MAXSIZE = maxsize
-PORT = 4323
 
 _UNICODE_MAP = {
     k: unichr(v) for k,
@@ -507,8 +510,8 @@ def getAuthSignature():
 
     print("DEBUG: Falling back to old auth system...")
     try:
-        local_ip = "127.0.0.1"
-        port = 4323
+        local_ip = PROXY_HOST
+        port = PORT
         url = "http://" + local_ip + ":" + str(port) + "/catalog"
         req = Request(url)
         response = urlopen(req, timeout=10)
@@ -536,7 +539,7 @@ def get_new_auth_signature():
         print("[vUtils] Using new proxy authentication system...")
 
         try:
-            req = Request("http://127.0.0.1:4323/status")
+            req = Request(PROXY_STATUS_URL)
             response = urlopen(req, timeout=5)
             if response.getcode() == 200:
                 data = loads(response.read().decode('utf-8'))
@@ -584,8 +587,7 @@ def get_proxy_channels(country_name):
                 'utf-8')) if PY2 else quote(country_name)
 
             # Build URL
-            proxy_url = "http://127.0.0.1:{}/channels?country={}".format(
-                PORT, encoded_country)
+            proxy_url = PROXY_BASE_URL + "/channels?country={}".format(encoded_country)
             # Fetch with timeout
             response = getUrl(proxy_url, timeout=15)
             print("[vUtils] Request URL: " + proxy_url)
@@ -617,8 +619,7 @@ def get_proxy_channels(country_name):
                         continue
 
                     # Build proxy URL
-                    proxy_stream_url = "http://127.0.0.1:{}/vavoo?channel={}".format(
-                        PORT, channel_id)
+                    proxy_stream_url = PROXY_BASE_URL + "/vavoo?channel={}".format(channel_id)
                     processed_channels.append({
                         'id': channel_id,
                         'name': channel.get('name', 'Unknown'),
@@ -641,27 +642,27 @@ def get_proxy_channels(country_name):
 
 def get_proxy_stream_url(channel_id):
     """Get the stream URL via proxy"""
-    return "http://127.0.0.1:4323/vavoo?channel=%s" % channel_id
+    return PROXY_BASE_URL + "/vavoo?channel=%s" % channel_id
 
 
 def get_proxy_catalog_url():
     """
     Get the proxy catalog URL
     """
-    return "http://127.0.0.1:4323/catalog"
+    return PROXY_BASE_URL + "/catalog"
 
 
 def get_proxy_playlist_url():
     """
     Get the proxy playlist URL
     """
-    return "http://127.0.0.1:4323/playlist.m3u"
+    return PROXY_BASE_URL + "/playlist.m3u"
 
 
 def get_proxy_status():
     """Get detailed proxy status"""
     try:
-        status_url = "http://127.0.0.1:4323/status"
+        status_url = PROXY_STATUS_URL
         if requests is not None:
             response = requests.get(status_url, timeout=3)
             if response.status_code == 200:
@@ -682,7 +683,7 @@ def is_proxy_running():
         import socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            return s.connect_ex(('127.0.0.1', 4323)) == 0
+            return s.connect_ex((PROXY_HOST, PORT)) == 0
         finally:
             s.close()
     except BaseException:
@@ -692,7 +693,7 @@ def is_proxy_running():
 def is_proxy_ready(timeout=2):
     """Check if the proxy is ready to receive requests"""
     try:
-        response = getUrl("http://127.0.0.1:4323/status", timeout=timeout)
+        response = getUrl(PROXY_STATUS_URL, timeout=timeout)
         if response:
             data = loads(response)
             return data.get("initialized", False)
@@ -885,7 +886,7 @@ def getserviceinfo(service_ref):
 def initialize_cache_with_local_flags():
     """Copy all local flags from skin/cowntry/ to cache directory"""
     local_dir = join(PLUGIN_PATH, 'skin/cowntry')
-    cache_dir = "/tmp/vavoo_flags"
+    cache_dir = FLAG_CACHE_DIR
 
     if not exists(local_dir):
         print("[vUtils] Local flags directory not found: %s" % local_dir)
@@ -923,7 +924,7 @@ def initialize_cache_with_local_flags():
 
 def download_flag_online(
         country_name,
-        cache_dir="/tmp/vavoo_flags",
+        cache_dir=FLAG_CACHE_DIR,
         screen_width=None):
     """
     Download country flag from online service (TV Garden style)
@@ -1052,7 +1053,7 @@ def download_flag_online(
 def download_flag_with_size(
         country_name,
         size="40x30",
-        cache_dir="/tmp/vavoo_flags"):
+        cache_dir=FLAG_CACHE_DIR):
     """
     Download flag with specific size (40x30, 80x60, etc.)
     Returns: success (True/False)
@@ -1254,7 +1255,7 @@ def cleanup_flag_cache(max_age_days=7):
     Remove old cached flag files from cache directory.
     Only files older than max_age_days are deleted.
     """
-    cache_dir = "/tmp/vavoo_flags"
+    cache_dir = FLAG_CACHE_DIR
 
     if not exists(cache_dir):
         return
@@ -1323,7 +1324,7 @@ def cleanup_old_temp_files(max_age_hours=1):
         return 0
 
 
-def preload_country_flags(country_list, cache_dir="/tmp/vavoo_flags"):
+def preload_country_flags(country_list, cache_dir=FLAG_CACHE_DIR):
     """
     Preload flags for a list of countries.
     Each chunk of countries is downloaded in a separate daemon thread.

@@ -115,7 +115,12 @@ from Tools.NumericalTextInput import NumericalTextInput
 from Plugins.Plugin import PluginDescriptor
 
 # Local application/library-specific imports
-from . import _, __author__, __version__, __license__, PORT
+from . import (
+    _, __author__, __version__, __license__, PORT,
+    PLUGIN_ROOT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL,
+    PROXY_COUNTRIES_URL, PROXY_REFRESH_URL, PROXY_SHUTDOWN_URL,
+    FLAG_CACHE_DIR, LOG_FILE, PRIMARY_BASE_URL, FALLBACK_BASE_URL
+)
 from . import vUtils
 from .Console import Console
 from .bouquet_manager import (
@@ -261,13 +266,11 @@ def get_enigma2_path():
             return path.rstrip('/')
     return '/etc/enigma2'
 
-
 def _is_vavoo_already_open(session):
     try:
         # dialog_stack entries are usually tuples like (dialog, ...)
         for entry in getattr(session, "dialog_stack", []):
-            dlg = entry[0] if isinstance(
-                entry, (list, tuple)) and entry else entry
+            dlg = entry[0] if isinstance(entry, (list, tuple)) and entry else entry
             if dlg is None:
                 continue
             name = dlg.__class__.__name__
@@ -285,7 +288,7 @@ global proxy_instance, proxy_thread
 
 title_plug = 'Vavoo'
 desc_plugin = ('..:: Vavoo by Lululla v.%s ::..' % __version__)
-PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
+PLUGIN_PATH = PLUGIN_ROOT
 PLUGLOGO = join(PLUGIN_PATH, 'plugin.png')
 ENIGMA_PATH = get_enigma2_path()
 CONFIG_FILE = resolveFilename(SCOPE_CONFIG, "settings")
@@ -325,14 +328,13 @@ print('folder back: ', BackPath)
 stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 # If vavoo.to returns HTTP 451 (Unavailable For Legal Reasons),
 # fall back to this mirror.
-FALLBACK_BASE_URL = "https://kool.to"
 HTTP_451_SENTINEL = "__HTTP451__"
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS92YXZvby9tYWluL2luc3RhbGxlci5zaA=='
 developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvdmF2b28='
 
-myser = [("https://vavoo.to", "vavoo"), ("https://oha.tooha-tv", "oha"),
-         ("https://kool.to", "kool"), ("https://huhu.to", "huhu")]
+myser = [(PRIMARY_BASE_URL, "vavoo"), ("https://oha.tooha-tv", "oha"),
+         (FALLBACK_BASE_URL, "kool"), ("https://huhu.to", "huhu")]
 # mydns = [("None", "Default"), ("google", "Google"),
 # ("coudfire", "Coudfire"), ("quad9", "Quad9")]
 modemovie = [("4097", "4097")]
@@ -395,7 +397,7 @@ except Exception as e:
 
 def check_vavoo_connectivity():
     try:
-        test_url = "https://vavoo.to"
+        test_url = PRIMARY_BASE_URL
         if requests is not None:
             response = requests.get(test_url, timeout=5)
             status_code = response.status_code
@@ -428,7 +430,7 @@ cfg = config.plugins.vavoo
 cfg.proxy_enabled = ConfigEnableDisable(default=True)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.genm3u = NoSave(ConfigYesNo(default=False))
-cfg.server = ConfigSelection(default="https://vavoo.to", choices=myser)
+cfg.server = ConfigSelection(default=PRIMARY_BASE_URL, choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.timerupdate = ConfigSelectionNumber(default=5, min=1, max=60, stepwidth=1)
 cfg.timetype = ConfigSelection(
@@ -557,7 +559,7 @@ def zServer(opt=0, server=None, port=None):
             return str(server)
     except HTTPError as err:
         print(err.code)
-        return 'https://vavoo.to'
+        return PRIMARY_BASE_URL
 
 
 # menulist
@@ -608,7 +610,7 @@ def show_list(name, link, is_category=False, is_channel=False):
             try:
                 country_code = get_country_code(country_name)
                 if country_code:
-                    cache_file = "/tmp/vavoo_flags/%s.png" % country_code.lower()
+                    cache_file = "%s/%s.png" % (FLAG_CACHE_DIR, country_code.lower())
 
                     # Use cache if exists and valid
                     if file_exists(cache_file):
@@ -677,13 +679,13 @@ def start_proxy_at_boot():
         # Check if proxy is already running
         import socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = s.connect_ex(('127.0.0.1', 4323))
+        result = s.connect_ex((PROXY_HOST, PORT))
         s.close()
 
         if result != 0:  # Port not in use
             print("[Vavoo] Starting proxy at system boot...")
             # Start proxy
-            proxy_script = "/usr/lib/enigma2/python/Plugins/Extensions/vavoo/vavoo_proxy.py"
+            proxy_script = join(PLUGIN_PATH, "vavoo_proxy.py")
             cmd = ["python", proxy_script, "&"]
             subprocess.Popen(cmd, shell=False)
             time.sleep(2)
@@ -700,15 +702,15 @@ def start_proxy_at_boot():
 def is_port_in_use(port):
     import socket
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(('127.0.0.1', port)) == 0
+        return s.connect_ex((PROXY_HOST, port)) == 0
 
 
 def get_proxy_stream_url(channel_id):
     """Get the stream URL via proxy"""
-    local_ip = "127.0.0.1"
-    # port = 4323
+    local_ip = PROXY_HOST
+    # port = PORT
     return "http://" + str(local_ip) + ":" + str(PORT) + \
-        "/resolve?id=" + str(channel_id)
+        "/vavoo?channel=" + str(channel_id)
 
 
 def keep_proxy_alive():
@@ -1238,8 +1240,7 @@ class vavoo_config(Screen, ConfigListScreen):
         """Get channels for a country from the proxy"""
         try:
             encoded_country = url_quote(country_name)
-            proxy_url = "http://127.0.0.1:{}/channels?country={}".format(
-                PORT, encoded_country)
+            proxy_url = PROXY_BASE_URL + "/channels?country={}".format(encoded_country)
             response = getUrl(proxy_url, timeout=15)
             if not response:
                 print("[M3U] No response for %s" % country_name)
@@ -1275,7 +1276,7 @@ class vavoo_config(Screen, ConfigListScreen):
     def get_countries_from_proxy(self):
         """Get country list from the proxy"""
         try:
-            response = getUrl("http://127.0.0.1:4323/countries", timeout=10)
+            response = getUrl(PROXY_COUNTRIES_URL, timeout=10)
             if response:
                 return loads(response)
 
@@ -1790,7 +1791,7 @@ class MainVavoo(Screen):
             if is_proxy_running():
                 try:
                     response = getUrl(
-                        "http://127.0.0.1:4323/status", timeout=2)
+                        PROXY_STATUS_URL, timeout=2)
                     if response:
                         status_data = loads(response)
 
@@ -1843,7 +1844,7 @@ class MainVavoo(Screen):
             try:
                 # Try to refresh the token
                 response = getUrl(
-                    "http://127.0.0.1:4323/refresh_token", timeout=5)
+                    PROXY_REFRESH_URL, timeout=5)
                 if response:
                     data = loads(response)
                     if data.get("status") == "success":
@@ -1899,10 +1900,10 @@ class MainVavoo(Screen):
             # Try to stop the existing proxy
             try:
                 if requests is not None:
-                    requests.get("http://127.0.0.1:4323/shutdown", timeout=2)
+                    requests.get(PROXY_SHUTDOWN_URL, timeout=2)
                 else:
                     req = UrlRequest(
-                        "http://127.0.0.1:4323/shutdown",
+                        PROXY_SHUTDOWN_URL,
                         headers={
                             'User-Agent': vUtils.RequestAgent()})
                     urlopen(req, timeout=2)
@@ -1975,7 +1976,7 @@ class MainVavoo(Screen):
                         if country_code:
                             success, tx = download_flag_online(
                                 country,
-                                cache_dir="/tmp/vavoo_flags",
+                                cache_dir=FLAG_CACHE_DIR,
                                 screen_width=1920
                             )
                             if success:
@@ -2032,7 +2033,7 @@ class MainVavoo(Screen):
 
             # 451-aware mirror fallback
             if (not content) or (content == HTTP_451_SENTINEL):
-                fb = self.url.replace("https://vavoo.to", FALLBACK_BASE_URL)
+                fb = self.url.replace(PRIMARY_BASE_URL, FALLBACK_BASE_URL)
                 print("[PROXY] HTTP 451: trying mirror %s" % fb)
                 content = getUrl(fb)
                 if PY3:
@@ -2099,7 +2100,7 @@ class MainVavoo(Screen):
             try:
                 if "vavoo.to" in self.url:
                     fallback_url = self.url.replace(
-                        "https://vavoo.to", FALLBACK_BASE_URL)
+                        PRIMARY_BASE_URL, FALLBACK_BASE_URL)
                 else:
                     # If self.url was altered somewhere, still try mirror
                     fallback_url = FALLBACK_BASE_URL.rstrip("/") + "/channels"
@@ -2279,20 +2280,16 @@ class MainVavoo(Screen):
                 if not hasattr(self, "proxy_watchdog_timer"):
                     self.proxy_watchdog_timer = eTimer()
                     try:
-                        self.proxy_watchdog_timer.timeout.connect(
-                            self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
                     except BaseException:
-                        self.proxy_watchdog_timer.callback.append(
-                            self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
 
                 if not hasattr(self, "proxy_monitor_timer"):
                     self.proxy_monitor_timer = eTimer()
                     try:
-                        self.proxy_monitor_timer.timeout.connect(
-                            self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.timeout.connect(self._check_and_update_proxy_status)
                     except BaseException:
-                        self.proxy_monitor_timer.callback.append(
-                            self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
 
                 # (Re)start them
                 self.proxy_watchdog_timer.start(60000)
@@ -2330,7 +2327,7 @@ class MainVavoo(Screen):
 
         except Exception as e:
             print("[MainVavoo] Error applying proxy setting: " + str(e))
-
+        
     def info(self):
         """Display plugin information"""
         message_parts = []
@@ -2625,7 +2622,7 @@ class vavoo(Screen):
                   str(self.country_name))
 
             # URL to initialize the proxy for the specific country
-            init_url = "http://127.0.0.1:4323/initialize_country?country={}".format(
+            init_url = PROXY_BASE_URL + "/initialize_country?country={}".format(
                 self.country_name)
             content = getUrl(init_url, timeout=10)
             if content:
@@ -2653,19 +2650,19 @@ class vavoo(Screen):
                 self.country_name)
 
             # 1. Check status
-            status_url = "http://127.0.0.1:4323/status"
+            status_url = PROXY_STATUS_URL
             status = getUrl(status_url, timeout=3)
             if status:
                 print("[DEBUG] Proxy Status: " + status[:200])
 
             # 2. Check countries list
-            countries_url = "http://127.0.0.1:4323/countries"
+            countries_url = PROXY_COUNTRIES_URL
             countries = getUrl(countries_url, timeout=3)
             if countries:
                 print("[DEBUG] Available countries: " + countries[:200])
 
             # 3. Try to get channels
-            test_url = "http://127.0.0.1:4323/channels?country=Italy"
+            test_url = PROXY_BASE_URL + "/channels?country=Italy"
             channels = getUrl(test_url, timeout=5)
             print("[DEBUG] Channels response length: " +
                   str(len(channels) if channels else 0))
@@ -2687,8 +2684,7 @@ class vavoo(Screen):
             # 1. TRY THE PROXY FIRST
             try:
                 country_encoded = url_quote(self.country_name)
-                proxy_url = "http://127.0.0.1:{}/channels?country={}".format(
-                    PORT, country_encoded)
+                proxy_url = PROXY_BASE_URL + "/channels?country={}".format(country_encoded)
                 print("[DEBUG] Fetching from proxy: " + proxy_url)
 
                 content = getUrl(proxy_url, timeout=10)
@@ -2722,7 +2718,7 @@ class vavoo(Screen):
 
             # 451-aware mirror fallback
             if (not content) or (content == HTTP_451_SENTINEL):
-                fb = url.replace("https://vavoo.to", FALLBACK_BASE_URL)
+                fb = url.replace(PRIMARY_BASE_URL, FALLBACK_BASE_URL)
                 print(
                     "[Fallback] Primary source blocked/empty, trying mirror: %s" %
                     fb)
@@ -2857,7 +2853,7 @@ class vavoo(Screen):
             return status
 
         try:
-            proxy_response = getUrl("http://127.0.0.1:4323/status", timeout=3)
+            proxy_response = getUrl(PROXY_STATUS_URL, timeout=3)
             if not proxy_response:
                 status["message"] = "Cannot get proxy status"
                 status["needs_restart"] = True
@@ -2882,9 +2878,7 @@ class vavoo(Screen):
                     str(token_age) +
                     "s), forcing refresh...")
                 try:
-                    refresh_url = "http://127.0.0.1:{}/refresh_token".format(
-                        PORT)
-                    getUrl(refresh_url, timeout=3)
+                    getUrl(PROXY_REFRESH_URL, timeout=3)
                 except Exception:
                     pass
 
@@ -2906,7 +2900,7 @@ class vavoo(Screen):
 
             # 1. Try token refresh
             try:
-                refresh_url = "http://127.0.0.1:{}/refresh_token".format(PORT)
+                refresh_url = PROXY_REFRESH_URL
                 getUrl(refresh_url, timeout=3)
                 print("[vavoo] Token refresh attempted")
             except Exception:
@@ -3052,7 +3046,7 @@ class vavoo(Screen):
             """
             # DEBUG: controlla se è un URL del proxy
             if isinstance(url, str):
-                if "127.0.0.1:4323" in url or "/resolve?id=" in url:
+                if "{}:{}".format(PROXY_HOST, PORT) in url or "/vavoo?channel=" in url:
                     print("[vavoo] ✓ This is a PROXY URL!")
                     print("[vavoo] Should use playDirectStream()")
                 else:
@@ -4138,13 +4132,13 @@ class Playstream2(
         if "/live2/play/" in self.url and self.url.endswith(".ts"):
             print("[Playstream2] Converting to proxy format")
             channel_id = self.url.split("/live2/play/")[1].replace(".ts", "")
-            self.url = "http://127.0.0.1:4323/vavoo?channel=" + channel_id
+            self.url = PROXY_BASE_URL + "/vavoo?channel=" + channel_id
 
         # Determine playback method - FIXED LOGIC
         print("[Playstream2] DEBUG URL: " + self.url)
 
         # Check if it's ANY proxy URL (localhost or network IP)
-        if ":4323/vavoo" in self.url or ":4323/resolve" in self.url:
+        if ":{}/vavoo".format(PORT) in self.url or ":{}/resolve".format(PORT) in self.url:
             print("[Playstream2] Proxy URL detected")
             self.playProxyStream()
         else:
@@ -4221,8 +4215,6 @@ class Playstream2(
 
             if "/vavoo?channel=" in self.url:
                 channel_id = self.url.split("/vavoo?channel=")[1]
-            elif "/resolve?id=" in self.url:
-                channel_id = self.url.split("/resolve?id=")[1]
 
             # Clean up any extra parameters
             if channel_id and '?' in channel_id:
@@ -4234,7 +4226,7 @@ class Playstream2(
                 return
 
             # Get proxy host from URL or use default
-            proxy_host = "127.0.0.1:4323"
+            proxy_host = "{}:{}".format(PROXY_HOST, PORT)
             if "://" in self.url:
                 import re
                 match = re.search(r'://([^/]+)', self.url)
@@ -4540,41 +4532,38 @@ class AutoStartTimer:
             traceback.print_exc()
 
 
-def autostart(reason, session=None, **kwargs):
+delayed_start_timer = None
+
+def delayed_boot_tasks():
     global auto_start_timer
-    global _session
+    try:
+        if cfg.proxy_enabled.value:
+            from .vUtils import is_proxy_running, is_proxy_ready
+            from .vavoo_proxy import run_proxy_in_background
 
-    # Enigma2: reason == 0 means startup/session start
-    if reason == 0 and _session is None:
-        if session is not None:
-            _session = session
+            if not is_proxy_running() or not is_proxy_ready(timeout=2):
+                run_proxy_in_background()
 
-            # Always ensure proxy is running when plugin starts (if enabled)
-            if cfg.proxy_enabled.value:
-                try:
-                    from .vUtils import is_proxy_running, is_proxy_ready
-                    from .vavoo_proxy import run_proxy_in_background
+        if cfg.autobouquetupdate.value and cfg.proxy_enabled.value:
+            if auto_start_timer is None:
+                auto_start_timer = AutoStartTimer()
+    except Exception as e:
+        print("[Vavoo] Delayed boot tasks error: " + str(e))
 
-                    if not is_proxy_running():
-                        print("[Vavoo] Proxy not running at startup -> starting...")
-                        run_proxy_in_background()
-                    else:
-                        # If running but not ready, try restarting once
-                        if not is_proxy_ready(timeout=2):
-                            print(
-                                "[Vavoo] Proxy running but not ready -> restarting...")
-                            run_proxy_in_background()
-                except Exception as e:
-                    print("[Vavoo] Startup proxy check error: " + str(e))
 
-            # Keep existing autobouquet logic as-is
-            if cfg.autobouquetupdate.value and cfg.proxy_enabled.value:
-                if auto_start_timer is None:
-                    auto_start_timer = AutoStartTimer()
-            else:
-                print("[Vavoo] Auto-update disabled or proxy disabled")
-    return
+def autostart(reason, session=None, **kwargs):
+    global _session, delayed_start_timer
 
+    if reason == 0 and _session is None and session is not None:
+        _session = session
+
+        delayed_start_timer = eTimer()
+        try:
+            delayed_start_timer.callback.append(delayed_boot_tasks)
+        except BaseException:
+            delayed_start_timer.timeout.connect(delayed_boot_tasks)
+
+        delayed_start_timer.startLongTimer(30)   # run 30 seconds after boot
 
 def check_configuring():
     """Check for new config values for auto start"""
@@ -4639,8 +4628,8 @@ def main(session, **kwargs):
                 _("No Internet connection detected. Please check your network."),
                 MessageBox.TYPE_INFO)
             return
-        if isfile('/tmp/vavoo.log'):
-            remove('/tmp/vavoo.log')
+        if isfile(LOG_FILE):
+            remove(LOG_FILE)
         add_skin_font()
         try:
             initialize_cache_with_local_flags()
