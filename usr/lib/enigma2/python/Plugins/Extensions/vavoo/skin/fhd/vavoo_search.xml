@@ -1,11 +1,11 @@
-<screen name="VavooSearch" position="center,center" size="1000,700" backgroundColor="#ff000000" title="Vavoo Search">
+<screen name="VavooSearch" position="center,center" size="1000,700" backgroundColor="#181b2e" title="Vavoo Search">
 	<widget name="search_label" position="20,20" size="960,40" font="cvfont;32" halign="left" valign="center" />
-	<widget name="search_text" position="20,70" size="960,60" font="cvfont;32" halign="left" valign="center" backgroundColor="#ff000000" />
+	<widget name="search_text" position="20,70" size="960,60" font="cvfont;32" halign="left" valign="center" backgroundColor="#181b2e" />
 	<widget name="input_info" position="20,140" size="960,30" font="cvfont;24" halign="center" valign="center" />
 	<widget name="channel_list" position="20,180" size="960,380" font="cvfont;28" itemHeight="50" scrollbarMode="showOnDemand" />
 	<widget name="status" position="20,615" size="960,30" font="cvfont;24" halign="center" valign="center" />
-	<widget name="key_red" position="20,655" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#00ff0000" foregroundColor="#00ffffff" />
-	<widget name="key_green" position="210,655" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#0000ff00" foregroundColor="#00ffffff" />
-	<widget name="key_yellow" position="400,655" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#00ffff00" foregroundColor="#00ffffff" />
-	<widget name="key_blue" position="590,654" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#000000ff" foregroundColor="#00ffffff" />
+	<widget name="key_red" position="20,655" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#ff0000" foregroundColor="#ffffff" />
+	<widget name="key_green" position="210,655" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#0000ff00" foregroundColor="#ffffff" />
+	<widget name="key_yellow" position="400,655" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#00ffff00" foregroundColor="#ffffff" />
+	<widget name="key_blue" position="590,654" size="180,30" font="cvfont;20" halign="center" valign="center" backgroundColor="#000000ff" foregroundColor="#ffffff" />
 </screen>

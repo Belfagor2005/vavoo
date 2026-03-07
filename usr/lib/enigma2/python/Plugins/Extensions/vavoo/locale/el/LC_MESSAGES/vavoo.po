@@ -34,7 +34,8 @@ msgstr "- Μπουκέτα κατηγορίας"
 msgid "- Commercial use is strictly prohibited"
 msgstr "- Απαγορεύεται αυστηρά η εμπορική χρήση"
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#, fuzzy
+msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr "- Κοινότητα: Linuxsat-support.com, Corvoboys Forum"
 
 msgid "- Container bouquets"
@@ -42,9 +43,6 @@ msgstr "- Μπουκέτα κοντέινερ"
 
 msgid "- Country bouquets"
 msgstr "- Μπουκέτα χώρας"
-
-msgid "- For personal use only"
-msgstr "- Μόνο για προσωπική χρήση"
 
 msgid "- Free content only"
 msgstr "- Μόνο δωρεάν περιεχόμενο"
@@ -488,6 +486,9 @@ msgstr "πεζά"
 
 msgid "seconds"
 msgstr "δευτερόλεπτα"
+
+#~ msgid "- For personal use only"
+#~ msgstr "- Μόνο για προσωπική χρήση"
 
 #~ msgid "Active or Disactive lan Ipv6."
 #~ msgstr "Ενεργοποίηση ή απενεργοποίηση lan Ipv6."

@@ -33,7 +33,8 @@ msgstr "- Kategória kytíc"
 msgid "- Commercial use is strictly prohibited"
 msgstr "- Komerčné použitie je prísne zakázané"
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#, fuzzy
+msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr "- Komunita: Linuxsat-support.com, Fórum Corvoboys"
 
 msgid "- Container bouquets"
@@ -41,9 +42,6 @@ msgstr "- Kytice v nádobách"
 
 msgid "- Country bouquets"
 msgstr "- Vidiecke kytice"
-
-msgid "- For personal use only"
-msgstr "- Len na osobné použitie"
 
 msgid "- Free content only"
 msgstr "- Iba bezplatný obsah"
@@ -500,6 +498,9 @@ msgstr "malé písmo"
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "- For personal use only"
+#~ msgstr "- Len na osobné použitie"
 
 #~ msgid "Active or Disactive lan Ipv6."
 #~ msgstr "Aktívna alebo neaktívna LAN IPv6."

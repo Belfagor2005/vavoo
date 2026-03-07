@@ -2331,10 +2331,8 @@ class MainVavoo(Screen):
     def info(self):
         """Display plugin information"""
         message_parts = []
-        message_parts.append("=" * 40)
         message_parts.append(_("Vavoo Stream Live Plugin"))
         message_parts.append("=" * 40)
-        message_parts.append("")
 
         message_parts.append(_("Version: ") + str(__version__))
         message_parts.append(_("Author: ") + str(__author__))
@@ -2355,14 +2353,13 @@ class MainVavoo(Screen):
         message_parts.append(
             _("- Technical support: Qu4k3, @KiddaC, @giorbak"))
         message_parts.append(
-            _("- Community: Linuxsat-support.com, Corvoboys Forum"))
+            _("- Community: Linuxsat-support.com, Corvoboys.org Forum"))
         message_parts.append("")
 
         message_parts.append(_("Important Notes:"))
         message_parts.append(_("- Free content only"))
         message_parts.append(_("- Streams from public sources"))
         message_parts.append(_("- No direct server hosting"))
-        message_parts.append(_("- For personal use only"))
         message_parts.append("")
 
         message_parts.append(_("License: CC BY-NC-SA 4.0"))
@@ -4591,9 +4588,9 @@ def add_skin_back(bakk):
 def add_skin_font():
     print('**********addFont')
     from enigma import addFont
-    addFont(join(FNT_Path, 'Lcdx.ttf'), 'Lcdx', 100, 1)
-    addFont(str(FONTSTYPE), 'cvfont', 100, 1)
-    addFont(join(FNT_Path, 'MavenPro-Medium.ttf'), 'vav', 100, 1)
+    addFont(join(FNT_Path, 'Lcdx.ttf'), 'Lcdx', 100, 0)
+    addFont(str(FONTSTYPE), 'cvfont', 100, 0)
+    addFont(join(FNT_Path, 'MavenPro-Medium.ttf'), 'vav', 100, 0)
 
 
 def cfgmain(menuid, **kwargs):
