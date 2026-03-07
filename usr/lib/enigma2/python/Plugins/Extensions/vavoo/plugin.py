@@ -708,6 +708,7 @@ def is_port_in_use(port):
 def get_proxy_stream_url(channel_id):
     """Get the stream URL via proxy"""
     local_ip = PROXY_HOST
+    # port = PORT
     return "http://" + str(local_ip) + ":" + str(PORT) + \
         "/vavoo?channel=" + str(channel_id)
 
@@ -3048,7 +3049,7 @@ class vavoo(Screen):
             """
             # DEBUG: controlla se è un URL del proxy
             if isinstance(url, str):
-                if "{}:{}".format(PROXY_HOST, PORT) in url or "/resolve?id=" in url:
+                if "{}:{}".format(PROXY_HOST, PORT) in url or "/vavoo?channel=" in url:
                     print("[vavoo] ✓ This is a PROXY URL!")
                     print("[vavoo] Should use playDirectStream()")
                 else:
@@ -4217,8 +4218,6 @@ class Playstream2(
 
             if "/vavoo?channel=" in self.url:
                 channel_id = self.url.split("/vavoo?channel=")[1]
-            elif "/resolve?id=" in self.url:
-                channel_id = self.url.split("/resolve?id=")[1]
 
             # Clean up any extra parameters
             if channel_id and '?' in channel_id:

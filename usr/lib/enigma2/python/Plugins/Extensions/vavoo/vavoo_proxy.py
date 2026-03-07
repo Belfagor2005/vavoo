@@ -291,10 +291,6 @@ class VavooProxy:
         self.addon_sig_lock = threading.Lock()
         self.addon_sig_data = {"sig": None, "ts": 0}
         self.all_filtered_items = []
-        self.channels_by_id = {}
-        self.local_ip = PROXY_HOST
-        self.resolve_cache = {}
-        self.resolve_cache_ttl = 30
         self.initialized = False
         self.current_language = "en"
         self.current_region = "US"
@@ -303,6 +299,12 @@ class VavooProxy:
         self.last_heartbeat = time.time()
         self.server = None
         self.start_time = time.time()
+        self.channels_by_id = {}
+        self.channels_by_country = {}
+        self.countries_list = []
+        self.resolve_cache = {}
+        self.resolve_cache_ttl = 30
+        self.local_ip = None
 
         # Stop flag for background workers
         self._stop_event = threading.Event()
@@ -313,13 +315,7 @@ class VavooProxy:
         self.base_site_index = 0
         self._update_endpoints()
 
-        try:
-            self.local_ip = self._detect_local_ip()
-        except Exception:
-            self.local_ip = PROXY_HOST
-
-        # 3. Start periodic refresh and Token Monitor
-        self.start_periodic_refresh()
+        # Start lightweight token monitor only
         self.start_token_monitor()
         print("[Proxy] Initialized at " + time.ctime())
 
@@ -363,64 +359,24 @@ class VavooProxy:
             raise
 
     def start_token_monitor(self):
-        """Monitor and refresh token automatically"""
+        """Monitor token age with minimal background traffic"""
         def token_monitor_loop():
             while not self._stop_event.is_set():
-                time.sleep(30)  # Check every 30 seconds
+                time.sleep(60)
                 try:
-                    with self.addon_sig_lock:
-                        now = time.time()
-                        if self.addon_sig_data["sig"]:
-                            token_age = now - self.addon_sig_data["ts"]
-                            # Refresh if token older than 8 minutes (480s)
-                            if token_age > TOKEN_REFRESH_AGE:
-                                print("[Token Monitor] Token old (" +
-                                      str(int(token_age)) + "), refreshing...")
-                                self.refresh_addon_sig_if_needed(force=True)
-
-                    # ALSO: Send heartbeat to keep connections alive
-                    try:
-                        # Use current base site for heartbeat
-                        hb = self.base_sites[self.base_site_index].rstrip(
-                            '/') + "/"
-                        self.session.head(hb, timeout=5)
-                        self.last_heartbeat = now
-                    except Exception as e:
-                        print("[Token Monitor] Heartbeat error: " + str(e))
-
+                    now = time.time()
+                    token_age = now - self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
+                    if self.addon_sig_data["sig"] and token_age > TOKEN_REFRESH_AGE:
+                        print("[Token Monitor] Token old (" + str(int(token_age)) + "), refreshing...")
+                        self.refresh_addon_sig_if_needed(force=True)
+                    self.last_heartbeat = now
                 except Exception as e:
                     print("[Token Monitor] Error: " + str(e))
 
         self._token_monitor_thread = threading.Thread(target=token_monitor_loop)
         self._token_monitor_thread.setDaemon(True)
         self._token_monitor_thread.start()
-        print("[Proxy] Token monitor started (with heartbeat)")
-
-    def start_periodic_refresh(self):
-        """Refresh token periodically (every 8 minutes)"""
-        if self._stop_event.is_set():
-            return
-        if self.refresh_timer:
-            self.refresh_timer.cancel()
-
-        self.refresh_timer = threading.Timer(
-            TOKEN_REFRESH_AGE, self._periodic_refresh_task)
-        self.refresh_timer.setDaemon(True)
-        self.refresh_timer.start()
-        print("[Proxy] Periodic refresh scheduled (480s)")
-
-    def _periodic_refresh_task(self):
-        """Periodic task to refresh token"""
-        try:
-            print("[Proxy] Periodic refresh task running...")
-            sig = self.refresh_addon_sig_if_needed(force=True)
-            if sig:
-                print("[Proxy] Token refreshed via periodic task")
-        except Exception as e:
-            print("[Proxy] Error in periodic refresh: " + str(e))
-
-        # Schedule next refresh
-        self.start_periodic_refresh()
+        print("[Proxy] Token monitor started")
 
     def refresh_addon_sig_if_needed(self, force=False):
         """Refresh the addonSig if needed with better error handling"""
@@ -541,19 +497,31 @@ class VavooProxy:
                 print("[Proxy] Warning: Catalog is empty or failed to load")
                 # Create an empty list but mark as initialized
                 self.all_filtered_items = []
+                self.channels_by_id = {}
+                self.channels_by_country = {}
+                self.countries_list = []
                 self.initialized = True
                 print("[Proxy] Initialized with empty catalog")
                 return True
 
             self.all_filtered_items = all_channels
+            self.channels_by_id = {}
+            self.channels_by_country = {}
+            countries = set()
+            for channel in all_channels:
+                channel_id = channel.get("id")
+                if channel_id:
+                    self.channels_by_id[channel_id] = channel
+                country = channel.get("country")
+                if country:
+                    self.channels_by_country.setdefault(country, []).append(channel)
+                if country and country != "default":
+                    countries.add(country)
+            self.countries_list = sorted(list(countries))
+            self.local_ip = self.get_local_ip(force_refresh=True)
             self.initialized = True
 
             # Analysis
-            countries = set()
-            for channel in all_channels:
-                country = channel.get("country")
-                if country and country != "default":
-                    countries.add(country)
 
             print(
                 "[Proxy] ✓ Initialized: %d channels, %d countries" %
@@ -566,6 +534,9 @@ class VavooProxy:
             # Even in case of error, try to continue with an empty catalog
             print("[Proxy] Continuing with empty catalog")
             self.all_filtered_items = []
+            self.channels_by_id = {}
+            self.channels_by_country = {}
+            self.countries_list = []
             self.initialized = True
             return True  # Always return True; the proxy can work even without a catalog
 
@@ -736,8 +707,8 @@ class VavooProxy:
 
                 page += 1
 
-                if page % 5 == 0:
-                    time.sleep(1)
+                if page % 10 == 0:
+                    time.sleep(0.1)
 
             print("[Proxy] Catalog loaded: {0} channels in {1} pages"
                   .format(len(all_channels), page - 1))
@@ -752,23 +723,19 @@ class VavooProxy:
                 return all_channels
             return None
 
-    def resolve_with_retry(self, channel_url, max_retries=3):
-        """Resolve URLs with retries and improved error handling"""
+    def resolve_with_retry(self, channel_url, max_retries=2):
+        """Resolve URLs with short-lived caching and fast retries"""
         if not channel_url:
             print("[Proxy] No channel URL provided")
             return None
 
         now = time.time()
         cached = self.resolve_cache.get(channel_url)
-        if cached and now - cached.get("ts", 0) <= self.resolve_cache_ttl:
-            stream_url = cached.get("url")
-            if stream_url:
-                print("[Proxy] Resolve cache hit")
-                return stream_url
+        if cached and (now - cached["ts"] < self.resolve_cache_ttl):
+            return cached["url"]
 
         for attempt in range(max_retries):
             try:
-                # First, try to obtain a fresh token if needed
                 if attempt > 0:
                     self.refresh_addon_sig_if_needed(force=True)
 
@@ -789,147 +756,71 @@ class VavooProxy:
                     "clientVersion": "3.0.2"
                 }
 
-                print(
-                    "[Proxy] Resolving channel URL (attempt %d/%d)" %
-                    (attempt + 1, max_retries)
-                )
-
+                print("[Proxy] Resolving channel URL (attempt %d/%d)" % (attempt + 1, max_retries))
                 r_resolve = self.session.post(
                     self.resolve_url,
                     json=resolve_payload,
                     headers=resolve_headers,
-                    timeout=15
+                    timeout=10
                 )
 
-                # 451 -> switch mirror and retry
                 if r_resolve.status_code == 451:
                     self._switch_to_next_base("(HTTP 451 on resolve)")
                     if attempt < max_retries - 1:
-                        time.sleep(1)
                         continue
-                    # last attempt: try once more on the new base
-                    r_resolve = self.session.post(
-                        self.resolve_url,
-                        json=resolve_payload,
-                        headers=resolve_headers,
-                        timeout=15
-                    )
 
-                # Handle HTTP errors
-                if r_resolve.status_code == 502:
-                    print(
-                        "[Proxy] 502 Bad Gateway on resolve, attempt %d" %
-                        (attempt + 1)
-                    )
-                    if attempt < max_retries - 1:
-                        time.sleep(2 ** attempt)
-                        continue
-                    else:
-                        print("[Proxy] Giving up on resolve after max retries")
-                        return None
+                if r_resolve.status_code == 502 and attempt < max_retries - 1:
+                    time.sleep(0.25)
+                    continue
 
                 r_resolve.raise_for_status()
                 result = decode_response(r_resolve)
-
-                if result and len(result) > 0:
+                stream_url = None
+                if isinstance(result, list) and result:
                     stream_url = result[0].get("url")
-                    if stream_url:
-                        self.resolve_cache[channel_url] = {"url": stream_url, "ts": time.time()}
-                        self._prune_resolve_cache()
-                        print("[Proxy] Successfully resolved channel URL")
-                        return stream_url
-                    else:
-                        print("[Proxy] No stream URL in response")
-                else:
-                    print("[Proxy] Empty response from resolve")
+                elif isinstance(result, dict):
+                    stream_url = result.get("url") or result.get("streamUrl")
+
+                if stream_url:
+                    self.resolve_cache[channel_url] = {"url": stream_url, "ts": time.time()}
+                    if len(self.resolve_cache) > 1000:
+                        keys = list(self.resolve_cache.keys())[:-500]
+                        for key in keys:
+                            self.resolve_cache.pop(key, None)
+                    print("[Proxy] Successfully resolved channel URL")
+                    return stream_url
+                print("[Proxy] Resolve response missing URL")
 
             except requests.exceptions.HTTPError as e:
-                print(
-                    "[Proxy] HTTP error in resolve attempt %d: %s" %
-                    (attempt + 1, str(e))
-                )
-
+                print("[Proxy] HTTP error in resolve attempt %d: %s" % (attempt + 1, str(e)))
                 try:
                     if e.response is not None and e.response.status_code == 451:
-                        self._switch_to_next_base(
-                            "(HTTP 451 on resolve HTTPError)")
-                        if attempt < max_retries - 1:
-                            time.sleep(1)
-                            continue
+                        self._switch_to_next_base("(HTTP 451 on resolve HTTPError)")
                 except Exception:
                     pass
-                if (
-                    e.response is not None and
-                    e.response.status_code == 502 and
-                    attempt < max_retries - 1
-                ):
-                    time.sleep(2 ** attempt)
-                    continue
-                else:
-                    break
-
-            except Exception as e:
-                print(
-                    "[Proxy] Error in resolve attempt %d: %s" %
-                    (attempt + 1, str(e))
-                )
                 if attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)
-                    continue
-                else:
-                    break
+                    time.sleep(0.25)
+            except Exception as e:
+                print("[Proxy] Error in resolve attempt %d: %s" % (attempt + 1, str(e)))
+                if attempt < max_retries - 1:
+                    time.sleep(0.25)
 
         print("[Proxy] Failed to resolve channel URL after all retries")
         return None
 
-    def _detect_local_ip(self):
-        """Detect the current LAN IP once and reuse it."""
+    def get_local_ip(self, force_refresh=False):
+        """Get and cache local IP"""
+        if self.local_ip and not force_refresh:
+            return self.local_ip
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect(("8.8.8.8", 80))
-            ip = s.getsockname()[0]
+            self.local_ip = s.getsockname()[0]
             s.close()
-            return ip
+            return self.local_ip
         except BaseException:
-            return PROXY_HOST
-
-    def _prune_resolve_cache(self):
-        """Remove expired resolve cache entries."""
-        now = time.time()
-        expired = []
-        for cache_key, entry in self.resolve_cache.items():
-            if now - entry.get("ts", 0) > self.resolve_cache_ttl:
-                expired.append(cache_key)
-        for cache_key in expired:
-            try:
-                del self.resolve_cache[cache_key]
-            except Exception:
-                pass
-
-    def get_channel_by_id(self, channel_id):
-        """Fast channel lookup by id with fallback rebuild."""
-        if not channel_id:
-            return None
-
-        channel = self.channels_by_id.get(channel_id)
-        if channel:
-            return channel
-
-        if self.all_filtered_items and not self.channels_by_id:
-            self.channels_by_id = {}
-            for item in self.all_filtered_items:
-                item_id = item.get("id")
-                if item_id:
-                    self.channels_by_id[item_id] = item
-            return self.channels_by_id.get(channel_id)
-
-        return None
-
-    def get_local_ip(self):
-        """Get cached local IP."""
-        if not getattr(self, 'local_ip', None) or self.local_ip == PROXY_HOST:
-            self.local_ip = self._detect_local_ip()
-        return self.local_ip
+            self.local_ip = PROXY_HOST
+            return self.local_ip
 
 
 
@@ -961,7 +852,6 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             elif not isinstance(data, bytes):
                 data = str(data).encode('utf-8')
             self.wfile.write(data)
-            self.wfile.flush()
         except (socket.error, IOError):
             return False
         return True
@@ -992,18 +882,20 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = proxy.get_channel_by_id(channel_id)
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
 
                 if not channel:
                     self.send_error(404, "Channel not found")
                     return
 
                 try:
+                    # 1. Resolve the Vavoo stream URL
                     stream_url = proxy.resolve_with_retry(channel.get("url"))
                     if not stream_url:
                         self.send_error(404, "Stream not resolved")
                         return
 
+                    # Return the redirect immediately to reduce startup latency
                     if not self.safe_send_response(302):
                         return
 
@@ -1029,7 +921,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = proxy.get_channel_by_id(channel_id)
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
 
                 if not channel:
                     self.send_error(404, "Channel not found")
@@ -1061,7 +953,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     # 4. Forward data with timeout monitoring
                     last_data_time = time.time()
                     try:
-                        for chunk in upstream.iter_content(chunk_size=8192):
+                        for chunk in upstream.iter_content(chunk_size=65536):
                             if chunk:
                                 self.wfile.write(chunk)
                                 self.wfile.flush()
@@ -1207,8 +1099,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                         "message": "Proxy is running normally" if initialized else "Proxy not initialized"
                     }
 
-                    # Health is read-only; background workers handle refreshes.
-                    proxy_status["token"]["refreshed"] = False
+                    # Read-only health endpoint: no forced refresh here
 
                     # self.send_response(200)
                     if not self.safe_send_response(200):
@@ -1378,7 +1269,7 @@ def start_proxy():
 
             server = ThreadedHTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
             server.timeout = 30
-            server.request_queue_size = 10
+            server.request_queue_size = 64
             proxy.server = server
             local_ip = proxy.get_local_ip()
 
