@@ -35,11 +35,10 @@ import time
 import threading
 import socket
 from json import loads, dumps
-# import threading
+from .vUtils import is_proxy_running
 
 _starting_lock = threading.Lock()
 _starting = False
-
 
 try:
     unicode
@@ -256,8 +255,7 @@ class ProxyHealthMonitor:
             proxy = VavooProxy()
 
             if proxy.initialize_proxy():
-                server = ThreadedHTTPServer(
-                    ('0.0.0.0', PORT), VavooHTTPHandler)
+                server = ThreadedHTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
                 proxy.server = server
                 server_thread = threading.Thread(target=server.serve_forever)
                 server_thread.setDaemon(True)
@@ -382,8 +380,7 @@ class VavooProxy:
                 except Exception as e:
                     print("[Token Monitor] Error: " + str(e))
 
-        self._token_monitor_thread = threading.Thread(
-            target=token_monitor_loop)
+        self._token_monitor_thread = threading.Thread(target=token_monitor_loop)
         self._token_monitor_thread.setDaemon(True)
         self._token_monitor_thread.start()
         print("[Proxy] Token monitor started (with heartbeat)")
@@ -875,6 +872,9 @@ class VavooProxy:
         except BaseException:
             return "127.0.0.1"
 
+
+
+
     def stop(self):
         """Stop background workers/timers and close session (safe for Py2/3)."""
         try:
@@ -1238,8 +1238,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     return
 
             elif parsed_path.path == '/shutdown':
-                # Signal global stop to prevent the restart loop from
-                # re-spawning the server
+                # Signal global stop to prevent the restart loop from re-spawning the server
                 STOP_EVENT.set()
 
                 if not self.safe_send_response(200):
@@ -1452,15 +1451,6 @@ def run_proxy_in_background():
         _starting = True
 
     try:
-        def is_proxy_running():
-            try:
-                import socket
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    s.settimeout(1)
-                    return s.connect_ex(('127.0.0.1', PORT)) == 0
-            except BaseException:
-                return False
-
         # If already running, perform a health check
         if is_proxy_running():
             from os import system

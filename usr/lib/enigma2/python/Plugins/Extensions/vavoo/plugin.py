@@ -261,13 +261,11 @@ def get_enigma2_path():
             return path.rstrip('/')
     return '/etc/enigma2'
 
-
 def _is_vavoo_already_open(session):
     try:
         # dialog_stack entries are usually tuples like (dialog, ...)
         for entry in getattr(session, "dialog_stack", []):
-            dlg = entry[0] if isinstance(
-                entry, (list, tuple)) and entry else entry
+            dlg = entry[0] if isinstance(entry, (list, tuple)) and entry else entry
             if dlg is None:
                 continue
             name = dlg.__class__.__name__
@@ -2279,20 +2277,16 @@ class MainVavoo(Screen):
                 if not hasattr(self, "proxy_watchdog_timer"):
                     self.proxy_watchdog_timer = eTimer()
                     try:
-                        self.proxy_watchdog_timer.timeout.connect(
-                            self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.timeout.connect(self._proxy_watchdog_check)
                     except BaseException:
-                        self.proxy_watchdog_timer.callback.append(
-                            self._proxy_watchdog_check)
+                        self.proxy_watchdog_timer.callback.append(self._proxy_watchdog_check)
 
                 if not hasattr(self, "proxy_monitor_timer"):
                     self.proxy_monitor_timer = eTimer()
                     try:
-                        self.proxy_monitor_timer.timeout.connect(
-                            self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.timeout.connect(self._check_and_update_proxy_status)
                     except BaseException:
-                        self.proxy_monitor_timer.callback.append(
-                            self._check_and_update_proxy_status)
+                        self.proxy_monitor_timer.callback.append(self._check_and_update_proxy_status)
 
                 # (Re)start them
                 self.proxy_watchdog_timer.start(60000)
@@ -2330,7 +2324,7 @@ class MainVavoo(Screen):
 
         except Exception as e:
             print("[MainVavoo] Error applying proxy setting: " + str(e))
-
+        
     def info(self):
         """Display plugin information"""
         message_parts = []
@@ -4543,41 +4537,38 @@ class AutoStartTimer:
             traceback.print_exc()
 
 
-def autostart(reason, session=None, **kwargs):
+delayed_start_timer = None
+
+def delayed_boot_tasks():
     global auto_start_timer
-    global _session
+    try:
+        if cfg.proxy_enabled.value:
+            from .vUtils import is_proxy_running, is_proxy_ready
+            from .vavoo_proxy import run_proxy_in_background
 
-    # Enigma2: reason == 0 means startup/session start
-    if reason == 0 and _session is None:
-        if session is not None:
-            _session = session
+            if not is_proxy_running() or not is_proxy_ready(timeout=2):
+                run_proxy_in_background()
 
-            # Always ensure proxy is running when plugin starts (if enabled)
-            if cfg.proxy_enabled.value:
-                try:
-                    from .vUtils import is_proxy_running, is_proxy_ready
-                    from .vavoo_proxy import run_proxy_in_background
+        if cfg.autobouquetupdate.value and cfg.proxy_enabled.value:
+            if auto_start_timer is None:
+                auto_start_timer = AutoStartTimer()
+    except Exception as e:
+        print("[Vavoo] Delayed boot tasks error: " + str(e))
 
-                    if not is_proxy_running():
-                        print("[Vavoo] Proxy not running at startup -> starting...")
-                        run_proxy_in_background()
-                    else:
-                        # If running but not ready, try restarting once
-                        if not is_proxy_ready(timeout=2):
-                            print(
-                                "[Vavoo] Proxy running but not ready -> restarting...")
-                            run_proxy_in_background()
-                except Exception as e:
-                    print("[Vavoo] Startup proxy check error: " + str(e))
 
-            # Keep existing autobouquet logic as-is
-            if cfg.autobouquetupdate.value and cfg.proxy_enabled.value:
-                if auto_start_timer is None:
-                    auto_start_timer = AutoStartTimer()
-            else:
-                print("[Vavoo] Auto-update disabled or proxy disabled")
-    return
+def autostart(reason, session=None, **kwargs):
+    global _session, delayed_start_timer
 
+    if reason == 0 and _session is None and session is not None:
+        _session = session
+
+        delayed_start_timer = eTimer()
+        try:
+            delayed_start_timer.callback.append(delayed_boot_tasks)
+        except BaseException:
+            delayed_start_timer.timeout.connect(delayed_boot_tasks)
+
+        delayed_start_timer.startLongTimer(30)   # run 30 seconds after boot
 
 def check_configuring():
     """Check for new config values for auto start"""
