@@ -1,7 +1,7 @@
 #!/bin/bash
 
 version='1.58'
-changelog='\nRemoved Fonts\nRemoved Update Online\n\nOffer coffee please :)'
+changelog='\nRemoved Fonts\nRemoved Update Online\nBouquet Bottom Fixed\nOffer coffee please :)'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz
