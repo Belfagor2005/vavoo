@@ -196,7 +196,7 @@ class ProxyHealthMonitor:
                 data = response.json()
 
                 # 2. Check token status
-                token_age = data.get("token_age", 0)
+                token_age = data.get("token", {}).get("age", 0)
                 # needs_refresh = data.get("needs_refresh", False)
 
                 if token_age > 550:  # > 9 minutes (almost expired)
