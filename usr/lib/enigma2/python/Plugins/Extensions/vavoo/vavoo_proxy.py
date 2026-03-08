@@ -36,16 +36,10 @@ import threading
 import socket
 from json import loads, dumps
 from . import (
-    PORT,
-    PROXY_HOST,
-    PROXY_BASE_URL,
-    PROXY_STATUS_URL,
-    PROXY_HEALTH_URL,
-    PROXY_SHUTDOWN_URL,
-    PRIMARY_BASE_URL,
-    FALLBACK_BASE_URL,
-    BASE_SITES)
-from .vUtils import is_proxy_running
+    PORT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL, PROXY_HEALTH_URL, PROXY_SHUTDOWN_URL,
+    PRIMARY_BASE_URL, FALLBACK_BASE_URL, BASE_SITES
+)
+from .vUtils import is_proxy_running, make_print, log, debug, warning, error, log_exception, trace_error
 
 _starting_lock = threading.Lock()
 _starting = False
@@ -54,6 +48,8 @@ try:
     unicode
 except NameError:
     unicode = str
+
+print = make_print("PROXY")
 
 
 # Python 2/3 compatibility for exception names used in handlers
@@ -73,11 +69,11 @@ socket.setdefaulttimeout(30)
 try:
     from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
     from urlparse import urlparse, parse_qs
-    print("[Proxy] Python 2 detected")
+    print(" Python 2 detected")
 except ImportError:
     from http.server import BaseHTTPRequestHandler, HTTPServer
     from urllib.parse import urlparse, parse_qs
-    print("[Proxy] Python 3 detected")
+    print(" Python 3 detected")
 
 
 # Threaded HTTP server (prevents one streaming client from blocking others)
@@ -263,8 +259,7 @@ class ProxyHealthMonitor:
             proxy = VavooProxy()
 
             if proxy.initialize_proxy():
-                server = ThreadedHTTPServer(
-                    ('0.0.0.0', PORT), VavooHTTPHandler)
+                server = ThreadedHTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
                 proxy.server = server
                 server_thread = threading.Thread(target=server.serve_forever)
                 server_thread.setDaemon(True)
@@ -324,7 +319,7 @@ class VavooProxy:
 
         # Start lightweight token monitor only
         self.start_token_monitor()
-        print("[Proxy] Initialized at " + time.ctime())
+        print(" Initialized at " + time.ctime())
 
     def _update_endpoints(self):
         """Update API endpoints from the current base site."""
@@ -342,7 +337,7 @@ class VavooProxy:
         self._update_endpoints()
         new = self.base_sites[self.base_site_index]
         print(
-            "[Proxy] Switching base site: {0} -> {1} {2}".format(old, new, reason))
+            " Switching base site: {0} -> {1} {2}".format(old, new, reason))
 
     def _robust_request(self, method, url, **kwargs):
         """Simplified and safer version"""
@@ -356,13 +351,13 @@ class VavooProxy:
                 self.session, method, url, **kwargs)
             return response
         except (requests.exceptions.Timeout, socket.timeout) as e:
-            print("[Proxy] Timeout on " + str(url) + ": " + str(e))
+            print(" Timeout on " + str(url) + ": " + str(e))
             raise
         except requests.exceptions.ConnectionError as e:
-            print("[Proxy] Connection error on " + str(url) + ": " + str(e))
+            print(" Connection error on " + str(url) + ": " + str(e))
             raise
         except Exception as e:
-            print("[Proxy] Error on " + str(url) + ": " + str(e))
+            print(" Error on " + str(url) + ": " + str(e))
             raise
 
     def start_token_monitor(self):
@@ -372,21 +367,18 @@ class VavooProxy:
                 time.sleep(60)
                 try:
                     now = time.time()
-                    token_age = now - \
-                        self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
+                    token_age = now - self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
                     if self.addon_sig_data["sig"] and token_age > TOKEN_REFRESH_AGE:
-                        print("[Token Monitor] Token old (" +
-                              str(int(token_age)) + "), refreshing...")
+                        print("[Token Monitor] Token old (" + str(int(token_age)) + "), refreshing...")
                         self.refresh_addon_sig_if_needed(force=True)
                     self.last_heartbeat = now
                 except Exception as e:
                     print("[Token Monitor] Error: " + str(e))
 
-        self._token_monitor_thread = threading.Thread(
-            target=token_monitor_loop)
+        self._token_monitor_thread = threading.Thread(target=token_monitor_loop)
         self._token_monitor_thread.setDaemon(True)
         self._token_monitor_thread.start()
-        print("[Proxy] Token monitor started")
+        print(" Token monitor started")
 
     def refresh_addon_sig_if_needed(self, force=False):
         """Refresh the addonSig if needed with better error handling"""
@@ -477,41 +469,41 @@ class VavooProxy:
                 # self.addon_sig_data["sig"] = sig
                 # self.addon_sig_data["ts"] = now
                 """
-                print("[Proxy] Token refreshed successfully")
+                print(" Token refreshed successfully")
                 return sig
 
             except Exception as e:
-                print("[Proxy] Error updating addonSig: " + str(e))
+                print(" Error updating addonSig: " + str(e))
                 if self.addon_sig_data["sig"]:
-                    print("[Proxy] Using old token")
+                    print(" Using old token")
                     return self.addon_sig_data["sig"]
                 return None
 
     def initialize_proxy(self):
         """Initialize the proxy by loading the catalog with fallback"""
         try:
-            print("[Proxy] Initializing...")
+            print(" Initializing...")
 
             # First, obtain a valid token
             sig = self.refresh_addon_sig_if_needed()
             if not sig:
                 print(
-                    "[Proxy] Warning: Could not get a valid token, but continuing anyway")
+                    " Warning: Could not get a valid token, but continuing anyway")
                 # We may continue with an old token or no token at all
 
             # Load the catalog
-            print("[Proxy] Attempting to load catalog...")
+            print(" Attempting to load catalog...")
             all_channels = self.load_catalog(sig)
 
             if not all_channels or len(all_channels) == 0:
-                print("[Proxy] Warning: Catalog is empty or failed to load")
+                print(" Warning: Catalog is empty or failed to load")
                 # Create an empty list but mark as initialized
                 self.all_filtered_items = []
                 self.channels_by_id = {}
                 self.channels_by_country = {}
                 self.countries_list = []
                 self.initialized = True
-                print("[Proxy] Initialized with empty catalog")
+                print(" Initialized with empty catalog")
                 return True
 
             self.all_filtered_items = all_channels
@@ -524,8 +516,7 @@ class VavooProxy:
                     self.channels_by_id[channel_id] = channel
                 country = channel.get("country")
                 if country:
-                    self.channels_by_country.setdefault(
-                        country, []).append(channel)
+                    self.channels_by_country.setdefault(country, []).append(channel)
                 if country and country != "default":
                     countries.add(country)
             self.countries_list = sorted(list(countries))
@@ -535,15 +526,15 @@ class VavooProxy:
             # Analysis
 
             print(
-                "[Proxy] ✓ Initialized: %d channels, %d countries" %
+                " ✓ Initialized: %d channels, %d countries" %
                 (len(all_channels), len(countries))
             )
             return True
 
         except Exception as e:
-            print("[Proxy] Initialization error: %s" % str(e))
+            print(" Initialization error: %s" % str(e))
             # Even in case of error, try to continue with an empty catalog
-            print("[Proxy] Continuing with empty catalog")
+            print(" Continuing with empty catalog")
             self.all_filtered_items = []
             self.channels_by_id = {}
             self.channels_by_country = {}
@@ -569,7 +560,7 @@ class VavooProxy:
             page = 1
             max_retries = 3
 
-            print("[Proxy] Loading catalog...")
+            print(" Loading catalog...")
 
             while True:
                 catalog_payload = {
@@ -591,7 +582,7 @@ class VavooProxy:
                 for attempt in range(max_retries):
                     try:
                         print(
-                            "[Proxy] Fetching catalog page {0} (attempt {1}/{2})" .format(
+                            " Fetching catalog page {0} (attempt {1}/{2})" .format(
                                 page, attempt + 1, max_retries))
 
                         r_catalog = self.session.post(
@@ -616,7 +607,7 @@ class VavooProxy:
 
                         if r_catalog.status_code == 502:
                             print(
-                                "[Proxy] 502 Bad Gateway on page {0}, attempt {1}" .format(
+                                " 502 Bad Gateway on page {0}, attempt {1}" .format(
                                     page, attempt + 1))
                             if attempt < max_retries - 1:
                                 # Backoff esponenziale
@@ -624,7 +615,7 @@ class VavooProxy:
                                 continue
                             else:
                                 print(
-                                    "[Proxy] Giving up on page {0} after {1} attempts" .format(
+                                    " Giving up on page {0} after {1} attempts" .format(
                                         page, max_retries))
                                 break
 
@@ -635,7 +626,7 @@ class VavooProxy:
 
                     except requests.exceptions.HTTPError as e:
                         last_exception = e
-                        print("[Proxy] HTTP error on page {0}: {1}"
+                        print(" HTTP error on page {0}: {1}"
                               .format(page, e))
 
                         try:
@@ -655,7 +646,7 @@ class VavooProxy:
 
                     except Exception as e:
                         last_exception = e
-                        print("[Proxy] Error on page {0}: {1}"
+                        print(" Error on page {0}: {1}"
                               .format(page, e))
                         if attempt < max_retries - 1:
                             time.sleep(2 ** attempt)
@@ -665,15 +656,15 @@ class VavooProxy:
 
                 if not success:
                     print(
-                        "[Proxy] Failed to load page {0}, stopping catalog download" .format(page))
+                        " Failed to load page {0}, stopping catalog download" .format(page))
                     if last_exception:
-                        print("[Proxy] Last error: {0}"
+                        print(" Last error: {0}"
                               .format(last_exception))
                     break
 
                 items = catalog_data.get("items", [])
                 if not items:
-                    print("[Proxy] No more items on page {0}"
+                    print(" No more items on page {0}"
                           .format(page))
                     break
 
@@ -708,12 +699,12 @@ class VavooProxy:
                         items_processed += 1
 
                 print(
-                    "[Proxy] Page {0}: processed {1} items, total {2} channels" .format(
+                    " Page {0}: processed {1} items, total {2} channels" .format(
                         page, items_processed, len(all_channels)))
 
                 cursor = catalog_data.get("nextCursor")
                 if not cursor:
-                    print("[Proxy] No more pages, catalog complete")
+                    print(" No more pages, catalog complete")
                     break
 
                 page += 1
@@ -721,15 +712,15 @@ class VavooProxy:
                 if page % 10 == 0:
                     time.sleep(0.1)
 
-            print("[Proxy] Catalog loaded: {0} channels in {1} pages"
+            print(" Catalog loaded: {0} channels in {1} pages"
                   .format(len(all_channels), page - 1))
             return all_channels
         except Exception as e:
-            print("[Proxy] Catalog load error: %s" % str(e))
+            print(" Catalog load error: %s" % str(e))
             from .vUtils import trace_error
             trace_error()
             if all_channels:
-                print("[Proxy] Returning {0} channels already loaded"
+                print(" Returning {0} channels already loaded"
                       .format(len(all_channels)))
                 return all_channels
             return None
@@ -737,7 +728,7 @@ class VavooProxy:
     def resolve_with_retry(self, channel_url, max_retries=2):
         """Resolve URLs with short-lived caching and fast retries"""
         if not channel_url:
-            print("[Proxy] No channel URL provided")
+            print(" No channel URL provided")
             return None
 
         now = time.time()
@@ -767,9 +758,7 @@ class VavooProxy:
                     "clientVersion": "3.0.2"
                 }
 
-                print(
-                    "[Proxy] Resolving channel URL (attempt %d/%d)" %
-                    (attempt + 1, max_retries))
+                print(" Resolving channel URL (attempt %d/%d)" % (attempt + 1, max_retries))
                 r_resolve = self.session.post(
                     self.resolve_url,
                     json=resolve_payload,
@@ -795,36 +784,30 @@ class VavooProxy:
                     stream_url = result.get("url") or result.get("streamUrl")
 
                 if stream_url:
-                    self.resolve_cache[channel_url] = {
-                        "url": stream_url, "ts": time.time()}
+                    self.resolve_cache[channel_url] = {"url": stream_url, "ts": time.time()}
                     if len(self.resolve_cache) > 1000:
                         keys = list(self.resolve_cache.keys())[:-500]
                         for key in keys:
                             self.resolve_cache.pop(key, None)
-                    print("[Proxy] Successfully resolved channel URL")
+                    print(" Successfully resolved channel URL")
                     return stream_url
-                print("[Proxy] Resolve response missing URL")
+                print(" Resolve response missing URL")
 
             except requests.exceptions.HTTPError as e:
-                print(
-                    "[Proxy] HTTP error in resolve attempt %d: %s" %
-                    (attempt + 1, str(e)))
+                print(" HTTP error in resolve attempt %d: %s" % (attempt + 1, str(e)))
                 try:
                     if e.response is not None and e.response.status_code == 451:
-                        self._switch_to_next_base(
-                            "(HTTP 451 on resolve HTTPError)")
+                        self._switch_to_next_base("(HTTP 451 on resolve HTTPError)")
                 except Exception:
                     pass
                 if attempt < max_retries - 1:
                     time.sleep(0.25)
             except Exception as e:
-                print(
-                    "[Proxy] Error in resolve attempt %d: %s" %
-                    (attempt + 1, str(e)))
+                print(" Error in resolve attempt %d: %s" % (attempt + 1, str(e)))
                 if attempt < max_retries - 1:
                     time.sleep(0.25)
 
-        print("[Proxy] Failed to resolve channel URL after all retries")
+        print(" Failed to resolve channel URL after all retries")
         return None
 
     def get_local_ip(self, force_refresh=False):
@@ -840,6 +823,9 @@ class VavooProxy:
         except BaseException:
             self.local_ip = PROXY_HOST
             return self.local_ip
+
+
+
 
     def stop(self):
         """Stop background workers/timers and close session (safe for Py2/3)."""
@@ -880,13 +866,13 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             else:
                 self.send_response(code)
         except (BrokenPipeError, ConnectionResetError):
-            print("[Proxy] Client disconnected during response - ignoring")
+            print(" Client disconnected during response - ignoring")
             return False
         return True
 
     def do_GET(self):
         client_address = self.client_address[0]
-        print("[Proxy] Request from {0}: {1}"
+        print(" Request {1} from {0}"
               .format(client_address, self.path))
         try:
             parsed_path = urlparse(self.path)
@@ -898,8 +884,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = proxy.channels_by_id.get(channel_id) if hasattr(
-                    proxy, 'channels_by_id') else None
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
 
                 if not channel:
                     self.send_error(404, "Channel not found")
@@ -919,11 +904,11 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_header('Location', stream_url)
                     self.end_headers()
                     print(
-                        "[Proxy] 302 Redirect to upstream stream for channel: " +
+                        " 302 Redirect to upstream stream for channel: " +
                         channel_id)
 
                 except Exception as e:
-                    print("[Proxy] Error in /vavoo handler: " + str(e))
+                    print(" Error in /vavoo handler: " + str(e))
                     self.send_error(500, "Internal proxy error")
 
             elif parsed_path.path == '/stream':
@@ -938,8 +923,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = proxy.channels_by_id.get(channel_id) if hasattr(
-                    proxy, 'channels_by_id') else None
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
 
                 if not channel:
                     self.send_error(404, "Channel not found")
@@ -1157,8 +1141,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     return
 
             elif parsed_path.path == '/shutdown':
-                # Signal global stop to prevent the restart loop from
-                # re-spawning the server
+                # Signal global stop to prevent the restart loop from re-spawning the server
                 STOP_EVENT.set()
 
                 if not self.safe_send_response(200):
@@ -1192,17 +1175,17 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                 self.send_error(404, "Not Found")
 
         except BrokenPipeError:
-            print("[Proxy] Client disconnected (BrokenPipeError)")
+            print(" Client disconnected (BrokenPipeError)")
             return
         except ConnectionResetError:
-            print("[Proxy] Connection reset by client")
+            print(" Connection reset by client")
             return
         except Exception as e:
             print("[Handler] Error: %s" % str(e))
             try:
                 self.send_error(500, "Internal Server Error")
             except (BrokenPipeError, ConnectionResetError):
-                print("[Proxy] Client gone while sending error")
+                print(" Client gone while sending error")
                 return
 
     def handle_one_request(self):
@@ -1210,13 +1193,13 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
         try:
             BaseHTTPRequestHandler.handle_one_request(self)
         except (socket.timeout, socket.error) as e:
-            print("[Proxy] Socket error in request: " + str(e))
+            print(" Socket error in request: " + str(e))
             try:
                 self.connection.close()
             except BaseException:
                 pass
         except Exception as e:
-            print("[Proxy] Unexpected error in request: " + str(e))
+            print(" Unexpected error in request: " + str(e))
 
     def finish(self):
         """Override finish per gestire cleanup"""
@@ -1243,19 +1226,19 @@ def shutdown_proxy():
         response = requests.get(
             PROXY_SHUTDOWN_URL, timeout=2)
         if response.status_code == 200:
-            print("[Proxy] Shutdown request sent successfully")
+            print(" Shutdown request sent successfully")
             return True
     except Exception as e:
-        print("[Proxy] Shutdown via HTTP failed: {}".format(e))
+        print(" Shutdown via HTTP failed: {}".format(e))
 
     # Fallback: kill process
     try:
         import subprocess
         subprocess.call(["pkill", "-f", "python.*vavoo_proxy"])
-        print("[Proxy] Killed by pkill")
+        print(" Killed by pkill")
         return True
     except Exception as e:
-        print("[Proxy] Failed to kill process: {}".format(e))
+        print(" Failed to kill process: {}".format(e))
     return False
 
 
@@ -1366,7 +1349,7 @@ def run_proxy_in_background():
     global _starting
     with _starting_lock:
         if _starting:
-            print("[Proxy] Already starting, skipping...")
+            print(" Already starting, skipping...")
             return False
         _starting = True
 
@@ -1381,7 +1364,7 @@ def run_proxy_in_background():
                     return True
                 else:
                     # Proxy is running but not responding, kill it
-                    print("[Proxy] Proxy is running but not responding, killing...")
+                    print(" Proxy is running but not responding, killing...")
                     system("pkill -f 'python.*vavoo_proxy' 2>/dev/null")
                     time.sleep(2)
             except BaseException:
@@ -1404,13 +1387,13 @@ def run_proxy_in_background():
                     if response.status_code == 200:
                         data = response.json()
                         if data.get("initialized", False):
-                            print("[Proxy] Started and initialized successfully")
+                            print(" Started and initialized successfully")
                             return True
                 except BaseException:
                     pass
             time.sleep(1)
 
-        print("[Proxy] Failed to start within timeout")
+        print(" Failed to start within timeout")
         return False
     finally:
         with _starting_lock:

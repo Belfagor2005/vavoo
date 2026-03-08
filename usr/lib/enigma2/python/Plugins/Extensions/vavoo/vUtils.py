@@ -72,6 +72,122 @@ except ImportError:
     from Components.AVSwitch import eAVControl as AVSwitch
 
 
+LOG_MAX_BYTES = 1024 * 1024
+DEBUG_ENABLED = str(__import__("os").environ.get("VAVOO_DEBUG", "0")).lower() in ("1", "true", "yes", "on")
+
+
+def _rotate_log_if_needed():
+    try:
+        if isfile(LOG_FILE) and getsize(LOG_FILE) >= LOG_MAX_BYTES:
+            backup = LOG_FILE + ".1"
+            try:
+                if isfile(backup):
+                    remove(backup)
+            except Exception:
+                pass
+            try:
+                __import__("os").rename(LOG_FILE, backup)
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+
+def _safe_console_write(line):
+    try:
+        import sys
+        sys.stdout.write(line + "\n")
+        sys.stdout.flush()
+    except Exception:
+        pass
+
+
+def _append_to_log(line):
+    try:
+        _rotate_log_if_needed()
+        with open(LOG_FILE, "a") as log_file:
+            log_file.write(line + "\n")
+    except Exception:
+        pass
+
+
+def log(msg, level="INFO", area="VUTILS"):
+    from datetime import datetime
+    try:
+        msg = ensure_str(msg, errors='ignore')
+    except Exception:
+        try:
+            msg = str(msg)
+        except Exception:
+            msg = '<unprintable message>'
+    line = "[{0}] [{1}] [{2}] {3}".format(
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        level,
+        area,
+        msg
+    )
+    _safe_console_write(line)
+    _append_to_log(line)
+    return line
+
+
+def debug(msg, area="VUTILS"):
+    if DEBUG_ENABLED:
+        return log(msg, level="DEBUG", area=area)
+    return None
+
+
+def warning(msg, area="VUTILS"):
+    return log(msg, level="WARNING", area=area)
+
+
+def error(msg, area="VUTILS"):
+    return log(msg, level="ERROR", area=area)
+
+
+def log_exception(msg="", area="VUTILS"):
+    import traceback
+    if msg:
+        error(msg, area=area)
+    try:
+        tb = traceback.format_exc()
+        if not tb or tb.strip() == "NoneType: None":
+            tb = "".join(traceback.format_stack()[:-1])
+        for line in tb.rstrip().splitlines():
+            error(line, area=area)
+    except Exception as e:
+        error("Failed to capture traceback: {0}".format(e), area=area)
+
+
+def trace_error(prefix="", area="VUTILS"):
+    log_exception(prefix, area=area)
+
+
+def plugin_print(*args, **kwargs):
+    sep = kwargs.get('sep', ' ')
+    end = kwargs.get('end', '\n')
+    level = kwargs.get('level', 'INFO')
+    area = kwargs.get('area', 'VUTILS')
+    try:
+        msg = sep.join([ensure_str(x, errors='ignore') for x in args])
+    except Exception:
+        try:
+            msg = sep.join([str(x) for x in args])
+        except Exception:
+            msg = '<print formatting error>'
+    if end and msg.endswith('\n'):
+        msg = msg.rstrip('\n')
+    return log(msg, level=level, area=area)
+
+
+def make_print(area, level="INFO"):
+    def _module_print(*args, **kwargs):
+        kwargs.setdefault('area', area)
+        kwargs.setdefault('level', level)
+        return plugin_print(*args, **kwargs)
+    return _module_print
+
+
 PLUGIN_PATH = PLUGIN_ROOT
 PY2 = version_info[0] == 2
 PY3 = version_info[0] == 3
@@ -95,29 +211,21 @@ else:
     unichr_func = chr
 
 
+print = make_print("VUTILS")
+log("===== Vavoo session start =====", area="VUTILS")
+
+
 def get_screen_width():
     """Get current screen width"""
     try:
         from enigma import getDesktop
         desktop = getDesktop(0)
         width = desktop.size().width()
-        print("[vUtils] Screen width detected: %d" % width)
+        print("Screen width detected: %d" % width)
         return width
     except Exception as e:
-        print("[vUtils] Error getting screen width: %s" % str(e))
+        print("Error getting screen width: %s" % str(e))
         return 1920  # Default FHD
-
-
-def trace_error():
-    """error tracing and logging"""
-    import traceback
-    from sys import stdout, stderr
-    try:
-        traceback.print_exc(file=stdout)
-        with open(LOG_FILE, "a") as log_file:
-            traceback.print_exc(file=log_file)
-    except Exception as e:
-        print("Failed to log the error:", e, file=stderr)
 
 
 class AspectManager:
@@ -493,7 +601,7 @@ def _is_cache_valid(data):
 
 def getAuthSignature():
     """Get authentication - ALWAYS use proxy"""
-    print("[vUtils] Using proxy authentication system")
+    print("Using proxy authentication system")
     return "PROXY_ACTIVE"
 
 
@@ -525,7 +633,7 @@ def getAuthSignature():
         return getAuthSignature()
 
     except Exception as e:
-        print("[vUtils] New auth error: " + str(e))
+        print("New auth error: " + str(e))
         return getAuthSignature()
 """
 
@@ -536,7 +644,7 @@ def get_new_auth_signature():
     Returns a valid token for the proxy
     """
     try:
-        print("[vUtils] Using new proxy authentication system...")
+        print("Using new proxy authentication system...")
 
         try:
             req = Request(PROXY_STATUS_URL)
@@ -544,26 +652,26 @@ def get_new_auth_signature():
             if response.getcode() == 200:
                 data = loads(response.read().decode('utf-8'))
                 if data.get("initialized", False):
-                    print("[vUtils] Proxy active and running")
+                    print("Proxy active and running")
                     return "PROXY_ACTIVE"
         except BaseException:
             pass
 
         try:
             from .vavoo_proxy import run_proxy_in_background
-            print("[vUtils] Starting proxy in background...")
+            print("Starting proxy in background...")
             run_proxy_in_background()
             sleep(5)
             return "PROXY_STARTED"
         except Exception as e:
             trace_error()
-            print("[vUtils] Proxy start error: " + str(e))
+            print("Proxy start error: " + str(e))
 
     except Exception as e:
         trace_error()
-        print("[vUtils] New auth error: " + str(e))
+        print("New auth error: " + str(e))
 
-    print("[vUtils] Falling back to old authentication system")
+    print("Falling back to old authentication system")
     return getAuthSignature()
 
 
@@ -574,7 +682,7 @@ def get_proxy_channels(country_name):
 
     for attempt in range(max_retries):
         try:
-            print("[vUtils] Getting channels for '" + str(country_name) + \
+            print("Getting channels for '" + str(country_name) +
                   "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
 
             # URL-encode
@@ -587,15 +695,14 @@ def get_proxy_channels(country_name):
                 'utf-8')) if PY2 else quote(country_name)
 
             # Build URL
-            proxy_url = PROXY_BASE_URL + \
-                "/channels?country={}".format(encoded_country)
+            proxy_url = PROXY_BASE_URL + "/channels?country={}".format(encoded_country)
             # Fetch with timeout
             response = getUrl(proxy_url, timeout=15)
-            print("[vUtils] Request URL: " + proxy_url)
+            print("Request URL: " + proxy_url)
 
             if not response:
                 print(
-                    "[vUtils] Empty response for '" +
+                    "Empty response for '" +
                     str(country_name) +
                     "'")
                 continue
@@ -605,10 +712,10 @@ def get_proxy_channels(country_name):
             channels = json.loads(response)
 
             if not isinstance(channels, list):
-                print("[vUtils] Invalid response format: " + str(type(channels)))
+                print("Invalid response format: " + str(type(channels)))
                 continue
 
-            print("[vUtils] Successfully got " + str(len(channels)) +
+            print("Successfully got " + str(len(channels)) +
                   " channels for '" + str(country_name) + "'")
 
             # Process channels
@@ -620,8 +727,7 @@ def get_proxy_channels(country_name):
                         continue
 
                     # Build proxy URL
-                    proxy_stream_url = PROXY_BASE_URL + \
-                        "/vavoo?channel={}".format(channel_id)
+                    proxy_stream_url = PROXY_BASE_URL + "/vavoo?channel={}".format(channel_id)
                     processed_channels.append({
                         'id': channel_id,
                         'name': channel.get('name', 'Unknown'),
@@ -633,12 +739,12 @@ def get_proxy_channels(country_name):
             return processed_channels
 
         except Exception as e:
-            print("[vUtils] Attempt " + str(attempt + 1) +
+            print("Attempt " + str(attempt + 1) +
                   " failed for '" + str(country_name) + "': " + str(e))
             if attempt < max_retries - 1:
                 sleep(2)  # Wait before retry
 
-    print("[vUtils] All attempts failed for '" + str(country_name) + "'")
+    print("All attempts failed for '" + str(country_name) + "'")
     return []
 
 
@@ -711,17 +817,17 @@ def getAuthSignature():
     """
     Wrapper that uses the proxy first, then falls back to the old system
     """
-    print("[vUtils] getAuthSignature called...")
+    print("getAuthSignature called...")
 
     try:
         if is_proxy_running():
-            print("[vUtils] Proxy active, using new system")
+            print("Proxy active, using new system")
             return "PROXY_AUTH"
     except BaseException:
         trace_error()
         pass
 
-    print("[vUtils] Falling back to old authentication system")
+    print("Falling back to old authentication system")
     return _original_getAuthSignature()
 
 
@@ -891,7 +997,7 @@ def initialize_cache_with_local_flags():
     cache_dir = FLAG_CACHE_DIR
 
     if not exists(local_dir):
-        print("[vUtils] Local flags directory not found: %s" % local_dir)
+        print("Local flags directory not found: %s" % local_dir)
         return 0
 
     # Python 2 compatible directory creation
@@ -914,13 +1020,13 @@ def initialize_cache_with_local_flags():
                     if header == b'\x89PNG\r\n\x1a\n':
                         copy2(src, dst)
                         copied += 1
-                        print("[vUtils] Copied local flag: %s" % filename)
+                        print("Copied local flag: %s" % filename)
                     else:
-                        print("[vUtils] Skipping invalid PNG: %s" % filename)
+                        print("Skipping invalid PNG: %s" % filename)
             except Exception as e:
-                print("[vUtils] Error copying %s: %s" % (filename, e))
+                print("Error copying %s: %s" % (filename, e))
 
-    print("[vUtils] Initialized cache with %d local flags" % copied)
+    print("Initialized cache with %d local flags" % copied)
     return copied
 
 
@@ -938,7 +1044,7 @@ def download_flag_online(
             screen_width = get_screen_width()  # deve restituire int
 
         print(
-            "[vUtils] Processing %s with screen_width=%d" %
+            "Processing %s with screen_width=%d" %
             (country_name, screen_width))
 
         # 2. Get country code
@@ -957,7 +1063,7 @@ def download_flag_online(
                 country_code_lower)
             if exists(local_path):
                 print(
-                    "[vUtils] Using special flag: %s -> %s" %
+                    "Using special flag: %s -> %s" %
                     (country_name, local_path))
                 return True, local_path
 
@@ -976,7 +1082,7 @@ def download_flag_online(
             try:
                 file_age = time() - getmtime(cache_file)
                 if file_age < 604800:
-                    print("[vUtils] Cache HIT: %s" % country_name)
+                    print("Cache HIT: %s" % country_name)
                     return True, cache_file
             except Exception:
                 pass
@@ -992,7 +1098,7 @@ def download_flag_online(
         # 7. Build URL
         url = "https://flagcdn.com/%dx%d/%s.png" % (
             width, height, country_code_lower)
-        print("[vUtils] Downloading %s (%dx%d) from: %s" %
+        print("Downloading %s (%dx%d) from: %s" %
               (country_name, width, height, url))
 
         # 8. Download
@@ -1003,7 +1109,7 @@ def download_flag_online(
             else:
                 response = urlopen(req, timeout=5)
         except Exception as e:
-            print("[vUtils] Network error for %s: %s" % (country_name, e))
+            print("Network error for %s: %s" % (country_name, e))
             return False, "Network error: %s" % e
 
         # 9. Read data
@@ -1018,7 +1124,7 @@ def download_flag_online(
         # 10. Validate small file
         if len(flag_data) < 100:
             print(
-                "[vUtils] Warning: Flag file too small (%d bytes)" %
+                "Warning: Flag file too small (%d bytes)" %
                 len(flag_data))
 
         # 11. Save to cache
@@ -1032,23 +1138,23 @@ def download_flag_online(
             header = f.read(8)
             f.close()
             if header != b'\x89PNG\r\n\x1a\n':
-                print("[vUtils] ERROR: Not a valid PNG file!")
+                print("ERROR: Not a valid PNG file!")
                 try:
                     unlink(cache_file)
                 except Exception:
                     pass
                 return False, "Invalid PNG file downloaded"
 
-            print("[vUtils] Flag %dx%d saved: %s (%d bytes)" %
+            print("Flag %dx%d saved: %s (%d bytes)" %
                   (width, height, cache_file, len(flag_data)))
             return True, cache_file
 
         except Exception as e:
-            print("[vUtils] Error saving to cache: %s" % e)
+            print("Error saving to cache: %s" % e)
             return False, "Save error: %s" % e
 
     except Exception as e:
-        print("[vUtils] Flag download error: %s" % e)
+        print("Flag download error: %s" % e)
         return False, "Flag download error: %s" % e
 
 
@@ -1063,7 +1169,7 @@ def download_flag_with_size(
     try:
         country_code = get_country_code(country_name)
         if not country_code:
-            print("[vUtils] No code for: %s" % country_name)
+            print("No code for: %s" % country_name)
             return False
 
         # Parse dimensioni
@@ -1081,7 +1187,7 @@ def download_flag_with_size(
         url = "https://flagcdn.com/w%d/h%d/%s.png" % (
             width, height, country_code.lower())
 
-        print("[vUtils] Downloading %s flag %dx%d from: %s" %
+        print("Downloading %s flag %dx%d from: %s" %
               (country_name, width, height, url))
 
         # Create cache folder
@@ -1103,7 +1209,7 @@ def download_flag_with_size(
             else:
                 response = urlopen(req, timeout=5)
         except Exception as e:
-            print("[vUtils] Network error: %s" % str(e))
+            print("Network error: %s" % str(e))
             return False
 
         if response.getcode() == 200:
@@ -1114,17 +1220,17 @@ def download_flag_with_size(
             with open(cache_file, 'wb') as f:
                 f.write(flag_data)
 
-            print("[vUtils] ✓ Flag %dx%d saved: %s (%d bytes)" %
+            print("✓ Flag %dx%d saved: %s (%d bytes)" %
                   (width, height, cache_file, len(flag_data)))
             return True
         else:
             print(
-                "[vUtils] ✗ Download failed for %s (HTTP %d)" %
+                "✗ Download failed for %s (HTTP %d)" %
                 (country_name, response.getcode()))
             return False
 
     except Exception as e:
-        print("[vUtils] Error downloading %s: %s" % (country_name, str(e)))
+        print("Error downloading %s: %s" % (country_name, str(e)))
         return False
 
 
@@ -1273,13 +1379,13 @@ def cleanup_flag_cache(max_age_days=7):
                     file_age = now - getmtime(filepath)
                     if file_age > max_age:
                         unlink(filepath)
-                        print("[vUtils] Removed old flag: %s" % filename)
+                        print("Removed old flag: %s" % filename)
                 except Exception as e:
                     print(
-                        "[vUtils] Error removing %s: %s" %
+                        "Error removing %s: %s" %
                         (filename, str(e)))
     except Exception as e:
-        print("[vUtils] Error cleaning flag cache: %s" % str(e))
+        print("Error cleaning flag cache: %s" % str(e))
 
 
 def cleanup_old_temp_files(max_age_hours=1):
@@ -1309,20 +1415,20 @@ def cleanup_old_temp_files(max_age_hours=1):
                             unlink(filepath)
                             cleaned += 1
                             print(
-                                "[vUtils] Cleaned old temp file: %s" %
+                                "Cleaned old temp file: %s" %
                                 filepath)
                 except Exception as e:
                     print(
-                        "[vUtils] Error removing %s: %s" %
+                        "Error removing %s: %s" %
                         (filepath, str(e)))
 
         if cleaned > 0:
-            print("[vUtils] Total cleaned old temp files: %d" % cleaned)
+            print("Total cleaned old temp files: %d" % cleaned)
 
         return cleaned
 
     except Exception as e:
-        print("[vUtils] Error cleaning temp files: %s" % str(e))
+        print("Error cleaning temp files: %s" % str(e))
         return 0
 
 
@@ -1339,10 +1445,10 @@ def preload_country_flags(country_list, cache_dir=FLAG_CACHE_DIR):
             try:
                 success, _ = download_flag_online(country, cache_dir)
                 if success:
-                    print("[vUtils] Preloaded flag for: %s" % country)
+                    print("Preloaded flag for: %s" % country)
             except Exception as e:
                 print(
-                    "[vUtils] Error preloading flag for %s: %s" %
+                    "Error preloading flag for %s: %s" %
                     (country, str(e)))
 
     # Split list into chunks to avoid overloading

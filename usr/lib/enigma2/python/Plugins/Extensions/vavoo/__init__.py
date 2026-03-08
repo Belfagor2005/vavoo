@@ -36,6 +36,19 @@ PluginLanguageDomain = PLUGIN_ID
 PluginLanguagePath = 'Extensions/{}/locale'.format(PLUGIN_ID)
 
 
+def _init_log(msg, level="INFO"):
+    from datetime import datetime
+    line = "[{0}] [{1}] [INIT] {2}".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), level, msg)
+    try:
+        print(line)
+    except Exception:
+        pass
+    try:
+        with open(LOG_FILE, "a") as f:
+            f.write(line + "\n")
+    except Exception:
+        pass
+
 def paypal():
     conthelp = "If you like what I do you\n"
     conthelp += "can contribute with a coffee\n"
@@ -68,8 +81,7 @@ else:
         if translated:
             return translated
         else:
-            print(("[%s] fallback to default translation for %s" %
-                  (PluginLanguageDomain, txt)))
+            _init_log("fallback to default translation for %s" % txt, level="DEBUG")
             return gettext.gettext(txt)
 
 localeInit()
