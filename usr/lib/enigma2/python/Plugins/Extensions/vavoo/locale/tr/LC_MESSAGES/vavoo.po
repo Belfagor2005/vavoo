@@ -122,9 +122,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -135,9 +132,6 @@ msgid "Clear All"
 msgstr ""
 
 msgid "Configuration saved successfully!"
-msgstr ""
-
-msgid "Configure Fonts."
 msgstr ""
 
 msgid "Configure Main Background Image."
@@ -152,9 +146,6 @@ msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Hizmeti yapılandırma Referansı Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr ""
 
 msgid "Console"
 msgstr ""
@@ -178,15 +169,6 @@ msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
-
-msgid "Do you want to install it now?"
-msgstr ""
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-msgid "Eg: Arabic or other language."
 msgstr ""
 
 msgid "Enable or disable proxy."
@@ -275,9 +257,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Film Hizmetleri Referansı"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -404,9 +383,6 @@ msgstr "Arama"
 msgid "Select Background"
 msgstr ""
 
-msgid "Select Fonts"
-msgstr "Yazı Tiplerini Seçin"
-
 msgid "Select M3U export mode:"
 msgstr ""
 
@@ -448,12 +424,6 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
-
-msgid "Update Aborted!"
-msgstr ""
-
-msgid "Update Me"
-msgstr "Beni Güncelle"
 
 msgid "Update interval (minutes):"
 msgstr "Güncelleme aralığı (dakika):"
@@ -514,3 +484,9 @@ msgstr ""
 #, fuzzy
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Zamanlama türü:"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Yazı Tiplerini Seçin"
+
+#~ msgid "Update Me"
+#~ msgstr "Beni Güncelle"

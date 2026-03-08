@@ -128,9 +128,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -141,9 +138,6 @@ msgid "Clear All"
 msgstr ""
 
 msgid "Configuration saved successfully!"
-msgstr ""
-
-msgid "Configure Fonts."
 msgstr ""
 
 msgid "Configure Main Background Image."
@@ -158,9 +152,6 @@ msgstr "Configurar los intervalo de minutos a partir de ahora"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Configuracion del Reproductor (IPTV-GStreamer-Exteplayer3)"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "¡Enhorabuena! Ya tienes la última versión..."
 
 msgid "Console"
 msgstr ""
@@ -184,15 +175,6 @@ msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
-
-msgid "Do you want to install it now?"
-msgstr ""
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-msgid "Eg: Arabic or other language."
 msgstr ""
 
 msgid "Enable or disable proxy."
@@ -281,9 +263,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Reproductor de películas"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -412,9 +391,6 @@ msgstr "Buscar"
 msgid "Select Background"
 msgstr ""
 
-msgid "Select Fonts"
-msgstr "Seleccionar Fuente"
-
 msgid "Select M3U export mode:"
 msgstr ""
 
@@ -456,12 +432,6 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
-
-msgid "Update Aborted!"
-msgstr "Actualización Abortada!"
-
-msgid "Update Me"
-msgstr "Actualizar"
 
 msgid "Update interval (minutes):"
 msgstr "Intervalo de actualización (minutos):"
@@ -519,9 +489,21 @@ msgstr ""
 #~ msgid "Configure every interval of minutes from now"
 #~ msgstr "Configurar los intervalo de minutos a partir de ahora"
 
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "¡Enhorabuena! Ya tienes la última versión..."
+
 #, fuzzy
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Tipo Programación:"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Seleccionar Fuente"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Actualización Abortada!"
+
+#~ msgid "Update Me"
+#~ msgstr "Actualizar"
 
 #, fuzzy, python-brace-format
 #~| msgid ""

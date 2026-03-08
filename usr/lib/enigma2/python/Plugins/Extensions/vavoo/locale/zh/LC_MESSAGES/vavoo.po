@@ -124,9 +124,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -137,9 +134,6 @@ msgid "Clear All"
 msgstr ""
 
 msgid "Configuration saved successfully!"
-msgstr ""
-
-msgid "Configure Fonts."
 msgstr ""
 
 #, fuzzy
@@ -155,9 +149,6 @@ msgstr "从现在起每隔几分钟配置一次"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "配置服务引用Dvb-Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr ""
 
 msgid "Console"
 msgstr ""
@@ -182,16 +173,6 @@ msgstr ""
 
 msgid "Do you want to export this bouquet?"
 msgstr ""
-
-msgid "Do you want to install it now?"
-msgstr ""
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-#, fuzzy
-msgid "Eg: Arabic or other language."
-msgstr "配置字体,例如：阿拉伯语或其他."
 
 msgid "Enable or disable proxy."
 msgstr ""
@@ -280,9 +261,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "电影服务参考"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -412,9 +390,6 @@ msgstr "搜索"
 msgid "Select Background"
 msgstr "选择字体"
 
-msgid "Select Fonts"
-msgstr "选择字体"
-
 msgid "Select M3U export mode:"
 msgstr ""
 
@@ -457,12 +432,6 @@ msgid "Total channels: %(total_channels)d"
 msgstr ""
 
 msgid "UPPERCASE"
-msgstr ""
-
-msgid "Update Aborted!"
-msgstr ""
-
-msgid "Update Me"
 msgstr ""
 
 msgid "Update interval (minutes):"
@@ -527,8 +496,15 @@ msgstr ""
 #~ msgstr "从现在起每隔几分钟配置一次"
 
 #, fuzzy
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr "配置字体,例如：阿拉伯语或其他."
+
+#, fuzzy
 #~ msgid "Scheduled List Update:"
 #~ msgstr "计划类型:"
+
+#~ msgid "Select Fonts"
+#~ msgstr "选择字体"
 
 #, fuzzy
 #~ msgid "Scheduled Bouquet Update:"

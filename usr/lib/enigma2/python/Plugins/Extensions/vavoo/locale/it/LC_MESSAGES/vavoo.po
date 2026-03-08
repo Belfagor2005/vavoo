@@ -35,9 +35,8 @@ msgstr "- Bouquets Categorie"
 msgid "- Commercial use is strictly prohibited"
 msgstr "- L'uso commerciale è severamente vietato"
 
-#, fuzzy
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
-msgstr "- Comunità: Linuxsat-support.com, Forum Corvoboys"
+msgstr "- Comunità: Linuxsat-support.com, Corvoboys.org Forum"
 
 msgid "- Container bouquets"
 msgstr "- Bouquets in contenitore"
@@ -120,9 +119,6 @@ msgstr "Annullare l'esecuzione?"
 msgid "Case: {}"
 msgstr "Caso: {}"
 
-msgid "Changelog: {changelog}"
-msgstr "Registro modifiche: {changelog}"
-
 msgid "Channels: %d"
 msgstr "Canali: %d"
 
@@ -135,9 +131,6 @@ msgstr "Pulisci Tutto"
 msgid "Configuration saved successfully!"
 msgstr "Configurazione salvata con successo!"
 
-msgid "Configure Fonts."
-msgstr "Configura Fonts."
-
 msgid "Configure Main Background Image."
 msgstr "Configura Immagine di Background."
 
@@ -149,9 +142,6 @@ msgstr "Configura l'intervallo in minuti da adesso"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Impostare il Referenze per il Player. Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Congratulazioni! Hai già l'ultima versione..."
 
 msgid "Console"
 msgstr ""
@@ -176,15 +166,6 @@ msgstr "Visualizzazione predefinita all'apertura del plugin"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Vuoi esportare questo bouquet?"
-
-msgid "Do you want to install it now?"
-msgstr "Vuoi installare l'aggiornamento ora?"
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Vuoi installare l'aggiornamento ( %s ) ora?"
-
-msgid "Eg: Arabic or other language."
-msgstr "Es: arabo o altra lingua."
 
 msgid "Enable or disable proxy."
 msgstr "Abilita o disabilita il proxy."
@@ -272,9 +253,6 @@ msgstr "Errore di generazione M3U: %s"
 
 msgid "Movie Services Reference"
 msgstr "Service Reference del Player"
-
-msgid "New version {version} is available."
-msgstr "È disponibile la nuova versione {version}."
 
 msgid "No Internet connection detected. Please check your network."
 msgstr "Nessuna connessione Internet rilevata. Controlla la tua rete."
@@ -396,9 +374,6 @@ msgstr "Cerca:"
 msgid "Select Background"
 msgstr "Seleziona Sfondo"
 
-msgid "Select Fonts"
-msgstr "Seleziona Fonts"
-
 msgid "Select M3U export mode:"
 msgstr "Seleziona la modalità di esportazione M3U:"
 
@@ -441,12 +416,6 @@ msgstr "Canali totali: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "MAIUSCOLO"
 
-msgid "Update Aborted!"
-msgstr "Aggiornamento annullato!"
-
-msgid "Update Me"
-msgstr "Aggiornami"
-
 msgid "Update interval (minutes):"
 msgstr "Intervallo di aggiornamento (minuti):"
 
@@ -463,7 +432,7 @@ msgid "Vavoo bouquets removed successfully!"
 msgstr "Bouquet Vavoo rimossi con successo!"
 
 msgid "Vavoo is already running."
-msgstr ""
+msgstr "Vavoo è già in esecuzione."
 
 msgid "Version:"
 msgstr "Versione:"
@@ -486,6 +455,9 @@ msgstr "minuscola"
 msgid "seconds"
 msgstr "secondi"
 
+#~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#~ msgstr "- Comunità: Linuxsat-support.com, Corvoboys Forum"
+
 #~ msgid "- For personal use only"
 #~ msgstr "- Solo per uso personale"
 
@@ -498,17 +470,47 @@ msgstr "secondi"
 #~ msgid "Auto-refresh stream (minutes):"
 #~ msgstr "Aggiornamento automatico flusso (minuti):"
 
+#~ msgid "Changelog: {changelog}"
+#~ msgstr "Registro modifiche: {changelog}"
+
 #~ msgid "Configure Dns Server for Box."
 #~ msgstr "Configurare il server DNS per Box."
 
+#~ msgid "Configure Fonts."
+#~ msgstr "Configura Fonts."
+
 #~ msgid "Configure every interval of minutes from now"
 #~ msgstr "Configura ogni intervallo di minuti da adesso"
+
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Congratulazioni! Hai già l'ultima versione..."
+
+#~ msgid "Do you want to install it now?"
+#~ msgstr "Vuoi installare l'aggiornamento ora?"
+
+#~ msgid "Do you want to install update ( %s ) now?"
+#~ msgstr "Vuoi installare l'aggiornamento ( %s ) ora?"
+
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr "Es: arabo o altra lingua."
+
+#~ msgid "New version {version} is available."
+#~ msgstr "È disponibile la nuova versione {version}."
 
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Aggiornamento Liste Programmato:"
 
 #~ msgid "Select DNS Server"
 #~ msgstr "Seleziona Server DNS"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Seleziona Fonts"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Aggiornamento annullato!"
+
+#~ msgid "Update Me"
+#~ msgstr "Aggiornami"
 
 #~ msgid "Error starting stream via proxy"
 #~ msgstr "Errore durante l'avvio dello streaming tramite proxy"

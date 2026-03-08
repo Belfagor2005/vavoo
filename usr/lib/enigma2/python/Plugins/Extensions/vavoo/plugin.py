@@ -29,7 +29,6 @@ import codecs
 import ssl
 import time
 import threading
-from datetime import datetime
 from os import listdir, unlink, remove, chmod, system as os_system
 from os.path import exists as file_exists, join, islink, isfile, getsize
 from re import compile, DOTALL
@@ -86,7 +85,6 @@ from Components.config import (
 )
 from enigma import (
     RT_HALIGN_LEFT,
-    RT_HALIGN_RIGHT,
     RT_VALIGN_CENTER,
     eDVBDB,
     eListboxPythonMultiContent,
@@ -114,7 +112,6 @@ from Tools.Directories import SCOPE_PLUGINS, SCOPE_CONFIG, resolveFilename
 from Tools.NumericalTextInput import NumericalTextInput
 from Plugins.Plugin import PluginDescriptor
 
-# Local application/library-specific imports
 from . import (
     _, __author__, __version__, __license__, PORT,
     PLUGIN_ROOT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL,
@@ -122,7 +119,7 @@ from . import (
     FLAG_CACHE_DIR, LOG_FILE, PRIMARY_BASE_URL, FALLBACK_BASE_URL
 )
 from . import vUtils
-from .Console import Console
+# from .Console import Console
 from .bouquet_manager import (
     convert_bouquet,
     _update_favorite_file,
@@ -287,7 +284,7 @@ def _is_vavoo_already_open(session):
 
 
 # set plugin
-global HALIGN, BackPath, FONTSTYPE, FNTPath
+global HALIGN, BackPath, FNTPath
 global search_ok, screen_width
 global proxy_instance, proxy_thread
 
@@ -335,13 +332,8 @@ stripurl = 'aHR0cHM6Ly92YXZvby50by9jaGFubmVscw=='
 # fall back to this mirror.
 HTTP_451_SENTINEL = "__HTTP451__"
 keyurl = 'aHR0cDovL3BhdGJ1d2ViLmNvbS92YXZvby92YXZvb2tleQ=='
-installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS92YXZvby9tYWluL2luc3RhbGxlci5zaA=='
-developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvdmF2b28='
-
 myser = [(PRIMARY_BASE_URL, "vavoo"), ("https://oha.tooha-tv", "oha"),
          (FALLBACK_BASE_URL, "kool"), ("https://huhu.to", "huhu")]
-# mydns = [("None", "Default"), ("google", "Google"),
-# ("coudfire", "Coudfire"), ("quad9", "Quad9")]
 modemovie = [("4097", "4097")]
 if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "5001"))
@@ -383,21 +375,6 @@ def to_string(text):
 
     # For other types, convert to string
     return str(text)
-
-
-# fonts
-FNT_Path = join(PLUGIN_PATH, "fonts")
-fonts = []
-try:
-    if file_exists(FNT_Path):
-        for font_name in listdir(FNT_Path):
-            font_name_path = join(FNT_Path, font_name)
-            if font_name.endswith(".ttf") or font_name.endswith(".otf"):
-                font_name = font_name[:-4]
-                fonts.append((font_name, font_name))
-        fonts = sorted(fonts, key=lambda x: x[1])
-except Exception as e:
-    print(e)
 
 
 def check_vavoo_connectivity():
@@ -447,8 +424,6 @@ cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
 cfg.ipv6 = ConfigEnableDisable(default=False)
-# cfg.dns = ConfigSelection(default="Default", choices=mydns)
-cfg.fonts = ConfigSelection(default='MavenPro-Medium', choices=fonts)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
 """
 cfg.default_view = ConfigSelection(
@@ -466,7 +441,6 @@ cfg.list_position = ConfigSelection(
 )
 cfg.search_text = ConfigSearchText(default="")
 
-FONTSTYPE = FNT_Path + '/' + cfg.fonts.value + '.ttf'
 eserv = int(cfg.services.value)
 
 # ipv6
@@ -475,11 +449,11 @@ if islink('/etc/rc3.d/S99ipv6dis.sh'):
     cfg.ipv6.save()
 
 # language
-locl = (
-    "ar", "ae", "bh", "dz", "eg", "in", "iq", "jo",
-    "kw", "lb", "ly", "ma", "om", "qa", "sa", "sd",
-    "ss", "sy", "tn", "ye", "hr"
-)
+# locl = (
+    # "ar", "ae", "bh", "dz", "eg", "in", "iq", "jo",
+    # "kw", "lb", "ly", "ma", "om", "qa", "sa", "sd",
+    # "ss", "sy", "tn", "ye", "hr"
+# )
 
 
 def normalize_language_code(language):
@@ -499,8 +473,6 @@ def normalize_language_code(language):
 try:
     from Components.config import config
     lng = normalize_language_code(config.osd.language.value)
-    if lng in locl:
-        HALIGN = RT_HALIGN_RIGHT
 except BaseException:
     lng = 'en'
     pass
@@ -590,14 +562,6 @@ class m2list(MenuList):
 
 def show_list(name, link, is_category=False, is_channel=False):
     """Build a MultiContent entry with icon and text."""
-
-    global HALIGN
-
-    # Text alignment based on language
-    if lng in locl:
-        HALIGN = RT_HALIGN_RIGHT
-    else:
-        HALIGN = RT_HALIGN_LEFT
 
     safe_name = to_string(name)
     safe_link = to_string(link)
@@ -860,15 +824,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 _("Select Background"),
                 cfg.back,
                 _("Configure Main Background Image.")))
-        help_text2 = _("Configure Fonts.") + "\n" + \
-            _("Eg: Arabic or other language.")
-        self.list.append(
-            getConfigListEntry(
-                _("Select Fonts"),
-                cfg.fonts,
-                help_text2
-            )
-        )
+
         help_part1 = _("Active or Disactive Ipv6.")
         help_part2 = _("Now %s") % cfg.ipv6.value
         help_text3 = help_part1 + "\n" + help_part2
@@ -1405,10 +1361,6 @@ class vavoo_config(Screen, ConfigListScreen):
                 print("Config reload error (safe mode): " + str(e))
                 self._safe_config_reload()
 
-            global FONTSTYPE
-            FONTSE = str(cfg.fonts.getValue()) + '.ttf'
-            FONTSTYPE = join(str(FNT_Path), str(FONTSE))
-            add_skin_font()
             bakk = str(cfg.back.getValue()) + '.png'
             add_skin_back(bakk)
 
@@ -1589,7 +1541,7 @@ class MainVavoo(Screen):
         self['menulist'] = m2list([])
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove') + ' Fav')
-        self['yellow'] = Label(_('Update Me'))
+        self['yellow'] = Label()
         self["blue"] = Label(_('Reload Bouqet'))
         self['name'] = Label('Loading...')
         self['version'] = Label()
@@ -1606,15 +1558,9 @@ class MainVavoo(Screen):
             'green': self.msgdeleteBouquets,
             'blue': lambda: self._reload_services(showMsg=True),
             'cancel': lambda: self._reload_services(showMsg=False),
-            # 'exit': lambda: self._reload_services(showMsg=False),
             'red': lambda: self._reload_services(showMsg=False),
             'info': self.info,
             'InfoPressed': self.info,
-            'yellow': self.update_me,
-            'yellow_long': self.update_dev,
-            'info_long': self.update_dev,
-            'infolong': self.update_dev,
-            'showEventInfoPlugin': self.update_dev,
             'text': self.refresh_proxy,
         }
         actions_list = [
@@ -1669,12 +1615,11 @@ class MainVavoo(Screen):
         self.close()
 
     def preload_flags_for_visible_countries(self):
-        """Pre-carica le bandiere per i paesi visibili"""
+        """Preload flags for visible countries"""
         try:
             if not hasattr(self, 'all_data'):
                 return
 
-            # Estrai lista paesi
             countries = set()
             for entry in self.all_data:
                 country = url_unquote(entry["country"]).strip("\r\n")
@@ -2425,95 +2370,6 @@ class MainVavoo(Screen):
         except Exception as e:
             print("Error in MainVavoo _update_selection_name:", e)
             self['name'].setText("Error")
-
-    def update_me(self):
-        remote_version = '0.0'
-        remote_changelog = ''
-        req = vUtils.Request(
-            vUtils.b64decoder(installer_url), headers={
-                'User-Agent': 'Mozilla/5.0'})
-        page = vUtils.urlopen(req).read()
-        data = ensure_str(page)
-        if data:
-            lines = data.split("\n")
-            for line in lines:
-                if line.startswith("version"):
-                    remote_version = line.split("=")
-                    remote_version = line.split("'")[1]
-                if line.startswith("changelog"):
-                    remote_changelog = line.split("=")
-                    remote_changelog = line.split("'")[1]
-                    break
-
-        if float(__version__) < float(remote_version):
-            new_version = remote_version
-            new_changelog = remote_changelog
-            part1 = _("New version {version} is available.").format(
-                version=new_version)
-            part2 = _("Changelog: {changelog}").format(changelog=new_changelog)
-            part3 = _("Do you want to install it now?")
-            update_message = part1 + "\n\n" + part2 + "\n\n" + part3
-            formatted_message = update_message
-            self.session.openWithCallback(
-                self.install_update,
-                MessageBox,
-                formatted_message,
-                MessageBox.TYPE_YESNO
-            )
-            formatted_message = update_message.format(
-                version=new_version,
-                changelog=new_changelog
-            )
-            self.session.openWithCallback(
-                self.install_update,
-                MessageBox,
-                formatted_message,
-                MessageBox.TYPE_YESNO
-            )
-        else:
-            self.session.open(
-                MessageBox,
-                _("Congrats! You already have the latest version..."),
-                MessageBox.TYPE_INFO,
-                timeout=4)
-
-    def update_dev(self):
-        req = vUtils.Request(
-            vUtils.b64decoder(developer_url), headers={
-                'User-Agent': 'Mozilla/5.0'})
-        page = vUtils.urlopen(req).read()
-        data = loads(page)
-        remote_date = data['pushed_at']
-        strp_remote_date = datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
-        remote_date = strp_remote_date.strftime('%Y-%m-%d')
-        self.session.openWithCallback(
-            self.install_update,
-            MessageBox,
-            _("Do you want to install update ( %s ) now?") %
-            (remote_date),
-            MessageBox.TYPE_YESNO)
-
-    def install_update(self, answer=False):
-        if answer:
-            self.session.open(
-                Console,
-                to_string('Upgrading...'),
-                cmdlist=(
-                    'wget -q "--no-check-certificate" ' +
-                    vUtils.b64decoder(installer_url) +
-                    ' -O - | /bin/sh'),
-                finishedCallback=self.myCallback,
-                closeOnSuccess=False)
-        else:
-            self.session.open(
-                MessageBox,
-                _("Update Aborted!"),
-                MessageBox.TYPE_INFO,
-                timeout=3)
-
-    def myCallback(self, result=None):
-        print('result:', result)
-        return
 
 
 class vavoo(Screen):
@@ -3285,94 +3141,11 @@ class VavooSearch(Screen):
         self.selectedIndex = 0
         self.search_text = ""
         self.current_input = ""
+        skin = join(skin_path, 'vavoo_search.xml')
         if isfile('/var/lib/dpkg/status'):
-            if screen_width == 2560:
-                self.skin = """
-                    <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
-                        <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
-                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="#00008B" />
-                        <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
-                        <widget name="channel_list" position="20,250" size="1160,510" itemHeight="60" scrollbarMode="showOnDemand" />
-                        <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
-                        <widget name="key_red" position="20,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                        <widget name="key_green" position="210,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                        <widget name="key_yellow" position="400,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                        <widget name="key_blue" position="590,844" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                    </screen>
-                """
-            elif screen_width == 1920:
-                self.skin = """
-                    <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
-                        <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
-                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="#00008B" />
-                        <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
-                        <widget name="channel_list" position="20,180" size="960,380" itemHeight="50" scrollbarMode="showOnDemand" />
-                        <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
-                        <widget name="key_red" position="20,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                        <widget name="key_green" position="210,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                        <widget name="key_yellow" position="400,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                        <widget name="key_blue" position="590,654" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                    </screen>
-                """
-            else:
-                self.skin = """
-                    <screen name="VavooSearch" position="center,center" size="800,600" title="Vavoo Search">
-                        <widget name="search_label" position="20,20" size="760,30" font="Regular;24" halign="left" valign="center" />
-                        <widget name="search_text" position="20,60" size="760,40" font="Regular;24" halign="left" valign="center" backgroundColor="#000080" />
-                        <widget name="input_info" position="20,475" size="760,25" font="Regular;18" halign="center" />
-                        <widget name="channel_list" position="20,120" size="760,349" itemHeight="50" scrollbarMode="showOnDemand" />
-                        <widget name="status" position="20,500" size="760,30" font="Regular;20" halign="center" />
-                        <widget name="key_red" position="20,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                        <widget name="key_green" position="210,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                        <widget name="key_yellow" position="400,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                        <widget name="key_blue" position="590,539" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                    </screen>
-                    """
-
-        else:
-            if screen_width == 2560:
-                self.skin = """
-                    <screen name="VavooSearch" position="center,center" size="1200,900" title="Vavoo Search">
-                        <widget name="search_label" position="20,20" size="1160,60" font="Regular;40" halign="left" valign="center" />
-                        <widget name="search_text" position="20,100" size="1160,80" font="Regular;40" halign="left" valign="center" backgroundColor="#00008B" />
-                        <widget name="input_info" position="20,190" size="1160,40" font="Regular;30" halign="center" />
-                        <widget name="channel_list" position="20,250" size="1160,510" font="Regular;36" itemHeight="60" scrollbarMode="showOnDemand" />
-                        <widget name="status" position="20,795" size="1160,40" font="Regular;30" halign="center" />
-                        <widget name="key_red" position="20,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                        <widget name="key_green" position="210,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                        <widget name="key_yellow" position="400,845" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                        <widget name="key_blue" position="590,844" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                    </screen>
-                """
-            elif screen_width == 1920:
-                self.skin = """
-                    <screen name="VavooSearch" position="center,center" size="1000,700" title="Vavoo Search">
-                        <widget name="search_label" position="20,20" size="960,40" font="Regular;32" halign="left" valign="center" />
-                        <widget name="search_text" position="20,70" size="960,60" font="Regular;32" halign="left" valign="center" backgroundColor="#00008B" />
-                        <widget name="input_info" position="20,140" size="960,30" font="Regular;24" halign="center" />
-                        <widget name="channel_list" position="20,180" size="960,380" font="Regular;28" itemHeight="50" scrollbarMode="showOnDemand" />
-                        <widget name="status" position="20,615" size="960,30" font="Regular;24" halign="center" />
-                        <widget name="key_red" position="20,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                        <widget name="key_green" position="210,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                        <widget name="key_yellow" position="400,655" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                        <widget name="key_blue" position="590,654" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                    </screen>
-                """
-            else:
-                self.skin = """
-                    <screen name="VavooSearch" position="center,center" size="800,600" title="Vavoo Search">
-                        <widget name="search_label" position="20,20" size="760,30" font="Regular;24" halign="left" valign="center" />
-                        <widget name="search_text" position="20,60" size="760,40" font="Regular;24" halign="left" valign="center" backgroundColor="#000080" />
-                        <widget name="input_info" position="20,475" size="760,25" font="Regular;18" halign="center" />
-                        <widget name="channel_list" position="20,120" size="760,349" font="Regular;22" itemHeight="50" scrollbarMode="showOnDemand" />
-                        <widget name="status" position="20,500" size="760,30" font="Regular;20" halign="center" />
-                        <widget name="key_red" position="20,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="red" foregroundColor="white" />
-                        <widget name="key_green" position="210,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="green" foregroundColor="white" />
-                        <widget name="key_yellow" position="400,540" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" foregroundColor="black" />
-                        <widget name="key_blue" position="590,539" size="180,30" font="Regular;20" halign="center" valign="center" backgroundColor="blue" foregroundColor="white" />
-                    </screen>
-                    """
-
+            skin = skin.replace('.xml', '_cvs.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
+            self.skin = f.read()
         Screen.__init__(self, session)
         self["search_label"] = Label(_("Search Channels:"))
         self["search_text"] = Label("")
@@ -4114,14 +3887,6 @@ class Playstream2(
         print("Playback started successfully")
         self.state = self.STATE_PLAYING
 
-    """
-    # def __evStopped(self):
-        # print("[Playstream2] Playback stopped - checking if should restart")
-        # if self.execing and self.is_streaming:
-            # print("[Playstream2] Attempting restart after stop")
-            # self.restartAfterEOF()
-    """
-
     def startStream(self, force=False):
         """Start the stream - proxy handles authentication"""
         if self.stream_running and not force:
@@ -4593,9 +4358,9 @@ def add_skin_back(bakk):
 def add_skin_font():
     print('**********addFont')
     from enigma import addFont
+    FNT_Path = join(PLUGIN_PATH, "fonts")
     addFont(join(FNT_Path, 'Lcdx.ttf'), 'Lcdx', 100, 0)
-    addFont(str(FONTSTYPE), 'cvfont', 100, 0)
-    addFont(join(FNT_Path, 'MavenPro-Medium.ttf'), 'vav', 100, 0)
+    addFont(join(FNT_Path, 'MavenPro-Medium.ttf'), 'cvfont', 100, 0)
 
 
 def cfgmain(menuid, **kwargs):

@@ -127,9 +127,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -140,9 +137,6 @@ msgid "Clear All"
 msgstr ""
 
 msgid "Configuration saved successfully!"
-msgstr ""
-
-msgid "Configure Fonts."
 msgstr ""
 
 msgid "Configure Main Background Image."
@@ -157,9 +151,6 @@ msgstr "Od teraz skonfiguruj każdy interwał minutowy"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Skonfiguruj usługę Odniesienie Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Gratulacje! Masz już najnowszą wersję..."
 
 msgid "Console"
 msgstr ""
@@ -184,19 +175,6 @@ msgstr ""
 
 msgid "Do you want to export this bouquet?"
 msgstr ""
-
-#, fuzzy
-msgid "Do you want to install it now?"
-msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
-
-#, fuzzy
-msgid "Eg: Arabic or other language."
-msgstr ""
-"Skonfiguruj czcionki.\n"
-"Np.: arabski lub inny język."
 
 msgid "Enable or disable proxy."
 msgstr ""
@@ -284,9 +262,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Referencje usług"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -413,9 +388,6 @@ msgstr "Szukaj"
 msgid "Select Background"
 msgstr "Wybierz tło"
 
-msgid "Select Fonts"
-msgstr "Wybierz czcionki"
-
 msgid "Select M3U export mode:"
 msgstr ""
 
@@ -460,12 +432,6 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
-
-msgid "Update Aborted!"
-msgstr "Aktualizacja przerwana!"
-
-msgid "Update Me"
-msgstr "Zaktualizuj"
 
 msgid "Update interval (minutes):"
 msgstr "Częstotliwość aktualizacji (minuty):"
@@ -528,12 +494,37 @@ msgstr ""
 #~ msgid "Configure every interval of minutes from now"
 #~ msgstr "Od teraz skonfiguruj każdy interwał minutowy"
 
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Gratulacje! Masz już najnowszą wersję..."
+
+#, fuzzy
+#~ msgid "Do you want to install it now?"
+#~ msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
+
+#~ msgid "Do you want to install update ( %s ) now?"
+#~ msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
+
+#, fuzzy
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr ""
+#~ "Skonfiguruj czcionki.\n"
+#~ "Np.: arabski lub inny język."
+
 #, fuzzy
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Zaplanowana aktualizacja bukietów:"
 
 #~ msgid "Select DNS Server"
 #~ msgstr "Wybierz serwer DNS"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Wybierz czcionki"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Aktualizacja przerwana!"
+
+#~ msgid "Update Me"
+#~ msgstr "Zaktualizuj"
 
 #~ msgid "Scheduled Bouquet Update:"
 #~ msgstr "Zaplanowana aktualizacja bukietów:"

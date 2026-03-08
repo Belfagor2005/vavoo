@@ -121,9 +121,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -134,9 +131,6 @@ msgid "Clear All"
 msgstr ""
 
 msgid "Configuration saved successfully!"
-msgstr ""
-
-msgid "Configure Fonts."
 msgstr ""
 
 msgid "Configure Main Background Image."
@@ -151,9 +145,6 @@ msgstr "Configurar cada intervalo de minutos a partir de agora"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Configurar o serviço Referência Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Parabéns! Você já tem a versão mais recente..."
 
 msgid "Console"
 msgstr ""
@@ -177,15 +168,6 @@ msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
-
-msgid "Do you want to install it now?"
-msgstr ""
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-msgid "Eg: Arabic or other language."
 msgstr ""
 
 msgid "Enable or disable proxy."
@@ -274,9 +256,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Referência de serviços de filmes"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -403,9 +382,6 @@ msgstr "Pesquisar"
 msgid "Select Background"
 msgstr ""
 
-msgid "Select Fonts"
-msgstr "Selecionar fontes"
-
 msgid "Select M3U export mode:"
 msgstr ""
 
@@ -447,12 +423,6 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
-
-msgid "Update Aborted!"
-msgstr "Atualização abortada!"
-
-msgid "Update Me"
-msgstr "Atualizar"
 
 msgid "Update interval (minutes):"
 msgstr "Intervalo de atualização (minutos):"
@@ -510,6 +480,18 @@ msgstr ""
 #~ msgid "Configure every interval of minutes from now"
 #~ msgstr "Configurar cada intervalo de minutos a partir de agora"
 
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Parabéns! Você já tem a versão mais recente..."
+
 #, fuzzy
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Tipo de cronograma:"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Selecionar fontes"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Atualização abortada!"
+
+#~ msgid "Update Me"
+#~ msgstr "Atualizar"

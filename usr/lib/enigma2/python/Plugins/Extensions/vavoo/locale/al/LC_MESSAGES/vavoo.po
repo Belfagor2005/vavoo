@@ -128,9 +128,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -141,9 +138,6 @@ msgid "Clear All"
 msgstr ""
 
 msgid "Configuration saved successfully!"
-msgstr ""
-
-msgid "Configure Fonts."
 msgstr ""
 
 msgid "Configure Main Background Image."
@@ -158,9 +152,6 @@ msgstr "Konfiguro çdo interval prej minutash nga tani"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Konfiguro referencën e shërbimit Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Urime! Ju tashmë keni versionin më të fundit..."
 
 msgid "Console"
 msgstr ""
@@ -184,15 +175,6 @@ msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
-
-msgid "Do you want to install it now?"
-msgstr ""
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-msgid "Eg: Arabic or other language."
 msgstr ""
 
 msgid "Enable or disable proxy."
@@ -281,9 +263,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Referenca e Shërbimeve të Filmit"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -410,9 +389,6 @@ msgstr "Kërko"
 msgid "Select Background"
 msgstr ""
 
-msgid "Select Fonts"
-msgstr "Vendose llion e shkrimit"
-
 msgid "Select M3U export mode:"
 msgstr ""
 
@@ -454,12 +430,6 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
-
-msgid "Update Aborted!"
-msgstr "Freskimi u abortua"
-
-msgid "Update Me"
-msgstr "Më fresko"
 
 msgid "Update interval (minutes):"
 msgstr "Intervali i përditësimit (minuta):"
@@ -517,6 +487,18 @@ msgstr ""
 #~ msgid "Configure every interval of minutes from now"
 #~ msgstr "Konfiguro çdo interval prej minutash nga tani"
 
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Urime! Ju tashmë keni versionin më të fundit..."
+
 #, fuzzy
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Lloi i orarit"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Vendose llion e shkrimit"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Freskimi u abortua"
+
+#~ msgid "Update Me"
+#~ msgstr "Më fresko"

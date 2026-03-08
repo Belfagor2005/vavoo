@@ -2,7 +2,7 @@
 	<widget name="search_label" position="27,27" size="1870,54" font="cvfont;43" halign="left" valign="center" />
 	<widget name="search_text" position="27,94" size="1870,80" font="cvfont;43" halign="left" valign="center" backgroundColor="#00008B" />
 	<widget name="input_info" position="27,187" size="1870,40" font="cvfont;32" halign="center" valign="center" />
-	<widget name="channel_list" position="27,240" size="1870,650" font="cvfont;38" scrollbarMode="showOnDemand" />
+	<widget name="channel_list" position="27,240" size="1870,650" scrollbarMode="showOnDemand" />
 	<widget name="status" position="27,904" size="1870,80" font="cvfont;32" halign="center" valign="center" />
 	<widget name="key_red" position="27,1000" size="240,50" font="cvfont;27" halign="center" valign="center" backgroundColor="#ff0000" foregroundColor="#ffffff" />
 	<widget name="key_green" position="280,1000" size="240,50" font="cvfont;27" halign="center" valign="center" backgroundColor="#00ff00" foregroundColor="#ffffff" />

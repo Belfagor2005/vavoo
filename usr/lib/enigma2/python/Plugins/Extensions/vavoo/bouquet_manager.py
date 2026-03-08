@@ -672,7 +672,7 @@ def create_bouquet_file(
                 print("[Bouquet] Critical error writing file: %s" % str(e2))
 
         # Add to main bouquet
-        _add_to_main_bouquet(bouquet_filename, 'tv', bouquet_position)
+        _add_to_main_bouquet(bouquet_filename, 'tv', "bottom")
 
         return channel_count
 
@@ -916,7 +916,7 @@ def _create_or_update_container_bouquet(
               " categories")
 
         # Add to main bouquet
-        _add_to_main_bouquet(container_name, bouquet_type, list_position)
+        _add_to_main_bouquet(container_name, bouquet_type, "bottom")
 
         return len(existing_categories)
 

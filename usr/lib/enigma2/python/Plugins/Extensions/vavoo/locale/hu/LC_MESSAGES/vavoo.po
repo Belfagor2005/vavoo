@@ -120,9 +120,6 @@ msgstr "Végrehajtás megszakítva?"
 msgid "Case: {}"
 msgstr "Ügy: {}"
 
-msgid "Changelog: {changelog}"
-msgstr "Változási napló: {changelog}"
-
 msgid "Channels: %d"
 msgstr "Csatornák: %d"
 
@@ -134,9 +131,6 @@ msgstr "Összes törlése"
 
 msgid "Configuration saved successfully!"
 msgstr "Konfiguráció sikeresen mentve!"
-
-msgid "Configure Fonts."
-msgstr "Betűtípusok konfigurálása."
 
 msgid "Configure Main Background Image."
 msgstr "Állítsa be a fő háttérképet."
@@ -150,9 +144,6 @@ msgstr "Mostantól minden percnyi intervallum konfigurálása"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Szolgáltatás konfigurálása Referencia Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Gratula! Már megvan a legújabb verzió..."
 
 msgid "Console"
 msgstr "Konzol"
@@ -177,20 +168,6 @@ msgstr "Alapértelmezett nézet a bővítmény megnyitásakor"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Exportálni szeretné ezt a csokrot?"
-
-msgid "Do you want to install it now?"
-msgstr ""
-"Új verzió (%s) elérhető\n"
-"\n"
-"Változásnapló: %s\n"
-"\n"
-"Telepíteni szeretnéd most?"
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Szeretné most telepíteni a frissítést (%s)?"
-
-msgid "Eg: Arabic or other language."
-msgstr "Pl.: arab vagy más nyelv."
 
 msgid "Enable or disable proxy."
 msgstr ""
@@ -278,9 +255,6 @@ msgstr "M3U generálási hiba: %s"
 
 msgid "Movie Services Reference"
 msgstr "Filmszolgáltatások referencia"
-
-msgid "New version {version} is available."
-msgstr "Új verzió ({version}) érhető el."
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -408,9 +382,6 @@ msgstr "Keresés:"
 msgid "Select Background"
 msgstr "Háttér kiválasztása"
 
-msgid "Select Fonts"
-msgstr "Válassza a Betűtípusok lehetőséget"
-
 msgid "Select M3U export mode:"
 msgstr "Válassza ki az M3U exportálási módot:"
 
@@ -452,12 +423,6 @@ msgstr "Összes csatorna: %(total_channels)d"
 
 msgid "UPPERCASE"
 msgstr "NAGYBETŰS"
-
-msgid "Update Aborted!"
-msgstr "Frissítés megszakítva!"
-
-msgid "Update Me"
-msgstr "Frissítsen engem"
 
 msgid "Update interval (minutes):"
 msgstr "Frissítési időköz (perc):"
@@ -501,6 +466,10 @@ msgstr "kisbetűk"
 msgid "seconds"
 msgstr ""
 
+#, fuzzy
+#~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#~ msgstr "- Közösség: Linuxsat-support.com, Corvoboys Fórum"
+
 #~ msgid "- For personal use only"
 #~ msgstr "- Csak személyes használatra"
 
@@ -515,18 +484,53 @@ msgstr ""
 #~ msgid "Auto-refresh stream (minutes):"
 #~ msgstr "Automatikus frissítésű stream (perc):"
 
+#~ msgid "Changelog: {changelog}"
+#~ msgstr "Változási napló: {changelog}"
+
 #~ msgid "Configure Dns Server for Box."
 #~ msgstr "Konfigurálja a DNS-kiszolgálót a Box számára."
+
+#~ msgid "Configure Fonts."
+#~ msgstr "Betűtípusok konfigurálása."
 
 #, fuzzy
 #~ msgid "Configure every interval of minutes from now"
 #~ msgstr "Mostantól minden percnyi intervallum konfigurálása"
+
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Gratula! Már megvan a legújabb verzió..."
+
+#~ msgid "Do you want to install it now?"
+#~ msgstr ""
+#~ "Új verzió (%s) elérhető\n"
+#~ "\n"
+#~ "Változásnapló: %s\n"
+#~ "\n"
+#~ "Telepíteni szeretnéd most?"
+
+#~ msgid "Do you want to install update ( %s ) now?"
+#~ msgstr "Szeretné most telepíteni a frissítést (%s)?"
+
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr "Pl.: arab vagy más nyelv."
+
+#~ msgid "New version {version} is available."
+#~ msgstr "Új verzió ({version}) érhető el."
 
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Ütemezett lista frissítése:"
 
 #~ msgid "Select DNS Server"
 #~ msgstr "Válassza a DNS-kiszolgálót"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Válassza a Betűtípusok lehetőséget"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Frissítés megszakítva!"
+
+#~ msgid "Update Me"
+#~ msgstr "Frissítsen engem"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - - -"

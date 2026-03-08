@@ -120,9 +120,6 @@ msgstr "Zrušit provedení?"
 msgid "Case: {}"
 msgstr "Případ: {}"
 
-msgid "Changelog: {changelog}"
-msgstr "Seznam změn: {changelog}"
-
 msgid "Channels: %d"
 msgstr "Kanály: %d"
 
@@ -134,9 +131,6 @@ msgstr "Vymazat vše"
 
 msgid "Configuration saved successfully!"
 msgstr "Konfigurace byla úspěšně uložena!"
-
-msgid "Configure Fonts."
-msgstr "Konfigurace písem."
 
 msgid "Configure Main Background Image."
 msgstr "Nakonfigurujte hlavní obrázek na pozadí."
@@ -150,9 +144,6 @@ msgstr "Od této chvíle konfigurujte každý interval minut"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Konfigurace služby Reference Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Gratuluji! Už máte nejnovější verzi..."
 
 msgid "Console"
 msgstr "Konzole"
@@ -177,20 +168,6 @@ msgstr "Výchozí zobrazení při otevření pluginu"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Chcete tuto kytici exportovat?"
-
-msgid "Do you want to install it now?"
-msgstr ""
-"Nová verze %s k dispozici\n"
-"\n"
-"Seznam změn: %s\n"
-"\n"
-"Chcete ji nyní nainstalovat?"
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Chcete nyní nainstalovat aktualizaci ( %s )?"
-
-msgid "Eg: Arabic or other language."
-msgstr "Např.: arabština nebo jiný jazyk."
 
 msgid "Enable or disable proxy."
 msgstr ""
@@ -278,9 +255,6 @@ msgstr "Chyba generování M3U: %s"
 
 msgid "Movie Services Reference"
 msgstr "Reference filmových služeb"
-
-msgid "New version {version} is available."
-msgstr "Je k dispozici nová verze {version}."
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -407,9 +381,6 @@ msgstr "Hledat:"
 msgid "Select Background"
 msgstr "Vyberte Pozadí"
 
-msgid "Select Fonts"
-msgstr "Vyberte Písma"
-
 msgid "Select M3U export mode:"
 msgstr "Vyberte režim exportu M3U:"
 
@@ -452,12 +423,6 @@ msgstr "Celkový počet kanálů: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "VELKÁ PÍSMENA"
 
-msgid "Update Aborted!"
-msgstr "Aktualizace zrušena!"
-
-msgid "Update Me"
-msgstr "Aktualizovat mě"
-
 msgid "Update interval (minutes):"
 msgstr "Interval aktualizace (minuty):"
 
@@ -499,6 +464,10 @@ msgstr "malá písmena"
 msgid "seconds"
 msgstr ""
 
+#, fuzzy
+#~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#~ msgstr "- Komunita: Linuxsat-support.com, Fórum Corvoboys"
+
 #~ msgid "- For personal use only"
 #~ msgstr "- Pouze pro osobní použití"
 
@@ -513,18 +482,53 @@ msgstr ""
 #~ msgid "Auto-refresh stream (minutes):"
 #~ msgstr "Automatické obnovení streamu (minuty):"
 
+#~ msgid "Changelog: {changelog}"
+#~ msgstr "Seznam změn: {changelog}"
+
 #~ msgid "Configure Dns Server for Box."
 #~ msgstr "Nakonfigurujte DNS server pro Box."
+
+#~ msgid "Configure Fonts."
+#~ msgstr "Konfigurace písem."
 
 #, fuzzy
 #~ msgid "Configure every interval of minutes from now"
 #~ msgstr "Od této chvíle konfigurujte každý interval minut"
+
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Gratuluji! Už máte nejnovější verzi..."
+
+#~ msgid "Do you want to install it now?"
+#~ msgstr ""
+#~ "Nová verze %s k dispozici\n"
+#~ "\n"
+#~ "Seznam změn: %s\n"
+#~ "\n"
+#~ "Chcete ji nyní nainstalovat?"
+
+#~ msgid "Do you want to install update ( %s ) now?"
+#~ msgstr "Chcete nyní nainstalovat aktualizaci ( %s )?"
+
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr "Např.: arabština nebo jiný jazyk."
+
+#~ msgid "New version {version} is available."
+#~ msgstr "Je k dispozici nová verze {version}."
 
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Plánovaná aktualizace seznamu:"
 
 #~ msgid "Select DNS Server"
 #~ msgstr "Vyberte DNS Server"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Vyberte Písma"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Aktualizace zrušena!"
+
+#~ msgid "Update Me"
+#~ msgstr "Aktualizovat mě"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"
