@@ -37,6 +37,9 @@ msgstr ""
 msgid "- Commercial use is strictly prohibited"
 msgstr ""
 
+msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+msgstr ""
+
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr ""
 
@@ -44,6 +47,9 @@ msgid "- Container bouquets"
 msgstr ""
 
 msgid "- Country bouquets"
+msgstr ""
+
+msgid "- For personal use only"
 msgstr ""
 
 msgid "- Free content only"
@@ -83,6 +89,10 @@ msgstr "主动自动列表更新"
 msgid "Active or Disactive Ipv6."
 msgstr "启用或禁用局域网Ipv6,当前是：%s"
 
+#, fuzzy
+msgid "Active or Disactive lan Ipv6."
+msgstr "启用或禁用局域网Ipv6,当前是：%s"
+
 msgid "All countries (%d)"
 msgstr ""
 
@@ -90,8 +100,16 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "每隔几个小时或固定时间"
 
+#, fuzzy
+msgid "At an interval of hours or at a fixed time"
+msgstr "每隔几个小时或固定时间"
+
 msgid "Author:"
 msgstr ""
+
+#, fuzzy
+msgid "Auto-refresh stream (minutes):"
+msgstr "更新间隔（分钟） ："
 
 msgid "Back"
 msgstr "返回"
@@ -139,6 +157,10 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+#, fuzzy
+msgid "Configure Dns Server for Box."
+msgstr "从现在起每隔几分钟配置一次"
+
 msgid "Configure Fonts."
 msgstr ""
 
@@ -148,6 +170,10 @@ msgstr "在固定时间配置"
 
 msgid "Configure at a fixed time"
 msgstr "在固定时间配置"
+
+#, fuzzy
+msgid "Configure every interval of minutes from now"
+msgstr "从现在起每隔几分钟配置一次"
 
 #, fuzzy
 msgid "Configure interval minutes from now"
@@ -391,6 +417,10 @@ msgid "Schedule type:"
 msgstr "计划类型:"
 
 #, fuzzy
+msgid "Scheduled List Update:"
+msgstr "计划类型:"
+
+#, fuzzy
 msgid "Scheduled List:"
 msgstr "计划类型:"
 
@@ -411,6 +441,9 @@ msgstr "搜索"
 #, fuzzy
 msgid "Select Background"
 msgstr "选择字体"
+
+msgid "Select DNS Server"
+msgstr ""
 
 msgid "Select Fonts"
 msgstr "选择字体"
@@ -505,30 +538,6 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Active or Disactive lan Ipv6."
-#~ msgstr "启用或禁用局域网Ipv6,当前是：%s"
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "每隔几个小时或固定时间"
-
-#, fuzzy
-#~ msgid "Auto-refresh stream (minutes):"
-#~ msgstr "更新间隔（分钟） ："
-
-#, fuzzy
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "从现在起每隔几分钟配置一次"
-
-#, fuzzy
-#~ msgid "Configure every interval of minutes from now"
-#~ msgstr "从现在起每隔几分钟配置一次"
-
-#, fuzzy
-#~ msgid "Scheduled List Update:"
-#~ msgstr "计划类型:"
 
 #, fuzzy
 #~ msgid "Scheduled Bouquet Update:"

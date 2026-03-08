@@ -29,7 +29,6 @@ import codecs
 import ssl
 import time
 import threading
-from datetime import datetime
 from os import listdir, unlink, remove, chmod, system as os_system
 from os.path import exists as file_exists, join, islink, isfile, getsize
 from re import compile, DOTALL
@@ -86,7 +85,6 @@ from Components.config import (
 )
 from enigma import (
     RT_HALIGN_LEFT,
-    RT_HALIGN_RIGHT,
     RT_VALIGN_CENTER,
     eDVBDB,
     eListboxPythonMultiContent,
@@ -121,7 +119,7 @@ from . import (
     FLAG_CACHE_DIR, LOG_FILE, PRIMARY_BASE_URL, FALLBACK_BASE_URL
 )
 from . import vUtils
-from .Console import Console
+# from .Console import Console
 from .bouquet_manager import (
     convert_bouquet,
     _update_favorite_file,
@@ -472,8 +470,6 @@ def normalize_language_code(language):
 try:
     from Components.config import config
     lng = normalize_language_code(config.osd.language.value)
-    # if lng in locl:
-        # HALIGN = RT_HALIGN_RIGHT
 except BaseException:
     lng = 'en'
     pass
@@ -563,14 +559,6 @@ class m2list(MenuList):
 
 def show_list(name, link, is_category=False, is_channel=False):
     """Build a MultiContent entry with icon and text."""
-
-    # global HALIGN
-
-    # # Text alignment based on language
-    # if lng in locl:
-        # HALIGN = RT_HALIGN_RIGHT
-    # else:
-        # HALIGN = RT_HALIGN_LEFT
 
     safe_name = to_string(name)
     safe_link = to_string(link)
@@ -834,8 +822,6 @@ class vavoo_config(Screen, ConfigListScreen):
                 _("Select Background"),
                 cfg.back,
                 _("Configure Main Background Image.")))
-        help_text2 = _("Configure Fonts.") + "\n" + \
-            _("Eg: Arabic or other language.")
 
         help_part1 = _("Active or Disactive Ipv6.")
         help_part2 = _("Now %s") % cfg.ipv6.value
