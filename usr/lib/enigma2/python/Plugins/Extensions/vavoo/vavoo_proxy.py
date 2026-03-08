@@ -36,9 +36,15 @@ import threading
 import socket
 from json import loads, dumps
 from . import (
-    PORT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL, PROXY_HEALTH_URL, PROXY_SHUTDOWN_URL,
-    PRIMARY_BASE_URL, FALLBACK_BASE_URL, BASE_SITES
-)
+    PORT,
+    PROXY_HOST,
+    PROXY_BASE_URL,
+    PROXY_STATUS_URL,
+    PROXY_HEALTH_URL,
+    PROXY_SHUTDOWN_URL,
+    PRIMARY_BASE_URL,
+    FALLBACK_BASE_URL,
+    BASE_SITES)
 from .vUtils import is_proxy_running, make_print, log, debug, warning, error, log_exception, trace_error
 
 _starting_lock = threading.Lock()
@@ -259,7 +265,8 @@ class ProxyHealthMonitor:
             proxy = VavooProxy()
 
             if proxy.initialize_proxy():
-                server = ThreadedHTTPServer(('0.0.0.0', PORT), VavooHTTPHandler)
+                server = ThreadedHTTPServer(
+                    ('0.0.0.0', PORT), VavooHTTPHandler)
                 proxy.server = server
                 server_thread = threading.Thread(target=server.serve_forever)
                 server_thread.setDaemon(True)
@@ -367,15 +374,18 @@ class VavooProxy:
                 time.sleep(60)
                 try:
                     now = time.time()
-                    token_age = now - self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
+                    token_age = now - \
+                        self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
                     if self.addon_sig_data["sig"] and token_age > TOKEN_REFRESH_AGE:
-                        print("[Token Monitor] Token old (" + str(int(token_age)) + "), refreshing...")
+                        print("[Token Monitor] Token old (" +
+                              str(int(token_age)) + "), refreshing...")
                         self.refresh_addon_sig_if_needed(force=True)
                     self.last_heartbeat = now
                 except Exception as e:
                     print("[Token Monitor] Error: " + str(e))
 
-        self._token_monitor_thread = threading.Thread(target=token_monitor_loop)
+        self._token_monitor_thread = threading.Thread(
+            target=token_monitor_loop)
         self._token_monitor_thread.setDaemon(True)
         self._token_monitor_thread.start()
         print(" Token monitor started")
@@ -516,7 +526,8 @@ class VavooProxy:
                     self.channels_by_id[channel_id] = channel
                 country = channel.get("country")
                 if country:
-                    self.channels_by_country.setdefault(country, []).append(channel)
+                    self.channels_by_country.setdefault(
+                        country, []).append(channel)
                 if country and country != "default":
                     countries.add(country)
             self.countries_list = sorted(list(countries))
@@ -758,7 +769,9 @@ class VavooProxy:
                     "clientVersion": "3.0.2"
                 }
 
-                print(" Resolving channel URL (attempt %d/%d)" % (attempt + 1, max_retries))
+                print(
+                    " Resolving channel URL (attempt %d/%d)" %
+                    (attempt + 1, max_retries))
                 r_resolve = self.session.post(
                     self.resolve_url,
                     json=resolve_payload,
@@ -784,7 +797,8 @@ class VavooProxy:
                     stream_url = result.get("url") or result.get("streamUrl")
 
                 if stream_url:
-                    self.resolve_cache[channel_url] = {"url": stream_url, "ts": time.time()}
+                    self.resolve_cache[channel_url] = {
+                        "url": stream_url, "ts": time.time()}
                     if len(self.resolve_cache) > 1000:
                         keys = list(self.resolve_cache.keys())[:-500]
                         for key in keys:
@@ -794,16 +808,21 @@ class VavooProxy:
                 print(" Resolve response missing URL")
 
             except requests.exceptions.HTTPError as e:
-                print(" HTTP error in resolve attempt %d: %s" % (attempt + 1, str(e)))
+                print(
+                    " HTTP error in resolve attempt %d: %s" %
+                    (attempt + 1, str(e)))
                 try:
                     if e.response is not None and e.response.status_code == 451:
-                        self._switch_to_next_base("(HTTP 451 on resolve HTTPError)")
+                        self._switch_to_next_base(
+                            "(HTTP 451 on resolve HTTPError)")
                 except Exception:
                     pass
                 if attempt < max_retries - 1:
                     time.sleep(0.25)
             except Exception as e:
-                print(" Error in resolve attempt %d: %s" % (attempt + 1, str(e)))
+                print(
+                    " Error in resolve attempt %d: %s" %
+                    (attempt + 1, str(e)))
                 if attempt < max_retries - 1:
                     time.sleep(0.25)
 
@@ -823,9 +842,6 @@ class VavooProxy:
         except BaseException:
             self.local_ip = PROXY_HOST
             return self.local_ip
-
-
-
 
     def stop(self):
         """Stop background workers/timers and close session (safe for Py2/3)."""
@@ -884,7 +900,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(
+                    proxy, 'channels_by_id') else None
 
                 if not channel:
                     self.send_error(404, "Channel not found")
@@ -923,7 +940,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(400, "Missing channel parameter")
                     return
 
-                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(
+                    proxy, 'channels_by_id') else None
 
                 if not channel:
                     self.send_error(404, "Channel not found")
@@ -1141,7 +1159,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     return
 
             elif parsed_path.path == '/shutdown':
-                # Signal global stop to prevent the restart loop from re-spawning the server
+                # Signal global stop to prevent the restart loop from
+                # re-spawning the server
                 STOP_EVENT.set()
 
                 if not self.safe_send_response(200):

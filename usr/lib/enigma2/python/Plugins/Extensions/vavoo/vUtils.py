@@ -73,7 +73,14 @@ except ImportError:
 
 
 LOG_MAX_BYTES = 1024 * 1024
-DEBUG_ENABLED = str(__import__("os").environ.get("VAVOO_DEBUG", "0")).lower() in ("1", "true", "yes", "on")
+DEBUG_ENABLED = str(
+    __import__("os").environ.get(
+        "VAVOO_DEBUG",
+        "0")).lower() in (
+            "1",
+            "true",
+            "yes",
+    "on")
 
 
 def _rotate_log_if_needed():
@@ -695,7 +702,8 @@ def get_proxy_channels(country_name):
                 'utf-8')) if PY2 else quote(country_name)
 
             # Build URL
-            proxy_url = PROXY_BASE_URL + "/channels?country={}".format(encoded_country)
+            proxy_url = PROXY_BASE_URL + \
+                "/channels?country={}".format(encoded_country)
             # Fetch with timeout
             response = getUrl(proxy_url, timeout=15)
             print("Request URL: " + proxy_url)
@@ -727,7 +735,8 @@ def get_proxy_channels(country_name):
                         continue
 
                     # Build proxy URL
-                    proxy_stream_url = PROXY_BASE_URL + "/vavoo?channel={}".format(channel_id)
+                    proxy_stream_url = PROXY_BASE_URL + \
+                        "/vavoo?channel={}".format(channel_id)
                     processed_channels.append({
                         'id': channel_id,
                         'name': channel.get('name', 'Unknown'),
