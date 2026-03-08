@@ -39,9 +39,6 @@ msgstr ""
 msgid "- Commercial use is strictly prohibited"
 msgstr ""
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
-msgstr ""
-
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr ""
 
@@ -49,9 +46,6 @@ msgid "- Container bouquets"
 msgstr ""
 
 msgid "- Country bouquets"
-msgstr ""
-
-msgid "- For personal use only"
 msgstr ""
 
 msgid "- Free content only"
@@ -93,12 +87,6 @@ msgstr ""
 "Aktywna lub nieaktywna sieć LAN Ipv6.\n"
 "Teraz %s"
 
-#, fuzzy
-msgid "Active or Disactive lan Ipv6."
-msgstr ""
-"Aktywna lub nieaktywna sieć LAN Ipv6.\n"
-"Teraz %s"
-
 msgid "All countries (%d)"
 msgstr ""
 
@@ -106,16 +94,8 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "W odstępie minut lub o ustalonej porze"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "W odstępie minut lub o ustalonej porze"
-
 msgid "Author:"
 msgstr ""
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Częstotliwość aktualizacji (minuty):"
 
 msgid "Back"
 msgstr "Wstecz"
@@ -147,9 +127,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -162,12 +139,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-msgid "Configure Dns Server for Box."
-msgstr "Skonfiguruj serwer DNS dla Box."
-
-msgid "Configure Fonts."
-msgstr ""
-
 msgid "Configure Main Background Image."
 msgstr "Skonfiguruj główny obraz tła."
 
@@ -175,18 +146,11 @@ msgid "Configure at a fixed time"
 msgstr "Skonfiguruj o ustalonej godzinie"
 
 #, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Od teraz skonfiguruj każdy interwał minutowy"
-
-#, fuzzy
 msgid "Configure interval minutes from now"
 msgstr "Od teraz skonfiguruj każdy interwał minutowy"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Skonfiguruj usługę Odniesienie Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Gratulacje! Masz już najnowszą wersję..."
 
 msgid "Console"
 msgstr ""
@@ -211,19 +175,6 @@ msgstr ""
 
 msgid "Do you want to export this bouquet?"
 msgstr ""
-
-#, fuzzy
-msgid "Do you want to install it now?"
-msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
-
-#, fuzzy
-msgid "Eg: Arabic or other language."
-msgstr ""
-"Skonfiguruj czcionki.\n"
-"Np.: arabski lub inny język."
 
 msgid "Enable or disable proxy."
 msgstr ""
@@ -311,9 +262,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Referencje usług"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -420,10 +368,6 @@ msgid "Schedule type:"
 msgstr "Typ harmonogramu:"
 
 #, fuzzy
-msgid "Scheduled List Update:"
-msgstr "Zaplanowana aktualizacja bukietów:"
-
-#, fuzzy
 msgid "Scheduled List:"
 msgstr "Zaplanowana aktualizacja bukietów:"
 
@@ -443,12 +387,6 @@ msgstr "Szukaj"
 
 msgid "Select Background"
 msgstr "Wybierz tło"
-
-msgid "Select DNS Server"
-msgstr "Wybierz serwer DNS"
-
-msgid "Select Fonts"
-msgstr "Wybierz czcionki"
 
 msgid "Select M3U export mode:"
 msgstr ""
@@ -495,12 +433,6 @@ msgstr ""
 msgid "UPPERCASE"
 msgstr ""
 
-msgid "Update Aborted!"
-msgstr "Aktualizacja przerwana!"
-
-msgid "Update Me"
-msgstr "Zaktualizuj"
-
 msgid "Update interval (minutes):"
 msgstr "Częstotliwość aktualizacji (minuty):"
 
@@ -540,6 +472,59 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Active or Disactive lan Ipv6."
+#~ msgstr ""
+#~ "Aktywna lub nieaktywna sieć LAN Ipv6.\n"
+#~ "Teraz %s"
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "W odstępie minut lub o ustalonej porze"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Częstotliwość aktualizacji (minuty):"
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Skonfiguruj serwer DNS dla Box."
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Od teraz skonfiguruj każdy interwał minutowy"
+
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Gratulacje! Masz już najnowszą wersję..."
+
+#, fuzzy
+#~ msgid "Do you want to install it now?"
+#~ msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
+
+#~ msgid "Do you want to install update ( %s ) now?"
+#~ msgstr "Czy chcesz teraz zainstalować aktualizację (%s)?"
+
+#, fuzzy
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr ""
+#~ "Skonfiguruj czcionki.\n"
+#~ "Np.: arabski lub inny język."
+
+#, fuzzy
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Zaplanowana aktualizacja bukietów:"
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Wybierz serwer DNS"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Wybierz czcionki"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Aktualizacja przerwana!"
+
+#~ msgid "Update Me"
+#~ msgstr "Zaktualizuj"
 
 #~ msgid "Scheduled Bouquet Update:"
 #~ msgstr "Zaplanowana aktualizacja bukietów:"

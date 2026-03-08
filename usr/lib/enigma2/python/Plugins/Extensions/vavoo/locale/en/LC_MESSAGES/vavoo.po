@@ -35,10 +35,6 @@ msgid "- Commercial use is strictly prohibited"
 msgstr "- Commercial use is strictly prohibited"
 
 #, fuzzy
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
-msgstr "- Community: Linuxsat-support.com, Corvoboys Forum"
-
-#, fuzzy
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr "- Community: Linuxsat-support.com, Corvoboys Forum"
 
@@ -47,9 +43,6 @@ msgstr "- Container bouquets"
 
 msgid "- Country bouquets"
 msgstr "- Country bouquets"
-
-msgid "- For personal use only"
-msgstr "- For personal use only"
 
 msgid "- Free content only"
 msgstr "- Free content only"
@@ -88,9 +81,6 @@ msgstr "Active Automatic Bouquet Update"
 msgid "Active or Disactive Ipv6."
 msgstr "Active or Disactive lan Ipv6."
 
-msgid "Active or Disactive lan Ipv6."
-msgstr "Active or Disactive lan Ipv6."
-
 msgid "All countries (%d)"
 msgstr "All countries (%d)"
 
@@ -98,16 +88,8 @@ msgstr "All countries (%d)"
 msgid "At an interval hours or fixed time"
 msgstr "At an interval of hours or at a fixed time"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "At an interval of hours or at a fixed time"
-
 msgid "Author:"
 msgstr "Author:"
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Auto-refresh stream (minutes):"
 
 msgid "Back"
 msgstr "Back"
@@ -139,9 +121,6 @@ msgstr "Cancel execution?"
 msgid "Case: {}"
 msgstr "Case: {}"
 
-msgid "Changelog: {changelog}"
-msgstr "Changelog: {changelog}"
-
 msgid "Channels: %d"
 msgstr "Channels: %d"
 
@@ -154,12 +133,6 @@ msgstr "Clear All"
 msgid "Configuration saved successfully!"
 msgstr "Configuration saved successfully!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Configure Dns Server for Box."
-
-msgid "Configure Fonts."
-msgstr "Configure Fonts."
-
 msgid "Configure Main Background Image."
 msgstr "Configure Main Background Image."
 
@@ -167,18 +140,11 @@ msgid "Configure at a fixed time"
 msgstr "Configure at a fixed time"
 
 #, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Configure every interval of minutes from now"
-
-#, fuzzy
 msgid "Configure interval minutes from now"
 msgstr "Configure every interval of minutes from now"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Congrats! You already have the latest version..."
 
 msgid "Console"
 msgstr "Console"
@@ -203,15 +169,6 @@ msgstr "Default view when opening the plugin"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Do you want to export this bouquet?"
-
-msgid "Do you want to install it now?"
-msgstr "Do you want to install it now?"
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Do you want to install update ( %s ) now?"
-
-msgid "Eg: Arabic or other language."
-msgstr "Eg: Arabic or other language."
 
 msgid "Enable or disable proxy."
 msgstr ""
@@ -299,9 +256,6 @@ msgstr "M3U generation error: %s"
 
 msgid "Movie Services Reference"
 msgstr "Movie Services Reference"
-
-msgid "New version {version} is available."
-msgstr "New version {version} is available."
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -408,10 +362,6 @@ msgid "Schedule type:"
 msgstr "Schedule type:"
 
 #, fuzzy
-msgid "Scheduled List Update:"
-msgstr "Scheduled Bouquet Update:"
-
-#, fuzzy
 msgid "Scheduled List:"
 msgstr "Scheduled Bouquet Update:"
 
@@ -429,12 +379,6 @@ msgstr "Search:"
 
 msgid "Select Background"
 msgstr "Select Background"
-
-msgid "Select DNS Server"
-msgstr "Select DNS Server"
-
-msgid "Select Fonts"
-msgstr "Select Fonts"
 
 msgid "Select M3U export mode:"
 msgstr "Select M3U export mode:"
@@ -478,12 +422,6 @@ msgstr "Total channels: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "UPPERCASE"
 
-msgid "Update Aborted!"
-msgstr "Update Aborted!"
-
-msgid "Update Me"
-msgstr "Update Me"
-
 msgid "Update interval (minutes):"
 msgstr "Update interval (minutes):"
 
@@ -522,6 +460,68 @@ msgstr "lowercase"
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#~ msgstr "- Community: Linuxsat-support.com, Corvoboys Forum"
+
+#~ msgid "- For personal use only"
+#~ msgstr "- For personal use only"
+
+#~ msgid "Active or Disactive lan Ipv6."
+#~ msgstr "Active or Disactive lan Ipv6."
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "At an interval of hours or at a fixed time"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Auto-refresh stream (minutes):"
+
+#~ msgid "Changelog: {changelog}"
+#~ msgstr "Changelog: {changelog}"
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Configure Dns Server for Box."
+
+#~ msgid "Configure Fonts."
+#~ msgstr "Configure Fonts."
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Configure every interval of minutes from now"
+
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Congrats! You already have the latest version..."
+
+#~ msgid "Do you want to install it now?"
+#~ msgstr "Do you want to install it now?"
+
+#~ msgid "Do you want to install update ( %s ) now?"
+#~ msgstr "Do you want to install update ( %s ) now?"
+
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr "Eg: Arabic or other language."
+
+#~ msgid "New version {version} is available."
+#~ msgstr "New version {version} is available."
+
+#, fuzzy
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Scheduled Bouquet Update:"
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Select DNS Server"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Select Fonts"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Update Aborted!"
+
+#~ msgid "Update Me"
+#~ msgstr "Update Me"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"

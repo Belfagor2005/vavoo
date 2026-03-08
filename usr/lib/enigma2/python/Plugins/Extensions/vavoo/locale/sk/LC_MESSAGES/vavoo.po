@@ -34,10 +34,6 @@ msgid "- Commercial use is strictly prohibited"
 msgstr "- Komerčné použitie je prísne zakázané"
 
 #, fuzzy
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
-msgstr "- Komunita: Linuxsat-support.com, Fórum Corvoboys"
-
-#, fuzzy
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr "- Komunita: Linuxsat-support.com, Fórum Corvoboys"
 
@@ -46,9 +42,6 @@ msgstr "- Kytice v nádobách"
 
 msgid "- Country bouquets"
 msgstr "- Vidiecke kytice"
-
-msgid "- For personal use only"
-msgstr "- Len na osobné použitie"
 
 msgid "- Free content only"
 msgstr "- Iba bezplatný obsah"
@@ -87,9 +80,6 @@ msgstr "Aktívna automatická aktualizácia kytice"
 msgid "Active or Disactive Ipv6."
 msgstr "Aktívna alebo neaktívna LAN IPv6."
 
-msgid "Active or Disactive lan Ipv6."
-msgstr "Aktívna alebo neaktívna LAN IPv6."
-
 msgid "All countries (%d)"
 msgstr "Všetky krajiny (%d)"
 
@@ -97,16 +87,8 @@ msgstr "Všetky krajiny (%d)"
 msgid "At an interval hours or fixed time"
 msgstr "V intervale hodín alebo v pevne stanovenom čase"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "V intervale hodín alebo v pevne stanovenom čase"
-
 msgid "Author:"
 msgstr "Autor:"
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Automatické obnovovanie streamu (minúty):"
 
 msgid "Back"
 msgstr "Späť"
@@ -138,9 +120,6 @@ msgstr "Zrušiť exekúciu?"
 msgid "Case: {}"
 msgstr "Prípad: {}"
 
-msgid "Changelog: {changelog}"
-msgstr "Zoznam zmien: {changelog}"
-
 msgid "Channels: %d"
 msgstr "Kanály: %d"
 
@@ -153,12 +132,6 @@ msgstr "Zmazať všetko"
 msgid "Configuration saved successfully!"
 msgstr "Konfigurácia bola úspešne uložená!"
 
-msgid "Configure Dns Server for Box."
-msgstr "Nakonfigurujte server DNS pre Box."
-
-msgid "Configure Fonts."
-msgstr "Konfigurovať písma."
-
 msgid "Configure Main Background Image."
 msgstr "Konfigurácia hlavného obrázka na pozadí."
 
@@ -166,18 +139,11 @@ msgid "Configure at a fixed time"
 msgstr "Konfigurujte v pevnom čase"
 
 #, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Odteraz konfigurujte každý interval minút"
-
-#, fuzzy
 msgid "Configure interval minutes from now"
 msgstr "Odteraz konfigurujte každý interval minút"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Konfigurácia služby Referencia Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Gratulujem! Už máte najnovšiu verziu..."
 
 msgid "Console"
 msgstr "Konzola"
@@ -202,20 +168,6 @@ msgstr "Predvolené zobrazenie pri otvorení pluginu"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Chcete túto kyticu exportovať?"
-
-msgid "Do you want to install it now?"
-msgstr ""
-"Nová verzia %s je k dispozícii\n"
-"\n"
-"Zoznam zmien: %s\n"
-"\n"
-"Chcete ju teraz nainštalovať?"
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr "Chcete teraz nainštalovať aktualizáciu ( %s )?"
-
-msgid "Eg: Arabic or other language."
-msgstr "Napr.: arabčina alebo iný jazyk."
 
 msgid "Enable or disable proxy."
 msgstr ""
@@ -303,9 +255,6 @@ msgstr "Chyba generovania M3U: %s"
 
 msgid "Movie Services Reference"
 msgstr "Odkaz na filmové služby"
-
-msgid "New version {version} is available."
-msgstr "Nová verzia {version} je k dispozícii."
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -413,9 +362,6 @@ msgstr "Uložené v: %s"
 msgid "Schedule type:"
 msgstr "Typ rozvrhu:"
 
-msgid "Scheduled List Update:"
-msgstr "Plánovaná aktualizácia zoznamu:"
-
 #, fuzzy
 msgid "Scheduled List:"
 msgstr "Plánovaná aktualizácia zoznamu:"
@@ -434,12 +380,6 @@ msgstr "Vyhľadať:"
 
 msgid "Select Background"
 msgstr "Vyberte pozadie"
-
-msgid "Select DNS Server"
-msgstr "Vyberte Server DNS"
-
-msgid "Select Fonts"
-msgstr "Vyberte položku Písma"
 
 msgid "Select M3U export mode:"
 msgstr "Vyberte režim exportu M3U:"
@@ -483,12 +423,6 @@ msgstr "Celkový počet kanálov: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "VEĽKÉ (UPPERCASE)"
 
-msgid "Update Aborted!"
-msgstr "Aktualizácia prerušená!"
-
-msgid "Update Me"
-msgstr "Aktualizujte ma"
-
 msgid "Update interval (minutes):"
 msgstr "Interval aktualizácie (v minútach):"
 
@@ -529,6 +463,72 @@ msgstr "malé písmo"
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
+#~ msgstr "- Komunita: Linuxsat-support.com, Fórum Corvoboys"
+
+#~ msgid "- For personal use only"
+#~ msgstr "- Len na osobné použitie"
+
+#~ msgid "Active or Disactive lan Ipv6."
+#~ msgstr "Aktívna alebo neaktívna LAN IPv6."
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "V intervale hodín alebo v pevne stanovenom čase"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Automatické obnovovanie streamu (minúty):"
+
+#~ msgid "Changelog: {changelog}"
+#~ msgstr "Zoznam zmien: {changelog}"
+
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Nakonfigurujte server DNS pre Box."
+
+#~ msgid "Configure Fonts."
+#~ msgstr "Konfigurovať písma."
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Odteraz konfigurujte každý interval minút"
+
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Gratulujem! Už máte najnovšiu verziu..."
+
+#~ msgid "Do you want to install it now?"
+#~ msgstr ""
+#~ "Nová verzia %s je k dispozícii\n"
+#~ "\n"
+#~ "Zoznam zmien: %s\n"
+#~ "\n"
+#~ "Chcete ju teraz nainštalovať?"
+
+#~ msgid "Do you want to install update ( %s ) now?"
+#~ msgstr "Chcete teraz nainštalovať aktualizáciu ( %s )?"
+
+#~ msgid "Eg: Arabic or other language."
+#~ msgstr "Napr.: arabčina alebo iný jazyk."
+
+#~ msgid "New version {version} is available."
+#~ msgstr "Nová verzia {version} je k dispozícii."
+
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Plánovaná aktualizácia zoznamu:"
+
+#~ msgid "Select DNS Server"
+#~ msgstr "Vyberte Server DNS"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Vyberte položku Písma"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Aktualizácia prerušená!"
+
+#~ msgid "Update Me"
+#~ msgstr "Aktualizujte ma"
 
 #~ msgid "- - - -"
 #~ msgstr "- - - -"

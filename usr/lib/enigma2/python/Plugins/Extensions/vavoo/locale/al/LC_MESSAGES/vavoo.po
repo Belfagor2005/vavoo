@@ -43,9 +43,6 @@ msgstr ""
 msgid "- Commercial use is strictly prohibited"
 msgstr ""
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
-msgstr ""
-
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr ""
 
@@ -53,9 +50,6 @@ msgid "- Container bouquets"
 msgstr ""
 
 msgid "- Country bouquets"
-msgstr ""
-
-msgid "- For personal use only"
 msgstr ""
 
 msgid "- Free content only"
@@ -94,9 +88,6 @@ msgstr "Përditësimi automatik i buqetës"
 msgid "Active or Disactive Ipv6."
 msgstr ""
 
-msgid "Active or Disactive lan Ipv6."
-msgstr ""
-
 msgid "All countries (%d)"
 msgstr ""
 
@@ -104,16 +95,8 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "Në një interval orësh ose në një kohë të caktuar"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "Në një interval orësh ose në një kohë të caktuar"
-
 msgid "Author:"
 msgstr ""
-
-#, fuzzy
-msgid "Auto-refresh stream (minutes):"
-msgstr "Intervali i përditësimit (minuta):"
 
 msgid "Back"
 msgstr "Mbrapa"
@@ -145,9 +128,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -160,13 +140,6 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-#, fuzzy
-msgid "Configure Dns Server for Box."
-msgstr "Konfiguro çdo interval prej minutash nga tani"
-
-msgid "Configure Fonts."
-msgstr ""
-
 msgid "Configure Main Background Image."
 msgstr ""
 
@@ -174,18 +147,11 @@ msgid "Configure at a fixed time"
 msgstr "Konfiguro në një kohë të caktuar"
 
 #, fuzzy
-msgid "Configure every interval of minutes from now"
-msgstr "Konfiguro çdo interval prej minutash nga tani"
-
-#, fuzzy
 msgid "Configure interval minutes from now"
 msgstr "Konfiguro çdo interval prej minutash nga tani"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Konfiguro referencën e shërbimit Iptv-Gstreamer-Exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr "Urime! Ju tashmë keni versionin më të fundit..."
 
 msgid "Console"
 msgstr ""
@@ -209,15 +175,6 @@ msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
-
-msgid "Do you want to install it now?"
-msgstr ""
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-msgid "Eg: Arabic or other language."
 msgstr ""
 
 msgid "Enable or disable proxy."
@@ -306,9 +263,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Referenca e Shërbimeve të Filmit"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -415,10 +369,6 @@ msgid "Schedule type:"
 msgstr "Lloi i orarit"
 
 #, fuzzy
-msgid "Scheduled List Update:"
-msgstr "Lloi i orarit"
-
-#, fuzzy
 msgid "Scheduled List:"
 msgstr "Lloi i orarit"
 
@@ -438,12 +388,6 @@ msgstr "Kërko"
 
 msgid "Select Background"
 msgstr ""
-
-msgid "Select DNS Server"
-msgstr ""
-
-msgid "Select Fonts"
-msgstr "Vendose llion e shkrimit"
 
 msgid "Select M3U export mode:"
 msgstr ""
@@ -487,12 +431,6 @@ msgstr ""
 msgid "UPPERCASE"
 msgstr ""
 
-msgid "Update Aborted!"
-msgstr "Freskimi u abortua"
-
-msgid "Update Me"
-msgstr "Më fresko"
-
 msgid "Update interval (minutes):"
 msgstr "Intervali i përditësimit (minuta):"
 
@@ -532,3 +470,35 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "Në një interval orësh ose në një kohë të caktuar"
+
+#, fuzzy
+#~ msgid "Auto-refresh stream (minutes):"
+#~ msgstr "Intervali i përditësimit (minuta):"
+
+#, fuzzy
+#~ msgid "Configure Dns Server for Box."
+#~ msgstr "Konfiguro çdo interval prej minutash nga tani"
+
+#, fuzzy
+#~ msgid "Configure every interval of minutes from now"
+#~ msgstr "Konfiguro çdo interval prej minutash nga tani"
+
+#~ msgid "Congrats! You already have the latest version..."
+#~ msgstr "Urime! Ju tashmë keni versionin më të fundit..."
+
+#, fuzzy
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Lloi i orarit"
+
+#~ msgid "Select Fonts"
+#~ msgstr "Vendose llion e shkrimit"
+
+#~ msgid "Update Aborted!"
+#~ msgstr "Freskimi u abortua"
+
+#~ msgid "Update Me"
+#~ msgstr "Më fresko"

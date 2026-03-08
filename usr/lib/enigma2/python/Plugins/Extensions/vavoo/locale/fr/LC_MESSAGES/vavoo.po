@@ -41,9 +41,6 @@ msgstr ""
 msgid "- Commercial use is strictly prohibited"
 msgstr ""
 
-msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
-msgstr ""
-
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
 msgstr ""
 
@@ -51,9 +48,6 @@ msgid "- Container bouquets"
 msgstr ""
 
 msgid "- Country bouquets"
-msgstr ""
-
-msgid "- For personal use only"
 msgstr ""
 
 msgid "- Free content only"
@@ -92,9 +86,6 @@ msgstr "Mise à jour automatique active du bouquet"
 msgid "Active or Disactive Ipv6."
 msgstr ""
 
-msgid "Active or Disactive lan Ipv6."
-msgstr ""
-
 msgid "All countries (%d)"
 msgstr ""
 
@@ -102,14 +93,7 @@ msgstr ""
 msgid "At an interval hours or fixed time"
 msgstr "A intervalles d'heures ou à heure fixe"
 
-#, fuzzy
-msgid "At an interval of hours or at a fixed time"
-msgstr "A intervalles d'heures ou à heure fixe"
-
 msgid "Author:"
-msgstr ""
-
-msgid "Auto-refresh stream (minutes):"
 msgstr ""
 
 msgid "Back"
@@ -142,9 +126,6 @@ msgstr ""
 msgid "Case: {}"
 msgstr ""
 
-msgid "Changelog: {changelog}"
-msgstr ""
-
 msgid "Channels: %d"
 msgstr ""
 
@@ -157,29 +138,17 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
-msgid "Configure Dns Server for Box."
-msgstr ""
-
-msgid "Configure Fonts."
-msgstr ""
-
 msgid "Configure Main Background Image."
 msgstr ""
 
 msgid "Configure at a fixed time"
 msgstr "Configurer à heure fixe"
 
-msgid "Configure every interval of minutes from now"
-msgstr ""
-
 msgid "Configure interval minutes from now"
 msgstr ""
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr "Configurer la référence du service iptv-gstreamer-exteplayer3"
-
-msgid "Congrats! You already have the latest version..."
-msgstr ""
 
 msgid "Console"
 msgstr ""
@@ -203,15 +172,6 @@ msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
-
-msgid "Do you want to install it now?"
-msgstr ""
-
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-msgid "Eg: Arabic or other language."
 msgstr ""
 
 msgid "Enable or disable proxy."
@@ -300,9 +260,6 @@ msgstr ""
 
 msgid "Movie Services Reference"
 msgstr "Référence des services"
-
-msgid "New version {version} is available."
-msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
@@ -408,10 +365,6 @@ msgid "Schedule type:"
 msgstr "Type d'horaire :"
 
 #, fuzzy
-msgid "Scheduled List Update:"
-msgstr "Type d'horaire :"
-
-#, fuzzy
 msgid "Scheduled List:"
 msgstr "Type d'horaire :"
 
@@ -430,12 +383,6 @@ msgid "Search:"
 msgstr "Rechercher"
 
 msgid "Select Background"
-msgstr ""
-
-msgid "Select DNS Server"
-msgstr ""
-
-msgid "Select Fonts"
 msgstr ""
 
 msgid "Select M3U export mode:"
@@ -480,12 +427,6 @@ msgstr ""
 msgid "UPPERCASE"
 msgstr ""
 
-msgid "Update Aborted!"
-msgstr ""
-
-msgid "Update Me"
-msgstr ""
-
 msgid "Update interval (minutes):"
 msgstr ""
 
@@ -525,3 +466,11 @@ msgstr ""
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "At an interval of hours or at a fixed time"
+#~ msgstr "A intervalles d'heures ou à heure fixe"
+
+#, fuzzy
+#~ msgid "Scheduled List Update:"
+#~ msgstr "Type d'horaire :"
