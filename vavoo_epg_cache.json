@@ -129,7 +129,7 @@
     },
     "CLASSICA .c_it": {
         "id": "Classica.eu",
-        "sref": "4097:0:1:7577:412:1:C00000:0:0:0:"
+        "sref": "4097:0:19:104A:19C8:FBFF:820000:0:0:0:"
     },
     "COMEDY CENTRAL .c_it": {
         "id": "ComedyCentral.it",
@@ -269,11 +269,11 @@
     },
     "HISTORY .c_it": {
         "id": "HistoryChannel.it",
-        "sref": "4097:0:19:DB9:2198:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:DB9:1A90:FBFF:820000:0:0:0:"
     },
     "HISTORY .s_it": {
         "id": "HistoryChannel.it",
-        "sref": "4097:0:19:DB9:2198:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:DB9:1A90:FBFF:820000:0:0:0:"
     },
     "INTER TV .c_it": {
         "id": "InterChannel.it",
@@ -625,15 +625,15 @@
     },
     "SKY ARTE .c_it": {
         "id": "SkyArte.it",
-        "sref": "4097:0:19:2B42:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2B42:19C8:FBFF:820000:0:0:0:"
     },
     "SKY ARTE .s_it": {
         "id": "SkyArte.it",
-        "sref": "4097:0:19:2B42:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2B42:19C8:FBFF:820000:0:0:0:"
     },
     "SKY ATLANTIC .c_it": {
         "id": "SkyAtlantic.it",
-        "sref": "4097:0:19:3792:1838:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:3792:15E0:FBFF:820000:0:0:0:"
     },
     "SKY ATLANTIC .s_it": {
         "id": "SkyAtlantic.it",
@@ -641,23 +641,23 @@
     },
     "SKY CINEMA ACTION .c_it": {
         "id": "SkyCinemaAction.it",
-        "sref": "4097:0:19:106E:1644:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:106E:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA ACTION .s_it": {
         "id": "SkyCinemaAction.it",
-        "sref": "4097:0:19:106E:1644:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:106E:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA ACTION (BACKUP) .s_it": {
         "id": "SkyCinemaAction.it",
-        "sref": "4097:0:19:106E:1644:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:106E:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA COLLECTION .c_it": {
         "id": "SkyCinemaCollection.it",
-        "sref": "4097:0:19:106C:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:597:19C8:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA COLLECTION .s_it": {
         "id": "SkyCinemaCollection.it",
-        "sref": "4097:0:19:106C:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:597:19C8:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA COMEDY .c_it": {
         "id": "SkyCinemaComedy.it",
@@ -681,11 +681,11 @@
     },
     "SKY CINEMA FAMILY .c_it": {
         "id": "SkyCinemaFamily.it",
-        "sref": "4097:0:19:1C57:2198:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:1C57:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA FAMILY .s_it": {
         "id": "SkyCinemaFamily.it",
-        "sref": "4097:0:19:1C57:206C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:1C57:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA SUSPENSE .c_it": {
         "id": "SkyCinemaSuspense.it",
@@ -697,15 +697,15 @@
     },
     "SKY CINEMA UNO .c_it": {
         "id": "SkyCinemaUno.it",
-        "sref": "4097:0:19:106B:1838:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2505:1838:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA UNO .s_it": {
         "id": "SkyCinemaUno.it",
-        "sref": "4097:0:19:106B:1838:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2505:1838:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA UNO +24 .s_it": {
         "id": "SkyCinemaUnoPlus24.it",
-        "sref": "4097:0:19:1C38:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:598:19C8:FBFF:820000:0:0:0:"
     },
     "SKY CRIME .c_it": {
         "id": "SkyCrime.it",
@@ -721,11 +721,11 @@
     },
     "SKY NATURE .c_it": {
         "id": "SkyNature.it",
-        "sref": "4097:0:19:2DBE:2198:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2DAF:2008:FBFF:820000:0:0:0:"
     },
     "SKY SERIE .c_it": {
         "id": "SkySerie.it",
-        "sref": "4097:0:19:2DA4:2008:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2DA4:15E0:FBFF:820000:0:0:0:"
     },
     "SKY SPORT 24 .c_it": {
         "id": "SkySport254.it",
@@ -905,7 +905,7 @@
     },
     "TV 2000 .c_it": {
         "id": "TV2000.it",
-        "sref": "4097:0:19:110D:1A2C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:5B:1770:BE:820000:0:0:0:"
     },
     "TV 8 .c_it": {
         "id": "RTV7.nl",
@@ -917,7 +917,7 @@
     },
     "TV2000 .s_it": {
         "id": "TV2000.it",
-        "sref": "4097:0:19:110D:1A2C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:5B:1770:BE:820000:0:0:0:"
     },
     "TV7 NEWS .c_it": {
         "id": "TV2News.it",
@@ -1017,7 +1017,7 @@
     },
     "CLASSICA_it": {
         "id": "Classica.eu",
-        "sref": "4097:0:1:7577:412:1:C00000:0:0:0:"
+        "sref": "4097:0:19:104A:19C8:FBFF:820000:0:0:0:"
     },
     "COMEDY CENTRAL_it": {
         "id": "ComedyCentral.it",
@@ -1101,7 +1101,7 @@
     },
     "GAMBERO ROSSO_it": {
         "id": "GamberoRosso.it",
-        "sref": "4097:0:19:2FC4:1900:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2FC4:2260:FBFF:820000:0:0:0:"
     },
     "GIALLO_it": {
         "id": "Giallo.it",
@@ -1117,11 +1117,11 @@
     },
     "HISTORY_it": {
         "id": "HistoryChannel.it",
-        "sref": "4097:0:19:DB9:2198:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:DB9:1A90:FBFF:820000:0:0:0:"
     },
     "INTER TV_it": {
         "id": "InterChannel.it",
-        "sref": "4097:0:19:250F:189C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:250F:2260:FBFF:820000:0:0:0:"
     },
     "IRIS_it": {
         "id": "Iris.it",
@@ -1337,19 +1337,19 @@
     },
     "SKY ARTE_it": {
         "id": "SkyArte.it",
-        "sref": "4097:0:19:2B42:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2B42:19C8:FBFF:820000:0:0:0:"
     },
     "SKY ATLANTIC_it": {
         "id": "SkyAtlantic.it",
-        "sref": "4097:0:19:3792:1838:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:3792:15E0:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA ACTION_it": {
         "id": "SkyCinemaAction.it",
-        "sref": "4097:0:19:106E:1644:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:106E:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA COLLECTION_it": {
         "id": "SkyCinemaCollection.it",
-        "sref": "4097:0:19:106C:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:597:19C8:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA COMEDY_it": {
         "id": "SkyCinemaComedy.it",
@@ -1365,19 +1365,19 @@
     },
     "SKY CINEMA FAMILY_it": {
         "id": "SkyCinemaFamily.it",
-        "sref": "4097:0:19:1C57:2198:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:1C57:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA SUSPENSE_it": {
         "id": "SkyCinemaSuspense.it",
         "sref": "4097:0:19:2B27:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA UNO_it": {
-        "id": "SkyCinemaUnoPlus24.it",
-        "sref": "4097:0:19:106B:1838:FBFF:820000:0:0:0:"
+        "id": "SkyCinemaUno.it",
+        "sref": "4097:0:19:2505:1838:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA UNO +24_it": {
         "id": "SkyCinemaUnoPlus24.it",
-        "sref": "4097:0:19:1C38:2260:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:598:19C8:FBFF:820000:0:0:0:"
     },
     "SKY CRIME_it": {
         "id": "SkyCrime.it",
@@ -1393,11 +1393,11 @@
     },
     "SKY NATURE_it": {
         "id": "SkyNature.it",
-        "sref": "4097:0:19:2DBE:2198:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2DAF:2008:FBFF:820000:0:0:0:"
     },
     "SKY SERIE_it": {
         "id": "SkySerie.it",
-        "sref": "4097:0:19:2DA4:2008:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:2DA4:15E0:FBFF:820000:0:0:0:"
     },
     "SKY SPORT 24_it": {
         "id": "SkySport254.it",
@@ -1529,7 +1529,7 @@
     },
     "TV 2000_it": {
         "id": "TV2000.it",
-        "sref": "4097:0:19:110D:1A2C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:5B:1770:BE:820000:0:0:0:"
     },
     "TV 8_it": {
         "id": "RTV7.nl",
@@ -1537,7 +1537,7 @@
     },
     "TV2000_it": {
         "id": "TV2000.it",
-        "sref": "4097:0:19:110D:1A2C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:5B:1770:BE:820000:0:0:0:"
     },
     "TV7 NEWS_it": {
         "id": "TV2News.it",
@@ -1913,7 +1913,7 @@
     },
     "CRIME+ INVESTIGATION .c_bg": {
         "id": "CrimeInvestigation.gr",
-        "sref": "4097:0:1:1BC9:17D4:13E:820000:0:0:0:"
+        "sref": "4097:0:19:2DA6:15E0:FBFF:820000:0:0:0:"
     },
     "DA VINCI LEARNING .c_bg": {
         "id": "DaVinciLearning.bg",
@@ -4476,11 +4476,11 @@
         "sref": "4097:0:19:22D4:434:1:C00000:0:0:0:"
     },
     "COMEDY CENTRAL .c_fr": {
-        "id": "ComedyCentral.ro",
+        "id": "ComedyCentral.fr",
         "sref": "4097:0:1:77AA:2C2:600:E080000:0:0:0:"
     },
     "COMEDY CENTRAL .s_fr": {
-        "id": "ComedyCentral.ro",
+        "id": "ComedyCentral.fr",
         "sref": "4097:0:1:77AA:2C2:600:E080000:0:0:0:"
     },
     "CRIME DISTRICT .b_fr": {
@@ -10237,11 +10237,11 @@
     },
     "SKY CINEMA DRAMA .b_": {
         "id": "SkyCinemaDrama.it",
-        "sref": "4097:0:19:1E59:189C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:1E59:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA DRAMA .s_": {
         "id": "SkyCinemaDrama.it",
-        "sref": "4097:0:19:1E59:189C:FBFF:820000:0:0:0:"
+        "sref": "4097:0:19:1E59:2008:FBFF:820000:0:0:0:"
     },
     "SKY CINEMA FAMILY .b_": {
         "id": "SkyCinemaFamily.it",
