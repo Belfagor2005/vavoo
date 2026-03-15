@@ -361,7 +361,7 @@
     },
     "MEDIASET 1 .s_it": {
         "id": "MediasetItalia.it",
-        "sref": "4097:0:1:1390:2710:13E:820000:0:0:0:"
+        "sref": "4097:0:19:78:4B0:110:820000:0:0:0:"
     },
     "MEDIASET EXTRA .c_it": {
         "id": "MediasetExtra.it",
@@ -369,11 +369,11 @@
     },
     "MEDIASET ITALIA .c_it": {
         "id": "MediasetItalia.it",
-        "sref": "4097:0:16:72C:C5A8:16E:A00000:0:0:0:"
+        "sref": "4097:0:19:82:4B0:110:820000:0:0:0:"
     },
     "MEDIASET ITALIA 2 .s_it": {
         "id": "MediasetItalia.it",
-        "sref": "4097:0:16:72C:C5A8:16E:A00000:0:0:0:"
+        "sref": "4097:0:19:82:4B0:110:820000:0:0:0:"
     },
     "MILAN TV .c_it": {
         "id": "MilanTV.it",
@@ -393,7 +393,7 @@
     },
     "NAT GEO .c_it": {
         "id": "NatGeo.it",
-        "sref": "4097:0:19:13C:2648:13E:820000:0:0:0:"
+        "sref": "4097:0:1:24:2580:D5:820000:0:0:0:"
     },
     "NAT GEO .s_it": {
         "id": "NatGeo.it",
@@ -1225,7 +1225,7 @@
     },
     "PRIMA TV_it": {
         "id": "PrimaTV.it",
-        "sref": "4097:0:1:71:E:1C:1860000:0:0:0:"
+        "sref": "4097:0:19:2C3:2:1C:1860000:0:0:0:"
     },
     "QVC_it": {
         "id": "QVC.it",
@@ -2421,11 +2421,11 @@
     },
     "NAT GEO .c_bg": {
         "id": "NatGeo.bg",
-        "sref": "4097:0:19:13C:2648:13E:820000:0:0:0:"
+        "sref": "4097:0:1:24:2580:D5:820000:0:0:0:"
     },
     "NAT GEO .s_bg": {
         "id": "NatGeo.bg",
-        "sref": "4097:0:19:13C:2648:13E:820000:0:0:0:"
+        "sref": "4097:0:1:24:2580:D5:820000:0:0:0:"
     },
     "NAT GEO WILD .c_bg": {
         "id": "NatGeoWild.cz",
@@ -11902,5 +11902,21 @@
     "VIASAT HISTORY HEVC .b_tr": {
         "id": "ViasatHistory.cz",
         "sref": "4097:0:1:7982:2C7:600:E080000:0:0:0:"
+    },
+    "CANALE 2 .c_it": {
+        "id": "Canale5.it",
+        "sref": "4097:0:19:374A:6A4:13E:820000:0:0:0:"
+    },
+    "EUROSPORT 1 .s_it": {
+        "id": "Eurosport1.dk",
+        "sref": "4097:0:19:1C1C:30:46:E080000:0:0:0:"
+    },
+    "EUROSPORT 2 .s_it": {
+        "id": "Eurosport2.dk",
+        "sref": "4097:0:19:1C51:30:46:E080000:0:0:0:"
+    },
+    "MOTORTREND .c_it": {
+        "id": "MotorTrend.it",
+        "sref": "4097:0:19:10E1:3E8:13E:820000:0:0:0:"
     }
 }
