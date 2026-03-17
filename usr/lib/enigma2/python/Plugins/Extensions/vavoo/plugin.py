@@ -1729,14 +1729,17 @@ class MainVavoo(Screen):
             fixed, removed = fix_cache_format(remove_duplicates=True)
 
             if fixed == 0 and removed == 0:
-                message = _("Cache is already in correct format. No changes needed.")
+                message = _(
+                    "Cache is already in correct format. No changes needed.")
             else:
                 message_lines = []
                 message_lines.append(_("Cache format fix completed:"))
                 if fixed > 0:
-                    message_lines.append(_("  - {} entries updated").format(fixed))
+                    message_lines.append(
+                        _("  - {} entries updated").format(fixed))
                 if removed > 0:
-                    message_lines.append(_("  - {} duplicate entries removed").format(removed))
+                    message_lines.append(
+                        _("  - {} duplicate entries removed").format(removed))
                 message = "\n".join(message_lines)
 
             self.session.open(
@@ -1745,7 +1748,9 @@ class MainVavoo(Screen):
                 MessageBox.TYPE_INFO,
                 timeout=5
             )
-            print("[DEBUG] fix_cache_format completed: fixed={}, removed={}".format(fixed, removed))
+            print(
+                "[DEBUG] fix_cache_format completed: fixed={}, removed={}".format(
+                    fixed, removed))
 
         except Exception as e:
             print("[DEBUG] Error in fix_cache_format: {}".format(e))
