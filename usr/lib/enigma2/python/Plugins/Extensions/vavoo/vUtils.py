@@ -876,7 +876,9 @@ def fetch_vec_list():
             vec_list = loads(data)
 
         set_cache("vec_list", vec_list, 3600)
-        print("[Fetch] Vector list loaded: {} entries".format(len(vec_list) if vec_list else 0))
+        print(
+            "[Fetch] Vector list loaded: {} entries".format(
+                len(vec_list) if vec_list else 0))
         return vec_list
 
     except Exception as e:
@@ -1644,13 +1646,23 @@ class VavooEPGMatcher:
             m = self.new_matches[cache_key]
             return m['id'], m['sref']
 
-        result_id, result_sref = self._find_match_internal(channel_name, country_code)
+        result_id, result_sref = self._find_match_internal(
+            channel_name, country_code)
 
         if result_id and result_sref:
-            self.new_matches[cache_key] = {'id': result_id, 'sref': result_sref}
-            save_unmatched(channel_name, country_code, servicetype, matched=True)
+            self.new_matches[cache_key] = {
+                'id': result_id, 'sref': result_sref}
+            save_unmatched(
+                channel_name,
+                country_code,
+                servicetype,
+                matched=True)
         else:
-            save_unmatched(channel_name, country_code, servicetype, matched=False)
+            save_unmatched(
+                channel_name,
+                country_code,
+                servicetype,
+                matched=False)
 
         return result_id, result_sref
 
@@ -1784,7 +1796,8 @@ def download_epg_cache(force=False):
         if exists(temp_file) and not force:
             file_age = time() - getmtime(temp_file)
             if file_age < 3600:  # 1 ora
-                print("[Cache] Using existing temp file ({} min old)".format(int(file_age / 60)))
+                print("[Cache] Using existing temp file ({} min old)".format(
+                    int(file_age / 60)))
                 return temp_file
 
         response = requests.get(url, timeout=10)
@@ -1794,7 +1807,9 @@ def download_epg_cache(force=False):
             print("[Cache] Downloaded to: {}".format(temp_file))
             return temp_file
         else:
-            print("[Cache] Download failed: HTTP {}".format(response.status_code))
+            print(
+                "[Cache] Download failed: HTTP {}".format(
+                    response.status_code))
             return None
 
     except Exception as e:
@@ -1894,7 +1909,9 @@ def update_complete_cache(matched_channels, unmatched_channels, country_code):
             try:
                 with open(CACHE_FILE, 'r') as f:
                     complete_cache = load(f)
-                print("[Cache] Loaded %d existing entries" % len(complete_cache))
+                print(
+                    "[Cache] Loaded %d existing entries" %
+                    len(complete_cache))
             except Exception as e:
                 print("[Cache] Error loading cache: %s" % e)
                 complete_cache = {}
@@ -1925,19 +1942,27 @@ def update_complete_cache(matched_channels, unmatched_channels, country_code):
                     'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime()),
                     'attempts': complete_cache.get(key, {}).get('attempts', 0) + 1
                 }
-                print("[Cache] Added unmatched: %s (attempt #%d)" % (key, complete_cache[key]['attempts']))
+                print(
+                    "[Cache] Added unmatched: %s (attempt #%d)" %
+                    (key, complete_cache[key]['attempts']))
 
         with open(CACHE_FILE, 'w') as f:
             dump(complete_cache, f, indent=4, sort_keys=True)
 
-        print("[Cache] Updated complete cache with %d total entries" % len(complete_cache))
+        print(
+            "[Cache] Updated complete cache with %d total entries" %
+            len(complete_cache))
 
     except Exception as e:
         print("[Cache] Error updating complete cache: %s" % e)
         trace_error()
 
 
-def save_unmatched(channel_name, country_code, servicetype="4097", matched=False):
+def save_unmatched(
+        channel_name,
+        country_code,
+        servicetype="4097",
+        matched=False):
     """Save or update an unmatched channel with consistent format"""
     try:
         unmatched_data = {}
@@ -1954,17 +1979,21 @@ def save_unmatched(channel_name, country_code, servicetype="4097", matched=False
                             if 'matched' not in value:
                                 # Convert to new format
                                 unmatched_data[key] = {
-                                    'id': value.get('id', key),
-                                    'name': value.get('name', key.split('_')[0] if '_' in key else key),
-                                    'country': value.get('country', country_code),
-                                    'sref': value.get('sref', "%s:0:0:0:0:0:0:0:0:0:" % servicetype),
-                                    'timestamp': value.get('timestamp', strftime('%Y-%m-%d %H:%M:%S', localtime())),
-                                    'matched': False,
-                                    'attempts': 1
-                                }
-                                print("[Unmatched] Converted old format: %s" % key)
+                                    'id': value.get(
+                                        'id', key), 'name': value.get(
+                                        'name', key.split('_')[0] if '_' in key else key), 'country': value.get(
+                                        'country', country_code), 'sref': value.get(
+                                        'sref', "%s:0:0:0:0:0:0:0:0:0:" %
+                                        servicetype), 'timestamp': value.get(
+                                        'timestamp', strftime(
+                                            '%Y-%m-%d %H:%M:%S', localtime())), 'matched': False, 'attempts': 1}
+                                print(
+                                    "[Unmatched] Converted old format: %s" %
+                                    key)
             except Exception as read_error:
-                print("[Unmatched] Corrupted file, starting fresh: %s" % read_error)
+                print(
+                    "[Unmatched] Corrupted file, starting fresh: %s" %
+                    read_error)
                 unmatched_data = {}
 
         key = "%s_%s" % (channel_name.strip(), country_code or '')
@@ -1990,7 +2019,9 @@ def save_unmatched(channel_name, country_code, servicetype="4097", matched=False
                 'matched': False,
                 'attempts': attempts
             }
-            print("[Unmatched] Added/updated: %s (attempt #%d)" % (key, attempts))
+            print(
+                "[Unmatched] Added/updated: %s (attempt #%d)" %
+                (key, attempts))
 
         # Write complete file
         temp_file = UNMATCHED_FILE + ".tmp"
@@ -1998,7 +2029,9 @@ def save_unmatched(channel_name, country_code, servicetype="4097", matched=False
             dump(unmatched_data, f, indent=4, sort_keys=True)
         rename(temp_file, UNMATCHED_FILE)
 
-        print("[Unmatched] Cache updated - total entries: %d" % len(unmatched_data))
+        print(
+            "[Unmatched] Cache updated - total entries: %d" %
+            len(unmatched_data))
 
     except Exception as e:
         print("[Unmatched] Error: %s" % e)
@@ -2498,12 +2531,14 @@ def fix_cache_format(remove_duplicates=True):
 
             if current_id:
                 if current_id in id_map:
-                    print("[Cache] Duplicate ID '{}' for key '{}' (already in '{}')".format(
-                        current_id, key, id_map[current_id]))
+                    print(
+                        "[Cache] Duplicate ID '{}' for key '{}' (already in '{}')".format(
+                            current_id, key, id_map[current_id]))
 
                     if remove_duplicates:
                         keys_to_remove.append(key)
-                        print("[Cache] Will remove duplicate entry: {}".format(key))
+                        print(
+                            "[Cache] Will remove duplicate entry: {}".format(key))
                 else:
                     id_map[current_id] = key
 
@@ -2534,7 +2569,9 @@ def fix_cache_format(remove_duplicates=True):
         if modified > 0 or removed > 0:
             with open(CACHE_FILE, 'w') as f:
                 dump(cache, f, indent=4, sort_keys=True)
-            print("[Cache] FIXED {} entries, REMOVED {} duplicates".format(modified, removed))
+            print(
+                "[Cache] FIXED {} entries, REMOVED {} duplicates".format(
+                    modified, removed))
 
         return modified, removed
 
