@@ -876,9 +876,7 @@ def fetch_vec_list():
             vec_list = loads(data)
 
         set_cache("vec_list", vec_list, 3600)
-        print(
-            "[Fetch] Vector list loaded: {} entries".format(
-                len(vec_list) if vec_list else 0))
+        print("[Fetch] Vector list loaded: {} entries".format(len(vec_list) if vec_list else 0))
         return vec_list
 
     except Exception as e:
@@ -1608,79 +1606,51 @@ class VavooEPGMatcher:
         return cleaned
 
     def find_match(self, channel_name, country_code=None, servicetype="4097"):
-        """Search matches: 1) GitHub online, 2) Local cache, 3) Local matching"""
+        """Search matches: 1) Local cache, 2) Download if needed, 3) Local matching"""
         if not channel_name:
             return None, None
 
         cache_key = "{}_{}".format(channel_name.strip(), country_code or "")
 
-        # 1. CHECK ONLINE FIRST (GitHub)
-        try:
-            url = "{}/vavoo_epg_cache.json".format(HOST_MAIN)
-            print("[Match] Checking online cache: {}".format(url))
-
-            response = requests.get(url, timeout=5)
-
-            if response.status_code == 200:
-                # File exists on GitHub
-                online_cache = response.json()
-                if cache_key in online_cache:
-                    cached = online_cache[cache_key]
-                    print(
-                        "[Match] ONLINE HIT: {} -> {}".format(cache_key, cached.get('id')))
-                    return cached.get('id'), cached.get('sref')
-                else:
-                    print("[Match] Key not found online: {}".format(cache_key))
-            else:
-                # File not found or HTTP error
-                print(
-                    "[Match] Online cache not available (HTTP {})".format(
-                        response.status_code))
-
-        except requests.exceptions.Timeout:
-            print("[Match] Online cache timeout")
-        except requests.exceptions.ConnectionError:
-            print("[Match] Online cache connection error")
-        except Exception as e:
-            print("[Match] Online cache error: {}".format(e))
-
-        # 2. CHECK LOCAL CACHE
+        # 1. CHECK LOCAL CACHE FIRST (/etc/enigma2/vavoo_epg_cache.json)
         if cache_key in self.cache:
             cached = self.cache[cache_key]
             print("[Match] Local cache HIT: {}".format(cache_key))
             return cached.get('id'), cached.get('sref')
 
-        # 3. CHECK SESSION CACHE
-        if cache_key in self.new_matches:
-            m = self.new_matches[cache_key]
-            print("[Match] Session cache HIT: {}".format(cache_key))
-            return m['id'], m['sref']
+        # 2. IF NOT FOUND, CHECK TEMP CACHE (/tmp/vavoo_epg_cache.json)
+        print("[Match] Local cache miss, checking temp cache...")
+        temp_cache = load_temp_cache()
+        if not temp_cache:
+            # Not in /tmp, download it
+            print("[Match] Temp cache not found, downloading...")
+            if download_epg_cache_if_needed():
+                temp_cache = load_temp_cache()
 
-        # 4. DO LOCAL MATCHING WITH RYTEC
+        if temp_cache and cache_key in temp_cache:
+            cached = temp_cache[cache_key]
+            print("[Match] Temp cache HIT: {}".format(cache_key))
+
+            # Also save to local cache for future use
+            self.cache[cache_key] = cached
+            save_cache(self.cache)
+
+            return cached.get('id'), cached.get('sref')
+
+        # 3. FALLBACK TO LOCAL MATCHING WITH RYTEC
         print("[Match] Doing local matching for: {}".format(cache_key))
 
-        # Internal matching
-        result_id, result_sref = self._find_match_internal(
-            channel_name, country_code)
+        if cache_key in self.new_matches:
+            m = self.new_matches[cache_key]
+            return m['id'], m['sref']
+
+        result_id, result_sref = self._find_match_internal(channel_name, country_code)
 
         if result_id and result_sref:
-            # Match found!
-            self.new_matches[cache_key] = {
-                'id': result_id, 'sref': result_sref}
-            save_unmatched(
-                channel_name,
-                country_code,
-                servicetype,
-                matched=True)
-            print("[Match] Local match FOUND: {} -> {}".format(cache_key, result_id))
+            self.new_matches[cache_key] = {'id': result_id, 'sref': result_sref}
+            save_unmatched(channel_name, country_code, servicetype, matched=True)
         else:
-            # No match
-            save_unmatched(
-                channel_name,
-                country_code,
-                servicetype,
-                matched=False)
-            print("[Match] No match found for: {}".format(cache_key))
+            save_unmatched(channel_name, country_code, servicetype, matched=False)
 
         return result_id, result_sref
 
@@ -1740,6 +1710,19 @@ class VavooEPGMatcher:
 # ==================== FUNCTION generate_epg_files ====================
 
 
+def load_temp_cache():
+    """Load EPG cache from /tmp/vavoo_epg_cache.json"""
+    temp_file = "/tmp/vavoo_epg_cache.json"
+    try:
+        if exists(temp_file):
+            with open(temp_file, 'r') as f:
+                return load(f)
+    except Exception as e:
+        print("[Cache] Error loading {}: {}".format(temp_file, e))
+
+    return None
+
+
 def load_cache():
     try:
         with open(CACHE_FILE, 'r') as f:
@@ -1756,6 +1739,82 @@ def save_cache(cache):
             dump(cache, f, indent=2)
     except Exception as e:
         print("[EPG Cache] Error saving cache: {}".format(e))
+
+
+def download_epg_cache_if_needed():
+    """Download vavoo_epg_cache.json to /tmp/ if not exists"""
+    temp_file = "/tmp/vavoo_epg_cache.json"
+
+    # If already exists, don't download
+    if exists(temp_file):
+        return True
+
+    try:
+        import requests
+        url = "{}/vavoo_epg_cache.json".format(HOST_MAIN)
+        print("[Cache] Downloading to /tmp...")
+
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            with open(temp_file, 'wb') as f:
+                f.write(response.content)
+            print("[Cache] Downloaded to: {}".format(temp_file))
+            return True
+    except Exception as e:
+        print("[Cache] Download error: {}".format(e))
+
+    return False
+
+
+def download_epg_cache(force=False):
+    """
+    Download vavoo_epg_cache.json from GitHub to /tmp/
+    Returns path to downloaded file or None if failed
+    """
+    try:
+
+        # URL del file
+        url = "{}/vavoo_epg_cache.json".format(HOST_MAIN)
+        print("[Cache] Downloading from: {}".format(url))
+
+        # Scarica in /tmp/vavoo_epg_cache.json
+        temp_file = "/tmp/vavoo_epg_cache.json"
+
+        # Se esiste già e non force, usalo
+        if exists(temp_file) and not force:
+            file_age = time() - getmtime(temp_file)
+            if file_age < 3600:  # 1 ora
+                print("[Cache] Using existing temp file ({} min old)".format(int(file_age / 60)))
+                return temp_file
+
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            with open(temp_file, 'wb') as f:
+                f.write(response.content)
+            print("[Cache] Downloaded to: {}".format(temp_file))
+            return temp_file
+        else:
+            print("[Cache] Download failed: HTTP {}".format(response.status_code))
+            return None
+
+    except Exception as e:
+        print("[Cache] Download error: {}".format(e))
+        return None
+
+
+def load_epg_cache_from_file(cache_file=None):
+    """Load EPG cache from specified file or default temp file"""
+    if cache_file is None:
+        cache_file = "/tmp/vavoo_epg_cache.json"
+
+    try:
+        if exists(cache_file):
+            with open(cache_file, 'r') as f:
+                return load(f)
+    except Exception as e:
+        print("[Cache] Error loading {}: {}".format(cache_file, e))
+
+    return None
 
 
 def update_epg_cache_incremental(
@@ -1835,9 +1894,7 @@ def update_complete_cache(matched_channels, unmatched_channels, country_code):
             try:
                 with open(CACHE_FILE, 'r') as f:
                     complete_cache = load(f)
-                print(
-                    "[Cache] Loaded %d existing entries" %
-                    len(complete_cache))
+                print("[Cache] Loaded %d existing entries" % len(complete_cache))
             except Exception as e:
                 print("[Cache] Error loading cache: %s" % e)
                 complete_cache = {}
@@ -1868,27 +1925,19 @@ def update_complete_cache(matched_channels, unmatched_channels, country_code):
                     'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime()),
                     'attempts': complete_cache.get(key, {}).get('attempts', 0) + 1
                 }
-                print(
-                    "[Cache] Added unmatched: %s (attempt #%d)" %
-                    (key, complete_cache[key]['attempts']))
+                print("[Cache] Added unmatched: %s (attempt #%d)" % (key, complete_cache[key]['attempts']))
 
         with open(CACHE_FILE, 'w') as f:
             dump(complete_cache, f, indent=4, sort_keys=True)
 
-        print(
-            "[Cache] Updated complete cache with %d total entries" %
-            len(complete_cache))
+        print("[Cache] Updated complete cache with %d total entries" % len(complete_cache))
 
     except Exception as e:
         print("[Cache] Error updating complete cache: %s" % e)
         trace_error()
 
 
-def save_unmatched(
-        channel_name,
-        country_code,
-        servicetype="4097",
-        matched=False):
+def save_unmatched(channel_name, country_code, servicetype="4097", matched=False):
     """Save or update an unmatched channel with consistent format"""
     try:
         unmatched_data = {}
@@ -1905,21 +1954,17 @@ def save_unmatched(
                             if 'matched' not in value:
                                 # Convert to new format
                                 unmatched_data[key] = {
-                                    'id': value.get(
-                                        'id', key), 'name': value.get(
-                                        'name', key.split('_')[0] if '_' in key else key), 'country': value.get(
-                                        'country', country_code), 'sref': value.get(
-                                        'sref', "%s:0:0:0:0:0:0:0:0:0:" %
-                                        servicetype), 'timestamp': value.get(
-                                        'timestamp', strftime(
-                                            '%Y-%m-%d %H:%M:%S', localtime())), 'matched': False, 'attempts': 1}
-                                print(
-                                    "[Unmatched] Converted old format: %s" %
-                                    key)
+                                    'id': value.get('id', key),
+                                    'name': value.get('name', key.split('_')[0] if '_' in key else key),
+                                    'country': value.get('country', country_code),
+                                    'sref': value.get('sref', "%s:0:0:0:0:0:0:0:0:0:" % servicetype),
+                                    'timestamp': value.get('timestamp', strftime('%Y-%m-%d %H:%M:%S', localtime())),
+                                    'matched': False,
+                                    'attempts': 1
+                                }
+                                print("[Unmatched] Converted old format: %s" % key)
             except Exception as read_error:
-                print(
-                    "[Unmatched] Corrupted file, starting fresh: %s" %
-                    read_error)
+                print("[Unmatched] Corrupted file, starting fresh: %s" % read_error)
                 unmatched_data = {}
 
         key = "%s_%s" % (channel_name.strip(), country_code or '')
@@ -1945,9 +1990,7 @@ def save_unmatched(
                 'matched': False,
                 'attempts': attempts
             }
-            print(
-                "[Unmatched] Added/updated: %s (attempt #%d)" %
-                (key, attempts))
+            print("[Unmatched] Added/updated: %s (attempt #%d)" % (key, attempts))
 
         # Write complete file
         temp_file = UNMATCHED_FILE + ".tmp"
@@ -1955,9 +1998,7 @@ def save_unmatched(
             dump(unmatched_data, f, indent=4, sort_keys=True)
         rename(temp_file, UNMATCHED_FILE)
 
-        print(
-            "[Unmatched] Cache updated - total entries: %d" %
-            len(unmatched_data))
+        print("[Unmatched] Cache updated - total entries: %d" % len(unmatched_data))
 
     except Exception as e:
         print("[Unmatched] Error: %s" % e)
@@ -2457,14 +2498,12 @@ def fix_cache_format(remove_duplicates=True):
 
             if current_id:
                 if current_id in id_map:
-                    print(
-                        "[Cache] Duplicate ID '{}' for key '{}' (already in '{}')".format(
-                            current_id, key, id_map[current_id]))
+                    print("[Cache] Duplicate ID '{}' for key '{}' (already in '{}')".format(
+                        current_id, key, id_map[current_id]))
 
                     if remove_duplicates:
                         keys_to_remove.append(key)
-                        print(
-                            "[Cache] Will remove duplicate entry: {}".format(key))
+                        print("[Cache] Will remove duplicate entry: {}".format(key))
                 else:
                     id_map[current_id] = key
 
@@ -2495,9 +2534,7 @@ def fix_cache_format(remove_duplicates=True):
         if modified > 0 or removed > 0:
             with open(CACHE_FILE, 'w') as f:
                 dump(cache, f, indent=4, sort_keys=True)
-            print(
-                "[Cache] FIXED {} entries, REMOVED {} duplicates".format(
-                    modified, removed))
+            print("[Cache] FIXED {} entries, REMOVED {} duplicates".format(modified, removed))
 
         return modified, removed
 
