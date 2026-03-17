@@ -2619,6 +2619,30 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
     },
+    "ADRIATIC SPORT 1 .c_bk": {
+        "country": "bk",
+        "id": "DigiSport1.ro",
+        "matched": true,
+        "name": "ADRIATIC SPORT 1 .c",
+        "sref": "4097:0:1:3F5:7:1:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "ADRIATIC SPORT 2 .c_bk": {
+        "country": "bk",
+        "id": "DigiSport2.ro",
+        "matched": true,
+        "name": "ADRIATIC SPORT 2 .c",
+        "sref": "4097:0:1:3F2:1:1:E08318F:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "ADRIATIC SPORT 3 .c_bk": {
+        "country": "bk",
+        "id": "DigiSport3.ro",
+        "matched": true,
+        "name": "ADRIATIC SPORT 3 .c",
+        "sref": "4097:0:1:3FE:1:1:E08318F:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "AFC NO LOGO .b_sa": {
         "country": "sa",
         "id": "AFC NO LOGO .b_sa",
@@ -4779,6 +4803,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-16 00:42:38"
     },
+    "AMC .b_bk": {
+        "country": "bk",
+        "id": "AMC.bg",
+        "matched": true,
+        "name": "AMC .b",
+        "sref": "4097:0:1:1A8:A:2:130000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "AMC .b_ro": {
         "country": "ro",
         "id": "AMC .b_ro",
@@ -6731,6 +6763,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
     },
+    "AXN .b_bk": {
+        "country": "bk",
+        "id": "AXN.cz",
+        "matched": true,
+        "name": "AXN .b",
+        "sref": "4097:0:1:2AFE:B:1111:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "AXN .c_bg": {
         "country": "bg",
         "id": "AXN.cz",
@@ -8111,6 +8151,14 @@
         "id": "ElevenProLeague2FR.be",
         "sref": "4097:0:16:329:8:1:FFFF0000:0:0:0:"
     },
+    "BE: ELEVENSPORT 3 HD .b_fr": {
+        "country": "fr",
+        "id": "elevensports3.pt",
+        "matched": true,
+        "name": "BE: ELEVENSPORT 3 HD .b",
+        "sref": "4097:0:1:17BA:27:36:CE40000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "BEATS RADIO .b_sa": {
         "country": "sa",
         "id": "BEATS RADIO .b_sa",
@@ -8799,6 +8847,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
     },
+    "BEIN SPORTS 1 (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "beinSports1.fr",
+        "matched": true,
+        "name": "BEIN SPORTS 1 (BACKUP) .b",
+        "sref": "4097:0:19:18A6:189C:FD2A:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "BEIN SPORTS 1 + .b_tr": {
         "country": "tr",
         "id": "BEIN SPORTS 1 + .b_tr",
@@ -9079,6 +9135,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
     },
+    "BEIN SPORTS 2 (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "beinSports2.fr",
+        "matched": true,
+        "name": "BEIN SPORTS 2 (BACKUP) .b",
+        "sref": "4097:0:19:18A7:189C:FD2A:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "BEIN SPORTS 2 .b_fr": {
         "country": "fr",
         "id": "BEIN SPORTS 2 .b_fr",
@@ -9286,6 +9350,14 @@
         "name": "BEIN SPORTS 2 UHD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
+    },
+    "BEIN SPORTS 3 (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "beinSports3.fr",
+        "matched": true,
+        "name": "BEIN SPORTS 3 (BACKUP) .b",
+        "sref": "4097:0:19:1DDC:258:FD2A:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "BEIN SPORTS 3 .b_fr": {
         "country": "fr",
@@ -11374,6 +11446,22 @@
         "name": "BG MUSIC CHANNEL .c",
         "sref": "4097:0:1:401:C:1:E080000:0:0:0",
         "timestamp": "2026-03-17 15:18:59"
+    },
+    "BHT 1 .c_bk": {
+        "country": "bk",
+        "id": "BHTV1.ba",
+        "matched": true,
+        "name": "BHT 1 .c",
+        "sref": "4097:0:1:357:C3B4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "BHT 1 .s_bk": {
+        "country": "bk",
+        "id": "BHTV1.ba",
+        "matched": true,
+        "name": "BHT 1 .s",
+        "sref": "4097:0:1:357:C3B4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "BIBEL TV .c_de": {
         "country": "de",
@@ -14691,6 +14779,14 @@
         "sref": "4097:0:19:22CE:434:1:C00000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "CANAL+ FAMILY .c_fr": {
+        "country": "fr",
+        "id": "AFNFamily.us",
+        "matched": true,
+        "name": "CANAL+ FAMILY .c",
+        "sref": "4097:0:19:6C:65:12:5A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "CANAL+ FAMILY .s_fr": {
         "country": "fr",
         "id": "CANAL+ FAMILY .s_fr",
@@ -15106,6 +15202,14 @@
         "name": "CANAL+ SPORT HD .b",
         "sref": "4097:0:19:2B06:AFB:BB:E080000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "CANAL+ TOP 14 .s_fr": {
+        "country": "fr",
+        "id": "Canale5Plus1.it",
+        "matched": true,
+        "name": "CANAL+ TOP 14 .s",
+        "sref": "4097:0:1:FF5:3070:13E:820000:0:0:0:HTTP%3A//",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "CANAL13 JUJUY ARG V .b_sa": {
         "country": "sa",
@@ -15974,6 +16078,14 @@
         "name": "CBS REALITY+1 .b",
         "sref": "4097:0:1:D7B1:840:2:11A0000:0:0:0",
         "timestamp": "2026-03-17 13:03:42"
+    },
+    "CC EXTRA .b_bk": {
+        "country": "bk",
+        "id": "QVCExtra.uk",
+        "matched": true,
+        "name": "CC EXTRA .b",
+        "sref": "4097:0:1:571D:82B:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "CELEBRATION TV .b_": {
         "country": "",
@@ -17363,6 +17475,22 @@
         "id": "CineStarTV1.svn",
         "sref": "4097:0:19:3C:1:40:A00000:0:0:0:"
     },
+    "CINESTAR ACTION .b_bk": {
+        "country": "bk",
+        "id": "SkyCinemaAction.it",
+        "matched": true,
+        "name": "CINESTAR ACTION .b",
+        "sref": "4097:0:19:106E:2008:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "CINESTAR ACTION TV .s_bk": {
+        "country": "bk",
+        "id": "SkyCinemaAction.it",
+        "matched": true,
+        "name": "CINESTAR ACTION TV .s",
+        "sref": "4097:0:19:106E:2008:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "CINESTAR COMEDY .s_bk": {
         "id": "CineStarComedyFamily.hr",
         "sref": "4097:0:1:1BA:A:2:130000:0:0:0:"
@@ -17466,6 +17594,14 @@
         "name": "CINESTAR TV ACTION .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
+    },
+    "CINESTAR TV ACTION .c_bk": {
+        "country": "bk",
+        "id": "SkyCinemaAction.it",
+        "matched": true,
+        "name": "CINESTAR TV ACTION .c",
+        "sref": "4097:0:19:106E:2008:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "CINESTAR TV ACTION .c_hr": {
         "country": "hr",
@@ -19711,6 +19847,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "DAZN 4K (EVENT ONLY) .s_fr": {
+        "country": "fr",
+        "id": "dazn1.de",
+        "matched": true,
+        "name": "DAZN 4K (EVENT ONLY) .s",
+        "sref": "4097:0:19:C3A9:271A:F001:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "DAZN 4K .s_fr": {
         "country": "fr",
         "id": "DAZN 4K .s_fr",
@@ -21267,6 +21411,14 @@
         "id": "DiscoveryChannel.it",
         "sref": "4097:0:1:13B3:2710:D5:820000:0:0:0:"
     },
+    "DISCOVERY CI .b_bk": {
+        "country": "bk",
+        "id": "DiscoveryPlus1.it",
+        "matched": true,
+        "name": "DISCOVERY CI .b",
+        "sref": "4097:0:1:2C3A:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "DISCOVERY FAMILY .s_fr": {
         "country": "fr",
         "id": "DISCOVERY FAMILY .s_fr",
@@ -21623,6 +21775,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:18:59"
     },
+    "DISCOVERY WORLD .c_bk": {
+        "country": "bk",
+        "id": "DiscoveryVlaanderen.be",
+        "matched": true,
+        "name": "DISCOVERY WORLD .c",
+        "sref": "4097:0:1:260:6:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "DISCOVERY WORLD .c_de": {
         "country": "de",
         "id": "DISCOVERY WORLD .c_de",
@@ -21850,6 +22010,14 @@
         "name": "DISNEY CHANNEL+1 HD .s",
         "sref": "4097:0:1:125F:1B2:0:A988:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "DISNEY CINEMA (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "SkyCinemaPremieren+1.de",
+        "matched": true,
+        "name": "DISNEY CINEMA (BACKUP) .b",
+        "sref": "4097:0:1:B:2:85:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "DISNEY CINEMA .b_fr": {
         "country": "fr",
@@ -22482,6 +22650,14 @@
         "name": "DMC SPORTS .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
+    },
+    "DOBRA PLUS .c_bk": {
+        "country": "bk",
+        "id": "PrvaPlus.rs",
+        "matched": true,
+        "name": "DOBRA PLUS .c",
+        "sref": "4097:0:1:354:C3B4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "DOCUBOX .c_al": {
         "country": "al",
@@ -24411,6 +24587,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:02:57"
     },
+    "EPIC DRAMA .b_bk": {
+        "country": "bk",
+        "id": "EpicDrama.bg",
+        "matched": true,
+        "name": "EPIC DRAMA .b",
+        "sref": "4097:0:1:222:18:3:130000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "EPIC DRAMA .c_bg": {
         "country": "bg",
         "id": "EpicDrama.cz",
@@ -24486,6 +24670,22 @@
         "name": "EQUIDIA .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "EQUIDIA HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "EquidiaLive.fr",
+        "matched": true,
+        "name": "EQUIDIA HD (BACKUP) .b",
+        "sref": "4097:0:16:4FB6:CC:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "EQUIDIA HD .b_fr": {
+        "country": "fr",
+        "id": "EquidiaLive.fr",
+        "matched": true,
+        "name": "EQUIDIA HD .b",
+        "sref": "4097:0:16:4FB6:CC:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "EQUIDIA HD .s_fr": {
         "country": "fr",
@@ -24902,6 +25102,38 @@
         "name": "EURO CHANNEL .c",
         "sref": "4097:0:19:68:1:16E:A00000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "EURO CINEMA 1 .c_bk": {
+        "country": "bk",
+        "id": "EuroCinema1.rs",
+        "matched": true,
+        "name": "EURO CINEMA 1 .c",
+        "sref": "4097:0:1:4ED8:C9C:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "EURO CINEMA 2 .c_bk": {
+        "country": "bk",
+        "id": "EuroCinema2.rs",
+        "matched": true,
+        "name": "EURO CINEMA 2 .c",
+        "sref": "4097:0:1:4ED9:C9F:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "EURO CINEMA 3 .c_bk": {
+        "country": "bk",
+        "id": "EuroCinema3.rs",
+        "matched": true,
+        "name": "EURO CINEMA 3 .c",
+        "sref": "4097:0:1:4EDB:C9C:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "EURO CINEMA 4 .c_bk": {
+        "country": "bk",
+        "id": "EuroCinema4.rs",
+        "matched": true,
+        "name": "EURO CINEMA 4 .c",
+        "sref": "4097:0:1:4EDC:C9F:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "EURO D .b_tr": {
         "country": "tr",
@@ -25935,6 +26167,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
     },
+    "EXTRA TV .c_bk": {
+        "country": "bk",
+        "id": "Extra.gr",
+        "matched": true,
+        "name": "EXTRA TV .c",
+        "sref": "4097:0:1:3EF:5:AA:5A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "EXTRA TV .c_it": {
         "country": "it",
         "id": "EXTRA TV .c_it",
@@ -26634,6 +26874,22 @@
         "name": "FEBRUARY CHANNEL .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
+    },
+    "FEDERALNA TELEVIZIJA .s_bk": {
+        "country": "bk",
+        "id": "FederalnaTV.ba",
+        "matched": true,
+        "name": "FEDERALNA TELEVIZIJA .s",
+        "sref": "4097:0:1:358:C3B4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "FEDERALNA TV .c_bk": {
+        "country": "bk",
+        "id": "FederalnaTV.ba",
+        "matched": true,
+        "name": "FEDERALNA TV .c",
+        "sref": "4097:0:1:358:C3B4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "FEN FOLK .c_bg": {
         "country": "bg",
@@ -27978,6 +28234,14 @@
         "name": "FOTBALL .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-16 13:30:35"
+    },
+    "FOX .b_bk": {
+        "country": "bk",
+        "id": "FOX.be",
+        "matched": true,
+        "name": "FOX .b",
+        "sref": "4097:0:19:327:8:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "FOX .c_al": {
         "country": "al",
@@ -29367,6 +29631,22 @@
         "sref": "4097:0:1:D73F:82F:2:11A0000:0:0:0",
         "timestamp": "2026-03-17 13:03:42"
     },
+    "GRAND 2 .s_bk": {
+        "country": "bk",
+        "id": "GrandTV.hr",
+        "matched": true,
+        "name": "GRAND 2 .s",
+        "sref": "4097:0:1:6E6:C544:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "GRAND TV .s_bk": {
+        "country": "bk",
+        "id": "GrandTV.hr",
+        "matched": true,
+        "name": "GRAND TV .s",
+        "sref": "4097:0:1:6E6:C544:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "GRANDUCATO .c_it": {
         "country": "it",
         "id": "GRANDUCATO .c_it",
@@ -29462,6 +29742,14 @@
         "name": "GSTV HD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
+    },
+    "GULLI (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "Gulli.fr",
+        "matched": true,
+        "name": "GULLI (BACKUP) .b",
+        "sref": "4097:0:19:2907:69:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "GULLI .b_fr": {
         "country": "fr",
@@ -29823,13 +30111,37 @@
         "id": "HayatTV.svn",
         "sref": "4097:0:1:1:1:16E:A00000:0:0:0:"
     },
+    "HAYAT 2 .c_bk": {
+        "country": "bk",
+        "id": "hayat-plus.ba",
+        "matched": true,
+        "name": "HAYAT 2 .c",
+        "sref": "4097:0:16:37:1:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "HAYAT FOLK .s_bk": {
         "id": "HayatFolk.ba",
         "sref": "4097:0:1:C:2:16E:A00000:0:0:0:"
     },
+    "HAYAT FOLK BOX .c_bk": {
+        "country": "bk",
+        "id": "HayatFolk.ba",
+        "matched": true,
+        "name": "HAYAT FOLK BOX .c",
+        "sref": "4097:0:16:38:1:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "HAYAT MUSIC .s_bk": {
         "id": "HayatMusic.ba",
         "sref": "4097:0:1:2:2:16E:A00000:0:0:0:"
+    },
+    "HAYAT MUSIC BOX .c_bk": {
+        "country": "bk",
+        "id": "HayatMusic.ba",
+        "matched": true,
+        "name": "HAYAT MUSIC BOX .c",
+        "sref": "4097:0:16:39:1:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "HAYAT PLUS .s_bk": {
         "id": "hayat-plus.ba",
@@ -30007,6 +30319,14 @@
         "sref": "4097:0:1:E6:251C:13E:820000:0:0:0",
         "timestamp": "2026-03-17 01:18:00"
     },
+    "HBO 2 HD .b_bk": {
+        "country": "bk",
+        "id": "HBO2.bg",
+        "matched": true,
+        "name": "HBO 2 HD .b",
+        "sref": "4097:0:1:E6:251C:13E:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "HBO 3 .c_al": {
         "country": "al",
         "id": "HBO3.bg",
@@ -30051,6 +30371,14 @@
         "sref": "4097:0:1:E0:2580:13E:820000:0:0:0",
         "timestamp": "2026-03-17 01:18:00"
     },
+    "HBO 3 HD .b_bk": {
+        "country": "bk",
+        "id": "HBO3.bg",
+        "matched": true,
+        "name": "HBO 3 HD .b",
+        "sref": "4097:0:1:E0:2580:13E:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "HBO ADRIA .c_hr": {
         "country": "hr",
         "id": "HBOAdria.hr",
@@ -30066,6 +30394,14 @@
         "name": "HBO FAMILY .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
+    },
+    "HBO HD .b_bk": {
+        "country": "bk",
+        "id": "HBO2.bg",
+        "matched": true,
+        "name": "HBO HD .b",
+        "sref": "4097:0:1:E6:251C:13E:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "HBO MUNDI .b_sa": {
         "country": "sa",
@@ -30234,6 +30570,14 @@
         "name": "HELLO TASTE .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 01:18:00"
+    },
+    "HEMA TV .c_bk": {
+        "country": "bk",
+        "id": "MADTV.gr",
+        "matched": true,
+        "name": "HEMA TV .c",
+        "sref": "4097:0:1:759F:105:270F:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "HETUESIA .c_al": {
         "country": "al",
@@ -30711,6 +31055,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:18:59"
     },
+    "HIT TELEVIZIJA .c_bk": {
+        "country": "bk",
+        "id": "SportskaTelevizija.hr",
+        "matched": true,
+        "name": "HIT TELEVIZIJA .c",
+        "sref": "4097:0:16:1AE:3:40:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "HNTV .s_bk": {
         "id": "NTV.uk",
         "sref": "4097:0:1:D3CD:829:2:11A0000:0:0:0:"
@@ -30794,6 +31146,14 @@
         "name": "HORIZON SPORTS .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:03:42"
+    },
+    "HORREYA TV (720P) .b_al": {
+        "country": "al",
+        "id": "HorseTV.it",
+        "matched": true,
+        "name": "HORREYA TV (720P) .b",
+        "sref": "4097:0:19:422E:2F44:13E:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "HORREYA TV .b_al": {
         "country": "al",
@@ -31367,6 +31727,14 @@
         "sref": "4097:0:1:CBB6:831:2:11A0000:0:0:0",
         "timestamp": "2026-03-17 13:03:42"
     },
+    "IDJ KIDS .s_bk": {
+        "country": "bk",
+        "id": "SicK.pt",
+        "matched": true,
+        "name": "IDJ KIDS .s",
+        "sref": "4097:0:1:17BC:27:36:CE40000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "IDJ TV .s_bk": {
         "id": "IDJTV.rs",
         "sref": "4097:0:16:BB:11:2:130000:0:0:0:"
@@ -31775,6 +32143,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
     },
+    "IRAQIA NEWS (720P) .b_al": {
+        "country": "al",
+        "id": "RaiNews.it",
+        "matched": true,
+        "name": "IRAQIA NEWS (720P) .b",
+        "sref": "4097:0:1:32A:8:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "IRAQIA NEWS .b_al": {
         "country": "al",
         "id": "IRAQIA NEWS .b_al",
@@ -32127,6 +32503,22 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
     },
+    "IZVORNA TV .c_bk": {
+        "country": "bk",
+        "id": "iONTV.uk",
+        "matched": true,
+        "name": "IZVORNA TV .c",
+        "sref": "4097:0:1:CFA4:83A:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "IZVORNA TV .s_bk": {
+        "country": "bk",
+        "id": "iONTV.uk",
+        "matched": true,
+        "name": "IZVORNA TV .s",
+        "sref": "4097:0:1:CFA4:83A:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "J ONE .c_fr": {
         "country": "fr",
         "id": "JOne.fr",
@@ -32334,6 +32726,14 @@
         "name": "JUGOTON TV .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:19:57"
+    },
+    "JUGOTON TV .s_bk": {
+        "country": "bk",
+        "id": "Jugoton.hr",
+        "matched": true,
+        "name": "JUGOTON TV .s",
+        "sref": "4097:0:16:72B:C5A8:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "JUKEBOX .b_de": {
         "country": "de",
@@ -33254,6 +33654,22 @@
     "KCN 1 .s_bk": {
         "id": "KCN1.svn",
         "sref": "4097:0:1:3EF:5E24:16E:A00000:0:0:0:"
+    },
+    "KCN 2 .s_bk": {
+        "country": "bk",
+        "id": "KCN.rs",
+        "matched": true,
+        "name": "KCN 2 .s",
+        "sref": "4097:0:1:4EA6:CA4:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "KCN 3 .s_bk": {
+        "country": "bk",
+        "id": "KCN.rs",
+        "matched": true,
+        "name": "KCN 3 .s",
+        "sref": "4097:0:1:4EA6:CA4:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "KELOGLAN .s_tr": {
         "country": "tr",
@@ -38079,6 +38495,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
     },
+    "MASAR TV (576P) .b_al": {
+        "country": "al",
+        "id": "StarTV.ch",
+        "matched": true,
+        "name": "MASAR TV (576P) .b",
+        "sref": "4097:0:1:DBC:191:4:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "MASAR TV .b_al": {
         "country": "al",
         "id": "MASAR TV .b_al",
@@ -40735,6 +41159,14 @@
         "id": "MTVHits.eu",
         "sref": "4097:0:1:192:1518:13E:820000:0:0:0:"
     },
+    "MTV IGMAN .c_bk": {
+        "country": "bk",
+        "id": "MTV.de",
+        "matched": true,
+        "name": "MTV IGMAN .c",
+        "sref": "4097:0:1:E:D:64:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "MTV KOSOVA .c_al": {
         "country": "al",
         "id": "MTV KOSOVA .c_al",
@@ -41239,6 +41671,14 @@
         "sref": "4097:0:16:64B:10:1:FFFF0000:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
     },
+    "MY TV .c_bk": {
+        "country": "bk",
+        "id": "CMTV.pt",
+        "matched": true,
+        "name": "MY TV .c",
+        "sref": "4097:0:1:453:65:53:CE40000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "MY3 TB .s_ru": {
         "country": "ru",
         "id": "MY3 TB .s_ru",
@@ -41362,6 +41802,14 @@
         "name": "N-TV HD+ .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-16 00:42:38"
+    },
+    "N1 .c_bk": {
+        "country": "bk",
+        "id": "NR1.gr",
+        "matched": true,
+        "name": "N1 .c",
+        "sref": "4097:0:1:164:1C84:13E:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "N1 .c_hr": {
         "country": "hr",
@@ -42019,6 +42467,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "NATIONAL GEO WILD HD .b_bk": {
+        "country": "bk",
+        "id": "NatGeoWild.cz",
+        "matched": true,
+        "name": "NATIONAL GEO WILD HD .b",
+        "sref": "4097:0:1:77F7:2C3:600:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "NATIONAL GEOGRAFIC HD .b_ro": {
         "country": "ro",
         "id": "NatGeo.dk",
@@ -42258,6 +42714,14 @@
         "name": "NEO TV .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
+    },
+    "NEON TV .c_bk": {
+        "country": "bk",
+        "id": "PanonTV.rs",
+        "matched": true,
+        "name": "NEON TV .c",
+        "sref": "4097:0:1:5F1:4E84:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "NEOX .b_es": {
         "country": "es",
@@ -42927,6 +43391,14 @@
         "sref": "4097:0:1:203:1B:2C0:E080000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "NICKELODEON HR .b_bk": {
+        "country": "bk",
+        "id": "Nickelodeon.hr",
+        "matched": true,
+        "name": "NICKELODEON HR .b",
+        "sref": "4097:0:1:2F3:9D08:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "NICKELODEON HR .s_bk": {
         "id": "NickelodeonPlus1.it",
         "sref": "4097:0:1:38C4:19C8:FBFF:820000:0:0:0:"
@@ -42986,6 +43458,14 @@
         "name": "NICKELODEON TEEN .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "NICKJR HR .b_bk": {
+        "country": "bk",
+        "id": "NickJrPlus1.it",
+        "matched": true,
+        "name": "NICKJR HR .b",
+        "sref": "4097:0:1:FC6:14B4:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "NICKMUSIC .c_nl": {
         "country": "nl",
@@ -43486,6 +43966,14 @@
         "name": "NOVA NEWS .s",
         "sref": "4097:0:19:92:251C:13E:820000:0:0:0",
         "timestamp": "2026-03-17 15:18:59"
+    },
+    "NOVA SERIES .c_bk": {
+        "country": "bk",
+        "id": "NovaSeries.rs",
+        "matched": true,
+        "name": "NOVA SERIES .c",
+        "sref": "4097:0:1:368:C3B4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "NOVA SPORT .c_bg": {
         "country": "bg",
@@ -44054,6 +44542,14 @@
     "O KANAL .c_bk": {
         "id": "OKanal.ba",
         "sref": "4097:0:1:2EF:2D08:16E:A00000:0:0:0:"
+    },
+    "O KANAL MUSIC .s_bk": {
+        "country": "bk",
+        "id": "SOS.hr",
+        "matched": true,
+        "name": "O KANAL MUSIC .s",
+        "sref": "4097:0:1:78:9F60:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "OBERLAUSITZ TV .s_de": {
         "country": "de",
@@ -45875,6 +46371,22 @@
         "id": "Pink.rs",
         "sref": "4097:0:1:48:CB2C:16E:A00000:0:0:0:"
     },
+    "PINK 1 .b_bk": {
+        "country": "bk",
+        "id": "PinkBH.ba",
+        "matched": true,
+        "name": "PINK 1 .b",
+        "sref": "4097:0:1:69:CB2B:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "PINK 1 .s_bk": {
+        "country": "bk",
+        "id": "Pink2.hr",
+        "matched": true,
+        "name": "PINK 1 .s",
+        "sref": "4097:0:1:6D9:C544:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "PINK 2 .b_bk": {
         "id": "Pink2.hr",
         "sref": "4097:0:1:6D9:C544:16E:A00000:0:0:0:"
@@ -45882,6 +46394,22 @@
     "PINK 2 .s_bk": {
         "id": "Pink2.hr",
         "sref": "4097:0:1:6D9:C544:16E:A00000:0:0:0:"
+    },
+    "PINK 3 .b_bk": {
+        "country": "bk",
+        "id": "PinkBH.ba",
+        "matched": true,
+        "name": "PINK 3 .b",
+        "sref": "4097:0:1:69:CB2B:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "PINK 3 .s_bk": {
+        "country": "bk",
+        "id": "Pink2.hr",
+        "matched": true,
+        "name": "PINK 3 .s",
+        "sref": "4097:0:1:6D9:C544:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "PINK ACTION .b_bk": {
         "id": "PinkAction.rs",
@@ -45955,6 +46483,14 @@
         "id": "PinkFolk.rs",
         "sref": "4097:0:1:40:CB2C:0:A00000:0:0:0:"
     },
+    "PINK FOLK 1 .b_bk": {
+        "country": "bk",
+        "id": "PinkFolk2.rs",
+        "matched": true,
+        "name": "PINK FOLK 1 .b",
+        "sref": "4097:0:1:3E:CB2C:0:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "PINK FOLK 1 .s_bk": {
         "id": "PinkFolk2.rs",
         "sref": "4097:0:1:3E:CB2C:0:A00000:0:0:0:"
@@ -45966,6 +46502,14 @@
     "PINK FOLK 2 .s_bk": {
         "id": "PinkFolk2.rs",
         "sref": "4097:0:1:3E:CB2C:0:A00000:0:0:0:"
+    },
+    "PINK HAHA .s_bk": {
+        "country": "bk",
+        "id": "PinkBH.ba",
+        "matched": true,
+        "name": "PINK HAHA .s",
+        "sref": "4097:0:1:69:CB2B:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "PINK HITS .s_bk": {
         "id": "PinkHits1.rs",
@@ -45999,6 +46543,14 @@
         "id": "PinkKuvar.rs",
         "sref": "4097:0:1:65:CB2C:16E:A00000:0:0:0:"
     },
+    "PINK LOL .s_bk": {
+        "country": "bk",
+        "id": "no_epg_music",
+        "matched": true,
+        "name": "PINK LOL .s",
+        "sref": "4097:0:1:40:CB2C:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "PINK M .s_bk": {
         "id": "PinkMontenegro.rs",
         "sref": "4097:0:1:6A:CB2B:16E:A00000:0:0:0:"
@@ -46010,6 +46562,14 @@
     "PINK MOVIES .s_bk": {
         "id": "PinkMovies.rs",
         "sref": "4097:0:1:8:CB2B:16E:A00000:0:0:0:"
+    },
+    "PINK MUSIC 1 .b_bk": {
+        "country": "bk",
+        "id": "PinkMusic2.rs",
+        "matched": true,
+        "name": "PINK MUSIC 1 .b",
+        "sref": "4097:0:1:53:CB2C:0:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "PINK MUSIC 2 .b_bk": {
         "id": "PinkMusic2.rs",
@@ -47262,6 +47822,14 @@
     "PRVA PLUS .s_bk": {
         "id": "PrvaPlus.rs",
         "sref": "4097:0:1:354:C3B4:16E:A00000:0:0:0:"
+    },
+    "PRVA TV .s_bk": {
+        "country": "bk",
+        "id": "PrvaTVsr.svn",
+        "matched": true,
+        "name": "PRVA TV .s",
+        "sref": "4097:0:1:1D4:B:1:1860000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "PRVA WORLD TV .s_bk": {
         "id": "PrvaWorld.rs",
@@ -48939,6 +49507,14 @@
         "sref": "4097:0:19:515:5208:55F:DDE0000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "RMC SPORT 3 (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "RMCSport1.fr",
+        "matched": true,
+        "name": "RMC SPORT 3 (BACKUP) .b",
+        "sref": "4097:0:19:10B9:1068:FD2A:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "RMC SPORT 3 .b_fr": {
         "country": "fr",
         "id": "RMC SPORT 3 .b_fr",
@@ -48987,6 +49563,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "RMC SPORT 4 (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "RMCSport1.fr",
+        "matched": true,
+        "name": "RMC SPORT 4 (BACKUP) .b",
+        "sref": "4097:0:19:10B9:1068:FD2A:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "RMC SPORT 4 (MATCH TIME) .s_fr": {
         "id": "RMCSport1.fr",
         "sref": "4097:0:19:514:5208:55F:DDE0000:0:0:0:"
@@ -49022,6 +49606,14 @@
         "name": "RMC SPORT 4 FHD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "RMC SPORT 4 HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "RMCSport1.fr",
+        "matched": true,
+        "name": "RMC SPORT 4 HD (BACKUP) .b",
+        "sref": "4097:0:19:10B9:1068:FD2A:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "RMC SPORT 4 HD .b_fr": {
         "country": "fr",
@@ -49070,6 +49662,14 @@
         "name": "RMC SPORT 9 .s",
         "sref": "4097:0:19:514:5208:55F:DDE0000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "RMC SPORT LIVE 10 HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "VsportLive1.no",
+        "matched": true,
+        "name": "RMC SPORT LIVE 10 HD (BACKUP) .b",
+        "sref": "4097:0:16:1E5B:2:46:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "RMC SPORT LIVE 10 HD .b_fr": {
         "country": "fr",
@@ -49127,6 +49727,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "RMC SPORT LIVE 5 HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "VsportLive5.no",
+        "matched": true,
+        "name": "RMC SPORT LIVE 5 HD (BACKUP) .b",
+        "sref": "4097:0:16:1E5F:2:46:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "RMC SPORT LIVE 5 HD .b_fr": {
         "country": "fr",
         "id": "RMC SPORT LIVE 5 HD .b_fr",
@@ -49134,6 +49742,14 @@
         "name": "RMC SPORT LIVE 5 HD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "RMC SPORT LIVE 6 HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "VsportLive1.no",
+        "matched": true,
+        "name": "RMC SPORT LIVE 6 HD (BACKUP) .b",
+        "sref": "4097:0:16:1E5B:2:46:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "RMC SPORT LIVE 6 HD .b_fr": {
         "country": "fr",
@@ -49143,6 +49759,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "RMC SPORT LIVE 7 HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "VsportLive1.no",
+        "matched": true,
+        "name": "RMC SPORT LIVE 7 HD (BACKUP) .b",
+        "sref": "4097:0:16:1E5B:2:46:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "RMC SPORT LIVE 7 HD .b_fr": {
         "country": "fr",
         "id": "RMC SPORT LIVE 7 HD .b_fr",
@@ -49151,6 +49775,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "RMC SPORT LIVE 8 HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "VsportLive1.no",
+        "matched": true,
+        "name": "RMC SPORT LIVE 8 HD (BACKUP) .b",
+        "sref": "4097:0:16:1E5B:2:46:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "RMC SPORT LIVE 8 HD .b_fr": {
         "country": "fr",
         "id": "RMC SPORT LIVE 8 HD .b_fr",
@@ -49158,6 +49790,14 @@
         "name": "RMC SPORT LIVE 8 HD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "RMC SPORT LIVE 9 HD (BACKUP) .b_fr": {
+        "country": "fr",
+        "id": "VsportLive1.no",
+        "matched": true,
+        "name": "RMC SPORT LIVE 9 HD (BACKUP) .b",
+        "sref": "4097:0:16:1E5B:2:46:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "RMC SPORT LIVE 9 HD .b_fr": {
         "country": "fr",
@@ -49939,6 +50579,14 @@
         "sref": "4097:0:1:1C3:26AC:13F:820000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "RTL ADRIA .c_bk": {
+        "country": "bk",
+        "id": "STAR.rs",
+        "matched": true,
+        "name": "RTL ADRIA .c",
+        "sref": "4097:0:1:4F35:CA6:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "RTL ADRIA .c_hr": {
         "country": "hr",
         "id": "RTL ADRIA .c_hr",
@@ -50234,6 +50882,14 @@
         "name": "RTL PLUG .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
+    },
+    "RTL PLUS .c_bk": {
+        "country": "bk",
+        "id": "RTRSPlus.ba",
+        "matched": true,
+        "name": "RTL PLUS .c",
+        "sref": "4097:0:1:5EC:4E84:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "RTL TELEKIDS .c_nl": {
         "country": "nl",
@@ -50678,6 +51334,14 @@
     "RTRS PLUS .c_bk": {
         "id": "RTRSPlus.ba",
         "sref": "4097:0:1:11:1:16E:A00000:0:0:0:"
+    },
+    "RTRS TV .c_bk": {
+        "country": "bk",
+        "id": "RTRS.ba",
+        "matched": true,
+        "name": "RTRS TV .c",
+        "sref": "4097:0:1:676:9FC4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "RTS 1 .c_fr": {
         "country": "fr",
@@ -51210,6 +51874,14 @@
         "name": "RTV ARNHEM .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 12:48:50"
+    },
+    "RTV BUGOJNO .c_bk": {
+        "country": "bk",
+        "id": "RTVGO.nl",
+        "matched": true,
+        "name": "RTV BUGOJNO .c",
+        "sref": "4097:0:19:1BC5:C86:600:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "RTV CONNECT TV .c_nl": {
         "country": "nl",
@@ -52695,6 +53367,22 @@
         "sref": "4097:0:1:1CF:26AC:13F:820000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "SCIFI .b_bk": {
+        "country": "bk",
+        "id": "SciFi.hr",
+        "matched": true,
+        "name": "SCIFI .b",
+        "sref": "4097:0:1:4ED2:C9C:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "SCIFI .s_bk": {
+        "country": "bk",
+        "id": "SciFi.hr",
+        "matched": true,
+        "name": "SCIFI .s",
+        "sref": "4097:0:1:4ED2:C9C:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "SEASON .b_fr": {
         "country": "fr",
         "id": "SEASON .b_fr",
@@ -52742,6 +53430,14 @@
         "name": "SEF ROKKA TV .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
+    },
+    "SEHARA TV .c_bk": {
+        "country": "bk",
+        "id": "StarTV.ch",
+        "matched": true,
+        "name": "SEHARA TV .c",
+        "sref": "4097:0:1:DBC:191:4:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SEKER HOCA .b_tr": {
         "country": "tr",
@@ -52958,6 +53654,22 @@
         "name": "SERVUS TV HD+ .b",
         "sref": "4097:0:19:1332:3EF:1:C00000:0:0:0",
         "timestamp": "2026-03-16 00:42:38"
+    },
+    "SEVDAH TV .c_bk": {
+        "country": "bk",
+        "id": "SmashTV.mt",
+        "matched": true,
+        "name": "SEVDAH TV .c",
+        "sref": "4097:0:1:8CD9:496D:EC:0:0:0:0:HTTP%3A//",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "SEVDAH TV .s_bk": {
+        "country": "bk",
+        "id": "SmashTV.mt",
+        "matched": true,
+        "name": "SEVDAH TV .s",
+        "sref": "4097:0:1:8CD9:496D:EC:0:0:0:0:HTTP%3A//",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SEVIMLI DOSTLAR .b_tr": {
         "country": "tr",
@@ -53770,6 +54482,14 @@
         "name": "SIXX HD+ .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-16 00:42:38"
+    },
+    "SKAT (СКАТ) .c_bg": {
+        "country": "bg",
+        "id": "SKAT.bg",
+        "matched": true,
+        "name": "SKAT (СКАТ) .c",
+        "sref": "4097:0:1:11:3:1:1860000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SKAT .c_bg": {
         "country": "bg",
@@ -58455,6 +59175,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 13:07:40"
     },
+    "SMART TELEVIZIJA .c_bk": {
+        "country": "bk",
+        "id": "SportskaTelevizija.hr",
+        "matched": true,
+        "name": "SMART TELEVIZIJA .c",
+        "sref": "4097:0:16:1AE:3:40:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "SMILE .s_al": {
         "country": "al",
         "id": "SMILE .s_al",
@@ -58774,6 +59502,14 @@
         "name": "SNIPERS ZAMAN 2 .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
+    },
+    "SOBRANISKI KANAL .s_bk": {
+        "country": "bk",
+        "id": "SOS.hr",
+        "matched": true,
+        "name": "SOBRANISKI KANAL .s",
+        "sref": "4097:0:1:B8:11:2:130000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SOFIA .c_al": {
         "country": "al",
@@ -59295,6 +60031,14 @@
         "id": "SportKlubHD.hr",
         "sref": "4097:0:1:1169:9CA4:16E:A00000:0:0:0:"
     },
+    "SPORT KLUB 1 .b_bk": {
+        "country": "bk",
+        "id": "SportKlub3.hr",
+        "matched": true,
+        "name": "SPORT KLUB 1 .b",
+        "sref": "4097:0:1:116A:9CA4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "SPORT KLUB 1 .c_hr": {
         "country": "hr",
         "id": "SportKlub3.hr",
@@ -59314,6 +60058,14 @@
         "name": "SPORT KLUB 10 .c",
         "sref": "4097:0:16:71A:C5A8:16E:A00000:0:0:0",
         "timestamp": "2026-03-17 15:19:57"
+    },
+    "SPORT KLUB 2 .b_bk": {
+        "country": "bk",
+        "id": "SportKlub2.hr",
+        "matched": true,
+        "name": "SPORT KLUB 2 .b",
+        "sref": "4097:0:16:5F:1:40:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SPORT KLUB 2 .c_bk": {
         "id": "SportKlub3.hr",
@@ -59786,6 +60538,14 @@
         "name": "SPORTSKA .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:19:57"
+    },
+    "SPORTSKA TV .s_bk": {
+        "country": "bk",
+        "id": "SportskaTelevizija.hr",
+        "matched": true,
+        "name": "SPORTSKA TV .s",
+        "sref": "4097:0:16:1AE:3:40:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SPORTSTV HD .b_tr": {
         "country": "tr",
@@ -60503,6 +61263,14 @@
         "sref": "4097:0:1:22C:18:3:130000:0:0:0",
         "timestamp": "2026-03-16 00:42:38"
     },
+    "SUPER SPORT 1 (BACKUP) .b_al": {
+        "country": "al",
+        "id": "blueSport1.ch",
+        "matched": true,
+        "name": "SUPER SPORT 1 (BACKUP) .b",
+        "sref": "4097:0:16:273D:2BD:7:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "SUPER SPORT 1 .b_al": {
         "country": "al",
         "id": "SUPER SPORT 1 .b_al",
@@ -60518,6 +61286,14 @@
         "name": "SUPER SPORT 1 .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
+    },
+    "SUPER SPORT 2 (BACKUP) .b_al": {
+        "country": "al",
+        "id": "blueSport2.ch",
+        "matched": true,
+        "name": "SUPER SPORT 2 (BACKUP) .b",
+        "sref": "4097:0:19:1BCB:DE:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SUPER SPORT 2 .b_al": {
         "country": "al",
@@ -60542,6 +61318,14 @@
         "name": "SUPER SPORT 2 HD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
+    },
+    "SUPER SPORT 3 (BACKUP) .b_al": {
+        "country": "al",
+        "id": "blueSport3.ch",
+        "matched": true,
+        "name": "SUPER SPORT 3 (BACKUP) .b",
+        "sref": "4097:0:16:2742:2BD:7:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SUPER SPORT 3 .b_al": {
         "country": "al",
@@ -60662,6 +61446,14 @@
     "SUPER TENNIS_it": {
         "id": "SuperTennis.it",
         "sref": "4097:0:19:2C29:1900:FBFF:820000:0:0:0:"
+    },
+    "SUPER TV .c_bk": {
+        "country": "bk",
+        "id": "SuperSatTV.rs",
+        "matched": true,
+        "name": "SUPER TV .c",
+        "sref": "4097:0:1:770:C6D4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "SUPER TV ARISTANIS .c_it": {
         "country": "it",
@@ -61606,6 +62398,14 @@
         "name": "TDC .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
+    },
+    "TDC/DIZI CHANNEL .c_al": {
+        "country": "al",
+        "id": "TimelessDiziChannel.rs",
+        "matched": true,
+        "name": "TDC/DIZI CHANNEL .c",
+        "sref": "4097:0:19:A8E:9DD0:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "TDCDIZI CHANNEL .c_al": {
         "country": "al",
@@ -63599,6 +64399,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "TLC .b_bk": {
+        "country": "bk",
+        "id": "TLCplus1.uk",
+        "matched": true,
+        "name": "TLC .b",
+        "sref": "4097:0:1:B7C:7F3:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "TLC .b_de": {
         "country": "de",
         "id": "TLC .b_de",
@@ -63922,6 +64730,14 @@
         "name": "TNT HD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 01:18:00"
+    },
+    "TNT KIDS .s_bk": {
+        "country": "bk",
+        "id": "EKids.bg",
+        "matched": true,
+        "name": "TNT KIDS .s",
+        "sref": "4097:0:1:104:2580:13E:820000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "TNT MUSIC .s_ru": {
         "country": "ru",
@@ -64435,6 +65251,14 @@
         "sref": "4097:0:1:1CB:26AC:13F:820000:0:0:0",
         "timestamp": "2026-03-17 15:27:20"
     },
+    "TOXIC .c_bk": {
+        "country": "bk",
+        "id": "ToxicTV.rs",
+        "matched": true,
+        "name": "TOXIC .c",
+        "sref": "4097:0:1:5EE:4E84:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "TOYOR AL JANNAH .b_sa": {
         "country": "sa",
         "id": "TOYOR AL JANNAH .b_sa",
@@ -64699,6 +65523,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-16 00:42:38"
     },
+    "TRAVELXP .c_fr": {
+        "country": "fr",
+        "id": "TravelXP.hr",
+        "matched": true,
+        "name": "TRAVELXP .c",
+        "sref": "4097:0:1:4EF0:C9F:3:EB0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "TRAVELXP .c_nl": {
         "country": "nl",
         "id": "TRAVELXP .c_nl",
@@ -64947,6 +65779,14 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
     },
+    "TRING SPORT 1 (BACKUP) .b_al": {
+        "country": "al",
+        "id": "TNTSport1.uk",
+        "matched": true,
+        "name": "TRING SPORT 1 (BACKUP) .b",
+        "sref": "4097:0:1:D7A5:840:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "TRING SPORT 1 .b_al": {
         "country": "al",
         "id": "TRING SPORT 1 .b_al",
@@ -64970,6 +65810,14 @@
         "name": "TRING SPORT 1 HD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
+    },
+    "TRING SPORT 2 (BACKUP) .b_al": {
+        "country": "al",
+        "id": "TNTSport2.uk",
+        "matched": true,
+        "name": "TRING SPORT 2 (BACKUP) .b",
+        "sref": "4097:0:1:D020:832:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "TRING SPORT 2 .b_al": {
         "country": "al",
@@ -66419,6 +67267,22 @@
         "sref": "4097:0:19:16AC:3FF:1:C00000:0:0:0",
         "timestamp": "2026-03-16 00:42:38"
     },
+    "TV ISTOK .c_bk": {
+        "country": "bk",
+        "id": "RiK.cz",
+        "matched": true,
+        "name": "TV ISTOK .c",
+        "sref": "4097:0:16:2342:AF9:BB:E080000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "TV K3 .c_bk": {
+        "country": "bk",
+        "id": "ITV3.uk",
+        "matched": true,
+        "name": "TV K3 .c",
+        "sref": "4097:0:1:70E:12:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "TV KAYSERI .c_tr": {
         "country": "tr",
         "id": "TV KAYSERI .c_tr",
@@ -66530,6 +67394,14 @@
         "name": "TV MITROVICA .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
+    },
+    "TV NASHA .s_bk": {
+        "country": "bk",
+        "id": "TVAs.svn",
+        "matched": true,
+        "name": "TV NASHA .s",
+        "sref": "4097:0:16:3E8:A:22C1:EEEE0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "TV NET .c_tr": {
         "country": "tr",
@@ -66671,6 +67543,14 @@
         "id": "TVSarajevo.svn",
         "sref": "4097:0:1:113:1:16E:A00000:0:0:0:"
     },
+    "TV SEHARA .s_bk": {
+        "country": "bk",
+        "id": "TVHram.rs",
+        "matched": true,
+        "name": "TV SEHARA .s",
+        "sref": "4097:0:1:5F0:4E84:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
     "TV SHARRI .c_al": {
         "country": "al",
         "id": "TV SHARRI .c_al",
@@ -66686,6 +67566,22 @@
         "name": "TV SHENJA .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0",
         "timestamp": "2026-03-17 14:09:00"
+    },
+    "TV SLON .s_bk": {
+        "country": "bk",
+        "id": "TVSonce.mk",
+        "matched": true,
+        "name": "TV SLON .s",
+        "sref": "4097:0:1:54D:75FB:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
+    },
+    "TV SLON EXTRA .c_bk": {
+        "country": "bk",
+        "id": "ViasatSportExtra.se",
+        "matched": true,
+        "name": "TV SLON EXTRA .c",
+        "sref": "4097:0:19:495:23:A027:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "TV SOLIDARIA .b_sa": {
         "country": "sa",
@@ -67370,6 +68266,14 @@
         "name": "TYC SPORTS .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-17 14:40:49"
+    },
+    "TËVË1 .s_al": {
+        "country": "al",
+        "id": "TV1Bulgaria.bg",
+        "matched": true,
+        "name": "TËVË1 .s",
+        "sref": "4097:0:1:3EB:1:3:130000:0:0:0:",
+        "timestamp": "2026-03-17 18:30:00"
     },
     "U TV .s_ro": {
         "country": "ro",
@@ -69422,6 +70326,11 @@
         "name": "WOS TV .c",
         "sref": "4097:0:19:1972:C7A:600:FFFF0000:0:0:0",
         "timestamp": "2026-03-17 12:48:50"
+    },
+    "WOUSTA TV (FHD) .b_al": {
+        "country": "al",
+        "id": "OutTV.nl",
+        "name": "WOUSTA TV (FHD) .b"
     },
     "WOUSTA TV .b_al": {
         "country": "al",
