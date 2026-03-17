@@ -17,6 +17,9 @@ msgstr "(%d قناة)؟"
 msgid "(%s files deleted)"
 msgstr "(%s ملف تم حذفها)"
 
+msgid "- Add missing fields to all entries"
+msgstr ""
+
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- تحديث تلقائي للرمز كل 9 دقائق"
 
@@ -28,6 +31,9 @@ msgstr "- إنشاء باقات تلقائي"
 
 msgid "- Category bouquets"
 msgstr "- باقات الفئات"
+
+msgid "- Clean up the cache file"
+msgstr ""
 
 msgid "- Commercial use is strictly prohibited"
 msgstr "- الاستخدام التجاري ممنوع منعا باتا"
@@ -59,6 +65,9 @@ msgstr "- لا استضافة مباشرة للخادم"
 msgid "- Redistribution must maintain attribution"
 msgstr "- يجب أن تحتفظ إعادة التوزيع بالإسناد"
 
+msgid "- Remove duplicate entries"
+msgstr ""
+
 msgid "- Service references: 4097, 5001, 5002"
 msgstr "- مراجع الخدمة: 4097, 5001, 5002"
 
@@ -70,6 +79,12 @@ msgstr "- صيغ TS/M3U8"
 
 msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
 msgstr "- الدعم الفني: Qu4k3, @KiddaC, @giorbak"
+
+msgid "- {} duplicate entries removed"
+msgstr ""
+
+msgid "- {} entries updated"
+msgstr ""
 
 msgid "Active Automatic Bouquet Update"
 msgstr "تحديث الباقات التلقائي نشط"
@@ -114,6 +129,12 @@ msgstr "خطأ في إنشاء الباقة: %s"
 
 msgid "Bouquets reorganized successfully!"
 msgstr "تم إعادة تنظيم الباقات بنجاح!"
+
+msgid "Cache format fix completed:"
+msgstr ""
+
+msgid "Cache is already in correct format. No changes needed."
+msgstr ""
 
 msgid "Cancel"
 msgstr "إلغاء"
@@ -175,6 +196,10 @@ msgstr "العرض الافتراضي عند فتح الإضافة"
 msgid "Do you want to export this bouquet?"
 msgstr "هل تريد تصدير هذه الباقة؟"
 
+#, fuzzy
+msgid "Do you want to fix the cache format?"
+msgstr "هل تريد تصدير هذه الباقة؟"
+
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG معطل. الرجاء تفعيله في إعدادات Vavoo أولا."
 
@@ -199,6 +224,10 @@ msgstr "تفعيل أو تعطيل الوكيل."
 
 msgid "Enter text to search..."
 msgstr "أدخل نصا للبحث..."
+
+#, fuzzy
+msgid "Error fixing cache: {}"
+msgstr "خطأ في بدء تحديث EPG: {}"
 
 msgid "Error starting EPG update: {}"
 msgstr "خطأ في بدء تحديث EPG: {}"
@@ -233,6 +262,9 @@ msgstr "فشل تحديث الوكيل:"
 
 msgid "Failed: %(failed)d"
 msgstr "فشل: %(failed)d"
+
+msgid "Fixing cache format..."
+msgstr ""
 
 msgid "Force proxy refresh?"
 msgstr "فرض تحديث الوكيل؟"
@@ -448,6 +480,10 @@ msgid "This will refresh the authentication token."
 msgstr "سيؤدي هذا إلى تحديث رمز المصادقة."
 
 msgid "This will remove:"
+msgstr "سيؤدي هذا إلى إزالة:"
+
+#, fuzzy
+msgid "This will:"
 msgstr "سيؤدي هذا إلى إزالة:"
 
 msgid "Time to start update:"

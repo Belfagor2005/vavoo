@@ -22,6 +22,9 @@ msgstr ""
 msgid "(%s files deleted)"
 msgstr ""
 
+msgid "- Add missing fields to all entries"
+msgstr ""
+
 msgid "- Auto token refresh every 9 minutes"
 msgstr ""
 
@@ -32,6 +35,9 @@ msgid "- Automatic bouquet generation"
 msgstr ""
 
 msgid "- Category bouquets"
+msgstr ""
+
+msgid "- Clean up the cache file"
 msgstr ""
 
 msgid "- Commercial use is strictly prohibited"
@@ -64,6 +70,9 @@ msgstr ""
 msgid "- Redistribution must maintain attribution"
 msgstr ""
 
+msgid "- Remove duplicate entries"
+msgstr ""
+
 msgid "- Service references: 4097, 5001, 5002"
 msgstr ""
 
@@ -74,6 +83,12 @@ msgid "- TS/M3U8 formats"
 msgstr ""
 
 msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
+msgstr ""
+
+msgid "- {} duplicate entries removed"
+msgstr ""
+
+msgid "- {} entries updated"
 msgstr ""
 
 msgid "Active Automatic Bouquet Update"
@@ -118,6 +133,12 @@ msgstr ""
 #, fuzzy
 msgid "Bouquets reorganized successfully!"
 msgstr "Proxy token úspěšně obnoven"
+
+msgid "Cache format fix completed:"
+msgstr ""
+
+msgid "Cache is already in correct format. No changes needed."
+msgstr ""
 
 msgid "Cancel"
 msgstr ""
@@ -180,6 +201,9 @@ msgstr ""
 msgid "Do you want to export this bouquet?"
 msgstr ""
 
+msgid "Do you want to fix the cache format?"
+msgstr ""
+
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG je zakázáno. Nejprve jej povolte v nastavení Vavoo."
 
@@ -204,6 +228,10 @@ msgstr "Povolit nebo zakázat proxy."
 
 msgid "Enter text to search..."
 msgstr ""
+
+#, fuzzy
+msgid "Error fixing cache: {}"
+msgstr "Chyba při spouštění aktualizace EPG: {}"
 
 msgid "Error starting EPG update: {}"
 msgstr "Chyba při spouštění aktualizace EPG: {}"
@@ -239,6 +267,9 @@ msgid "Failed to refresh proxy:"
 msgstr "Aktualizace proxy selhala:"
 
 msgid "Failed: %(failed)d"
+msgstr ""
+
+msgid "Fixing cache format..."
 msgstr ""
 
 msgid "Force proxy refresh?"
@@ -458,6 +489,9 @@ msgid "This will refresh the authentication token."
 msgstr "Tím se obnoví autentizační token."
 
 msgid "This will remove:"
+msgstr ""
+
+msgid "This will:"
 msgstr ""
 
 #, fuzzy

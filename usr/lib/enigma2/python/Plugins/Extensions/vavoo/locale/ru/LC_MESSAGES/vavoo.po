@@ -18,6 +18,9 @@ msgstr "(%d каналов)?"
 msgid "(%s files deleted)"
 msgstr "(%s файлов удалено)"
 
+msgid "- Add missing fields to all entries"
+msgstr ""
+
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Автоматическое обновление токена каждые 9 минут"
 
@@ -29,6 +32,9 @@ msgstr "- Автоматическое создание букетов"
 
 msgid "- Category bouquets"
 msgstr "- Букеты по категориям"
+
+msgid "- Clean up the cache file"
+msgstr ""
 
 msgid "- Commercial use is strictly prohibited"
 msgstr "- Коммерческое использование строго запрещено"
@@ -60,6 +66,9 @@ msgstr "- Без прямого хостинга сервера"
 msgid "- Redistribution must maintain attribution"
 msgstr "- При распространении необходимо сохранять указание авторства"
 
+msgid "- Remove duplicate entries"
+msgstr ""
+
 msgid "- Service references: 4097, 5001, 5002"
 msgstr "- Ссылки на сервисы: 4097, 5001, 5002"
 
@@ -71,6 +80,12 @@ msgstr "- Форматы TS/M3U8"
 
 msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
 msgstr "- Техническая поддержка: Qu4k3, @KiddaC, @giorbak"
+
+msgid "- {} duplicate entries removed"
+msgstr ""
+
+msgid "- {} entries updated"
+msgstr ""
 
 msgid "Active Automatic Bouquet Update"
 msgstr "Активное автоматическое обновление букетов"
@@ -113,6 +128,12 @@ msgstr "Ошибка создания букета: {}"
 
 msgid "Bouquets reorganized successfully!"
 msgstr "Букеты успешно реорганизованы!"
+
+msgid "Cache format fix completed:"
+msgstr ""
+
+msgid "Cache is already in correct format. No changes needed."
+msgstr ""
 
 msgid "Cancel"
 msgstr "Отмена"
@@ -174,6 +195,10 @@ msgstr "Вид по умолчанию при открытии плагина"
 msgid "Do you want to export this bouquet?"
 msgstr "Хотите экспортировать этот букет?"
 
+#, fuzzy
+msgid "Do you want to fix the cache format?"
+msgstr "Хотите экспортировать этот букет?"
+
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG отключен. Пожалуйста, сначала включите его в настройках Vavoo."
 
@@ -197,6 +222,10 @@ msgstr "Включить или отключить прокси."
 
 msgid "Enter text to search..."
 msgstr "Введите текст для поиска..."
+
+#, fuzzy
+msgid "Error fixing cache: {}"
+msgstr "Ошибка запуска обновления EPG: {}"
 
 msgid "Error starting EPG update: {}"
 msgstr "Ошибка запуска обновления EPG: {}"
@@ -230,6 +259,9 @@ msgstr "Не удалось обновить прокси:"
 
 msgid "Failed: %(failed)d"
 msgstr "Не удалось: %(failed)d"
+
+msgid "Fixing cache format..."
+msgstr ""
 
 msgid "Force proxy refresh?"
 msgstr "Принудительно обновить прокси?"
@@ -445,6 +477,10 @@ msgid "This will refresh the authentication token."
 msgstr "Это обновит токен аутентификации."
 
 msgid "This will remove:"
+msgstr "Это удалит:"
+
+#, fuzzy
+msgid "This will:"
 msgstr "Это удалит:"
 
 msgid "Time to start update:"

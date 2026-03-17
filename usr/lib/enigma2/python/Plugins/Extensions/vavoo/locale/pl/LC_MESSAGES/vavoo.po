@@ -23,6 +23,9 @@ msgstr "(%d kanałów)?"
 msgid "(%s files deleted)"
 msgstr "(%s plików usunięto)"
 
+msgid "- Add missing fields to all entries"
+msgstr ""
+
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Automatyczne odświeżanie tokena co 9 minut"
 
@@ -34,6 +37,9 @@ msgstr "- Automatyczne generowanie pakietów"
 
 msgid "- Category bouquets"
 msgstr "- Pakiety kategorii"
+
+msgid "- Clean up the cache file"
+msgstr ""
 
 msgid "- Commercial use is strictly prohibited"
 msgstr "- Użycie komercyjne jest surowo zabronione"
@@ -65,6 +71,9 @@ msgstr "- Brak bezpośredniego hostowania serwera"
 msgid "- Redistribution must maintain attribution"
 msgstr "- Redystrybucja musi zachowywać informację o autorach"
 
+msgid "- Remove duplicate entries"
+msgstr ""
+
 msgid "- Service references: 4097, 5001, 5002"
 msgstr "- Referencje usług: 4097, 5001, 5002"
 
@@ -76,6 +85,12 @@ msgstr "- Formaty TS/M3U8"
 
 msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
 msgstr "- Wsparcie techniczne: Qu4k3, @KiddaC, @giorbak"
+
+msgid "- {} duplicate entries removed"
+msgstr ""
+
+msgid "- {} entries updated"
+msgstr ""
 
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktywna automatyczna aktualizacja pakietów"
@@ -119,6 +134,12 @@ msgstr "Błąd tworzenia pakietu: %s"
 
 msgid "Bouquets reorganized successfully!"
 msgstr "Pakiety zostały pomyślnie przeorganizowane!"
+
+msgid "Cache format fix completed:"
+msgstr ""
+
+msgid "Cache is already in correct format. No changes needed."
+msgstr ""
 
 msgid "Cancel"
 msgstr "Anuluj"
@@ -180,6 +201,10 @@ msgstr "Domyślny widok przy otwieraniu wtyczki"
 msgid "Do you want to export this bouquet?"
 msgstr "Czy chcesz wyeksportować ten pakiet?"
 
+#, fuzzy
+msgid "Do you want to fix the cache format?"
+msgstr "Czy chcesz wyeksportować ten pakiet?"
+
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG jest wyłączone. Najpierw włącz je w ustawieniach Vavoo."
 
@@ -204,6 +229,10 @@ msgstr "Włącz lub wyłącz proxy."
 
 msgid "Enter text to search..."
 msgstr "Wprowadź tekst do wyszukania..."
+
+#, fuzzy
+msgid "Error fixing cache: {}"
+msgstr "Błąd podczas rozpoczynania aktualizacji EPG: {}"
 
 msgid "Error starting EPG update: {}"
 msgstr "Błąd podczas rozpoczynania aktualizacji EPG: {}"
@@ -238,6 +267,9 @@ msgstr "Nie udało się odświeżyć proxy:"
 
 msgid "Failed: %(failed)d"
 msgstr "Niepowodzeń: %(failed)d"
+
+msgid "Fixing cache format..."
+msgstr ""
 
 msgid "Force proxy refresh?"
 msgstr "Wymusić odświeżenie proxy?"
@@ -453,6 +485,10 @@ msgid "This will refresh the authentication token."
 msgstr "To odświeży token uwierzytelniania."
 
 msgid "This will remove:"
+msgstr "To usunie:"
+
+#, fuzzy
+msgid "This will:"
 msgstr "To usunie:"
 
 msgid "Time to start update:"

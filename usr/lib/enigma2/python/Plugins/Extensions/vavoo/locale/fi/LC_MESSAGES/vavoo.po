@@ -17,6 +17,9 @@ msgstr "(%d kanavaa)?"
 msgid "(%s files deleted)"
 msgstr "(%s tiedostoa poistettu)"
 
+msgid "- Add missing fields to all entries"
+msgstr ""
+
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Automaattinen tokenin päivitys 9 minuutin välein"
 
@@ -28,6 +31,9 @@ msgstr "- Automaattinen nippujen luonti"
 
 msgid "- Category bouquets"
 msgstr "- Luokkaniput"
+
+msgid "- Clean up the cache file"
+msgstr ""
 
 msgid "- Commercial use is strictly prohibited"
 msgstr "- Kaupallinen käyttö ehdottomasti kielletty"
@@ -59,6 +65,9 @@ msgstr "- Ei suoraa palvelintarjontaa"
 msgid "- Redistribution must maintain attribution"
 msgstr "- Uudelleenjaossa on säilytettävä tekijätiedot"
 
+msgid "- Remove duplicate entries"
+msgstr ""
+
 msgid "- Service references: 4097, 5001, 5002"
 msgstr "- Palveluviitteet: 4097, 5001, 5002"
 
@@ -70,6 +79,12 @@ msgstr "- TS/M3U8-formaatit"
 
 msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
 msgstr "- Tekninen tuki: Qu4k3, @KiddaC, @giorbak"
+
+msgid "- {} duplicate entries removed"
+msgstr ""
+
+msgid "- {} entries updated"
+msgstr ""
 
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktiivinen automaattinen nippupäivitys"
@@ -112,6 +127,12 @@ msgstr "Nipun luontivirhe: {}"
 
 msgid "Bouquets reorganized successfully!"
 msgstr "Niput uudelleenjärjestetty onnistuneesti!"
+
+msgid "Cache format fix completed:"
+msgstr ""
+
+msgid "Cache is already in correct format. No changes needed."
+msgstr ""
 
 msgid "Cancel"
 msgstr "Peruuta"
@@ -173,6 +194,10 @@ msgstr "Oletusnäkymä liitännäistä avattaessa"
 msgid "Do you want to export this bouquet?"
 msgstr "Haluatko viedä tämän nipun?"
 
+#, fuzzy
+msgid "Do you want to fix the cache format?"
+msgstr "Haluatko viedä tämän nipun?"
+
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG on poissa käytöstä. Ota se ensin käyttöön Vavoo-asetuksista."
 
@@ -196,6 +221,10 @@ msgstr "Ota välityspalvelin käyttöön tai pois käytöstä."
 
 msgid "Enter text to search..."
 msgstr "Syötä teksti haettavaksi..."
+
+#, fuzzy
+msgid "Error fixing cache: {}"
+msgstr "Virhe käynnistettäessä EPG-päivitystä: {}"
 
 msgid "Error starting EPG update: {}"
 msgstr "Virhe käynnistettäessä EPG-päivitystä: {}"
@@ -229,6 +258,9 @@ msgstr "Välityspalvelimen päivitys epäonnistui:"
 
 msgid "Failed: %(failed)d"
 msgstr "Epäonnistui: %(failed)d"
+
+msgid "Fixing cache format..."
+msgstr ""
 
 msgid "Force proxy refresh?"
 msgstr "Pakotetaanko välityspalvelimen päivitys?"
@@ -444,6 +476,10 @@ msgid "This will refresh the authentication token."
 msgstr "Tämä päivittää todennustokenin."
 
 msgid "This will remove:"
+msgstr "Tämä poistaa:"
+
+#, fuzzy
+msgid "This will:"
 msgstr "Tämä poistaa:"
 
 msgid "Time to start update:"
