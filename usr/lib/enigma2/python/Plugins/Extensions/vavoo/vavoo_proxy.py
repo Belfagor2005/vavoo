@@ -948,7 +948,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                 try:
                     with open(SREF_MAP_FILE, 'r') as f:
                         sref_map = load(f)
-                except:
+                except BaseException:
                     sref_map = {}
 
                 channel_id = sref_map.get(ref)
@@ -957,7 +957,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     return
 
                 # Now get the channel object from proxy.channels_by_id
-                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(
+                    proxy, 'channels_by_id') else None
                 if not channel:
                     self.send_error(404, "Channel not found")
                     return
@@ -970,13 +971,18 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                         return
 
                     # 2. Connect to upstream with streaming
-                    upstream = proxy.session.get(stream_url, stream=True, timeout=30)
+                    upstream = proxy.session.get(
+                        stream_url, stream=True, timeout=30)
                     upstream.raise_for_status()
 
                     # 3. Send headers to player
                     if not self.safe_send_response(200):
                         return
-                    self.send_header('Content-Type', upstream.headers.get('Content-Type', 'video/mp2t'))
+                    self.send_header(
+                        'Content-Type',
+                        upstream.headers.get(
+                            'Content-Type',
+                            'video/mp2t'))
                     self.send_header('Connection', 'keep-alive')
                     self.end_headers()
 
@@ -990,14 +996,17 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                                 last_data_time = time.time()
                             else:
                                 if time.time() - last_data_time > 10:
-                                    print("[Proxy Stream] Upstream timeout for channel: " + channel_id)
+                                    print(
+                                        "[Proxy Stream] Upstream timeout for channel: " + channel_id)
                                     break
                                 time.sleep(0.1)
                     except (socket.timeout, ConnectionError, BrokenPipeError) as e:
                         print("[Proxy Stream] Downstream error: " + str(e))
                     finally:
                         upstream.close()
-                        print("[Proxy Stream] Finished for channel: " + channel_id)
+                        print(
+                            "[Proxy Stream] Finished for channel: " +
+                            channel_id)
 
                 except Exception as e:
                     print("[Proxy Stream] Error: " + str(e))
@@ -1069,12 +1078,14 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             elif parsed_path.path == '/status':
                 status = {
                     "initialized": proxy.initialized,
-                    "channels_count": len(proxy.all_filtered_items),
+                    "channels_count": len(
+                        proxy.all_filtered_items),
                     "addon_sig_valid": proxy.addon_sig_data["sig"] is not None,
-                    "addon_sig_age": int(time.time() - proxy.addon_sig_data["ts"]),
+                    "addon_sig_age": int(
+                        time.time() -
+                        proxy.addon_sig_data["ts"]),
                     "local_ip": proxy.get_local_ip(),
-                    "port": PORT
-                }
+                    "port": PORT}
                 if not self.safe_send_response(200):
                     return
                 self.send_header('Content-Type', 'application/json')
@@ -1084,8 +1095,10 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
             # Redirect per-country EPG requests to GitHub raw files
             elif parsed_path.path.startswith('/epg/') and parsed_path.path.endswith('.xml'):
-                country_code = parsed_path.path.split('/')[-1].replace('.xml', '')
-                github_url = "https://raw.githubusercontent.com/Belfagor2005/vavoo-player/master/epg_{}.xml".format(country_code)
+                country_code = parsed_path.path.split(
+                    '/')[-1].replace('.xml', '')
+                github_url = "https://raw.githubusercontent.com/Belfagor2005/vavoo-player/master/epg_{}.xml".format(
+                    country_code)
                 self.send_response(302)
                 self.send_header('Location', github_url)
                 self.end_headers()

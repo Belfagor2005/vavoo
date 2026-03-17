@@ -47,7 +47,7 @@ class SimpleNotifyWidget(Screen):
         Screen.__init__(self, session)
         try:
             self.skin = SimpleNotifyWidget.skin
-        except:
+        except BaseException:
             self.__dict__['skin'] = SimpleNotifyWidget.skin
         self["notification_text"] = Label("")
         self.onLayoutFinish.append(self._setupUI)
@@ -77,7 +77,8 @@ class HybridNotificationManager:
     def __new__(cls):
         with cls._lock:
             if cls._instance is None:
-                cls._instance = super(HybridNotificationManager, cls).__new__(cls)
+                cls._instance = super(
+                    HybridNotificationManager, cls).__new__(cls)
                 cls._instance._initialized = False
             return cls._instance
 
@@ -91,7 +92,8 @@ class HybridNotificationManager:
         try:
             self.hide_timer.callback.append(self._hideNotification)
         except AttributeError:
-            self.hide_timer_conn = self.hide_timer.timeout.connect(self._hideNotification)
+            self.hide_timer_conn = self.hide_timer.timeout.connect(
+                self._hideNotification)
         self.pending_messages = []  # Queue for messages waiting
         self.pending_timer = eTimer()
         try:
@@ -104,7 +106,8 @@ class HybridNotificationManager:
         self.session = session
         if not self.notification_window and session:
             try:
-                self.notification_window = session.instantiateDialog(SimpleNotifyWidget)
+                self.notification_window = session.instantiateDialog(
+                    SimpleNotifyWidget)
                 print("[NOTIFY] Notification window created")
             except Exception as e:
                 print("[NOTIFY] Error creating window: {}".format(e))
@@ -174,7 +177,8 @@ class HybridNotificationManager:
 
         if status == 'completed' and file_size > 0:
             size_mb = float(file_size) / (1024.0 * 1024.0)
-            message = u"{} {}\nCompleted - {:.1f}MB".format(icon, title, size_mb)
+            message = u"{} {}\nCompleted - {:.1f}MB".format(
+                icon, title, size_mb)
         elif status == 'downloading':
             message = u"{} Downloading\n{}".format(icon, title)
         elif status == 'error':

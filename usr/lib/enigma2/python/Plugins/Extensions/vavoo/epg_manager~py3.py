@@ -157,7 +157,9 @@ class EPGDownloader:
 
         for attempt in range(self.MAX_RETRIES):
             try:
-                logging.info("Downloading EPG from {} (attempt {})...".format(url, attempt + 1))
+                logging.info(
+                    "Downloading EPG from {} (attempt {})...".format(
+                        url, attempt + 1))
 
                 response = self.session.get(
                     url,
@@ -177,15 +179,21 @@ class EPGDownloader:
                         total += len(chunk)
 
                 result = content.getvalue()
-                logging.info("Downloaded {} bytes from {}".format(len(result), url))
+                logging.info(
+                    "Downloaded {} bytes from {}".format(
+                        len(result), url))
 
                 if len(result) < 1024:
-                    raise ValueError("Download too small: {} bytes".format(len(result)))
+                    raise ValueError(
+                        "Download too small: {} bytes".format(
+                            len(result)))
 
                 return result
 
             except Exception as e:
-                logging.warning("Download failed (attempt {}): {}".format(attempt + 1, e))
+                logging.warning(
+                    "Download failed (attempt {}): {}".format(
+                        attempt + 1, e))
                 if attempt < self.MAX_RETRIES - 1:
                     time.sleep(delay)
                     delay *= self.RETRY_BACKOFF
@@ -254,8 +262,14 @@ class EPGParser:
             except ValueError:
                 return None
 
-    def parse(self, xml_content: bytes, source_name: str = "", country_code: str = None,
-              filter_channels: Optional[Set[str]] = None) -> Tuple[Dict[str, ChannelInfo], Dict[str, List[Program]]]:
+    def parse(self,
+              xml_content: bytes,
+              source_name: str = "",
+              country_code: str = None,
+              filter_channels: Optional[Set[str]] = None) -> Tuple[Dict[str,
+                                                                        ChannelInfo],
+                                                                   Dict[str,
+                                                                        List[Program]]]:
         """Parse XMLTV content efficiently.
 
         Returns:
@@ -269,7 +283,9 @@ class EPGParser:
 
         try:
             # Use iterparse for memory efficiency
-            context = ET.iterparse(io.BytesIO(xml_content), events=('start', 'end'))
+            context = ET.iterparse(
+                io.BytesIO(xml_content), events=(
+                    'start', 'end'))
 
             for event, elem in context:
                 if event == 'start':
@@ -292,7 +308,8 @@ class EPGParser:
                             continue
 
                     icon_elem = elem.find('icon')
-                    icon = icon_elem.get('src') if icon_elem is not None else None
+                    icon = icon_elem.get(
+                        'src') if icon_elem is not None else None
 
                     channels[channel_id] = ChannelInfo(
                         id=channel_id,
@@ -352,7 +369,10 @@ class EPGParser:
         except Exception as e:
             logging.error("XML parsing error: {}".format(e))
 
-        logging.info("Parsed {} channels, {} programs".format(len(channels), sum(len(p) for p in programs.values())))
+        logging.info(
+            "Parsed {} channels, {} programs".format(
+                len(channels), sum(
+                    len(p) for p in programs.values())))
         return channels, programs
 
 
@@ -601,8 +621,11 @@ class EPGManager:
         ),
     ]
 
-    def __init__(self, cache_dir: Optional[Path] = None, cache_ttl_hours: int = 12,
-                 user_agent: str = "VAVOO/2.6", sources: Optional[List[EPGSource]] = None):
+    def __init__(self,
+                 cache_dir: Optional[Path] = None,
+                 cache_ttl_hours: int = 12,
+                 user_agent: str = "VAVOO/2.6",
+                 sources: Optional[List[EPGSource]] = None):
         self.cache = EPGCache(cache_dir, cache_ttl_hours)
         self.downloader = EPGDownloader(user_agent)
         self.parser = EPGParser()
@@ -648,7 +671,8 @@ class EPGManager:
         if xml_content is None:
             gz_content = self.downloader.download(source)
             if gz_content:
-                xml_content = self.downloader.decompress(gz_content, source.url)
+                xml_content = self.downloader.decompress(
+                    gz_content, source.url)
                 if xml_content:
                     self.cache.save(source.name, xml_content)
 
@@ -657,7 +681,8 @@ class EPGManager:
             return False
 
         # Parse and merge
-        channels, programs = self.parser.parse(xml_content, source.name, country_code=source.country_code)
+        channels, programs = self.parser.parse(
+            xml_content, source.name, country_code=source.country_code)
 
         # Merge into main storage
         self.channels.update(channels)
@@ -680,8 +705,12 @@ class EPGManager:
         ch_id = self.name_to_id.get(norm)
         return self.channels.get(ch_id) if ch_id else None
 
-    def get_current_program(self, channel_id: str,
-                            norm_name: Optional[str] = None) -> Tuple[Optional[str], Optional[str], Optional[datetime], Optional[datetime]]:
+    def get_current_program(self,
+                            channel_id: str,
+                            norm_name: Optional[str] = None) -> Tuple[Optional[str],
+                                                                      Optional[str],
+                                                                      Optional[datetime],
+                                                                      Optional[datetime]]:
         """Get current program for a channel.
 
         Returns:
@@ -702,7 +731,10 @@ class EPGManager:
 
         return "No Info Available", "", None, None
 
-    def get_upcoming_programs(self, channel_id: str, count: int = 5) -> List[Program]:
+    def get_upcoming_programs(
+            self,
+            channel_id: str,
+            count: int = 5) -> List[Program]:
         """Get upcoming programs for a channel."""
         now = datetime.now(timezone.utc)
 

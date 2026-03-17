@@ -31,7 +31,7 @@ from . import PY2
 try:
     import urllib3
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-except:
+except BaseException:
     pass
 
 
@@ -59,7 +59,15 @@ else:
 # Simple class instead of dataclass for Py2 compatibility
 class EPGSource(object):
     """Configuration for an EPG source."""
-    def __init__(self, name, url, backup_url=None, enabled=True, priority=0, country_code=""):
+
+    def __init__(
+            self,
+            name,
+            url,
+            backup_url=None,
+            enabled=True,
+            priority=0,
+            country_code=""):
         self.name = name
         self.url = url
         self.backup_url = backup_url
@@ -70,7 +78,14 @@ class EPGSource(object):
 
 class ChannelInfo(object):
     """EPG channel information."""
-    def __init__(self, id, display_name, icon=None, normalized_name="", country_code=""):
+
+    def __init__(
+            self,
+            id,
+            display_name,
+            icon=None,
+            normalized_name="",
+            country_code=""):
         self.id = id
         self.display_name = display_name
         self.icon = icon
@@ -80,6 +95,7 @@ class ChannelInfo(object):
 
 class Program(object):
     """EPG program information."""
+
     def __init__(self, channel_id, start, stop, title, desc=""):
         self.channel_id = channel_id
         self.start = start
@@ -129,7 +145,8 @@ class EPGCache(object):
             if 'timestamp' in meta:
                 if PY2:
                     # Python 2 datetime doesn't have fromisoformat
-                    cached_time = datetime.strptime(meta['timestamp'].split('+')[0], "%Y-%m-%dT%H:%M:%S.%f")
+                    cached_time = datetime.strptime(
+                        meta['timestamp'].split('+')[0], "%Y-%m-%dT%H:%M:%S.%f")
                     cached_time = cached_time.replace(tzinfo=UTC)
                 else:
                     cached_time = datetime.fromisoformat(meta['timestamp'])
@@ -238,7 +255,9 @@ class EPGDownloader(object):
 
         for attempt in range(self.MAX_RETRIES):
             try:
-                logging.info("Downloading EPG from {} (attempt {})...".format(url, attempt + 1))
+                logging.info(
+                    "Downloading EPG from {} (attempt {})...".format(
+                        url, attempt + 1))
 
                 response = self.session.get(
                     url,
@@ -258,15 +277,21 @@ class EPGDownloader(object):
                         total += len(chunk)
 
                 result = content.getvalue()
-                logging.info("Downloaded {} bytes from {}".format(len(result), url))
+                logging.info(
+                    "Downloaded {} bytes from {}".format(
+                        len(result), url))
 
                 if len(result) < 1024:
-                    raise ValueError("Download too small: {} bytes".format(len(result)))
+                    raise ValueError(
+                        "Download too small: {} bytes".format(
+                            len(result)))
 
                 return result
 
             except Exception as e:
-                logging.warning("Download failed (attempt {}): {}".format(attempt + 1, e))
+                logging.warning(
+                    "Download failed (attempt {}): {}".format(
+                        attempt + 1, e))
                 if attempt < self.MAX_RETRIES - 1:
                     time.sleep(delay)
                     delay *= self.RETRY_BACKOFF
@@ -345,7 +370,8 @@ class EPGParser(object):
                     sign = 1 if tz_str[0] == '+' else -1
                     hours = int(tz_str[1:3])
                     minutes = int(tz_str[3:5])
-                    tz_offset = timedelta(hours=sign * hours, minutes=sign * minutes)
+                    tz_offset = timedelta(
+                        hours=sign * hours, minutes=sign * minutes)
                     dt = dt - tz_offset  # Convert to UTC
                 return dt.replace(tzinfo=UTC)
             else:
@@ -358,7 +384,12 @@ class EPGParser(object):
             except ValueError:
                 return None
 
-    def parse(self, xml_content, source_name="", country_code=None, filter_channels=None):
+    def parse(
+            self,
+            xml_content,
+            source_name="",
+            country_code=None,
+            filter_channels=None):
         """Parse XMLTV content efficiently.
 
         Returns:
@@ -372,7 +403,9 @@ class EPGParser(object):
 
         try:
             # Use iterparse for memory efficiency
-            context = ET.iterparse(io.BytesIO(xml_content), events=('start', 'end'))
+            context = ET.iterparse(
+                io.BytesIO(xml_content), events=(
+                    'start', 'end'))
 
             for event, elem in context:
                 if event == 'start':
@@ -395,7 +428,8 @@ class EPGParser(object):
                             continue
 
                     icon_elem = elem.find('icon')
-                    icon = icon_elem.get('src') if icon_elem is not None else None
+                    icon = icon_elem.get(
+                        'src') if icon_elem is not None else None
 
                     channels[channel_id] = ChannelInfo(
                         id=channel_id,
@@ -455,7 +489,10 @@ class EPGParser(object):
         except Exception as e:
             logging.error("XML parsing error: {}".format(e))
 
-        logging.info("Parsed {} channels, {} programs".format(len(channels), sum(len(p) for p in programs.values())))
+        logging.info(
+            "Parsed {} channels, {} programs".format(
+                len(channels), sum(
+                    len(p) for p in programs.values())))
         return channels, programs
 
 
@@ -704,7 +741,12 @@ class EPGManager(object):
         ),
     ]
 
-    def __init__(self, cache_dir=None, cache_ttl_hours=12, user_agent=None, sources=None):
+    def __init__(
+            self,
+            cache_dir=None,
+            cache_ttl_hours=12,
+            user_agent=None,
+            sources=None):
         if user_agent is None:
             user_agent = "VAVOO/2.6"
         self.cache = EPGCache(cache_dir, cache_ttl_hours)
@@ -752,7 +794,8 @@ class EPGManager(object):
         if xml_content is None:
             gz_content = self.downloader.download(source)
             if gz_content:
-                xml_content = self.downloader.decompress(gz_content, source.url)
+                xml_content = self.downloader.decompress(
+                    gz_content, source.url)
                 if xml_content:
                     self.cache.save(source.name, xml_content)
 
@@ -761,7 +804,8 @@ class EPGManager(object):
             return False
 
         # Parse and merge
-        channels, programs = self.parser.parse(xml_content, source.name, country_code=source.country_code)
+        channels, programs = self.parser.parse(
+            xml_content, source.name, country_code=source.country_code)
 
         # Merge into main storage
         self.channels.update(channels)

@@ -446,7 +446,8 @@ cfg.server = ConfigSelection(default=PRIMARY_BASE_URL, choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.epg_enabled = ConfigEnableDisable(default=False)
 cfg.epg_auto_update = ConfigEnableDisable(default=False)
-cfg.epg_update_interval = ConfigSelectionNumber(default=6, min=1, max=24, stepwidth=1)
+cfg.epg_update_interval = ConfigSelectionNumber(
+    default=6, min=1, max=24, stepwidth=1)
 cfg.timerupdate = ConfigSelectionNumber(default=5, min=1, max=60, stepwidth=1)
 cfg.timetype = ConfigSelection(
     default="interval", choices=[
@@ -835,11 +836,11 @@ class vavoo_config(Screen, ConfigListScreen):
             ))
 
             if cfg.epg_auto_update.value:
-                self.list.append(getConfigListEntry(
-                    _("Update interval (hours)"),
-                    cfg.epg_update_interval,
-                    _("How often to auto-update the EPG (requires EPGImport scheduler)")
-                ))
+                self.list.append(
+                    getConfigListEntry(
+                        _("Update interval (hours)"),
+                        cfg.epg_update_interval,
+                        _("How often to auto-update the EPG (requires EPGImport scheduler)")))
         self.list.append(
             getConfigListEntry(
                 _("Movie Services Reference"),
@@ -1414,12 +1415,20 @@ class vavoo_config(Screen, ConfigListScreen):
             import subprocess
             result = subprocess.call(['epgimport', '--import'], timeout=60)
             if result == 0:
-                self.session.open(MessageBox, _("EPG update started successfully"), MessageBox.TYPE_INFO)
+                self.session.open(
+                    MessageBox,
+                    _("EPG update started successfully"),
+                    MessageBox.TYPE_INFO)
             else:
-                self.session.open(MessageBox, _("EPG update failed"), MessageBox.TYPE_ERROR)
+                self.session.open(
+                    MessageBox,
+                    _("EPG update failed"),
+                    MessageBox.TYPE_ERROR)
         except Exception as e:
             print("[Vavoo] Error triggering EPG update:", str(e))
-            self.session.open(MessageBox, _("Error starting EPG update: {}").format(str(e)), MessageBox.TYPE_ERROR)
+            self.session.open(
+                MessageBox, _("Error starting EPG update: {}").format(
+                    str(e)), MessageBox.TYPE_ERROR)
 
     def save(self):
         if self["config"].isChanged():
@@ -2284,17 +2293,19 @@ class MainVavoo(Screen):
     def manual_epg_update(self):
         """Manually trigger EPG update"""
         if not cfg.epg_enabled.value:
-            self.session.open(MessageBox,
-                              _("EPG is disabled. Please enable it in Vavoo settings first."),
-                              MessageBox.TYPE_INFO)
+            self.session.open(
+                MessageBox,
+                _("EPG is disabled. Please enable it in Vavoo settings first."),
+                MessageBox.TYPE_INFO)
             return
 
         # Check if Vavoo EPG source file exists
         vavoo_sources = "/etc/epgimport/vavoo.sources.xml"
         if not isfile(vavoo_sources):
-            self.session.open(MessageBox,
-                              _("Vavoo EPG source not found. Please export at least one bouquet first."),
-                              MessageBox.TYPE_INFO)
+            self.session.open(
+                MessageBox,
+                _("Vavoo EPG source not found. Please export at least one bouquet first."),
+                MessageBox.TYPE_INFO)
             return
 
         # Optional: check if the source is enabled in EPGImport config
@@ -2311,10 +2322,11 @@ class MainVavoo(Screen):
                 print("[EPG] Error reading epgimport.conf: {}".format(e))
 
             if not source_enabled:
-                self.session.open(MessageBox,
-                                  _("Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."),
-                                  MessageBox.TYPE_WARNING,
-                                  timeout=5)
+                self.session.open(
+                    MessageBox,
+                    _("Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."),
+                    MessageBox.TYPE_WARNING,
+                    timeout=5)
 
         self.session.openWithCallback(self._epg_update_callback,
                                       MessageBox,
@@ -2331,11 +2343,14 @@ class MainVavoo(Screen):
                 # Run in background to not block UI
                 def update_thread():
                     try:
-                        result = subprocess.call(['epgimport', '--import'], timeout=300)
+                        result = subprocess.call(
+                            ['epgimport', '--import'], timeout=300)
                         if result == 0:
-                            self.session.open(MessageBox, _("EPG update completed"), MessageBox.TYPE_INFO)
+                            self.session.open(
+                                MessageBox, _("EPG update completed"), MessageBox.TYPE_INFO)
                         else:
-                            self.session.open(MessageBox, _("EPG update failed"), MessageBox.TYPE_ERROR)
+                            self.session.open(
+                                MessageBox, _("EPG update failed"), MessageBox.TYPE_ERROR)
                     except Exception as e:
                         print("[Vavoo] EPG update error:", str(e))
                     finally:
@@ -2347,7 +2362,9 @@ class MainVavoo(Screen):
                 thread.start()
 
             except Exception as e:
-                self.session.open(MessageBox, _("Error: {}").format(str(e)), MessageBox.TYPE_ERROR)
+                self.session.open(
+                    MessageBox, _("Error: {}").format(
+                        str(e)), MessageBox.TYPE_ERROR)
 
     def msgdeleteBouquets(self):
         message_parts = []
@@ -2479,7 +2496,8 @@ class MainVavoo(Screen):
         message_parts.append(_("- TS/M3U8 formats"))
         message_parts.append(_("- Service references: 4097, 5001, 5002"))
         message_parts.append(_("- Automatic bouquet generation"))
-        message_parts.append(_("- Automatic Epg generation with Service Reference"))
+        message_parts.append(
+            _("- Automatic Epg generation with Service Reference"))
         message_parts.append(_("- Integrated proxy system"))
         message_parts.append(_("- Auto token refresh every 9 minutes"))
         message_parts.append("")
@@ -3157,21 +3175,27 @@ class vavoo(Screen):
     def message2(self, name, url, response):
         if not export_lock.acquire(blocking=False):
             if NOTIFICATION_AVAILABLE:
-                quick_notify(_("An export for another country is already in progress. Please wait."), 4)
+                quick_notify(
+                    _("An export for another country is already in progress. Please wait."), 4)
             return
 
         try:
             export_bouquet_async(
                 name,
-                "hierarchical" if any(sep in name for sep in ["➾", "⟾", "->", "→"]) else "flat",
+                "hierarchical" if any(
+                    sep in name for sep in [
+                        "➾",
+                        "⟾",
+                        "->",
+                        "→"]) else "flat",
                 self,
                 self._on_export_complete,
                 cfg.services.value,
                 cfg.list_position.value,
-                lock=export_lock
-            )
+                lock=export_lock)
             if NOTIFICATION_AVAILABLE:
-                quick_notify(_("Export started. Bouquet will be available shortly."), 3)
+                quick_notify(
+                    _("Export started. Bouquet will be available shortly."), 3)
 
         except Exception as e:
             export_lock.release()
@@ -3182,7 +3206,8 @@ class vavoo(Screen):
         if success:
             if message != "Bouquet created":
                 if NOTIFICATION_AVAILABLE:
-                    quick_notify(_("EPG processing completed for {} channels").format(ch_count), 4)
+                    quick_notify(
+                        _("EPG processing completed for {} channels").format(ch_count), 4)
         else:
             if NOTIFICATION_AVAILABLE:
                 quick_notify(_("Export failed: {}").format(message), 5)
@@ -3664,9 +3689,11 @@ class TvInfoBarShowHide():
 
         self.proxy_update_timer = eTimer()
         try:
-            self.proxy_update_timer.timeout.connect(self.update_proxy_status_overlay)
+            self.proxy_update_timer.timeout.connect(
+                self.update_proxy_status_overlay)
         except BaseException:
-            self.proxy_update_timer.callback.append(self.update_proxy_status_overlay)
+            self.proxy_update_timer.callback.append(
+                self.update_proxy_status_overlay)
 
         # Timer per nascondere l'overlay dopo un po' (DISATTIVATO)
         # self.hideTimer = eTimer()
@@ -3741,7 +3768,8 @@ class TvInfoBarShowHide():
             else:
                 proxy_details = "✗ Proxy Offline"
 
-            help_text = "CH±=Change | OK=Toggle | STOP=Exit | " + proxy_details + " | by Lululla"
+            help_text = "CH±=Change | OK=Toggle | STOP=Exit | " + \
+                proxy_details + " | by Lululla"
             self["helpOverlay"].setText(help_text)
             self["helpOverlay"].show()
 
@@ -3838,7 +3866,15 @@ class Playstream2(
     ALLOW_SUSPEND = True
     screen_timeout = 5000
 
-    def __init__(self, session, name, url, index, item, cat_list, country_code=None):
+    def __init__(
+            self,
+            session,
+            name,
+            url,
+            index,
+            item,
+            cat_list,
+            country_code=None):
         Screen.__init__(self, session)
         self.session = session
         init_notification_system(session)
@@ -4090,11 +4126,13 @@ class Playstream2(
                 return "EPG not available (no country code)"
 
             matcher = get_epg_matcher()
-            rytec_id, _ = matcher.find_match(self.name, country_code=self.country_code)
+            rytec_id, _ = matcher.find_match(
+                self.name, country_code=self.country_code)
             if not rytec_id:
                 return "EPG not available (ID not found)"
 
-            epg_url = "http://{}:{}/epg/{}.xml".format(PROXY_HOST, PORT, self.country_code or "")
+            epg_url = "http://{}:{}/epg/{}.xml".format(
+                PROXY_HOST, PORT, self.country_code or "")
             xml_data = getUrl(epg_url, timeout=5)
             if not xml_data:
                 return "EPG not available"
@@ -4117,12 +4155,14 @@ class Playstream2(
                     continue
 
                 try:
-                    start_dt = datetime.datetime.strptime(start_str, "%Y%m%d%H%M%S %z")
-                    stop_dt = datetime.datetime.strptime(stop_str, "%Y%m%d%H%M%S %z")
+                    start_dt = datetime.datetime.strptime(
+                        start_str, "%Y%m%d%H%M%S %z")
+                    stop_dt = datetime.datetime.strptime(
+                        stop_str, "%Y%m%d%H%M%S %z")
                     if start_dt.timestamp() <= now <= stop_dt.timestamp():
                         current_prog = prog
                         break
-                except:
+                except BaseException:
                     continue
 
             if current_prog is not None:
@@ -4131,11 +4171,14 @@ class Playstream2(
                 start_str = current_prog.get('start')
                 stop_str = current_prog.get('stop')
                 try:
-                    start_dt = datetime.datetime.strptime(start_str, "%Y%m%d%H%M%S %z")
-                    stop_dt = datetime.datetime.strptime(stop_str, "%Y%m%d%H%M%S %z")
+                    start_dt = datetime.datetime.strptime(
+                        start_str, "%Y%m%d%H%M%S %z")
+                    stop_dt = datetime.datetime.strptime(
+                        stop_str, "%Y%m%d%H%M%S %z")
                     start_local = start_dt.strftime('%H:%M')
                     end_local = stop_dt.strftime('%H:%M')
-                    return "{}-{} {} - {}".format(start_local, end_local, title, desc)
+                    return "{}-{} {} - {}".format(start_local,
+                                                  end_local, title, desc)
                 except Exception:
                     return "{} - {}".format(title, desc)
             else:

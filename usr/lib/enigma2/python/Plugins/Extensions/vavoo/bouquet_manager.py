@@ -213,11 +213,14 @@ def remove_bouquets_by_name(name=None):
             # Specific removal for a country
             country_code = get_country_code_from_bouquet_name(name)
             if country_code:
-                epg_file = join(epg_dir, "vavoo_{}.channels.xml".format(country_code.lower()))
+                epg_file = join(
+                    epg_dir, "vavoo_{}.channels.xml".format(
+                        country_code.lower()))
                 if file_exists(epg_file):
                     try:
                         remove(epg_file)
-                        print("✓ Removed EPG file: vavoo_{}.channels.xml".format(country_code))
+                        print(
+                            "✓ Removed EPG file: vavoo_{}.channels.xml".format(country_code))
                     except Exception as e:
                         print("Error removing EPG file: {}".format(e))
         else:
@@ -240,12 +243,30 @@ def remove_bouquets_by_name(name=None):
         return 0
 
 
-def convert_bouquet(servicetype, name, url, export_type, server, bouquet_position):
+def convert_bouquet(
+        servicetype,
+        name,
+        url,
+        export_type,
+        server,
+        bouquet_position):
     """Compatible (synchronous) version for existing calls."""
-    return convert_bouquet_sync(servicetype, name, url, export_type, server, bouquet_position)
+    return convert_bouquet_sync(
+        servicetype,
+        name,
+        url,
+        export_type,
+        server,
+        bouquet_position)
 
 
-def convert_bouquet_sync(servicetype, name, url, export_type, server, bouquet_position):
+def convert_bouquet_sync(
+        servicetype,
+        name,
+        url,
+        export_type,
+        server,
+        bouquet_position):
     """Creates the bouquet synchronously and returns the number of channels."""
     try:
         print("[Bouquet] Starting bouquet creation for: " + name)
@@ -294,11 +315,14 @@ def convert_bouquet_sync(servicetype, name, url, export_type, server, bouquet_po
         # 7. Generate EPG mapping if enabled
         if matched and config.plugins.vavoo.epg_enabled.value:
             # Now include the channel name as well
-            epg_entries = [(m['rytec_id'], m['dvb_ref'], m['name']) for m in matched if m['rytec_id']]
+            epg_entries = [(m['rytec_id'], m['dvb_ref'], m['name'])
+                           for m in matched if m['rytec_id']]
             if epg_entries:
                 try:
                     write_epg_mapping_file(epg_entries, country_code)
-                    print("[Bouquet] EPG mapping written for {} channels".format(len(epg_entries)))
+                    print(
+                        "[Bouquet] EPG mapping written for {} channels".format(
+                            len(epg_entries)))
                 except Exception as e:
                     print("[Bouquet] Error writing EPG mapping: {}".format(e))
             else:
@@ -306,7 +330,8 @@ def convert_bouquet_sync(servicetype, name, url, export_type, server, bouquet_po
         else:
             print("[Bouquet] EPG disabled or no matched channels")
 
-        # 8. Always update the sources.xml file after any change to channel files
+        # 8. Always update the sources.xml file after any change to channel
+        # files
         try:
             update_epg_sources()
             print("[Bouquet] EPG sources updated")
@@ -328,8 +353,17 @@ def convert_bouquet_sync(servicetype, name, url, export_type, server, bouquet_po
         return 0
 
 
-def export_bouquet_async(name, export_type, parent_screen, callback, servicetype, bouquet_position, lock=None):
-    print("[DEBUG] export_bouquet_async called for %s, type %s" % (name, export_type))
+def export_bouquet_async(
+        name,
+        export_type,
+        parent_screen,
+        callback,
+        servicetype,
+        bouquet_position,
+        lock=None):
+    print(
+        "[DEBUG] export_bouquet_async called for %s, type %s" %
+        (name, export_type))
 
     def task():
         try:
@@ -337,17 +371,18 @@ def export_bouquet_async(name, export_type, parent_screen, callback, servicetype
 
             # PHASE 1: Create fallback bouquet (fast)
             ch_count, bouquet_filename, channels_list, country_code = create_fallback_bouquet_sync(
-                servicetype, name, export_type, bouquet_position
-            )
+                servicetype, name, export_type, bouquet_position)
 
             if ch_count == 0:
                 # Failed to create bouquet
                 def do_callback():
                     try:
-                        if parent_screen and hasattr(parent_screen, "session") and parent_screen.session:
+                        if parent_screen and hasattr(
+                                parent_screen, "session") and parent_screen.session:
                             callback(False, 0, "No channels found")
                         else:
-                            print("[Bouquet] Export failed (no channels) but plugin closed")
+                            print(
+                                "[Bouquet] Export failed (no channels) but plugin closed")
                     except Exception as cb_e:
                         print("[Bouquet] Error in callback: %s" % cb_e)
 
@@ -372,10 +407,13 @@ def export_bouquet_async(name, export_type, parent_screen, callback, servicetype
             # Notify that bouquet is ready (first callback)
             def do_first_callback():
                 try:
-                    if parent_screen and hasattr(parent_screen, "session") and parent_screen.session:
+                    if parent_screen and hasattr(
+                            parent_screen, "session") and parent_screen.session:
                         callback(True, ch_count, "Bouquet created")
                     else:
-                        print("[Bouquet] Export completed (fallback) but plugin closed, %d channels" % ch_count)
+                        print(
+                            "[Bouquet] Export completed (fallback) but plugin closed, %d channels" %
+                            ch_count)
                 except Exception as cb_e:
                     print("[Bouquet] Error in first callback: %s" % cb_e)
 
@@ -390,7 +428,8 @@ def export_bouquet_async(name, export_type, parent_screen, callback, servicetype
                     parent_screen, callback
                 )
             else:
-                # No channels for EPG, just call callback again? Already called.
+                # No channels for EPG, just call callback again? Already
+                # called.
                 pass
 
         except Exception as e:
@@ -400,10 +439,13 @@ def export_bouquet_async(name, export_type, parent_screen, callback, servicetype
 
             def do_callback():
                 try:
-                    if parent_screen and hasattr(parent_screen, "session") and parent_screen.session:
+                    if parent_screen and hasattr(
+                            parent_screen, "session") and parent_screen.session:
                         callback(False, 0, str(exc))
                     else:
-                        print("[Bouquet] Export failed but plugin closed: %s" % str(exc))
+                        print(
+                            "[Bouquet] Export failed but plugin closed: %s" %
+                            str(exc))
                 except Exception as cb_e:
                     print("[Bouquet] Error in error callback: %s" % cb_e)
 
@@ -519,7 +561,13 @@ def _prepare_bouquet_filenames(name, bouquet_type, max_length=100):
     return name_file, bouquet_name
 
 
-def process_epg_matching_background(name, bouquet_filename, channels_list, country_code, parent_screen, callback):
+def process_epg_matching_background(
+        name,
+        bouquet_filename,
+        channels_list,
+        country_code,
+        parent_screen,
+        callback):
     """
     Perform EPG matching in background, update the bouquet with converted service references,
     generate EPG files, and update cache.
@@ -531,11 +579,14 @@ def process_epg_matching_background(name, bouquet_filename, channels_list, count
         matcher = get_epg_matcher(similarity_threshold=0.85)
 
         # 2. Prepare lists for matched/unmatched
-        matched = []      # each: {'name': clean_name, 'channel_id': id, 'dvb_ref': ref, 'rytec_id': id, 'original_url': url}
-        unmatched = []    # each: {'name': clean_name, 'channel_id': id, 'original_url': url}
+        # each: {'name': clean_name, 'channel_id': id, 'dvb_ref': ref, 'rytec_id': id, 'original_url': url}
+        matched = []
+        # each: {'name': clean_name, 'channel_id': id, 'original_url': url}
+        unmatched = []
 
         for ch in channels_list:
-            rytec_id, dvb_ref = matcher.find_match(ch['original_name'], country_code)
+            rytec_id, dvb_ref = matcher.find_match(
+                ch['original_name'], country_code)
             if dvb_ref:
                 if dvb_ref.endswith(':'):
                     dvb_ref = dvb_ref[:-1]
@@ -564,7 +615,7 @@ def process_epg_matching_background(name, bouquet_filename, channels_list, count
             try:
                 with open(CACHE_FILE, 'r') as f:
                     complete_cache = load(f)
-            except:
+            except BaseException:
                 complete_cache = {}
 
         # Add matched
@@ -595,7 +646,9 @@ def process_epg_matching_background(name, bouquet_filename, channels_list, count
         try:
             with open(CACHE_FILE, 'w') as f:
                 dump(complete_cache, f, indent=2, sort_keys=True)
-            print("[EPGBackground] Updated complete cache with %d total entries" % len(complete_cache))
+            print(
+                "[EPGBackground] Updated complete cache with %d total entries" %
+                len(complete_cache))
         except Exception as e:
             print("[EPGBackground] Error saving cache: %s" % e)
 
@@ -630,7 +683,8 @@ def process_epg_matching_background(name, bouquet_filename, channels_list, count
                         channel_id = match.group(1)
                         if channel_id in match_dict:
                             # Replace with converted ref + same url_part
-                            new_service_line = "#SERVICE %s:%s" % (match_dict[channel_id], url_part)
+                            new_service_line = "#SERVICE %s:%s" % (
+                                match_dict[channel_id], url_part)
                             new_lines.append(new_service_line + '\n')
                             changes += 1
                             i += 1
@@ -645,14 +699,19 @@ def process_epg_matching_background(name, bouquet_filename, channels_list, count
             if changes > 0:
                 with io.open(bouquet_path, 'w', encoding='utf-8') as f:
                     f.writelines(new_lines)
-                print("[EPGBackground] Updated %d service lines in %s" % (changes, bouquet_filename))
+                print(
+                    "[EPGBackground] Updated %d service lines in %s" %
+                    (changes, bouquet_filename))
 
         # 5. Generate EPG mapping files
         if matched:
-            epg_entries = [(m['rytec_id'], m['dvb_ref'], m['name']) for m in matched if m['rytec_id']]
+            epg_entries = [(m['rytec_id'], m['dvb_ref'], m['name'])
+                           for m in matched if m['rytec_id']]
             if epg_entries:
                 write_epg_mapping_file(epg_entries, country_code)
-                print("[EPGBackground] EPG mapping written for %d channels" % len(epg_entries))
+                print(
+                    "[EPGBackground] EPG mapping written for %d channels" %
+                    len(epg_entries))
 
         # 6. Update sources.xml
         update_epg_sources()
@@ -660,10 +719,15 @@ def process_epg_matching_background(name, bouquet_filename, channels_list, count
         # 7. Save matcher cache
         matcher.save_cache()
 
-        # 8. Callback to notify completion - always executed even if parent screen is closed
-        print("[EPGBackground] COMPLETED for %s - matched=%d" % (name, len(matched)))
+        # 8. Callback to notify completion - always executed even if parent
+        # screen is closed
+        print(
+            "[EPGBackground] COMPLETED for %s - matched=%d" %
+            (name, len(matched)))
         print("[EPGBackground] Calling callback with message='EPG processing completed'")
-        print("[EPGBackground] Executing callback with matched=%d" % saved_matched)
+        print(
+            "[EPGBackground] Executing callback with matched=%d" %
+            saved_matched)
 
         try:
             saved_callback(True, saved_matched, "EPG processing completed")
@@ -804,7 +868,11 @@ def _create_hierarchical_bouquet_proxy(
         return 0
 
 
-def create_fallback_bouquet_sync(servicetype, name, export_type, bouquet_position):
+def create_fallback_bouquet_sync(
+        servicetype,
+        name,
+        export_type,
+        bouquet_position):
     """
     Create a bouquet using ONLY fallback service references (servicetype:0:0:0:0:0:0:0:0:0:)
     for all channels.
@@ -847,7 +915,17 @@ def create_fallback_bouquet_sync(servicetype, name, export_type, bouquet_positio
         # 5. Prepare bouquet filename (same logic as create_bouquet_file)
         is_category = any(sep in name for sep in separators)
         if export_type == "flat" or not is_category:
-            safe_name = name.lower().replace(' ', '_').replace('➾', '').replace('⟾', '').replace('->', '').replace('→', '')
+            safe_name = name.lower().replace(
+                ' ',
+                '_').replace(
+                '➾',
+                '').replace(
+                '⟾',
+                '').replace(
+                '->',
+                '').replace(
+                    '→',
+                '')
             bouquet_filename = "userbouquet.vavoo_%s.tv" % safe_name
         else:
             country_part = ""
@@ -859,12 +937,23 @@ def create_fallback_bouquet_sync(servicetype, name, export_type, bouquet_positio
                     category_part = parts[1].strip()
                     break
             if not country_part or not category_part:
-                safe_name = name.lower().replace(' ', '_').replace('➾', '_').replace('⟾', '_').replace('->', '_').replace('→', '_')
+                safe_name = name.lower().replace(
+                    ' ',
+                    '_').replace(
+                    '➾',
+                    '_').replace(
+                    '⟾',
+                    '_').replace(
+                    '->',
+                    '_').replace(
+                    '→',
+                    '_')
                 bouquet_filename = "userbouquet.vavoo_%s.tv" % safe_name
             else:
                 country_safe = country_part.lower().replace(' ', '_')
                 category_safe = category_part.lower().replace(' ', '_')
-                bouquet_filename = "userbouquet.vavoo_%s_%s.tv" % (country_safe, category_safe)
+                bouquet_filename = "userbouquet.vavoo_%s_%s.tv" % (
+                    country_safe, category_safe)
 
         bouquet_path = join(ENIGMA_PATH, bouquet_filename)
 
@@ -892,7 +981,8 @@ def create_fallback_bouquet_sync(servicetype, name, export_type, bouquet_positio
                 encoded_url = channel_url.replace(':', '%3a')
 
                 # Fallback service reference
-                service_line = "#SERVICE %s:0:0:0:0:0:0:0:0:0:%s" % (servicetype, encoded_url)
+                service_line = "#SERVICE %s:0:0:0:0:0:0:0:0:0:%s" % (
+                    servicetype, encoded_url)
                 lines.append(service_line)
                 lines.append("#DESCRIPTION %s" % clean_name)
                 channel_count += 1
@@ -906,7 +996,9 @@ def create_fallback_bouquet_sync(servicetype, name, export_type, bouquet_positio
                 })
 
             except Exception as e:
-                print("[FallbackBouquet] Error processing channel: %s" % str(e))
+                print(
+                    "[FallbackBouquet] Error processing channel: %s" %
+                    str(e))
                 continue
 
         if channel_count == 0:
@@ -917,15 +1009,23 @@ def create_fallback_bouquet_sync(servicetype, name, export_type, bouquet_positio
         try:
             with io.open(bouquet_path, 'w', encoding='utf-8') as f:
                 f.write('\n'.join(lines))
-            print("[FallbackBouquet] File created: %s (%d channels)" % (bouquet_filename, channel_count))
+            print(
+                "[FallbackBouquet] File created: %s (%d channels)" %
+                (bouquet_filename, channel_count))
         except Exception as e:
-            print("[FallbackBouquet] Error writing file with encoding: %s" % str(e))
+            print(
+                "[FallbackBouquet] Error writing file with encoding: %s" %
+                str(e))
             try:
                 with open(bouquet_path, 'wb') as f:
                     f.write(('\n'.join(lines)).encode('utf-8', 'ignore'))
-                print("[FallbackBouquet] File created (binary fallback): %s (%d channels)" % (bouquet_filename, channel_count))
+                print(
+                    "[FallbackBouquet] File created (binary fallback): %s (%d channels)" %
+                    (bouquet_filename, channel_count))
             except Exception as e2:
-                print("[FallbackBouquet] Critical error writing file: %s" % str(e2))
+                print(
+                    "[FallbackBouquet] Critical error writing file: %s" %
+                    str(e2))
                 return 0, "", [], ""
 
         # 8. Add to main bouquet
@@ -939,7 +1039,14 @@ def create_fallback_bouquet_sync(servicetype, name, export_type, bouquet_positio
         return 0, "", [], ""
 
 
-def create_bouquet_file(name, channels, servicetype, export_type, bouquet_position, matcher, country_code):
+def create_bouquet_file(
+        name,
+        channels,
+        servicetype,
+        export_type,
+        bouquet_position,
+        matcher,
+        country_code):
     """
     Create bouquet file, performing matching once.
     Returns (channel_count, bouquet_filename, matched_channels, unmatched_channels)
@@ -955,7 +1062,17 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
 
         # Prepare file name
         if export_type == "flat" or not is_category:
-            safe_name = name.lower().replace(' ', '_').replace('➾', '').replace('⟾', '').replace('->', '').replace('→', '')
+            safe_name = name.lower().replace(
+                ' ',
+                '_').replace(
+                '➾',
+                '').replace(
+                '⟾',
+                '').replace(
+                '->',
+                '').replace(
+                    '→',
+                '')
             bouquet_filename = "userbouquet.vavoo_%s.tv" % safe_name
         else:
             country_part = ""
@@ -967,19 +1084,32 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
                     category_part = parts[1].strip()
                     break
             if not country_part or not category_part:
-                safe_name = name.lower().replace(' ', '_').replace('➾', '_').replace('⟾', '_').replace('->', '_').replace('→', '_')
+                safe_name = name.lower().replace(
+                    ' ',
+                    '_').replace(
+                    '➾',
+                    '_').replace(
+                    '⟾',
+                    '_').replace(
+                    '->',
+                    '_').replace(
+                    '→',
+                    '_')
                 bouquet_filename = "userbouquet.vavoo_%s.tv" % safe_name
             else:
                 country_safe = country_part.lower().replace(' ', '_')
                 category_safe = category_part.lower().replace(' ', '_')
-                bouquet_filename = "userbouquet.vavoo_%s_%s.tv" % (country_safe, category_safe)
+                bouquet_filename = "userbouquet.vavoo_%s_%s.tv" % (
+                    country_safe, category_safe)
 
         bouquet_path = join(ENIGMA_PATH, bouquet_filename)
 
         # Lists to store results
         # Store items for background processing
         # background_items = []
-        matched = []      # each item: {'name': name, 'channel_id': id, 'dvb_ref': ref, 'rytec_id': rytec_id}
+        # each item: {'name': name, 'channel_id': id, 'dvb_ref': ref,
+        # 'rytec_id': rytec_id}
+        matched = []
         unmatched = []    # each item: {'name': name, 'channel_id': id}
         tv_lines = ["#NAME %s" % name]
         channel_count = 0
@@ -1003,13 +1133,16 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
                 encoded_url = channel_url.replace(':', '%3a')
 
                 # Perform matching once
-                service_line = "#SERVICE {}:0:0:0:0:0:0:0:0:0:{}".format(servicetype, encoded_url)
-                rytec_id, dvb_ref = matcher.find_match(channel_name, country_code)
+                service_line = "#SERVICE {}:0:0:0:0:0:0:0:0:0:{}".format(
+                    servicetype, encoded_url)
+                rytec_id, dvb_ref = matcher.find_match(
+                    channel_name, country_code)
 
                 if dvb_ref:
                     if dvb_ref.endswith(':'):
                         dvb_ref = dvb_ref[:-1]
-                    service_line = "#SERVICE {}:{}".format(dvb_ref, encoded_url)
+                    service_line = "#SERVICE {}:{}".format(
+                        dvb_ref, encoded_url)
                     full_service_ref = "{}:{}".format(dvb_ref, encoded_url)
                     matched.append({
                         'name': clean_name,
@@ -1019,7 +1152,8 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
                         'rytec_id': rytec_id
                     })
                 else:
-                    # Fallback: first 10 fields all zero (except servicetype and third field = 1)
+                    # Fallback: first 10 fields all zero (except servicetype
+                    # and third field = 1)
                     unmatched.append({
                         'name': clean_name,
                         'channel_id': channel_id
@@ -1041,13 +1175,17 @@ def create_bouquet_file(name, channels, servicetype, export_type, bouquet_positi
         try:
             with io.open(bouquet_path, 'w', encoding='utf-8') as f:
                 f.write('\n'.join(tv_lines))
-            print("[Bouquet] File created: %s (%d channels)" % (bouquet_filename, channel_count))
+            print(
+                "[Bouquet] File created: %s (%d channels)" %
+                (bouquet_filename, channel_count))
         except Exception as e:
             print("[Bouquet] Error writing file with encoding: %s" % str(e))
             try:
                 with open(bouquet_path, 'wb') as f:
                     f.write(('\n'.join(tv_lines)).encode('utf-8', 'ignore'))
-                print("[Bouquet] File created (binary fallback): %s (%d channels)" % (bouquet_filename, channel_count))
+                print(
+                    "[Bouquet] File created (binary fallback): %s (%d channels)" %
+                    (bouquet_filename, channel_count))
             except Exception as e2:
                 print("[Bouquet] Critical error writing file: %s" % str(e2))
                 return 0, "", [], []
