@@ -1097,7 +1097,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
             # Redirect per-country EPG requests to GitHub raw files
             elif parsed_path.path.startswith('/epg/') and parsed_path.path.endswith('.xml'):
-                country_code = parsed_path.path.split('/')[-1].replace('.xml', '')
+                country_code = parsed_path.path.split(
+                    '/')[-1].replace('.xml', '')
                 github_url = "{}/vavoo-player/master/epg_{}.xml".format(
                     HOST_GIT, country_code)
                 self.send_response(302)

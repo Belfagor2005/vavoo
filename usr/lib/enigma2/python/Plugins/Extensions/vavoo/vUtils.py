@@ -1785,115 +1785,115 @@ def download_epg_cache_if_needed():
     # """
     # try:
 
-        # # URL del file
-        # url = "{}/vavoo_epg_cache.json".format(HOST_MAIN)
-        # print("[Cache] Downloading from: {}".format(url))
+    # # URL del file
+    # url = "{}/vavoo_epg_cache.json".format(HOST_MAIN)
+    # print("[Cache] Downloading from: {}".format(url))
 
-        # # Scarica in /tmp/vavoo_epg_cache.json
-        # temp_file = "/tmp/vavoo_epg_cache.json"
+    # # Scarica in /tmp/vavoo_epg_cache.json
+    # temp_file = "/tmp/vavoo_epg_cache.json"
 
-        # # Se esiste già e non force, usalo
-        # if exists(temp_file) and not force:
-            # file_age = time() - getmtime(temp_file)
-            # if file_age < 3600:  # 1 ora
-                # print("[Cache] Using existing temp file ({} min old)".format(int(file_age / 60)))
-                # return temp_file
+    # # Se esiste già e non force, usalo
+    # if exists(temp_file) and not force:
+    # file_age = time() - getmtime(temp_file)
+    # if file_age < 3600:  # 1 ora
+    # print("[Cache] Using existing temp file ({} min old)".format(int(file_age / 60)))
+    # return temp_file
 
-        # response = requests.get(url, timeout=10)
-        # if response.status_code == 200:
-            # with open(temp_file, 'wb') as f:
-                # f.write(response.content)
-            # print("[Cache] Downloaded to: {}".format(temp_file))
-            # return temp_file
-        # else:
-            # print("[Cache] Download failed: HTTP {}".format(response.status_code))
-            # return None
+    # response = requests.get(url, timeout=10)
+    # if response.status_code == 200:
+    # with open(temp_file, 'wb') as f:
+    # f.write(response.content)
+    # print("[Cache] Downloaded to: {}".format(temp_file))
+    # return temp_file
+    # else:
+    # print("[Cache] Download failed: HTTP {}".format(response.status_code))
+    # return None
 
     # except Exception as e:
-        # print("[Cache] Download error: {}".format(e))
-        # return None
+    # print("[Cache] Download error: {}".format(e))
+    # return None
 
 
 # def load_epg_cache_from_file(cache_file=None):
     # """Load EPG cache from specified file or default temp file"""
     # if cache_file is None:
-        # cache_file = "/tmp/vavoo_epg_cache.json"
+    # cache_file = "/tmp/vavoo_epg_cache.json"
 
     # try:
-        # if exists(cache_file):
-            # with open(cache_file, 'r') as f:
-                # return load(f)
+    # if exists(cache_file):
+    # with open(cache_file, 'r') as f:
+    # return load(f)
     # except Exception as e:
-        # print("[Cache] Error loading {}: {}".format(cache_file, e))
+    # print("[Cache] Error loading {}: {}".format(cache_file, e))
 
     # return None
 
 
 # def update_epg_cache_incremental(
-        # matched_channels,
-        # unmatched_channels,
-        # country_code):
+    # matched_channels,
+    # unmatched_channels,
+    # country_code):
     # """
     # Update the EPG cache incrementally, preserving existing entries.
 
     # Args:
-        # matched_channels: List of dicts with keys 'name', 'rytec_id', 'dvb_ref'
-        # unmatched_channels: List of dicts with key 'name'
-        # country_code: ISO country code string
+    # matched_channels: List of dicts with keys 'name', 'rytec_id', 'dvb_ref'
+    # unmatched_channels: List of dicts with key 'name'
+    # country_code: ISO country code string
     # """
     # try:
-        # # Load existing cache
-        # complete_cache = {}
-        # if exists(CACHE_FILE):
-            # try:
-                # with open(CACHE_FILE, 'r') as f:
-                    # complete_cache = load(f)
-                # print(
-                    # "[EPG Cache] Loaded {} existing entries".format(
-                        # len(complete_cache)))
-            # except Exception as e:
-                # print(
-                    # "[EPG Cache] Error loading cache, starting fresh: {}".format(e))
-                # complete_cache = {}
+    # # Load existing cache
+    # complete_cache = {}
+    # if exists(CACHE_FILE):
+    # try:
+    # with open(CACHE_FILE, 'r') as f:
+    # complete_cache = load(f)
+    # print(
+    # "[EPG Cache] Loaded {} existing entries".format(
+    # len(complete_cache)))
+    # except Exception as e:
+    # print(
+    # "[EPG Cache] Error loading cache, starting fresh: {}".format(e))
+    # complete_cache = {}
 
-        # # Add matched channels
-        # for m in matched_channels:
-            # key = "{}_{}".format(m['name'], country_code)
-            # complete_cache[key] = {
-                # 'id': m['rytec_id'],
-                # 'sref': m['dvb_ref'],
-                # 'name': m['name'],
-                # 'country': country_code,
-                # 'matched': True,
-                # 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
-            # }
+    # # Add matched channels
+    # for m in matched_channels:
+    # key = "{}_{}".format(m['name'], country_code)
+    # complete_cache[key] = {
+    # 'id': m['rytec_id'],
+    # 'sref': m['dvb_ref'],
+    # 'name': m['name'],
+    # 'country': country_code,
+    # 'matched': True,
+    # 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
+    # }
 
-        # # Add unmatched channels (only if not already present)
-        # for u in unmatched_channels:
-            # key = "{}_{}".format(u['name'], country_code)
-            # if key not in complete_cache:
-                # complete_cache[key] = {
-                    # 'id': key,
-                    # 'sref': "4097:0:0:0:0:0:0:0:0:0:",
-                    # 'name': u['name'],
-                    # 'country': country_code,
-                    # 'matched': False,
-                    # 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
-                # }
+    # # Add unmatched channels (only if not already present)
+    # for u in unmatched_channels:
+    # key = "{}_{}".format(u['name'], country_code)
+    # if key not in complete_cache:
+    # complete_cache[key] = {
+    # 'id': key,
+    # 'sref': "4097:0:0:0:0:0:0:0:0:0:",
+    # 'name': u['name'],
+    # 'country': country_code,
+    # 'matched': False,
+    # 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
+    # }
 
-        # # Save updated cache
-        # try:
-            # with open(CACHE_FILE, 'w') as f:
-                # dump(complete_cache, f, indent=2, sort_keys=True)
-            # print(
-                # "[EPG Cache] Saved {} total entries".format(
-                    # len(complete_cache)))
-        # except Exception as e:
-            # print("[EPG Cache] Error saving cache: {}".format(e))
+    # # Save updated cache
+    # try:
+    # with open(CACHE_FILE, 'w') as f:
+    # dump(complete_cache, f, indent=2, sort_keys=True)
+    # print(
+    # "[EPG Cache] Saved {} total entries".format(
+    # len(complete_cache)))
+    # except Exception as e:
+    # print("[EPG Cache] Error saving cache: {}".format(e))
 
     # except Exception as e:
-        # print("[EPG Cache] Error updating cache: {}".format(e))
-        # trace_error()
+    # print("[EPG Cache] Error updating cache: {}".format(e))
+    # trace_error()
 
 
 def update_complete_cache(matched_channels, unmatched_channels, country_code):
@@ -2041,24 +2041,24 @@ def save_unmatched(
     # """
     # try:
         # if not exists(UNMATCHED_FILE):
-            # return {}
+        # return {}
 
         # with open(UNMATCHED_FILE, 'r') as f:
-            # content = f.read().strip()
-            # if not content:
-                # return {}
+        # content = f.read().strip()
+        # if not content:
+        # return {}
 
-            # unmatched_data = loads(content)
+        # unmatched_data = loads(content)
 
-            # # Filter by country if specified
-            # if country_code:
-                # filtered = {}
-                # for key, value in unmatched_data.items():
-                    # if value.get('country') == country_code:
-                        # filtered[key] = value
-                # return filtered
+        # # Filter by country if specified
+        # if country_code:
+        # filtered = {}
+        # for key, value in unmatched_data.items():
+        # if value.get('country') == country_code:
+        # filtered[key] = value
+        # return filtered
 
-            # return unmatched_data
+        # return unmatched_data
 
     # except Exception as e:
         # print("[Unmatched] Error reading cache: %s" % e)
@@ -2071,10 +2071,10 @@ def save_unmatched(
     # """
     # try:
         # if not exists(UNMATCHED_FILE):
-            # return 0
+        # return 0
 
         # with open(UNMATCHED_FILE, 'r') as f:
-            # unmatched_data = load(f)
+        # unmatched_data = load(f)
 
         # now = time()
         # max_age_seconds = max_age_days * 24 * 3600
@@ -2082,26 +2082,26 @@ def save_unmatched(
 
         # # Convert timestamp strings to time for comparison
         # for key, value in list(unmatched_data.items()):
-            # try:
-                # timestamp_str = value.get('timestamp', '')
-                # if timestamp_str:
-                    # # Parse timestamp (format: YYYY-MM-DD HH:MM:SS)
-                    # from time import mktime, strptime
-                    # timestamp = mktime(
-                        # strptime(
-                            # timestamp_str,
-                            # '%Y-%m-%d %H:%M:%S'))
-                    # if now - timestamp > max_age_seconds:
-                        # del unmatched_data[key]
-                        # removed += 1
-            # except BaseException:
-                # # If timestamp parsing fails, keep the entry
-                # continue
+        # try:
+        # timestamp_str = value.get('timestamp', '')
+        # if timestamp_str:
+        # # Parse timestamp (format: YYYY-MM-DD HH:MM:SS)
+        # from time import mktime, strptime
+        # timestamp = mktime(
+        # strptime(
+        # timestamp_str,
+        # '%Y-%m-%d %H:%M:%S'))
+        # if now - timestamp > max_age_seconds:
+        # del unmatched_data[key]
+        # removed += 1
+        # except BaseException:
+        # # If timestamp parsing fails, keep the entry
+        # continue
 
         # if removed > 0:
-            # with open(UNMATCHED_FILE, 'w') as f:
-                # dump(unmatched_data, f, indent=2, sort_keys=True)
-            # print("[Unmatched] Cleaned %d old entries" % removed)
+        # with open(UNMATCHED_FILE, 'w') as f:
+        # dump(unmatched_data, f, indent=2, sort_keys=True)
+        # print("[Unmatched] Cleaned %d old entries" % removed)
 
         # return removed
 
@@ -2192,9 +2192,9 @@ def write_epg_mapping_file(epg_entries, country_code):
             # service_line = line[9:]
             # parts = service_line.split(':')
             # if len(parts) < 11:
-                # new_lines.append(lines[i])
-                # i += 1
-                # continue
+            # new_lines.append(lines[i])
+            # i += 1
+            # continue
 
             # url_part = parts[10] if len(parts) > 10 else ''
 
@@ -2203,62 +2203,62 @@ def write_epg_mapping_file(epg_entries, country_code):
             # # If this is not the case, it means it is already converted
             # already_converted = False
             # if len(parts) >= 10:
-                # for idx in range(3, 10):
-                    # if idx < len(parts) and parts[idx] != '0':
-                        # already_converted = True
-                        # break
+            # for idx in range(3, 10):
+            # if idx < len(parts) and parts[idx] != '0':
+            # already_converted = True
+            # break
 
             # if already_converted:
-                # new_lines.append(lines[i])
-                # i += 1
-                # continue
+            # new_lines.append(lines[i])
+            # i += 1
+            # continue
 
             # # Get the description line
             # if i + 1 < len(lines) and lines[i +
-                                            # 1].strip().startswith('#DESCRIPTION '):
-                # desc_line = lines[i + 1].strip()
-                # name = desc_line[12:]  # after '#DESCRIPTION '
-                # name = sub(r' \.(c|s)$', '', name)  # remove .c or .s
+            # 1].strip().startswith('#DESCRIPTION '):
+            # desc_line = lines[i + 1].strip()
+            # name = desc_line[12:]  # after '#DESCRIPTION '
+            # name = sub(r' \.(c|s)$', '', name)  # remove .c or .s
             # else:
-                # new_lines.append(lines[i])
-                # i += 1
-                # continue
+            # new_lines.append(lines[i])
+            # i += 1
+            # continue
 
             # # Extract channel ID from the original URL
             # channel_id = None
             # try:
-                # url_decoded = unquote(url_part)
-                # match = search(r'[?&]channel=([^&]+)', url_decoded)
-                # if match:
-                    # channel_id = match.group(1)
+            # url_decoded = unquote(url_part)
+            # match = search(r'[?&]channel=([^&]+)', url_decoded)
+            # if match:
+            # channel_id = match.group(1)
             # except BaseException:
-                # pass
+            # pass
 
             # # Try to find a converted sref using the matcher
             # rytec_id, converted_sref = matcher.find_match(name, country_code)
             # if converted_sref:
-                # # Ensure that converted_sref does NOT have a trailing colon
-                # if converted_sref.endswith(':'):
-                    # converted_sref = converted_sref[:-1]
+            # # Ensure that converted_sref does NOT have a trailing colon
+            # if converted_sref.endswith(':'):
+            # converted_sref = converted_sref[:-1]
 
-                # # The new line: #SERVICE <converted_sref>:<url_part>
-                # new_service_line = "#SERVICE {}:{}".format(
-                    # converted_sref, url_part)
-                # new_lines.append(new_service_line + '\n')
-                # new_lines.append(lines[i + 1])  # keep original description
-                # changes += 1
+            # # The new line: #SERVICE <converted_sref>:<url_part>
+            # new_service_line = "#SERVICE {}:{}".format(
+            # converted_sref, url_part)
+            # new_lines.append(new_service_line + '\n')
+            # new_lines.append(lines[i + 1])  # keep original description
+            # changes += 1
 
-                # # Store mapping for proxy (optional)
-                # if converted_sref and channel_id:
-                    # new_sref_map[converted_sref] = channel_id
+            # # Store mapping for proxy (optional)
+            # if converted_sref and channel_id:
+            # new_sref_map[converted_sref] = channel_id
 
-                # i += 2
-                # continue
+            # i += 2
+            # continue
             # else:
-                # # No match, keep original
-                # new_lines.append(lines[i])
-                # new_lines.append(lines[i + 1])
-                # i += 2
+            # # No match, keep original
+            # new_lines.append(lines[i])
+            # new_lines.append(lines[i + 1])
+            # i += 2
         # else:
             # new_lines.append(lines[i])
             # i += 1
@@ -2268,22 +2268,22 @@ def write_epg_mapping_file(epg_entries, country_code):
             # f.writelines(new_lines)
         # print(
             # "[Bouquet] Rewrote {} channels in {}".format(
-                # changes,
-                # basename(bouquet_path)))
+            # changes,
+            # basename(bouquet_path)))
 
         # # Update sref map
         # if new_sref_map:
             # sref_map.update(new_sref_map)
             # try:
-                # with open(SREF_MAP_FILE, 'w') as f:
-                    # dump(sref_map, f, indent=2)
-                # print("[SREF Map] Added {} entries".format(len(new_sref_map)))
+            # with open(SREF_MAP_FILE, 'w') as f:
+            # dump(sref_map, f, indent=2)
+            # print("[SREF Map] Added {} entries".format(len(new_sref_map)))
             # except Exception as e:
-                # print("[SREF Map] Error saving: {}".format(e))
+            # print("[SREF Map] Error saving: {}".format(e))
     # else:
         # print(
             # "[Bouquet] No changes needed for {}".format(
-                # basename(bouquet_path)))
+            # basename(bouquet_path)))
     # return changes
 
 
@@ -2357,26 +2357,26 @@ def update_epg_sources():
     # """
     # with _epg_lock:
         # try:
-            # from Components.config import config
-            # if not config.plugins.vavoo.epg_enabled.value:
-                # return False
+        # from Components.config import config
+        # if not config.plugins.vavoo.epg_enabled.value:
+        # return False
         # except BaseException:
-            # return False
+        # return False
 
         # epg_dir = "/etc/epgimport"
         # channels_file = join(epg_dir, "vavoo.channels.xml")
         # source_file = join(epg_dir, "vavoo.sources.xml")
 
         # if not exists(epg_dir):
-            # makedirs(epg_dir)
+        # makedirs(epg_dir)
 
         # bouquet_dir = ENIGMA_PATH
         # bouquet_pattern = join(bouquet_dir, "userbouquet.vavoo_*.tv")
         # bouquet_files = glob.glob(bouquet_pattern)
 
         # if not bouquet_files:
-            # print("[EPG] No Vavoo bouquets found")
-            # return False
+        # print("[EPG] No Vavoo bouquets found")
+        # return False
 
         # # Get matcher singleton
         # matcher = get_epg_matcher(similarity_threshold=0.85)
@@ -2385,75 +2385,75 @@ def update_epg_sources():
         # channels = {}
 
         # for bq_file in bouquet_files:
-            # base = basename(bq_file)
-            # country_key = base.replace(
-                # "userbouquet.vavoo_", "").replace(
-                # ".tv", "")
-            # country_name = country_key.capitalize()
-            # country_code = country_codes.get(country_name, "")
+        # base = basename(bq_file)
+        # country_key = base.replace(
+        # "userbouquet.vavoo_", "").replace(
+        # ".tv", "")
+        # country_name = country_key.capitalize()
+        # country_code = country_codes.get(country_name, "")
 
-            # try:
-                # with open(bq_file, 'r') as f:
-                    # lines = f.readlines()
+        # try:
+        # with open(bq_file, 'r') as f:
+        # lines = f.readlines()
 
-                # i = 0
-                # while i < len(lines):
-                    # line = lines[i].strip()
-                    # if line.startswith('#SERVICE '):
-                        # full_service_ref = line[9:].strip()
+        # i = 0
+        # while i < len(lines):
+        # line = lines[i].strip()
+        # if line.startswith('#SERVICE '):
+        # full_service_ref = line[9:].strip()
 
-                        # # Get description line
-                        # name = ''
-                        # if i + \
-                                # 1 < len(lines) and lines[i + 1].strip().startswith('#DESCRIPTION '):
-                            # desc_line = lines[i + 1].strip()
-                            # name = desc_line[12:]  # after '#DESCRIPTION '
-                            # name = sub(
-                                # r' \.(c|s)$', '', name)  # remove .c or .s
+        # # Get description line
+        # name = ''
+        # if i + \
+        # 1 < len(lines) and lines[i + 1].strip().startswith('#DESCRIPTION '):
+        # desc_line = lines[i + 1].strip()
+        # name = desc_line[12:]  # after '#DESCRIPTION '
+        # name = sub(
+        # r' \.(c|s)$', '', name)  # remove .c or .s
 
-                        # # Extract the first 10 fields (up to the tenth ':')
-                        # parts = full_service_ref.split(':')
-                        # if len(parts) >= 10:
-                            # dvb_ref = ':'.join(parts[:10])
-                        # else:
-                            # dvb_ref = full_service_ref  # fallback
+        # # Extract the first 10 fields (up to the tenth ':')
+        # parts = full_service_ref.split(':')
+        # if len(parts) >= 10:
+        # dvb_ref = ':'.join(parts[:10])
+        # else:
+        # dvb_ref = full_service_ref  # fallback
 
-                        # # Search in the matcher cache to obtain the ID
-                        # epg_id = None
-                        # for cache_key, cache_value in matcher.cache.items():
-                            # # cache_value['sref'] may have 10 or 11 fields, so
-                            # # compare carefully
-                            # cache_sref = cache_value.get('sref', '')
+        # # Search in the matcher cache to obtain the ID
+        # epg_id = None
+        # for cache_key, cache_value in matcher.cache.items():
+        # # cache_value['sref'] may have 10 or 11 fields, so
+        # # compare carefully
+        # cache_sref = cache_value.get('sref', '')
 
-                            # # Remove trailing colon if present
-                            # if cache_sref.endswith(':'):
-                                # cache_sref = cache_sref[:-1]
+        # # Remove trailing colon if present
+        # if cache_sref.endswith(':'):
+        # cache_sref = cache_sref[:-1]
 
-                            # if cache_sref == dvb_ref:
-                                # epg_id = cache_value.get('id')
-                                # break
+        # if cache_sref == dvb_ref:
+        # epg_id = cache_value.get('id')
+        # break
 
-                        # if not epg_id:
-                            # # Generate a fallback ID from the channel name
-                            # normalized = sub(r'[^\w\s-]', '', name.lower())
-                            # normalized = sub(r'\s+', '-', normalized.strip())
-                            # epg_id = "{}.{}".format(
-                                # normalized, country_code) if country_code else normalized
+        # if not epg_id:
+        # # Generate a fallback ID from the channel name
+        # normalized = sub(r'[^\w\s-]', '', name.lower())
+        # normalized = sub(r'\s+', '-', normalized.strip())
+        # epg_id = "{}.{}".format(
+        # normalized, country_code) if country_code else normalized
 
-                        # # Save only if not duplicated (use dvb_ref as key)
-                        # if dvb_ref not in channels:
-                            # channels[dvb_ref] = epg_id
+        # # Save only if not duplicated (use dvb_ref as key)
+        # if dvb_ref not in channels:
+        # channels[dvb_ref] = epg_id
 
-                        # i += 2  # skip description line
-                    # else:
-                        # i += 1
-            # except Exception as e:
-                # print("[EPG] Error reading {}: {}".format(bq_file, e))
-                # continue
+        # i += 2  # skip description line
+        # else:
+        # i += 1
+        # except Exception as e:
+        # print("[EPG] Error reading {}: {}".format(bq_file, e))
+        # continue
 
         # if not channels:
-            # print("[EPG] No channels found in bouquets")
-            # return False
+        # print("[EPG] No channels found in bouquets")
+        # return False
 
         # # Save cache for future runs
         # matcher.save_cache()
@@ -2462,29 +2462,29 @@ def update_epg_sources():
         # # fields only)
         # xml_lines = ['<?xml version="1.0" encoding="utf-8"?>', '<channels>']
         # for sref, epg_id in channels.items():
-            # # Ensure sref has 10 fields and add a trailing ':' for the XML tag
-            # xml_lines.append(
-                # '  <channel id="{}">{}:</channel>'.format(epg_id, sref))
+        # # Ensure sref has 10 fields and add a trailing ':' for the XML tag
+        # xml_lines.append(
+        # '  <channel id="{}">{}:</channel>'.format(epg_id, sref))
         # xml_lines.append('</channels>')
 
         # try:
-            # with open(channels_file, 'w') as f:
-                # f.write('\n'.join(xml_lines))
-            # print(
-                # "[EPG] Generated mapping for {} channels".format(
-                    # len(channels)))
+        # with open(channels_file, 'w') as f:
+        # f.write('\n'.join(xml_lines))
+        # print(
+        # "[EPG] Generated mapping for {} channels".format(
+        # len(channels)))
         # except Exception as e:
-            # print("[EPG] Error writing channels file: {}".format(e))
-            # return False
+        # print("[EPG] Error writing channels file: {}".format(e))
+        # return False
 
         # # Generate source file (points to the local EPG endpoint)
         # local_ip = PROXY_HOST
         # try:
-            # from .vavoo_proxy import proxy
-            # if proxy and hasattr(proxy, 'get_local_ip'):
-                # local_ip = proxy.get_local_ip()
+        # from .vavoo_proxy import proxy
+        # if proxy and hasattr(proxy, 'get_local_ip'):
+        # local_ip = proxy.get_local_ip()
         # except BaseException:
-            # pass
+        # pass
 
         # epg_url = "http://{}:{}/epg.xml".format(local_ip, PORT)
         # source_content = '''<?xml version="1.0" encoding="utf-8"?>
@@ -2498,12 +2498,12 @@ def update_epg_sources():
 # </sources>'''.format(epg_url)
 
         # try:
-            # with open(source_file, 'w') as f:
-                # f.write(source_content)
-            # print("[EPG] Source file generated")
+        # with open(source_file, 'w') as f:
+        # f.write(source_content)
+        # print("[EPG] Source file generated")
         # except Exception as e:
-            # print("[EPG] Error writing source file: {}".format(e))
-            # return False
+        # print("[EPG] Error writing source file: {}".format(e))
+        # return False
 
         # return True
 
