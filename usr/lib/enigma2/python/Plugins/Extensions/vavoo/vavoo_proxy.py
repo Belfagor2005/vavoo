@@ -9,11 +9,10 @@ from __future__ import absolute_import, print_function
 #  Created by Lululla (https://github.com/Belfagor2005) #
 #  License: CC BY-NC-SA 4.0                             #
 #  https://creativecommons.org/licenses/by-nc-sa/4.0    #
-#  Last Modified: 20260122                              #
+#  Last Modified: 20260315                              #
 #                                                       #
 #  Credits:                                             #
 #  - Original concept by Lululla                        #
-#  - Special thanks to @KiddaC for support              #
 #  - Background images by @oktus                        #
 #  - Additional contributions by Qu4k3                  #
 #  - Linuxsat-support.com & Corvoboys communities       #
@@ -34,20 +33,38 @@ import uuid
 import time
 import threading
 import socket
-from json import loads, dumps
+from json import loads, load, dumps
+import urllib3
+
 from . import (
+    # PRIMARY_BASE_URL,
+    # FALLBACK_BASE_URL,
+    # PROXY_BASE_URL,
     PORT,
     PROXY_HOST,
-    PROXY_BASE_URL,
     PROXY_STATUS_URL,
     PROXY_HEALTH_URL,
     PROXY_SHUTDOWN_URL,
-    PRIMARY_BASE_URL,
-    FALLBACK_BASE_URL,
-    BASE_SITES)
-from .vUtils import is_proxy_running, make_print, log, debug, warning, error, log_exception, trace_error
+    BASE_SITES
+)
 
-_starting_lock = threading.Lock()
+from .vUtils import (
+    # log,
+    # debug,
+    # warning,
+    # error,
+    # log_exception,
+    _starting_lock,
+    is_proxy_running,
+    make_print,
+    trace_error,
+    SREF_MAP_FILE
+)
+
+
+# Disable SSL warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 _starting = False
 
 try:
@@ -57,6 +74,12 @@ except NameError:
 
 print = make_print("PROXY")
 
+
+try:
+    from urllib.parse import unquote, urlparse, parse_qs
+except ImportError:
+    from urllib import unquote
+    from urlparse import urlparse, parse_qs
 
 # Python 2/3 compatibility for exception names used in handlers
 try:
@@ -74,11 +97,11 @@ socket.setdefaulttimeout(30)
 
 try:
     from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-    from urlparse import urlparse, parse_qs
+    # from urlparse import urlparse, parse_qs
     print(" Python 2 detected")
 except ImportError:
     from http.server import BaseHTTPRequestHandler, HTTPServer
-    from urllib.parse import urlparse, parse_qs
+    # from urllib.parse import urlparse, parse_qs
     print(" Python 3 detected")
 
 
@@ -97,39 +120,44 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 # ========== CONFIGURAZIONE ==========
+
 """
-VAVOO PROXY ENDPOINTS (127.0.0.1:{PORT})
+VAVOO PROXY ENDPOINTS (PROXY_HOST:{PORT})
 1. /status - Proxy status
-URL: http://127.0.0.1:{PORT}/status
-Description: Returns the current status of the proxy, including initialization, number of channels, addonSig validity, local IP and port.
+   URL: http://127.0.0.1:{PORT}/status
+   Description: Returns the current status of the proxy, including initialization, number of channels, addonSig validity, local IP and port.
 
 2. /channels?country=CountryName - Get channels for a country
-URL: http://127.0.0.1:{PORT}/channels?country=Italy
-Description: Returns the list of channels for the specified country. Country names must be URL-encoded.
+   URL: http://127.0.0.1:{PORT}/channels?country=Italy
+   Description: Returns the list of channels for the specified country. Country names must be URL-encoded.
 
 3. /vavoo?channel=ChannelID - Resolve a channel by ID
-URL: http://127.0.0.1:{PORT}/vavoo?channel=abc123
-Description: Returns a 302 redirect to the stream URL for the given channel ID. This is the primary endpoint for playback.
+   URL: http://127.0.0.1:{PORT}/vavoo?channel=abc123
+   Description: Returns a 302 redirect to the stream URL for the given channel ID. This is the primary endpoint for playback.
 
 4. /catalog - Full catalog
-URL: http://127.0.0.1:{PORT}/catalog
-Description: Returns the entire channel catalog in JSON format (all channels with proxy URLs).
+   URL: http://127.0.0.1:{PORT}/catalog
+   Description: Returns the entire channel catalog in JSON format (all channels with proxy URLs).
 
 5. /countries - List all countries
-URL: http://127.0.0.1:{PORT}/countries
-Description: Returns a list of all unique countries available in the catalog.
+   URL: http://127.0.0.1:{PORT}/countries
+   Description: Returns a list of all unique countries available in the catalog.
 
 6. /refresh_token - Refresh addonSig token
-URL: http://127.0.0.1:{PORT}/refresh_token
-Description: Forces a refresh of the authentication token (addonSig).
+   URL: http://127.0.0.1:{PORT}/refresh_token
+   Description: Forces a refresh of the authentication token (addonSig).
 
 7. /health - Monitors proxy
-URL: http://127.0.0.1:{PORT}/health
-Description: Monitors proxy health and restarts it if necessary.
+   URL: http://127.0.0.1:{PORT}/health
+   Description: Monitors proxy health and restarts it if necessary.
 
 8. /shutdown - Shutdown proxy
-URL: http://127.0.0.1:{PORT}/shutdown
-Description: Gracefully shuts down the proxy server.
+   URL: http://127.0.0.1:{PORT}/shutdown
+   Description: Gracefully shuts down the proxy server.
+
+9. /epg/<country>.xml - Get EPG for a specific country
+    URL: http://127.0.0.1:{PORT}/epg/it.xml
+    Description: Returns the EPG data in XMLTV format for the specified country (e.g., it, fr, de). The request is redirected to the corresponding file on GitHub.
 """
 
 # API Endpoints
@@ -291,6 +319,7 @@ class VavooProxy:
             max_retries=2,
             pool_block=False
         )
+
         self.session.mount('http://', adapter)
         self.session.mount('https://', adapter)
 
@@ -468,17 +497,6 @@ class VavooProxy:
                 else:
                     print("[AddonSig] Unable to obtain addonSig from any URL")
 
-                """"
-                # r = self._robust_request(
-                    # "POST", PING_URL, json=payload, timeout=15)
-                # r.raise_for_status()
-                # data = decode_response(r)
-                # sig = data.get("addonSig")
-                # if not sig:
-                    # raise RuntimeError("No addonSig received")
-                # self.addon_sig_data["sig"] = sig
-                # self.addon_sig_data["ts"] = now
-                """
                 print(" Token refreshed successfully")
                 return sig
 
@@ -728,7 +746,6 @@ class VavooProxy:
             return all_channels
         except Exception as e:
             print(" Catalog load error: %s" % str(e))
-            from .vUtils import trace_error
             trace_error()
             if all_channels:
                 print(" Returning {0} channels already loaded"
@@ -830,18 +847,7 @@ class VavooProxy:
         return None
 
     def get_local_ip(self, force_refresh=False):
-        """Get and cache local IP"""
-        if self.local_ip and not force_refresh:
-            return self.local_ip
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("8.8.8.8", 80))
-            self.local_ip = s.getsockname()[0]
-            s.close()
-            return self.local_ip
-        except BaseException:
-            self.local_ip = PROXY_HOST
-            return self.local_ip
+        return PROXY_HOST
 
     def stop(self):
         """Stop background workers/timers and close session (safe for Py2/3)."""
@@ -887,9 +893,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
         return True
 
     def do_GET(self):
-        client_address = self.client_address[0]
-        print(" Request {1} from {0}"
-              .format(client_address, self.path))
+        # client_address = self.client_address[0]
+        # print(" Request {1} from {0}"
+        #    .format(client_address, self.path))
         try:
             parsed_path = urlparse(self.path)
             query_params = parse_qs(parsed_path.query)
@@ -929,20 +935,29 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(500, "Internal proxy error")
 
             elif parsed_path.path == '/stream':
-                """True streaming proxy with keep-alive monitoring
-                # Change from:
-                service_url = PROXY_BASE_URL + "/vavoo?channel=" + channel_id
-                # To:
-                service_url = PROXY_BASE_URL + "/stream?channel=" + channel_id
-                """
-                channel_id = query_params.get('channel', [None])[0]
-                if not channel_id:
-                    self.send_error(400, "Missing channel parameter")
+                # Get the 'ref' parameter (the converted service reference)
+                ref_encoded = query_params.get('ref', [None])[0]
+                if not ref_encoded:
+                    self.send_error(400, "Missing ref parameter")
                     return
 
-                channel = proxy.channels_by_id.get(channel_id) if hasattr(
-                    proxy, 'channels_by_id') else None
+                # Decode the ref (replace %3a back to :)
+                ref = unquote(ref_encoded)
 
+                # Load the sref map
+                try:
+                    with open(SREF_MAP_FILE, 'r') as f:
+                        sref_map = load(f)
+                except:
+                    sref_map = {}
+
+                channel_id = sref_map.get(ref)
+                if not channel_id:
+                    self.send_error(404, "Channel not found in map")
+                    return
+
+                # Now get the channel object from proxy.channels_by_id
+                channel = proxy.channels_by_id.get(channel_id) if hasattr(proxy, 'channels_by_id') else None
                 if not channel:
                     self.send_error(404, "Channel not found")
                     return
@@ -955,18 +970,13 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                         return
 
                     # 2. Connect to upstream with streaming
-                    upstream = proxy.session.get(
-                        stream_url, stream=True, timeout=30)
+                    upstream = proxy.session.get(stream_url, stream=True, timeout=30)
                     upstream.raise_for_status()
 
                     # 3. Send headers to player
                     if not self.safe_send_response(200):
                         return
-                    self.send_header(
-                        'Content-Type',
-                        upstream.headers.get(
-                            'Content-Type',
-                            'video/mp2t'))
+                    self.send_header('Content-Type', upstream.headers.get('Content-Type', 'video/mp2t'))
                     self.send_header('Connection', 'keep-alive')
                     self.end_headers()
 
@@ -979,19 +989,15 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                                 self.wfile.flush()
                                 last_data_time = time.time()
                             else:
-                                # Empty chunk - check if upstream is dead
-                                if time.time() - last_data_time > 10:  # 10 seconds timeout
-                                    print(
-                                        "[Proxy Stream] Upstream timeout for channel: " + channel_id)
+                                if time.time() - last_data_time > 10:
+                                    print("[Proxy Stream] Upstream timeout for channel: " + channel_id)
                                     break
                                 time.sleep(0.1)
                     except (socket.timeout, ConnectionError, BrokenPipeError) as e:
                         print("[Proxy Stream] Downstream error: " + str(e))
                     finally:
                         upstream.close()
-                        print(
-                            "[Proxy Stream] Finished for channel: " +
-                            channel_id)
+                        print("[Proxy Stream] Finished for channel: " + channel_id)
 
                 except Exception as e:
                     print("[Proxy Stream] Error: " + str(e))
@@ -1063,23 +1069,26 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             elif parsed_path.path == '/status':
                 status = {
                     "initialized": proxy.initialized,
-                    "channels_count": len(
-                        proxy.all_filtered_items),
+                    "channels_count": len(proxy.all_filtered_items),
                     "addon_sig_valid": proxy.addon_sig_data["sig"] is not None,
-                    "addon_sig_age": int(
-                        time.time() -
-                        proxy.addon_sig_data["ts"]),
+                    "addon_sig_age": int(time.time() - proxy.addon_sig_data["ts"]),
                     "local_ip": proxy.get_local_ip(),
-                    "port": PORT}
-
+                    "port": PORT
+                }
                 if not self.safe_send_response(200):
                     return
-
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-
                 if not self.safe_write(dumps(status)):
                     return
+
+            # Redirect per-country EPG requests to GitHub raw files
+            elif parsed_path.path.startswith('/epg/') and parsed_path.path.endswith('.xml'):
+                country_code = parsed_path.path.split('/')[-1].replace('.xml', '')
+                github_url = "https://raw.githubusercontent.com/Belfagor2005/vavoo-player/master/epg_{}.xml".format(country_code)
+                self.send_response(302)
+                self.send_header('Location', github_url)
+                self.end_headers()
 
             elif parsed_path.path == '/health':
                 """Health check endpoint with detailed status"""
@@ -1343,7 +1352,6 @@ def start_proxy():
 
         except Exception as e:
             print("[✗] Critical error: " + str(e))
-            from .vUtils import trace_error
             trace_error()
             restart_count += 1
             if restart_count < max_restarts:

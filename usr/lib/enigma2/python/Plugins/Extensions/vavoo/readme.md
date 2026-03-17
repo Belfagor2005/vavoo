@@ -1,12 +1,12 @@
 # 🎬 Vavoo Stream Live - Enigma2 Plugin
 
 [![Python package](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml)
-[![Version](https://img.shields.io/badge/Version-1.45-blue.svg)](https://github.com/Belfagor2005/vavoo)
+[![Version](https://img.shields.io/badge/Version-1.60-blue.svg)](https://github.com/Belfagor2005/vavoo)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Python](https://img.shields.io/badge/Python-2.7%2F3.x-yellow.svg)](https://python.org)
 
 ## 📌 Overview
-Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousands of live TV channels from multiple countries. It features a built-in local proxy for improved reliability, automatic bouquet updates, and seamless integration with your Enigma2 receiver.
+Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousands of live TV channels from multiple countries. It features a built-in local proxy for improved reliability, automatic bouquet updates, EPG integration, real-time notifications, and seamless integration with your Enigma2 receiver.
 
 ## 🖼️ Screenshots
 
@@ -14,10 +14,13 @@ Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousan
 |----------------|-----------------|----------|
 | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen3.png" width="200"> |
 
-| Player | Bouquet Export | Search |
+| Player with EPG | Bouquet Export | Search |
 |--------|----------------|--------|
 | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen4.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen5.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen7.png" width="200"> |
 
+| Notifications | Proxy Status | EPG Overlay |
+|--------|----------------|--------|
+| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen8.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen9.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen10.png" width="200"> |
 
 ## ✨ Key Features
 - **Live TV Streaming** – Watch live channels from various countries
@@ -25,19 +28,40 @@ Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousan
 - **Search Functionality** – Find channels by name in real-time
 - **Enigma2 Bouquet Export** – Export channels directly to your channel list
 - **M3U Playlist Generation** – Create standard M3U playlists for external players
+- **EPG Integration** – Electronic Program Guide for supported channels, served via GitHub
 - **Automatic Updates** – Scheduled bouquet updates to keep channels current
 - **Local Proxy Integration** – Enhanced reliability and no 10-minute blocks
 - **Multi-Language Support** – Including right-to-left language support
 - **Customizable Interface** – Change backgrounds, fonts, and settings
 - **Proxy Status Monitor** – Real-time proxy status display in main interface
+- **Real-time Notifications** – Visual feedback for all operations (exports, EPG processing, errors)
+- **Unmatched Channel Cache** – Persistent storage of unmatched channels for future matching attempts
+- **Thread-safe Operations** – Background exports with progress notifications
 - **Text Key Functions** – Manual proxy refresh using TEXT button
+
+## 🔔 Notification System
+The plugin includes a sophisticated notification system that provides real-time feedback:
+- **Welcome Message** – Shown when the plugin starts
+- **Export Progress** – "Export started", "Bouquet ready", "EPG processing completed"
+- **Error Alerts** – Clear error messages with details
+- **Thread-safe** – Notifications work from any background thread
+- **Message Queue** – Messages are queued if the UI isn't ready
+- **Singleton Pattern** – Single notification manager instance across all plugin screens
+
+### Notification Types
+| Type | Duration | Color | Example |
+|------|----------|-------|---------|
+| Info | 3 seconds | Blue | "Export started. Bouquet will be available shortly." |
+| Success | 4 seconds | Green | "EPG processing completed for 25 channels" |
+| Warning | 4 seconds | Yellow | "An export for another country is already in progress" |
+| Error | 5 seconds | Red | "Bouquet creation error: connection timeout" |
 
 ## 🚀 Quick Start Guide
 
 ### First-Time Setup
-1. **Open the Vavoo Plugin** – The proxy will start automatically
+1. **Open the Vavoo Plugin** – The proxy will start automatically (welcome notification appears)
 2. **Select a Country** – Choose your desired country (e.g., "Italy")
-3. **Press GREEN Button** – Export favorites to Enigma2 bouquets
+3. **Press GREEN Button** – Export favorites to Enigma2 bouquets (notifications show progress)
 4. **Return to TV** – Your channels will appear in the channel list!
 
 ### Automatic Updates (Recommended)
@@ -45,34 +69,51 @@ Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousan
 - Choose update interval (5-15 minutes) or fixed time
 - The proxy will handle everything automatically
 
-### Manual Use
-- If auto-update is OFF, simply open the plugin when you want to update
-- The proxy starts automatically when plugin opens
-- Select country and press GREEN to export
+### EPG Setup
+- Enable **"Enable Vavoo EPG"** in the configuration menu
+- The plugin generates country-specific EPG files in `/etc/epgimport/`
+- EPG data is fetched from GitHub and displayed in the player overlay (press OK)
 
 ## 🔧 User Configuration
 In the Config Menu:
 - ✅ **Scheduled Bouquet Update**: ON/OFF (only required setting)
 - ✅ If ON: Choose interval (5-15 min) or fixed time
+- ✅ **Enable Vavoo EPG**: Generate EPG sources for EPGImport
 - ✅ Proxy and updates are managed automatically
 
 ## 🎯 Benefits
 - ✅ **No 10-minute blocks** – Proxy handles authentication tokens
 - ✅ **Automatic updates** – Keep bouquets fresh without manual work
 - ✅ **Improved performance** – Local proxy provides stable streams
+- ✅ **EPG support** – Program guide for many channels
 - ✅ **Clean system** – Single configuration point
 - ✅ **No manual refreshes** – Everything happens automatically
 - ✅ **Real-time monitoring** – Proxy status always visible
+- ✅ **Visual feedback** – Notifications for all operations
 - ✅ **Manual control** – Force proxy refresh with TEXT button
 
 ## 🛠 Technical Features
-The local proxy (127.0.0.1:4323):
+
+### Local Proxy (127.0.0.1:4323)
 - Manages authentication with Vavoo servers
 - Automatically renews tokens every 8-9 minutes
 - Provides stable URLs for bouquets
 - Completely eliminates 10-minute streaming blocks
 - Self-monitoring with automatic restart on failure
 - Connection pool management to prevent timeouts
+
+### EPG Integration
+- EPG data is generated per country and stored in `/etc/epgimport/vavoo_<country>.channels.xml`
+- A master source file (`vavoo.sources.xml`) is created for EPGImport
+- The player fetches EPG via the proxy redirect to GitHub raw files
+- Channel matching uses a persistent cache with Rytec IDs
+
+### Notification System Architecture
+- **Singleton Pattern**: Single manager instance across all screens
+- **Thread-safe**: Lock mechanism prevents race conditions
+- **Message Queue**: Pending messages stored until UI is ready
+- **Auto-cleanup**: Notifications automatically hide after timeout
+- **Fallback**: Console logging when UI not available
 
 ## 📋 API Endpoints
 The proxy provides these endpoints:
@@ -82,19 +123,66 @@ The proxy provides these endpoints:
 - `/catalog` – Full channel catalog
 - `/countries` – List all countries
 - `/refresh_token` – Force token refresh
+- `/epg/<country>.xml` – Redirect to GitHub EPG file
+- `/health` – Detailed health check with token age
 - `/shutdown` – Gracefully stop proxy
 
 ## 🗂 File Management
+
 ### Bouquet Export
 - Path: Plugin menu → Select country → GREEN button
 - Creates bouquets with proxy URLs: `http://127.0.0.1:4323/vavoo?channel=CHANNEL_ID`
-- Requires proxy to be running during export
+- Service references are matched against Rytec database for EPG compatibility
+- EPG mapping files are automatically generated for each country
 
 ### M3U Export
 - Path: Config Menu → "Generate .m3u files"
 - Downloads playlist from proxy and saves as `vavoo_[country]_playlist.m3u`
 
+### EPG Files
+- Location: `/etc/epgimport/vavoo_*.channels.xml`
+- Source: `https://raw.githubusercontent.com/Belfagor2005/vavoo-player/master/epg_<country>.xml`
+- Updated automatically via GitHub Actions every 6 hours
+
+### Cache Files
+- **EPG Cache**: `/etc/enigma2/vavoo_epg_cache.json` – Persistent cache of matched channels with Rytec IDs
+  ```json
+  {
+    "channel_name_country": {
+      "id": "rytec_id",
+      "sref": "4097:0:1:1773:60E1:217C:5A0000:0:0:0:",
+      "name": "channel_name",
+      "country": "it",
+      "matched": true,
+      "timestamp": "2026-03-17 14:40:49"
+    }
+  }
+  ```
+
+- **Unmatched Cache**: `/etc/enigma2/vavoo_epg_unmatched_cache.json` – Stores channels that couldn't be matched
+  ```json
+  {
+    "channel_name_country": {
+      "id": "channel_name_country",
+      "name": "channel_name",
+      "country": "it",
+      "sref": "4097:0:0:0:0:0:0:0:0:0:",
+      "timestamp": "2026-03-17 14:40:49",
+      "matched": false,
+      "attempts": 3
+    }
+  }
+  ```
+  Features:
+  - Tracks matching attempts count
+  - Auto-converts old format entries
+  - Persistent across plugin restarts
+  - Used for future matching improvements
+
+- **SREF Map**: `/etc/enigma2/vavoo_sref_map.json` – Maps service references to channel IDs for the proxy
+
 ## 🚨 Troubleshooting
+
 ### Quick Diagnostics
 ```bash
 # Check proxy status
@@ -105,29 +193,76 @@ cat /tmp/vavoo_proxy.log
 
 # Check plugin logs
 cat /tmp/vavoo.log
+
+# Check EPG cache
+cat /etc/enigma2/vavoo_epg_cache.json
+
+# Check unmatched cache
+cat /etc/enigma2/vavoo_epg_unmatched_cache.json
 ```
 
 ### Common Issues
 | Problem | Solution |
 |---------|----------|
 | "No channels found" | Restart plugin, check internet connection |
-| Bouquets don't open | Ensure proxy is running |
+| Bouquets don't open | Ensure proxy is running (check with curl) |
 | Stream doesn't start | Proxy should auto-refresh tokens |
 | M3U export fails | Verify port 4323 is accessible |
+| "No programme found" | Clear EPG cache and re-export bouquet; check country EPG file exists |
+| EPG not updating | Verify EPG is enabled in config and GitHub files are accessible |
+
+### Notification Issues
+| Problem | Solution |
+|---------|----------|
+| Only first notification shows | Ensure `init_notification_system(session)` is called once in `MainVavoo` |
+| Notifications from background don't appear | The singleton manager now handles this automatically |
+| Message appears truncated | Check Python 2/3 encoding in notification text |
+| Notifications too fast/slow | Adjust duration parameter in `quick_notify(message, seconds)` |
+
+### Cache Issues
+| Problem | Solution |
+|---------|----------|
+| Unmatched channels not saving | Check write permissions to `/etc/enigma2/` |
+| Duplicate unmatched entries | Run cleanup with `cleanup_old_unmatched(30)` |
+| Cache file corrupted | Delete the file and restart - it will be regenerated |
+| Old format entries | The plugin auto-converts them on read |
 
 ## 📝 Important Notes
+- **Notifications are thread-safe** – You can call `quick_notify()` from any background thread
+- **Message queue system** ensures no notifications are lost during plugin startup
+- **Unmatched channels are persistent** – They survive plugin restarts and are used for future matching attempts
+- **Attempts counter** helps track how many times a channel has been processed
+- **EPG cache now includes matched/unmatched status** – Each entry has a `matched: true/false` flag
 - Old bouquets won't work with new system – re-export required
 - Proxy runs in background – bouquets work even after closing plugin
 - Minimal memory usage (~20-50MB)
-- Only `vavoo_proxy.py` needs updates if Vavoo API changes
 - Use **TEXT button** in main menu to manually refresh proxy token
 - Proxy status is displayed in real-time in the main interface
+
+## 🔄 Version History
+
+### Version 1.60 (2026-03-17)
+- ✨ Added singleton notification manager with thread-safe operations
+- ✨ Implemented message queue for pre-initialization notifications
+- ✨ Enhanced unmatched cache with attempt tracking and auto-conversion
+- ✨ Added real-time proxy status overlay in player
+- 🐛 Fixed notification display from background threads
+- 🐛 Fixed unmatched cache format consistency
+- ⚡ Improved EPG matching performance
+- 📝 Updated documentation with new features
+
+### Version 1.59 (2026-03-15)
+- ✨ Added EPG cache in `/etc/enigma2/` (persistent storage)
+- ✨ Implemented GitHub redirects for EPG files
+- ✨ Added proxy health monitoring endpoint
+- ⚡ Optimized memory usage
 
 ## 🤝 Credits
 - **Created by**: Lululla (https://github.com/Belfagor2005)
 - **Special thanks to**: @KiddaC for suggestions
 - **Background images**: @oktus
-- **Contributions**: Qu4k3
+- **Contributions**: Qu4k3, @Belfagor2005 (EPG integration)
+- **Notification System**: Based on original RaiPlay implementation
 - **Communities**: Linuxsat-support.com & Corvoboys
 
 ## 📄 License
@@ -138,4 +273,4 @@ https://creativecommons.org/licenses/by-nc-sa/4.0
 **For modifications and redistribution, please maintain this credit header.**
 
 ---
-*Last Modified: 2026-01-23*
+*Last Modified: 2026-03-17*

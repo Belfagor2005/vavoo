@@ -10,12 +10,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
-
-msgid "(%(count)d channels)"
-msgstr "(%(count)d canali)"
 
 msgid "(%d channels)?"
 msgstr "(%d canali)?"
@@ -25,6 +22,9 @@ msgstr "(%s file rimossi)"
 
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Aggiornamento automatico Token ogni 9 minuti"
+
+msgid "- Automatic Epg generation with Service Reference"
+msgstr "- Generazione automatica dell'EPG con riferimento al servizio"
 
 msgid "- Automatic bouquet generation"
 msgstr "- Generazione automatica del bouquet"
@@ -83,11 +83,20 @@ msgstr "Attivare o disattivare Ipv6."
 msgid "All countries (%d)"
 msgstr "Tutti i paesi (%d)"
 
+msgid "An export for another country is already in progress. Please wait."
+msgstr "È già in corso un'esportazione verso un altro paese. Si prega di attendere."
+
 msgid "At an interval hours or fixed time"
 msgstr "A intervalli di ore o tempo fisso"
 
 msgid "Author:"
 msgstr "Autore:"
+
+msgid "Auto-update EPG"
+msgstr "Aggiornamento automatico EPG"
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr "Attiva automaticamente l'aggiornamento dell'EPG dopo la creazione della sorgente"
 
 msgid "Back"
 msgstr "Torna"
@@ -98,14 +107,11 @@ msgstr "Annulla"
 msgid "Bottom"
 msgstr "In Fondo"
 
-msgid "Bouquet '%(name)s' created successfully!"
-msgstr "Bouquet '%(name)s' creato con successo!"
-
 msgid "Bouquet Position in List"
 msgstr "Posizione del bouquet nell'elenco"
 
-msgid "Bouquet creation error: %s"
-msgstr "Errore nella creazione del bouquet: %s"
+msgid "Bouquet creation error: {}"
+msgstr "Errore nella creazione del bouquet: {}"
 
 msgid "Bouquets reorganized successfully!"
 msgstr "Bouquets riorganizzati con successo!"
@@ -155,6 +161,9 @@ msgstr "Paesi: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "Paese: %s"
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr "Crea sorgente EPG per EPGImport con dati Vavoo"
+
 msgid "Credits:"
 msgstr "Crediti:"
 
@@ -167,11 +176,32 @@ msgstr "Visualizzazione predefinita all'apertura del plugin"
 msgid "Do you want to export this bouquet?"
 msgstr "Vuoi esportare questo bouquet?"
 
+msgid "EPG is disabled. Please enable it in Vavoo settings first."
+msgstr "L'EPG) è disabilitato. Si prega di abilitarlo prima nelle impostazioni di Vavoo."
+
+msgid "EPG processing completed for {} channels"
+msgstr "Elaborazione EPG completata per {} canali"
+
+msgid "EPG update completed"
+msgstr "Aggiornamento EPG completato"
+
+msgid "EPG update failed"
+msgstr "Aggiornamento EPG fallito"
+
+msgid "EPG update started successfully"
+msgstr "Aggiornamento EPG avviato con successo"
+
+msgid "Enable Vavoo EPG"
+msgstr "Abilita Vavoo EPG"
+
 msgid "Enable or disable proxy."
 msgstr "Abilita o disabilita il proxy."
 
 msgid "Enter text to search..."
 msgstr "Inserisci testo da cercare..."
+
+msgid "Error starting EPG update: {}"
+msgstr "Errore all'avvio dell'aggiornamento EPG: {}"
 
 msgid "Error starting channel"
 msgstr "Errore durante l'avvio del canale"
@@ -179,11 +209,20 @@ msgstr "Errore durante l'avvio del canale"
 msgid "Error: %s"
 msgstr "Errore: %s"
 
+msgid "Error: {}"
+msgstr "Errore: {}"
+
 msgid "Exit"
 msgstr "Esci"
 
 msgid "Export"
 msgstr "Esporta"
+
+msgid "Export failed: {}"
+msgstr "Esportazione non riuscita: {}"
+
+msgid "Export started. Bouquet will be available shortly."
+msgstr "Esportazione avviata. Il bouquet sarà disponibile a breve."
 
 msgid "Failed to refresh proxy token"
 msgstr "Impossibile aggiornare il token proxy"
@@ -217,6 +256,9 @@ msgstr "Generare file .m3u per TUTTI i %d paesi?"
 
 msgid "Hide/Show"
 msgstr "Nascondi/Mostra"
+
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr "Con quale frequenza aggiornare automaticamente l'EPG (richiede scheduler EPGImport)?"
 
 msgid "Important Notes:"
 msgstr "Note importanti:"
@@ -259,9 +301,6 @@ msgstr "Nessuna connessione Internet rilevata. Controlla la tua rete."
 
 msgid "No channels found"
 msgstr "Nessun canale trovato"
-
-msgid "No channels found for '%(name)s'"
-msgstr "Nessun canale trovato per '%(name)s'"
 
 msgid "No channels found for: %s"
 msgstr "Nessun canale trovato per: %s"
@@ -316,6 +355,9 @@ msgstr "Riavvio del proxy... Attendi"
 
 msgid "Proxy token refreshed successfully"
 msgstr "Token proxy aggiornato correttamente"
+
+msgid "Ready"
+msgstr "Pronto"
 
 msgid "Really close without saving settings?"
 msgstr "Chiudi davvero senza salvare le impostazioni?"
@@ -392,6 +434,9 @@ msgstr "Visualizzazione di tutti i canali: {}"
 msgid "Space"
 msgstr "Spazio"
 
+msgid "Start EPG update now?"
+msgstr "Avviare ora l'aggiornamento dell'EPG?"
+
 msgid "Stream ended. Too many connection issues."
 msgstr "Streaming terminato. Troppi problemi di connessione."
 
@@ -416,8 +461,20 @@ msgstr "Canali totali: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "MAIUSCOLO"
 
+msgid "Update interval (hours)"
+msgstr "Intervallo aggiornamento (ore)"
+
 msgid "Update interval (minutes):"
 msgstr "Intervallo di aggiornamento (minuti):"
+
+msgid "Updating EPG..."
+msgstr "Aggiornamento EPG in corso..."
+
+msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
+msgstr "La sorgente Vavoo EPG non è abilitata in EPGImport. Si prega di abilitarla nelle impostazioni di EPGImport."
+
+msgid "Vavoo EPG source not found. Please export at least one bouquet first."
+msgstr "Sorgente EPG Vavoo non trovata. Esportare prima almeno un bouquet."
 
 msgid "Vavoo Stream Live"
 msgstr ""
@@ -440,6 +497,9 @@ msgstr "Versione:"
 msgid "Waiting for proxy..."
 msgstr "In attesa del proxy..."
 
+msgid "Welcome to Vavoo Proxy with EPG support"
+msgstr "Benvenuti su Vavoo Proxy con supporto EPG"
+
 msgid "You can start it from the menu or by pressing the TEXT button."
 msgstr "È possibile avviarlo dal menu oppure premendo il pulsante TESTO."
 
@@ -455,6 +515,9 @@ msgstr "minuscola"
 msgid "seconds"
 msgstr "secondi"
 
+#~ msgid "(%(count)d channels)"
+#~ msgstr "(%(count)d canali)"
+
 #~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
 #~ msgstr "- Comunità: Linuxsat-support.com, Corvoboys Forum"
 
@@ -469,6 +532,9 @@ msgstr "secondi"
 
 #~ msgid "Auto-refresh stream (minutes):"
 #~ msgstr "Aggiornamento automatico flusso (minuti):"
+
+#~ msgid "Bouquet '%(name)s' created successfully!"
+#~ msgstr "Bouquet '%(name)s' creato con successo!"
 
 #~ msgid "Changelog: {changelog}"
 #~ msgstr "Registro modifiche: {changelog}"
@@ -496,6 +562,9 @@ msgstr "secondi"
 
 #~ msgid "New version {version} is available."
 #~ msgstr "È disponibile la nuova versione {version}."
+
+#~ msgid "No channels found for '%(name)s'"
+#~ msgstr "Nessun canale trovato per '%(name)s'"
 
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Aggiornamento Liste Programmato:"

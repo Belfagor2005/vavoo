@@ -2,7 +2,7 @@
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1080" alphatest="off" zPosition="-1"/>
 	<widget name="menulist" position="152,170" size="640,650" zPosition="1" scrollbarMode="showNever" transparent="1" font="cvfont; 42" backgroundColor="#181b2e" foregroundColor="#ffffff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffff"/>
 	<widget name="name" position="116,864" size="707,54" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" font="cvfont; 42" halign="center" valign="center"/>
-	<widget name="version" position="1631,1045" size="158,28" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffff00" transparent="1" font="cvfont; 24" halign="center" valign="center"/>
+	<widget name="version" position="1748,53" size="158,28" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffff00" transparent="1" font="cvfont; 24" halign="center" valign="center" />
 	<eLabel backgroundColor="#ff0000" position="58,1048" size="300,6" zPosition="1"/>
 	<eLabel backgroundColor="#00ff00" position="352,1048" size="300,6" zPosition="1"/>
 	<eLabel backgroundColor="#ffff00" position="652,1048" size="300,6" zPosition="1"/>

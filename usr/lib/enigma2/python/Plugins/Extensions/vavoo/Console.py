@@ -12,12 +12,11 @@ from Components.ScrollLabel import ScrollLabel
 
 from Screens.MessageBox import MessageBox
 from enigma import getDesktop
-import sys
+
+from . import PY3
+
 import gettext
 _ = gettext.gettext
-
-PY2 = sys.version_info[0] == 2
-PY3 = sys.version_info[0] == 3
 
 
 def getDesktopSize():

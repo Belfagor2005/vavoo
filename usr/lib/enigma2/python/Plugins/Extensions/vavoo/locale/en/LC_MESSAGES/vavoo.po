@@ -12,10 +12,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#, fuzzy
-msgid "(%(count)d channels)"
-msgstr "(%(count)d channels)"
-
 msgid "(%d channels)?"
 msgstr "(%d channels)?"
 
@@ -24,6 +20,9 @@ msgstr "(%s files deleted)"
 
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Auto token refresh every 9 minutes"
+
+msgid "- Automatic Epg generation with Service Reference"
+msgstr ""
 
 msgid "- Automatic bouquet generation"
 msgstr "- Automatic bouquet generation"
@@ -84,12 +83,21 @@ msgstr "Active or Disactive lan Ipv6."
 msgid "All countries (%d)"
 msgstr "All countries (%d)"
 
+msgid "An export for another country is already in progress. Please wait."
+msgstr ""
+
 #, fuzzy
 msgid "At an interval hours or fixed time"
 msgstr "At an interval of hours or at a fixed time"
 
 msgid "Author:"
 msgstr "Author:"
+
+msgid "Auto-update EPG"
+msgstr ""
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr ""
 
 msgid "Back"
 msgstr "Back"
@@ -100,13 +108,11 @@ msgstr "Backspace"
 msgid "Bottom"
 msgstr "Bottom"
 
-msgid "Bouquet '%(name)s' created successfully!"
-msgstr "Bouquet '%(name)s' created successfully!"
-
 msgid "Bouquet Position in List"
 msgstr "Bouquet Position in List"
 
-msgid "Bouquet creation error: %s"
+#, fuzzy
+msgid "Bouquet creation error: {}"
 msgstr "Bouquet creation error: %s"
 
 msgid "Bouquets reorganized successfully!"
@@ -158,6 +164,9 @@ msgstr "Countries: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "Country: %s"
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr ""
+
 msgid "Credits:"
 msgstr "Credits:"
 
@@ -170,11 +179,34 @@ msgstr "Default view when opening the plugin"
 msgid "Do you want to export this bouquet?"
 msgstr "Do you want to export this bouquet?"
 
+msgid "EPG is disabled. Please enable it in Vavoo settings first."
+msgstr ""
+
+msgid "EPG processing completed for {} channels"
+msgstr ""
+
+msgid "EPG update completed"
+msgstr ""
+
+msgid "EPG update failed"
+msgstr ""
+
+#, fuzzy
+msgid "EPG update started successfully"
+msgstr "Configuration saved successfully!"
+
+msgid "Enable Vavoo EPG"
+msgstr ""
+
 msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Enter text to search..."
+
+#, fuzzy
+msgid "Error starting EPG update: {}"
+msgstr "Error starting channel"
 
 msgid "Error starting channel"
 msgstr "Error starting channel"
@@ -182,11 +214,21 @@ msgstr "Error starting channel"
 msgid "Error: %s"
 msgstr "Error: %s"
 
+#, fuzzy
+msgid "Error: {}"
+msgstr "Error: %s"
+
 msgid "Exit"
 msgstr "Exit"
 
 msgid "Export"
 msgstr "Export"
+
+msgid "Export failed: {}"
+msgstr ""
+
+msgid "Export started. Bouquet will be available shortly."
+msgstr ""
 
 msgid "Failed to refresh proxy token"
 msgstr ""
@@ -220,6 +262,9 @@ msgstr "Generate .m3u files for ALL %d countries?"
 
 msgid "Hide/Show"
 msgstr "Hide/Show"
+
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr ""
 
 msgid "Important Notes:"
 msgstr "Important Notes:"
@@ -262,9 +307,6 @@ msgstr ""
 
 msgid "No channels found"
 msgstr "No channels found"
-
-msgid "No channels found for '%(name)s'"
-msgstr "No channels found for '%(name)s'"
 
 msgid "No channels found for: %s"
 msgstr "No channels found for: %s"
@@ -320,6 +362,9 @@ msgstr ""
 #, fuzzy
 msgid "Proxy token refreshed successfully"
 msgstr "Vavoo bouquets removed successfully!"
+
+msgid "Ready"
+msgstr ""
 
 msgid "Really close without saving settings?"
 msgstr "Really close without saving settings?"
@@ -398,6 +443,9 @@ msgstr "Showing all channels: {}"
 msgid "Space"
 msgstr "Space"
 
+msgid "Start EPG update now?"
+msgstr ""
+
 msgid "Stream ended. Too many connection issues."
 msgstr "Stream ended. Too many connection issues."
 
@@ -422,8 +470,21 @@ msgstr "Total channels: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "UPPERCASE"
 
+#, fuzzy
+msgid "Update interval (hours)"
+msgstr "Update interval (minutes):"
+
 msgid "Update interval (minutes):"
 msgstr "Update interval (minutes):"
+
+msgid "Updating EPG..."
+msgstr ""
+
+msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
+msgstr ""
+
+msgid "Vavoo EPG source not found. Please export at least one bouquet first."
+msgstr ""
 
 msgid "Vavoo Stream Live"
 msgstr "Vavoo Stream Live"
@@ -446,6 +507,9 @@ msgstr "Version:"
 msgid "Waiting for proxy..."
 msgstr ""
 
+msgid "Welcome to Vavoo Proxy with EPG support"
+msgstr ""
+
 msgid "You can start it from the menu or by pressing the TEXT button."
 msgstr ""
 
@@ -460,6 +524,10 @@ msgstr "lowercase"
 
 msgid "seconds"
 msgstr ""
+
+#, fuzzy
+#~ msgid "(%(count)d channels)"
+#~ msgstr "(%(count)d channels)"
 
 #, fuzzy
 #~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
@@ -478,6 +546,9 @@ msgstr ""
 #, fuzzy
 #~ msgid "Auto-refresh stream (minutes):"
 #~ msgstr "Auto-refresh stream (minutes):"
+
+#~ msgid "Bouquet '%(name)s' created successfully!"
+#~ msgstr "Bouquet '%(name)s' created successfully!"
 
 #~ msgid "Changelog: {changelog}"
 #~ msgstr "Changelog: {changelog}"
@@ -506,6 +577,9 @@ msgstr ""
 
 #~ msgid "New version {version} is available."
 #~ msgstr "New version {version} is available."
+
+#~ msgid "No channels found for '%(name)s'"
+#~ msgstr "No channels found for '%(name)s'"
 
 #, fuzzy
 #~ msgid "Scheduled List Update:"

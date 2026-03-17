@@ -1,453 +1,516 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma 2\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-02-03 13:06+0000\n"
-"Last-Translator:  <EMAIL@ADDRESS>\n"
-"Language-Team: Language zh-HK\n"
-"Language: zh-HK\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_HK\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "(%(count)d channels)"
-msgstr ""
+"X-Generator: Poedit 3.9\n"
 
 msgid "(%d channels)?"
-msgstr ""
+msgstr "(%d 个频道)？"
 
 msgid "(%s files deleted)"
-msgstr ""
+msgstr "(%s 个文件已删除)"
 
 msgid "- Auto token refresh every 9 minutes"
-msgstr ""
+msgstr "- 每9分钟自动刷新令牌"
+
+msgid "- Automatic Epg generation with Service Reference"
+msgstr "- 使用服务参考自动生成EPG"
 
 msgid "- Automatic bouquet generation"
-msgstr ""
+msgstr "- 自动生成节目列表"
 
 msgid "- Category bouquets"
-msgstr ""
+msgstr "- 分类节目列表"
 
 msgid "- Commercial use is strictly prohibited"
-msgstr ""
+msgstr "- 严禁商业用途"
 
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
-msgstr ""
+msgstr "- 社区: Linuxsat-support.com, Corvoboys.org 论坛"
 
 msgid "- Container bouquets"
-msgstr ""
+msgstr "- 容器节目列表"
 
 msgid "- Country bouquets"
-msgstr ""
+msgstr "- 国家节目列表"
 
 msgid "- Free content only"
-msgstr ""
+msgstr "- 仅限免费内容"
 
 msgid "- Graphics: @oktus"
-msgstr ""
+msgstr "- 图形设计: @oktus"
 
 msgid "- HTTP Live Streaming"
-msgstr ""
+msgstr "- HTTP 实时流媒体"
 
 msgid "- Integrated proxy system"
-msgstr ""
+msgstr "- 集成代理系统"
 
 msgid "- No direct server hosting"
-msgstr ""
+msgstr "- 无直接服务器托管"
 
 msgid "- Redistribution must maintain attribution"
-msgstr ""
+msgstr "- 重新分发必须保留署名"
 
 msgid "- Service references: 4097, 5001, 5002"
-msgstr ""
+msgstr "- 服务参考: 4097, 5001, 5002"
 
 msgid "- Streams from public sources"
-msgstr ""
+msgstr "- 来自公共来源的流"
 
 msgid "- TS/M3U8 formats"
-msgstr ""
+msgstr "- TS/M3U8 格式"
 
 msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
-msgstr ""
+msgstr "- 技术支持: Qu4k3, @KiddaC, @giorbak"
 
 msgid "Active Automatic Bouquet Update"
-msgstr ""
+msgstr "激活自动节目列表更新"
 
 msgid "Active or Disactive Ipv6."
-msgstr ""
+msgstr "启用或禁用 IPv6。"
 
 msgid "All countries (%d)"
-msgstr ""
+msgstr "所有国家 (%d)"
+
+msgid "An export for another country is already in progress. Please wait."
+msgstr "另一个国家的导出正在进行中。请等待。"
 
 msgid "At an interval hours or fixed time"
-msgstr ""
+msgstr "按小时间隔或固定时间"
 
 msgid "Author:"
-msgstr ""
+msgstr "作者:"
+
+msgid "Auto-update EPG"
+msgstr "自动更新 EPG"
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr "创建源后自动触发 EPG 更新"
 
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 msgid "Backspace"
-msgstr ""
+msgstr "退格"
 
 msgid "Bottom"
-msgstr ""
-
-msgid "Bouquet '%(name)s' created successfully!"
-msgstr ""
+msgstr "底部"
 
 msgid "Bouquet Position in List"
-msgstr ""
+msgstr "节目列表在列表中的位置"
 
-msgid "Bouquet creation error: %s"
-msgstr ""
+#, fuzzy
+msgid "Bouquet creation error: {}"
+msgstr "节目列表创建错误: %s"
 
 msgid "Bouquets reorganized successfully!"
-msgstr ""
+msgstr "节目列表重新组织成功！"
 
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 msgid "Cancel execution?"
-msgstr ""
+msgstr "取消执行？"
 
 msgid "Case: {}"
-msgstr ""
+msgstr "大小写: {}"
 
 msgid "Channels: %d"
-msgstr ""
+msgstr "频道: %d"
 
 msgid "Checking proxy..."
-msgstr ""
+msgstr "正在检查代理..."
 
 msgid "Clear All"
-msgstr ""
+msgstr "全部清除"
 
 msgid "Configuration saved successfully!"
-msgstr ""
+msgstr "配置保存成功！"
 
 msgid "Configure Main Background Image."
-msgstr ""
+msgstr "配置主背景图像。"
 
 msgid "Configure at a fixed time"
-msgstr ""
+msgstr "在固定时间配置"
 
 msgid "Configure interval minutes from now"
-msgstr ""
+msgstr "从现在开始配置间隔分钟"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr ""
+msgstr "配置服务参考 Iptv-Gstreamer-Exteplayer3"
 
 msgid "Console"
-msgstr ""
+msgstr "控制台"
 
 msgid "Countries"
-msgstr ""
+msgstr "国家"
 
 msgid "Countries: %(generated)d/%(total)d"
-msgstr ""
+msgstr "国家: %(generated)d/%(total)d"
 
 msgid "Country: %s"
-msgstr ""
+msgstr "国家: %s"
+
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr "使用 Vavoo 节目数据为 EPGImport 创建 EPG 源"
 
 msgid "Credits:"
-msgstr ""
+msgstr "致谢:"
 
 msgid "Default View"
-msgstr ""
+msgstr "默认视图"
 
 msgid "Default view when opening the plugin"
-msgstr ""
+msgstr "打开插件时的默认视图"
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
+msgstr "是否要导出此节目列表？"
+
+msgid "EPG is disabled. Please enable it in Vavoo settings first."
+msgstr "EPG 已禁用。请先在 Vavoo 设置中启用它。"
+
+#, fuzzy
+msgid "EPG processing completed for {} channels"
+msgstr "已完成 %d 个频道的 EPG 处理"
+
+msgid "EPG update completed"
+msgstr "EPG 更新完成"
+
+msgid "EPG update failed"
+msgstr "EPG 更新失败"
+
+msgid "EPG update started successfully"
+msgstr "EPG 更新成功启动"
+
+msgid "Enable Vavoo EPG"
+msgstr "启用 Vavoo EPG"
 
 msgid "Enable or disable proxy."
-msgstr ""
+msgstr "启用或禁用代理。"
 
 msgid "Enter text to search..."
-msgstr ""
+msgstr "输入要搜索的文本..."
+
+msgid "Error starting EPG update: {}"
+msgstr "启动 EPG 更新时出错: {}"
 
 msgid "Error starting channel"
-msgstr ""
+msgstr "启动频道时出错"
 
 msgid "Error: %s"
-msgstr ""
+msgstr "错误: %s"
+
+msgid "Error: {}"
+msgstr "错误: {}"
 
 msgid "Exit"
-msgstr ""
+msgstr "退出"
 
 msgid "Export"
-msgstr ""
+msgstr "导出"
+
+#, fuzzy
+msgid "Export failed: {}"
+msgstr "导出失败: %s"
+
+msgid "Export started. Bouquet will be available shortly."
+msgstr "导出已开始。节目列表将很快可用。"
 
 msgid "Failed to refresh proxy token"
-msgstr ""
+msgstr "刷新代理令牌失败"
 
 msgid "Failed to refresh proxy:"
-msgstr ""
+msgstr "刷新代理失败:"
 
 msgid "Failed: %(failed)d"
-msgstr ""
+msgstr "失败: %(failed)d"
 
 msgid "Force proxy refresh?"
-msgstr ""
+msgstr "强制刷新代理？"
 
 msgid "Found: {} channels"
-msgstr ""
+msgstr "找到: {} 个频道"
 
 msgid "Generate .m3u file for:"
-msgstr ""
+msgstr "为以下内容生成 .m3u 文件:"
 
 msgid "Generate .m3u files (Ok for Exec)"
-msgstr ""
+msgstr "生成 .m3u 文件（可用于执行）"
 
 msgid "Generate .m3u files and save to device %s."
-msgstr ""
+msgstr "生成 .m3u 文件并保存到设备 %s。"
 
 msgid "Generate .m3u files and save to device %s?"
-msgstr ""
+msgstr "生成 .m3u 文件并保存到设备 %s？"
 
 msgid "Generate .m3u files for ALL %d countries?"
-msgstr ""
+msgstr "为所有 %d 个国家生成 .m3u 文件？"
 
 msgid "Hide/Show"
-msgstr ""
+msgstr "隐藏/显示"
+
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr "自动更新 EPG 的频率（需要 EPGImport 调度程序）"
 
 msgid "Important Notes:"
-msgstr ""
+msgstr "重要说明:"
 
 msgid "Ipv6 State Of Lan (On/Off)"
-msgstr ""
+msgstr "局域网 IPv6 状态（开/关）"
 
 msgid "Keyboard"
-msgstr ""
+msgstr "键盘"
 
 msgid "Last channel update: %s"
-msgstr ""
+msgstr "上次频道更新: %s"
 
 msgid "License:"
-msgstr ""
+msgstr "许可证:"
 
 msgid "License: CC BY-NC-SA 4.0"
-msgstr ""
+msgstr "许可证: CC BY-NC-SA 4.0"
 
 msgid "Link in Main Menu"
-msgstr ""
+msgstr "主菜单中的链接"
 
 msgid "Lower = less interruption but more refreshes"
-msgstr ""
+msgstr "数值越低 = 中断越少但刷新越多"
 
 msgid "M3U file generated successfully!"
-msgstr ""
+msgstr "M3U 文件生成成功！"
 
 msgid "M3U generation completed!"
-msgstr ""
+msgstr "M3U 生成完成！"
 
 msgid "M3U generation error: %s"
-msgstr ""
+msgstr "M3U 生成错误: %s"
 
 msgid "Movie Services Reference"
-msgstr ""
+msgstr "电影服务参考"
 
 msgid "No Internet connection detected. Please check your network."
-msgstr ""
+msgstr "未检测到互联网连接。请检查您的网络。"
 
 msgid "No channels found"
-msgstr ""
-
-msgid "No channels found for '%(name)s'"
-msgstr ""
+msgstr "未找到频道"
 
 msgid "No channels found for: %s"
-msgstr ""
+msgstr "未找到以下内容的频道: %s"
 
 msgid "No channels found in search!!!"
-msgstr ""
+msgstr "搜索中未找到频道！！！"
 
 msgid "No valid channels for: %s"
-msgstr ""
+msgstr "没有有效的频道: %s"
 
 msgid "Now %s"
-msgstr ""
+msgstr "现在 %s"
 
 msgid "Only one specific country"
-msgstr ""
+msgstr "仅限一个特定国家"
 
 msgid "Please try another channel."
-msgstr ""
+msgstr "请尝试其他频道。"
 
 msgid "Position of Vavoo bouquets in the main list"
-msgstr ""
+msgstr "Vavoo 节目列表在主列表中的位置"
 
 msgid "Press TEXT button to type, BACKSPACE to delete"
-msgstr ""
+msgstr "按 TEXT 按钮输入，按 BACKSPACE 删除"
 
 msgid "Proxy Disabled"
-msgstr ""
+msgstr "代理已禁用"
 
 msgid "Proxy Enabled"
-msgstr ""
+msgstr "代理已启用"
 
 msgid "Proxy disabled"
-msgstr ""
+msgstr "代理已禁用"
 
 msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
-msgstr ""
+msgstr "代理已禁用。请先启用代理。-- 菜单配置 --"
 
 msgid "Proxy is disabled. Please enable it in the configuration."
-msgstr ""
+msgstr "代理已禁用。请在配置中启用它"
 
 msgid "Proxy is not running. Please start the proxy first."
-msgstr ""
+msgstr "代理未运行。请先启动代理。"
 
 msgid "Proxy not active. Unable to generate M3U file."
-msgstr ""
+msgstr "代理未激活。无法生成 M3U 文件。"
 
 msgid "Proxy not responding after"
-msgstr ""
+msgstr "代理在以下时间后无响应"
 
 msgid "Proxy restarting... Please wait"
-msgstr ""
+msgstr "代理正在重启... 请等待"
 
 msgid "Proxy token refreshed successfully"
-msgstr ""
+msgstr "代理令牌刷新成功"
+
+msgid "Ready"
+msgstr "就绪"
 
 msgid "Really close without saving settings?"
-msgstr ""
+msgstr "确定不保存设置就关闭吗？"
 
 msgid "Recommended: 5-8 minutes"
-msgstr ""
+msgstr "建议: 5-8 分钟"
 
 msgid "Refresh stream (minutes):"
-msgstr ""
+msgstr "刷新流（分钟）:"
 
 msgid "Refresh stream every X minutes (1-15)"
-msgstr ""
+msgstr "每 X 分钟刷新流 (1-15)"
 
 msgid "Reload Bouqet"
-msgstr ""
+msgstr "重新加载节目列表"
 
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 msgid "Remove ALL Vavoo bouquets?"
-msgstr ""
+msgstr "移除所有 Vavoo 节目列表？"
 
 msgid "Restart"
-msgstr ""
+msgstr "重启"
 
 msgid "SELECT YOUR CHOICE"
-msgstr ""
+msgstr "选择您的选项"
 
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 msgid "Saved in: %(path)s"
-msgstr ""
+msgstr "保存在: %(path)s"
 
 msgid "Saved in: %s"
-msgstr ""
+msgstr "保存在: %s"
 
 msgid "Schedule type:"
-msgstr ""
+msgstr "计划类型:"
 
 msgid "Scheduled List:"
-msgstr ""
+msgstr "计划列表:"
 
 msgid "Search"
-msgstr ""
+msgstr "搜索"
 
 msgid "Search Channels:"
-msgstr ""
+msgstr "搜索频道:"
 
 msgid "Search..."
-msgstr ""
+msgstr "搜索..."
 
 msgid "Search:"
-msgstr ""
+msgstr "搜索:"
 
 msgid "Select Background"
-msgstr ""
+msgstr "选择背景"
 
 msgid "Select M3U export mode:"
-msgstr ""
+msgstr "选择 M3U 导出模式:"
 
 msgid "Select country to export M3U:"
-msgstr ""
+msgstr "选择要导出 M3U 的国家:"
 
 msgid "Server for Player Used"
-msgstr ""
+msgstr "使用的播放器服务器"
 
 msgid "Server for player."
-msgstr ""
+msgstr "播放器服务器。"
 
 msgid "Showing all channels: {}"
-msgstr ""
+msgstr "显示所有频道: {}"
 
 msgid "Space"
-msgstr ""
+msgstr "空格"
+
+msgid "Start EPG update now?"
+msgstr "立即开始 EPG 更新？"
 
 msgid "Stream ended. Too many connection issues."
-msgstr ""
+msgstr "流已结束。连接问题太多。"
 
 msgid "Technical Features:"
-msgstr ""
+msgstr "技术特性:"
 
 msgid "This will refresh the authentication token."
-msgstr ""
+msgstr "这将刷新身份验证令牌。"
 
 msgid "This will remove:"
-msgstr ""
+msgstr "这将移除:"
 
 msgid "Time to start update:"
-msgstr ""
+msgstr "开始更新时间:"
 
 msgid "Top"
-msgstr ""
+msgstr "顶部"
 
 msgid "Total channels: %(total_channels)d"
-msgstr ""
+msgstr "总频道数: %(total_channels)d"
 
 msgid "UPPERCASE"
-msgstr ""
+msgstr "大写"
+
+msgid "Update interval (hours)"
+msgstr "更新间隔（小时）"
 
 msgid "Update interval (minutes):"
-msgstr ""
+msgstr "更新间隔（分钟）:"
+
+msgid "Updating EPG..."
+msgstr "正在更新 EPG..."
+
+msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
+msgstr "Vavoo EPG 源未在 EPGImport 中启用。请在 EPGImport 设置中启用它。"
+
+msgid "Vavoo EPG source not found. Please export at least one bouquet first."
+msgstr "未找到 Vavoo EPG 源。请先导出至少一个节目列表。"
 
 msgid "Vavoo Stream Live"
-msgstr ""
+msgstr "Vavoo 直播流"
 
 msgid "Vavoo Stream Live - Information"
-msgstr ""
+msgstr "Vavoo 直播流 - 信息"
 
 msgid "Vavoo Stream Live Plugin"
-msgstr ""
+msgstr "Vavoo 直播流插件"
 
 msgid "Vavoo bouquets removed successfully!"
-msgstr ""
+msgstr "Vavoo 节目列表移除成功！"
 
 msgid "Vavoo is already running."
-msgstr ""
+msgstr "Vavoo 已在运行。"
 
 msgid "Version:"
-msgstr ""
+msgstr "版本:"
 
 msgid "Waiting for proxy..."
+msgstr "正在等待代理..."
+
+msgid "Welcome to Vavoo Proxy with EPG support"
 msgstr ""
 
 msgid "You can start it from the menu or by pressing the TEXT button."
-msgstr ""
+msgstr "您可以从菜单启动或按 TEXT 按钮启动。"
 
 msgid "fixed time"
-msgstr ""
+msgstr "固定时间"
 
 msgid "interval"
-msgstr ""
+msgstr "间隔"
 
 msgid "lowercase"
-msgstr ""
+msgstr "小写"
 
 msgid "seconds"
-msgstr ""
+msgstr "秒"

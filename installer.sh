@@ -1,7 +1,7 @@
 #!/bin/bash
 
-version='1.59'
-changelog='\nImproved LOG (Phase 1)\nFix Proxy Refresh\nUpdated Repository License\nOffer coffee please :)'
+version='1.60'
+changelog='\nImproved EPG\nOffer coffee please :)'
 
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz

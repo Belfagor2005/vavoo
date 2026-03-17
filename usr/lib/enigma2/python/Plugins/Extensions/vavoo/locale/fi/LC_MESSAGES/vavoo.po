@@ -1,454 +1,513 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma 2\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-01-27 13:22+0100\n"
-"Last-Translator: root <EMAIL@ADDRESS>\n"
-"Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid "(%(count)d channels)"
-msgstr ""
+"X-Generator: Poedit 3.9\n"
 
 msgid "(%d channels)?"
-msgstr ""
+msgstr "(%d kanavaa)?"
 
 msgid "(%s files deleted)"
-msgstr ""
+msgstr "(%s tiedostoa poistettu)"
 
 msgid "- Auto token refresh every 9 minutes"
-msgstr ""
+msgstr "- Automaattinen tokenin päivitys 9 minuutin välein"
+
+msgid "- Automatic Epg generation with Service Reference"
+msgstr "- Automaattinen EPG:n luonti palveluviitteellä"
 
 msgid "- Automatic bouquet generation"
-msgstr ""
+msgstr "- Automaattinen nippujen luonti"
 
 msgid "- Category bouquets"
-msgstr ""
+msgstr "- Luokkaniput"
 
 msgid "- Commercial use is strictly prohibited"
-msgstr ""
+msgstr "- Kaupallinen käyttö ehdottomasti kielletty"
 
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
-msgstr ""
+msgstr "- Yhteisö: Linuxsat-support.com, Corvoboys.org -foorumi"
 
 msgid "- Container bouquets"
-msgstr ""
+msgstr "- Säiliöniput"
 
 msgid "- Country bouquets"
-msgstr ""
+msgstr "- Maaniput"
 
 msgid "- Free content only"
-msgstr ""
+msgstr "- Vain ilmainen sisältö"
 
 msgid "- Graphics: @oktus"
-msgstr ""
+msgstr "- Grafiikka: @oktus"
 
 msgid "- HTTP Live Streaming"
-msgstr ""
+msgstr "- HTTP Live -suoratoisto"
 
 msgid "- Integrated proxy system"
-msgstr ""
+msgstr "- Integroitu välityspalvelinjärjestelmä"
 
 msgid "- No direct server hosting"
-msgstr ""
+msgstr "- Ei suoraa palvelintarjontaa"
 
 msgid "- Redistribution must maintain attribution"
-msgstr ""
+msgstr "- Uudelleenjaossa on säilytettävä tekijätiedot"
 
 msgid "- Service references: 4097, 5001, 5002"
-msgstr ""
+msgstr "- Palveluviitteet: 4097, 5001, 5002"
 
 msgid "- Streams from public sources"
-msgstr ""
+msgstr "- Suoratoistot julkisista lähteistä"
 
 msgid "- TS/M3U8 formats"
-msgstr ""
+msgstr "- TS/M3U8-formaatit"
 
 msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
-msgstr ""
+msgstr "- Tekninen tuki: Qu4k3, @KiddaC, @giorbak"
 
 msgid "Active Automatic Bouquet Update"
-msgstr ""
+msgstr "Aktiivinen automaattinen nippupäivitys"
 
 msgid "Active or Disactive Ipv6."
-msgstr ""
+msgstr "Ota Ipv6 käyttöön tai pois käytöstä."
 
 msgid "All countries (%d)"
-msgstr ""
+msgstr "Kaikki maat (%d)"
+
+msgid "An export for another country is already in progress. Please wait."
+msgstr "Toisen maan vienti on jo käynnissä. Odota."
 
 msgid "At an interval hours or fixed time"
-msgstr ""
+msgstr "Aikavälillä tunneittain tai kiinteänä aikana"
 
 msgid "Author:"
-msgstr ""
+msgstr "Tekijä:"
+
+msgid "Auto-update EPG"
+msgstr "Automaattinen EPG-päivitys"
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr "Käynnistä EPG-päivitys automaattisesti lähteen luonnin jälkeen"
 
 msgid "Back"
-msgstr ""
+msgstr "Takaisin"
 
 msgid "Backspace"
-msgstr ""
+msgstr "Askelluspalautus"
 
 msgid "Bottom"
-msgstr ""
-
-msgid "Bouquet '%(name)s' created successfully!"
-msgstr ""
+msgstr "Alaosa"
 
 msgid "Bouquet Position in List"
-msgstr ""
+msgstr "Nipun sijainti listassa"
 
-msgid "Bouquet creation error: %s"
-msgstr ""
+msgid "Bouquet creation error: {}"
+msgstr "Nipun luontivirhe: {}"
 
 msgid "Bouquets reorganized successfully!"
-msgstr ""
+msgstr "Niput uudelleenjärjestetty onnistuneesti!"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Peruuta"
 
 msgid "Cancel execution?"
-msgstr ""
+msgstr "Peruutetaanko suoritus?"
 
 msgid "Case: {}"
-msgstr ""
+msgstr "Kirjainkoko: {}"
 
 msgid "Channels: %d"
-msgstr ""
+msgstr "Kanavat: %d"
 
 msgid "Checking proxy..."
-msgstr ""
+msgstr "Tarkistetaan välityspalvelinta..."
 
 msgid "Clear All"
-msgstr ""
+msgstr "Tyhjennä kaikki"
 
 msgid "Configuration saved successfully!"
-msgstr ""
+msgstr "Asetukset tallennettu onnistuneesti!"
 
 msgid "Configure Main Background Image."
-msgstr ""
+msgstr "Määritä päätaustakuva."
 
 msgid "Configure at a fixed time"
-msgstr ""
+msgstr "Määritä kiinteänä aikana"
 
 msgid "Configure interval minutes from now"
-msgstr ""
+msgstr "Määritä aikaväli minuutteina tästä hetkestä"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr ""
+msgstr "Määritä palveluviite Iptv-Gstreamer-Exteplayer3"
 
 msgid "Console"
-msgstr ""
+msgstr "Konsoli"
 
 msgid "Countries"
-msgstr ""
+msgstr "Maat"
 
 msgid "Countries: %(generated)d/%(total)d"
-msgstr ""
+msgstr "Maat: %(generated)d/%(total)d"
 
 msgid "Country: %s"
-msgstr ""
+msgstr "Maa: %s"
+
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr "Luo EPG-lähde EPGImportille Vavoo-ohjelmatiedoilla"
 
 msgid "Credits:"
-msgstr ""
+msgstr "Tekijät:"
 
 msgid "Default View"
-msgstr ""
+msgstr "Oletusnäkymä"
 
 msgid "Default view when opening the plugin"
-msgstr ""
+msgstr "Oletusnäkymä liitännäistä avattaessa"
 
 msgid "Do you want to export this bouquet?"
-msgstr ""
+msgstr "Haluatko viedä tämän nipun?"
+
+msgid "EPG is disabled. Please enable it in Vavoo settings first."
+msgstr "EPG on poissa käytöstä. Ota se ensin käyttöön Vavoo-asetuksista."
+
+msgid "EPG processing completed for {} channels"
+msgstr "EPG-käsittely valmistui {} kanavalle"
+
+msgid "EPG update completed"
+msgstr "EPG-päivitys valmistui"
+
+msgid "EPG update failed"
+msgstr "EPG-päivitys epäonnistui"
+
+msgid "EPG update started successfully"
+msgstr "EPG-päivitys käynnistyi onnistuneesti"
+
+msgid "Enable Vavoo EPG"
+msgstr "Ota Vavoo EPG käyttöön"
 
 msgid "Enable or disable proxy."
-msgstr ""
+msgstr "Ota välityspalvelin käyttöön tai pois käytöstä."
 
 msgid "Enter text to search..."
-msgstr ""
+msgstr "Syötä teksti haettavaksi..."
+
+msgid "Error starting EPG update: {}"
+msgstr "Virhe käynnistettäessä EPG-päivitystä: {}"
 
 msgid "Error starting channel"
-msgstr ""
+msgstr "Virhe käynnistettäessä kanavaa"
 
 msgid "Error: %s"
-msgstr ""
+msgstr "Virhe: %s"
+
+msgid "Error: {}"
+msgstr "Virhe: {}"
 
 msgid "Exit"
-msgstr ""
+msgstr "Poistu"
 
 msgid "Export"
-msgstr ""
+msgstr "Vie"
+
+msgid "Export failed: {}"
+msgstr "Vienti epäonnistui: {}"
+
+msgid "Export started. Bouquet will be available shortly."
+msgstr "Vienti aloitettu. Nippu on saatavilla pian."
 
 msgid "Failed to refresh proxy token"
-msgstr ""
+msgstr "Välityspalvelimen tokenin päivitys epäonnistui"
 
 msgid "Failed to refresh proxy:"
-msgstr ""
+msgstr "Välityspalvelimen päivitys epäonnistui:"
 
 msgid "Failed: %(failed)d"
-msgstr ""
+msgstr "Epäonnistui: %(failed)d"
 
 msgid "Force proxy refresh?"
-msgstr ""
+msgstr "Pakotetaanko välityspalvelimen päivitys?"
 
 msgid "Found: {} channels"
-msgstr ""
+msgstr "Löytyi: {} kanavaa"
 
 msgid "Generate .m3u file for:"
-msgstr ""
+msgstr "Luo .m3u-tiedosto kohteelle:"
 
 msgid "Generate .m3u files (Ok for Exec)"
-msgstr ""
+msgstr "Luo .m3u-tiedostot (Ok suoritusta varten)"
 
 msgid "Generate .m3u files and save to device %s."
-msgstr ""
+msgstr "Luo .m3u-tiedostot ja tallenna laitteelle %s."
 
 msgid "Generate .m3u files and save to device %s?"
-msgstr ""
+msgstr "Luodaanko .m3u-tiedostot ja tallennetaan laitteelle %s?"
 
 msgid "Generate .m3u files for ALL %d countries?"
-msgstr ""
+msgstr "Luodaanko .m3u-tiedostot KAIKILLE %d maalle?"
 
 msgid "Hide/Show"
-msgstr ""
+msgstr "Piilota/Näytä"
+
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr "Kuinka usein EPG päivitetään automaattisesti (vaatii EPGImport-ajastimen)"
 
 msgid "Important Notes:"
-msgstr ""
+msgstr "Tärkeitä huomautuksia:"
 
 msgid "Ipv6 State Of Lan (On/Off)"
-msgstr ""
+msgstr "IPv6-tila lähiverkossa (päällä/pois)"
 
 msgid "Keyboard"
-msgstr ""
+msgstr "Näppäimistö"
 
 msgid "Last channel update: %s"
-msgstr ""
+msgstr "Viimeisin kanavapäivitys: %s"
 
 msgid "License:"
-msgstr ""
+msgstr "Lisenssi:"
 
 msgid "License: CC BY-NC-SA 4.0"
-msgstr ""
+msgstr "Lisenssi: CC BY-NC-SA 4.0"
 
 msgid "Link in Main Menu"
-msgstr ""
+msgstr "Linkki päävalikossa"
 
 msgid "Lower = less interruption but more refreshes"
-msgstr ""
+msgstr "Pienempi = vähemmän keskeytyksiä mutta enemmän päivityksiä"
 
 msgid "M3U file generated successfully!"
-msgstr ""
+msgstr "M3U-tiedosto luotu onnistuneesti!"
 
 msgid "M3U generation completed!"
-msgstr ""
+msgstr "M3U-luonti valmistui!"
 
 msgid "M3U generation error: %s"
-msgstr ""
+msgstr "M3U-luontivirhe: %s"
 
 msgid "Movie Services Reference"
-msgstr ""
+msgstr "Elokuvapalveluiden viite"
 
 msgid "No Internet connection detected. Please check your network."
-msgstr ""
+msgstr "Internet-yhteyttä ei havaittu. Tarkista verkkosi."
 
 msgid "No channels found"
-msgstr ""
-
-msgid "No channels found for '%(name)s'"
-msgstr ""
+msgstr "Kanavia ei löytynyt"
 
 msgid "No channels found for: %s"
-msgstr ""
+msgstr "Kanavia ei löytynyt kohteelle: %s"
 
 msgid "No channels found in search!!!"
-msgstr ""
+msgstr "Kanavia ei löytynyt haussa!!!"
 
 msgid "No valid channels for: %s"
-msgstr ""
+msgstr "Ei kelvollisia kanavia kohteelle: %s"
 
 msgid "Now %s"
-msgstr ""
+msgstr "Nyt %s"
 
 msgid "Only one specific country"
-msgstr ""
+msgstr "Vain yksi tietty maa"
 
 msgid "Please try another channel."
-msgstr ""
+msgstr "Yritä toista kanavaa."
 
 msgid "Position of Vavoo bouquets in the main list"
-msgstr ""
+msgstr "Vavoo-nippujen sijainti päähakemistossa"
 
 msgid "Press TEXT button to type, BACKSPACE to delete"
-msgstr ""
+msgstr "Paina TEXT-painiketta kirjoittaaksesi, BACKSPACE poistaaksesi"
 
 msgid "Proxy Disabled"
-msgstr ""
+msgstr "Välityspalvelin poissa käytöstä"
 
 msgid "Proxy Enabled"
-msgstr ""
+msgstr "Välityspalvelin käytössä"
 
 msgid "Proxy disabled"
-msgstr ""
+msgstr "Välityspalvelin poissa käytöstä"
 
 msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
-msgstr ""
+msgstr "Välityspalvelin on poissa käytöstä. Ota välityspalvelin ensin käyttöön. -- Valikkoasetukset --"
 
 msgid "Proxy is disabled. Please enable it in the configuration."
-msgstr ""
+msgstr "Välityspalvelin on poissa käytöstä. Ota se käyttöön asetuksista."
 
 msgid "Proxy is not running. Please start the proxy first."
-msgstr ""
+msgstr "Välityspalvelin ei ole käynnissä. Käynnistä välityspalvelin ensin."
 
 msgid "Proxy not active. Unable to generate M3U file."
-msgstr ""
+msgstr "Välityspalvelin ei ole aktiivinen. M3U-tiedostoa ei voida luoda."
 
 msgid "Proxy not responding after"
-msgstr ""
+msgstr "Välityspalvelin ei vastaa jälkeen"
 
 msgid "Proxy restarting... Please wait"
-msgstr ""
+msgstr "Välityspalvelin käynnistetään uudelleen... Odota"
 
 msgid "Proxy token refreshed successfully"
-msgstr ""
+msgstr "Välityspalvelimen token päivitetty onnistuneesti"
+
+msgid "Ready"
+msgstr "Valmis"
 
 msgid "Really close without saving settings?"
-msgstr ""
+msgstr "Suljetaanko todella tallentamatta asetuksia?"
 
 msgid "Recommended: 5-8 minutes"
-msgstr ""
+msgstr "Suositus: 5-8 minuuttia"
 
 msgid "Refresh stream (minutes):"
-msgstr ""
+msgstr "Päivitä suoratoisto (minuutteina):"
 
 msgid "Refresh stream every X minutes (1-15)"
-msgstr ""
+msgstr "Päivitä suoratoisto X minuutin välein (1-15)"
 
 msgid "Reload Bouqet"
-msgstr ""
+msgstr "Lataa nippu uudelleen"
 
 msgid "Remove"
-msgstr ""
+msgstr "Poista"
 
 msgid "Remove ALL Vavoo bouquets?"
-msgstr ""
+msgstr "Poistetaanko KAIKKI Vavoo-niput?"
 
 msgid "Restart"
-msgstr ""
+msgstr "Käynnistä uudelleen"
 
 msgid "SELECT YOUR CHOICE"
-msgstr ""
+msgstr "VALITSE VAIHTOEHTO"
 
 msgid "Save"
-msgstr ""
+msgstr "Tallenna"
 
 msgid "Saved in: %(path)s"
-msgstr ""
+msgstr "Tallennettu: %(path)s"
 
 msgid "Saved in: %s"
-msgstr ""
+msgstr "Tallennettu: %s"
 
 msgid "Schedule type:"
-msgstr ""
+msgstr "Ajoituksen tyyppi:"
 
 msgid "Scheduled List:"
-msgstr ""
+msgstr "Ajoitettu lista:"
 
 msgid "Search"
-msgstr ""
+msgstr "Hae"
 
 msgid "Search Channels:"
-msgstr ""
+msgstr "Hae kanavia:"
 
 msgid "Search..."
-msgstr ""
+msgstr "Hae..."
 
 msgid "Search:"
-msgstr ""
+msgstr "Haku:"
 
 msgid "Select Background"
-msgstr ""
+msgstr "Valitse tausta"
 
 msgid "Select M3U export mode:"
-msgstr ""
+msgstr "Valitse M3U-vientitila:"
 
 msgid "Select country to export M3U:"
-msgstr ""
+msgstr "Valitse maa M3U:ta varten:"
 
 msgid "Server for Player Used"
-msgstr ""
+msgstr "Palvelin soittimelle"
 
 msgid "Server for player."
-msgstr ""
+msgstr "Palvelin soittimelle."
 
 msgid "Showing all channels: {}"
-msgstr ""
+msgstr "Näytetään kaikki kanavat: {}"
 
 msgid "Space"
-msgstr ""
+msgstr "Välilyönti"
+
+msgid "Start EPG update now?"
+msgstr "Käynnistetäänkö EPG-päivitys nyt?"
 
 msgid "Stream ended. Too many connection issues."
-msgstr ""
+msgstr "Suoratoisto päättyi. Liian monta yhteysongelmaa."
 
 msgid "Technical Features:"
-msgstr ""
+msgstr "Tekniset ominaisuudet:"
 
 msgid "This will refresh the authentication token."
-msgstr ""
+msgstr "Tämä päivittää todennustokenin."
 
 msgid "This will remove:"
-msgstr ""
+msgstr "Tämä poistaa:"
 
 msgid "Time to start update:"
-msgstr ""
+msgstr "Aika aloittaa päivitys:"
 
 msgid "Top"
-msgstr ""
+msgstr "Yläosa"
 
 msgid "Total channels: %(total_channels)d"
-msgstr ""
+msgstr "Kanavia yhteensä: %(total_channels)d"
 
 msgid "UPPERCASE"
-msgstr ""
+msgstr "SUURAAKKOSET"
+
+msgid "Update interval (hours)"
+msgstr "Päivitysväli (tunteina)"
 
 msgid "Update interval (minutes):"
-msgstr ""
+msgstr "Päivitysväli (minuutteina):"
+
+msgid "Updating EPG..."
+msgstr "Päivitetään EPG:tä..."
+
+msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
+msgstr "Vavoo EPG -lähde ei ole käytössä EPGImportissa. Ota se käyttöön EPGImport-asetuksista."
+
+msgid "Vavoo EPG source not found. Please export at least one bouquet first."
+msgstr "Vavoo EPG -lähdettä ei löytynyt. Vie vähintään yksi nippu ensin."
 
 msgid "Vavoo Stream Live"
-msgstr ""
+msgstr "Vavoo Stream Live"
 
 msgid "Vavoo Stream Live - Information"
-msgstr ""
+msgstr "Vavoo Stream Live - Tietoja"
 
 msgid "Vavoo Stream Live Plugin"
-msgstr ""
+msgstr "Vavoo Stream Live -liitännäinen"
 
 msgid "Vavoo bouquets removed successfully!"
-msgstr ""
+msgstr "Vavoo-niput poistettu onnistuneesti!"
 
 msgid "Vavoo is already running."
-msgstr ""
+msgstr "Vavoo on jo käynnissä."
 
 msgid "Version:"
-msgstr ""
+msgstr "Versio:"
 
 msgid "Waiting for proxy..."
+msgstr "Odotetaan välityspalvelinta..."
+
+msgid "Welcome to Vavoo Proxy with EPG support"
 msgstr ""
 
 msgid "You can start it from the menu or by pressing the TEXT button."
-msgstr ""
+msgstr "Voit käynnistää sen valikosta tai painamalla TEXT-painiketta."
 
 msgid "fixed time"
-msgstr ""
+msgstr "kiinteä aika"
 
 msgid "interval"
-msgstr ""
+msgstr "aikaväli"
 
 msgid "lowercase"
-msgstr ""
+msgstr "pienaakkoset"
 
 msgid "seconds"
-msgstr ""
+msgstr "sekuntia"

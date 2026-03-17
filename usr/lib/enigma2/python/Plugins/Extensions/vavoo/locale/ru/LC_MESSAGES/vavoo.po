@@ -10,10 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
-
-msgid "(%(count)d channels)"
-msgstr "(%(count)d каналов)"
+"X-Generator: Poedit 3.9\n"
 
 msgid "(%d channels)?"
 msgstr "(%d каналов)?"
@@ -24,24 +21,26 @@ msgstr "(%s файлов удалено)"
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Автоматическое обновление токена каждые 9 минут"
 
+msgid "- Automatic Epg generation with Service Reference"
+msgstr "- Автоматическое создание EPG с ссылкой на сервис"
+
 msgid "- Automatic bouquet generation"
 msgstr "- Автоматическое создание букетов"
 
 msgid "- Category bouquets"
-msgstr "- Категория букетов"
+msgstr "- Букеты по категориям"
 
 msgid "- Commercial use is strictly prohibited"
 msgstr "- Коммерческое использование строго запрещено"
 
-#, fuzzy
 msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
-msgstr "- Сообщество: Linuxsat-support.com, форум Corvoboys"
+msgstr "- Сообщество: Linuxsat-support.com, Форум Corvoboys.org"
 
 msgid "- Container bouquets"
-msgstr "- Букеты в контейнерах"
+msgstr "- Букеты по контейнерам"
 
 msgid "- Country bouquets"
-msgstr "- Загородные букеты"
+msgstr "- Букеты по странам"
 
 msgid "- Free content only"
 msgstr "- Только бесплатный контент"
@@ -50,19 +49,19 @@ msgid "- Graphics: @oktus"
 msgstr "- Графика: @oktus"
 
 msgid "- HTTP Live Streaming"
-msgstr "- HTTP-трансляция в прямом эфире"
+msgstr "- HTTP Live Streaming"
 
 msgid "- Integrated proxy system"
-msgstr "- Интегрированная прокси-система"
+msgstr "- Встроенная система прокси"
 
 msgid "- No direct server hosting"
-msgstr "- Прямого размещения на сервере нет"
+msgstr "- Без прямого хостинга сервера"
 
 msgid "- Redistribution must maintain attribution"
 msgstr "- При распространении необходимо сохранять указание авторства"
 
 msgid "- Service references: 4097, 5001, 5002"
-msgstr "— Номера сервисных работ: 4097, 5001, 5002"
+msgstr "- Ссылки на сервисы: 4097, 5001, 5002"
 
 msgid "- Streams from public sources"
 msgstr "- Потоки из общедоступных источников"
@@ -74,39 +73,43 @@ msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
 msgstr "- Техническая поддержка: Qu4k3, @KiddaC, @giorbak"
 
 msgid "Active Automatic Bouquet Update"
-msgstr "Активное автоматическое обновление букета"
+msgstr "Активное автоматическое обновление букетов"
 
-#, fuzzy
 msgid "Active or Disactive Ipv6."
-msgstr "Активный или деактивированный IPv6 в локальной сети."
+msgstr "Включить или отключить IPv6."
 
 msgid "All countries (%d)"
 msgstr "Все страны (%d)"
 
-#, fuzzy
+msgid "An export for another country is already in progress. Please wait."
+msgstr "Экспорт для другой страны уже выполняется. Пожалуйста, подождите."
+
 msgid "At an interval hours or fixed time"
-msgstr "С интервалом в несколько часов или в фиксированное время"
+msgstr "С интервалом в часах или в фиксированное время"
 
 msgid "Author:"
 msgstr "Автор:"
+
+msgid "Auto-update EPG"
+msgstr "Автообновление EPG"
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr "Автоматически запускать обновление EPG после создания источника"
 
 msgid "Back"
 msgstr "Назад"
 
 msgid "Backspace"
-msgstr "Возврат"
+msgstr "Забой"
 
 msgid "Bottom"
-msgstr "Низ"
-
-msgid "Bouquet '%(name)s' created successfully!"
-msgstr "Букет '%(name)s' успешно создан!"
+msgstr "Внизу"
 
 msgid "Bouquet Position in List"
-msgstr "Положение букета в списке"
+msgstr "Позиция букета в списке"
 
-msgid "Bouquet creation error: %s"
-msgstr "Ошибка создания букета: %s"
+msgid "Bouquet creation error: {}"
+msgstr "Ошибка создания букета: {}"
 
 msgid "Bouquets reorganized successfully!"
 msgstr "Букеты успешно реорганизованы!"
@@ -115,16 +118,16 @@ msgid "Cancel"
 msgstr "Отмена"
 
 msgid "Cancel execution?"
-msgstr "Отменить исполнение?"
+msgstr "Отменить выполнение?"
 
 msgid "Case: {}"
-msgstr "Случай: {}"
+msgstr "Регистр: {}"
 
 msgid "Channels: %d"
 msgstr "Каналы: %d"
 
 msgid "Checking proxy..."
-msgstr ""
+msgstr "Проверка прокси..."
 
 msgid "Clear All"
 msgstr "Очистить все"
@@ -133,17 +136,16 @@ msgid "Configuration saved successfully!"
 msgstr "Конфигурация успешно сохранена!"
 
 msgid "Configure Main Background Image."
-msgstr "Настройте основное фоновое изображение."
+msgstr "Настройка основного фонового изображения."
 
 msgid "Configure at a fixed time"
-msgstr "Настройка в фиксированное время"
+msgstr "Настроить в фиксированное время"
 
-#, fuzzy
 msgid "Configure interval minutes from now"
-msgstr "Настройте каждый интервал минут с этого момента"
+msgstr "Настроить интервал в минутах от текущего момента"
 
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "Ссылка на настройку службы IPTV-Gstreamer-Exteplayer3"
+msgstr "Настройка ссылки на сервис Iptv-Gstreamer-Exteplayer3"
 
 msgid "Console"
 msgstr "Консоль"
@@ -157,8 +159,11 @@ msgstr "Страны: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "Страна: %s"
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr "Создать источник EPG для EPGImport с данными программ Vavoo"
+
 msgid "Credits:"
-msgstr "Кредиты:"
+msgstr "Благодарности:"
 
 msgid "Default View"
 msgstr "Вид по умолчанию"
@@ -167,19 +172,43 @@ msgid "Default view when opening the plugin"
 msgstr "Вид по умолчанию при открытии плагина"
 
 msgid "Do you want to export this bouquet?"
-msgstr "Вы хотите экспортировать этот букет?"
+msgstr "Хотите экспортировать этот букет?"
+
+msgid "EPG is disabled. Please enable it in Vavoo settings first."
+msgstr "EPG отключен. Пожалуйста, сначала включите его в настройках Vavoo."
+
+msgid "EPG processing completed for {} channels"
+msgstr "Обработка EPG завершена для {} каналов"
+
+msgid "EPG update completed"
+msgstr "Обновление EPG завершено"
+
+msgid "EPG update failed"
+msgstr "Не удалось обновить EPG"
+
+msgid "EPG update started successfully"
+msgstr "Обновление EPG успешно запущено"
+
+msgid "Enable Vavoo EPG"
+msgstr "Включить EPG Vavoo"
 
 msgid "Enable or disable proxy."
-msgstr ""
+msgstr "Включить или отключить прокси."
 
 msgid "Enter text to search..."
 msgstr "Введите текст для поиска..."
 
+msgid "Error starting EPG update: {}"
+msgstr "Ошибка запуска обновления EPG: {}"
+
 msgid "Error starting channel"
-msgstr "Ошибка при запуске канала"
+msgstr "Ошибка запуска канала"
 
 msgid "Error: %s"
 msgstr "Ошибка: %s"
+
+msgid "Error: {}"
+msgstr "Ошибка: {}"
 
 msgid "Exit"
 msgstr "Выход"
@@ -187,50 +216,59 @@ msgstr "Выход"
 msgid "Export"
 msgstr "Экспорт"
 
+msgid "Export failed: {}"
+msgstr "Экспорт не удался: {}"
+
+msgid "Export started. Bouquet will be available shortly."
+msgstr "Экспорт запущен. Букет скоро будет доступен."
+
 msgid "Failed to refresh proxy token"
-msgstr ""
+msgstr "Не удалось обновить токен прокси"
 
 msgid "Failed to refresh proxy:"
-msgstr ""
+msgstr "Не удалось обновить прокси:"
 
 msgid "Failed: %(failed)d"
 msgstr "Не удалось: %(failed)d"
 
 msgid "Force proxy refresh?"
-msgstr ""
+msgstr "Принудительно обновить прокси?"
 
 msgid "Found: {} channels"
-msgstr "Найдено {} каналов"
+msgstr "Найдено: {} каналов"
 
 msgid "Generate .m3u file for:"
-msgstr "Создайте файл .m3u для:"
+msgstr "Сгенерировать файл .m3u для:"
 
 msgid "Generate .m3u files (Ok for Exec)"
-msgstr "Генерация файлов .m3u (подходит для Exec)"
+msgstr "Сгенерировать файлы .m3u (подходит для выполнения)"
 
 msgid "Generate .m3u files and save to device %s."
-msgstr "Создайте файлы .m3u и сохраните их на устройстве %s."
+msgstr "Сгенерировать файлы .m3u и сохранить на устройстве %s."
 
 msgid "Generate .m3u files and save to device %s?"
 msgstr "Сгенерировать файлы .m3u и сохранить на устройстве %s?"
 
 msgid "Generate .m3u files for ALL %d countries?"
-msgstr "Создать файлы .m3u для ВСЕХ %d стран?"
+msgstr "Сгенерировать файлы .m3u для ВСЕХ %d стран?"
 
 msgid "Hide/Show"
-msgstr "Скрыть / Показать"
+msgstr "Скрыть/Показать"
+
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr "Как часто автоматически обновлять EPG (требуется планировщик EPGImport)"
 
 msgid "Important Notes:"
-msgstr "Важные примечания:"
+msgstr "Важные замечания:"
 
 msgid "Ipv6 State Of Lan (On/Off)"
-msgstr "Состояние локальной сети IPv6 (вкл/выкл)"
+msgstr "Состояние IPv6 в локальной сети (Вкл/Выкл)"
 
 msgid "Keyboard"
 msgstr "Клавиатура"
 
 msgid "Last channel update: %s"
-msgstr "Последнее обновление канала: %s"
+msgstr "Последнее обновление каналов: %s"
 
 msgid "License:"
 msgstr "Лицензия:"
@@ -242,98 +280,94 @@ msgid "Link in Main Menu"
 msgstr "Ссылка в главном меню"
 
 msgid "Lower = less interruption but more refreshes"
-msgstr "Более низкое значение = меньше прерываний, но больше обновлений"
+msgstr "Меньше = меньше прерываний, но больше обновлений"
 
 msgid "M3U file generated successfully!"
 msgstr "Файл M3U успешно сгенерирован!"
 
 msgid "M3U generation completed!"
-msgstr "Создание M3U завершено!"
+msgstr "Генерация M3U завершена!"
 
 msgid "M3U generation error: %s"
 msgstr "Ошибка генерации M3U: %s"
 
 msgid "Movie Services Reference"
-msgstr "Справочник киносервисов"
+msgstr "Ссылка на сервисы фильмов"
 
 msgid "No Internet connection detected. Please check your network."
-msgstr ""
+msgstr "Не обнаружено подключение к Интернету. Пожалуйста, проверьте вашу сеть."
 
 msgid "No channels found"
-msgstr "Не найдено каналлов"
-
-msgid "No channels found for '%(name)s'"
-msgstr "Для '%(name)s' каналы не найдены"
+msgstr "Каналы не найдены"
 
 msgid "No channels found for: %s"
-msgstr "Для: %s каналы не найдены"
+msgstr "Каналы не найдены для: %s"
 
 msgid "No channels found in search!!!"
-msgstr "В поиске каналов не найдено!!!"
+msgstr "Каналы не найдены в поиске!!!"
 
 msgid "No valid channels for: %s"
 msgstr "Нет действительных каналов для: %s"
 
 msgid "Now %s"
-msgstr "Теперь %s"
+msgstr "Сейчас %s"
 
 msgid "Only one specific country"
 msgstr "Только одна конкретная страна"
 
 msgid "Please try another channel."
-msgstr "Попробуйте другой канал."
+msgstr "Пожалуйста, попробуйте другой канал."
 
 msgid "Position of Vavoo bouquets in the main list"
-msgstr "Положение букетов Vavoo в основном списке"
+msgstr "Позиция букетов Vavoo в основном списке"
 
 msgid "Press TEXT button to type, BACKSPACE to delete"
-msgstr "Нажмите кнопку ТЕКСТ для ввода текста, BACKSPACE для удаления"
+msgstr "Нажмите кнопку TEXT для ввода, BACKSPACE для удаления"
 
 msgid "Proxy Disabled"
-msgstr ""
+msgstr "Прокси отключен"
 
 msgid "Proxy Enabled"
-msgstr ""
+msgstr "Прокси включен"
 
 msgid "Proxy disabled"
-msgstr ""
+msgstr "Прокси отключен"
 
 msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
-msgstr ""
+msgstr "Прокси отключен. Пожалуйста, сначала включите прокси. -- Конфигурация меню --"
 
 msgid "Proxy is disabled. Please enable it in the configuration."
-msgstr ""
+msgstr "Прокси отключен. Пожалуйста, включите его в конфигурации."
 
 msgid "Proxy is not running. Please start the proxy first."
-msgstr ""
+msgstr "Прокси не запущен. Пожалуйста, сначала запустите прокси."
 
 msgid "Proxy not active. Unable to generate M3U file."
-msgstr "Прокси не активен. Не удалось сгенерировать файл M3U."
+msgstr "Прокси не активен. Невозможно сгенерировать файл M3U."
 
 msgid "Proxy not responding after"
-msgstr ""
+msgstr "Прокси не отвечает после"
 
 msgid "Proxy restarting... Please wait"
-msgstr ""
+msgstr "Перезапуск прокси... Пожалуйста, подождите"
 
-#, fuzzy
 msgid "Proxy token refreshed successfully"
-msgstr ""
-"Букеты Vavoo успешно удалены!\n"
-"(Удалено %s файлов)"
+msgstr "Токен прокси успешно обновлен"
+
+msgid "Ready"
+msgstr "Готово"
 
 msgid "Really close without saving settings?"
-msgstr "Серьёзно закрыть без сохранения настроек?"
+msgstr "Действительно закрыть без сохранения настроек?"
 
 msgid "Recommended: 5-8 minutes"
-msgstr "Рекомендуемое время: 5-8 минут"
+msgstr "Рекомендуется: 5-8 минут"
 
-#, fuzzy
 msgid "Refresh stream (minutes):"
-msgstr "Автоматическое обновление потока (в минутах):"
+msgstr "Обновлять поток (минуты):"
 
 msgid "Refresh stream every X minutes (1-15)"
-msgstr "Обновляйте поток каждые X минут (1-15)"
+msgstr "Обновлять поток каждые X минут (1-15)"
 
 msgid "Reload Bouqet"
 msgstr "Перезагрузить букет"
@@ -348,7 +382,7 @@ msgid "Restart"
 msgstr "Перезапуск"
 
 msgid "SELECT YOUR CHOICE"
-msgstr "ВЫБЕРИТЕ СВОЙ ВЫБОР"
+msgstr "ВЫБЕРИТЕ ВАШ ВАРИАНТ"
 
 msgid "Save"
 msgstr "Сохранить"
@@ -360,17 +394,16 @@ msgid "Saved in: %s"
 msgstr "Сохранено в: %s"
 
 msgid "Schedule type:"
-msgstr "Тип графика:"
+msgstr "Тип расписания:"
 
-#, fuzzy
 msgid "Scheduled List:"
-msgstr "Обновление списка запланированных событий:"
+msgstr "Запланированный список:"
 
 msgid "Search"
 msgstr "Поиск"
 
 msgid "Search Channels:"
-msgstr "Каналы поиска:"
+msgstr "Поиск каналов:"
 
 msgid "Search..."
 msgstr "Поиск..."
@@ -379,7 +412,7 @@ msgid "Search:"
 msgstr "Поиск:"
 
 msgid "Select Background"
-msgstr "Выберите фон"
+msgstr "Выбрать фон"
 
 msgid "Select M3U export mode:"
 msgstr "Выберите режим экспорта M3U:"
@@ -388,10 +421,10 @@ msgid "Select country to export M3U:"
 msgstr "Выберите страну для экспорта M3U:"
 
 msgid "Server for Player Used"
-msgstr "Сервер для используемого игрока"
+msgstr "Сервер для используемого плеера"
 
 msgid "Server for player."
-msgstr "Сервер для игрока."
+msgstr "Сервер для плеера."
 
 msgid "Showing all channels: {}"
 msgstr "Показаны все каналы: {}"
@@ -399,23 +432,26 @@ msgstr "Показаны все каналы: {}"
 msgid "Space"
 msgstr "Пробел"
 
+msgid "Start EPG update now?"
+msgstr "Запустить обновление EPG сейчас?"
+
 msgid "Stream ended. Too many connection issues."
-msgstr "Трансляция завершилась. Слишком много проблем с подключением."
+msgstr "Поток завершен. Слишком много проблем с подключением."
 
 msgid "Technical Features:"
 msgstr "Технические характеристики:"
 
 msgid "This will refresh the authentication token."
-msgstr ""
+msgstr "Это обновит токен аутентификации."
 
 msgid "This will remove:"
 msgstr "Это удалит:"
 
 msgid "Time to start update:"
-msgstr "Время начать обновление:"
+msgstr "Время начала обновления:"
 
 msgid "Top"
-msgstr "Сверху"
+msgstr "Вверху"
 
 msgid "Total channels: %(total_channels)d"
 msgstr "Всего каналов: %(total_channels)d"
@@ -423,118 +459,56 @@ msgstr "Всего каналов: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "ВЕРХНИЙ РЕГИСТР"
 
+msgid "Update interval (hours)"
+msgstr "Интервал обновления (часы)"
+
 msgid "Update interval (minutes):"
 msgstr "Интервал обновления (минуты):"
 
+msgid "Updating EPG..."
+msgstr "Обновление EPG..."
+
+msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
+msgstr "Источник EPG Vavoo не включен в EPGImport. Пожалуйста, включите его в настройках EPGImport."
+
+msgid "Vavoo EPG source not found. Please export at least one bouquet first."
+msgstr "Источник EPG Vavoo не найден. Пожалуйста, сначала экспортируйте хотя бы один букет."
+
 msgid "Vavoo Stream Live"
-msgstr "Vavoo Stream Live"
+msgstr "Vavoo Прямой эфир"
 
 msgid "Vavoo Stream Live - Information"
-msgstr "Прямая трансляция Vavoo — информация"
+msgstr "Vavoo Прямой эфир - Информация"
 
 msgid "Vavoo Stream Live Plugin"
-msgstr "Плагин Vavoo Stream Live"
+msgstr "Плагин Vavoo Прямой эфир"
 
 msgid "Vavoo bouquets removed successfully!"
-msgstr ""
-"Букеты Vavoo успешно удалены!\n"
-"(Удалено %s файлов)"
+msgstr "Букеты Vavoo успешно удалены!"
 
 msgid "Vavoo is already running."
-msgstr ""
+msgstr "Vavoo уже запущен."
 
 msgid "Version:"
 msgstr "Версия:"
 
 msgid "Waiting for proxy..."
-msgstr ""
+msgstr "Ожидание прокси..."
+
+msgid "Welcome to Vavoo Proxy with EPG support"
+msgstr "Добро пожаловать в Vavoo Proxy с поддержкой EPG."
 
 msgid "You can start it from the menu or by pressing the TEXT button."
-msgstr ""
+msgstr "Вы можете запустить его из меню или нажав кнопку TEXT."
 
 msgid "fixed time"
-msgstr "установленный срок"
+msgstr "фиксированное время"
 
 msgid "interval"
 msgstr "интервал"
 
 msgid "lowercase"
-msgstr "строчные буквы"
+msgstr "нижний регистр"
 
 msgid "seconds"
-msgstr ""
-
-#, fuzzy
-#~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
-#~ msgstr "- Сообщество: Linuxsat-support.com, форум Corvoboys"
-
-#~ msgid "- For personal use only"
-#~ msgstr "— Только для личного использования"
-
-#~ msgid "Active or Disactive lan Ipv6."
-#~ msgstr "Активный или деактивированный IPv6 в локальной сети."
-
-#, fuzzy
-#~ msgid "At an interval of hours or at a fixed time"
-#~ msgstr "С интервалом в несколько часов или в фиксированное время"
-
-#, fuzzy
-#~ msgid "Auto-refresh stream (minutes):"
-#~ msgstr "Автоматическое обновление потока (в минутах):"
-
-#~ msgid "Changelog: {changelog}"
-#~ msgstr "Список изменений: {changelog}"
-
-#~ msgid "Configure Dns Server for Box."
-#~ msgstr "Настройте DNS-сервер для Box."
-
-#~ msgid "Configure Fonts."
-#~ msgstr "Настройка шрифтов."
-
-#, fuzzy
-#~ msgid "Configure every interval of minutes from now"
-#~ msgstr "Настройте каждый интервал минут с этого момента"
-
-#~ msgid "Congrats! You already have the latest version..."
-#~ msgstr "Поздравляю! У вас уже установлена последняя версия..."
-
-#~ msgid "Do you want to install it now?"
-#~ msgstr ""
-#~ "Доступна новая версия %s\n"
-#~ "\n"
-#~ "Журнал изменений: %s\n"
-#~ "\n"
-#~ "Вы хотите установить ее сейчас?"
-
-#~ msgid "Do you want to install update ( %s ) now?"
-#~ msgstr "Хотите установить обновление ( %s ) сейчас?"
-
-#~ msgid "Eg: Arabic or other language."
-#~ msgstr "Например: арабский или другой язык."
-
-#~ msgid "New version {version} is available."
-#~ msgstr "Доступна новая версия {version}."
-
-#~ msgid "Scheduled List Update:"
-#~ msgstr "Обновление списка запланированных событий:"
-
-#~ msgid "Select DNS Server"
-#~ msgstr "Выберите DNS-сервер"
-
-#~ msgid "Select Fonts"
-#~ msgstr "Выберите шрифты"
-
-#~ msgid "Update Aborted!"
-#~ msgstr "Обновление прервано!"
-
-#~ msgid "Update Me"
-#~ msgstr "Обновите меня"
-
-#~ msgid "- - - -"
-#~ msgstr "- - - -"
-
-#~ msgid "Error starting stream via proxy"
-#~ msgstr "Ошибка при запуске потока через прокси"
-
-#~ msgid "Scheduled Bouquet Update:"
-#~ msgstr "Плановое обновление букета:"
+msgstr "секунд"

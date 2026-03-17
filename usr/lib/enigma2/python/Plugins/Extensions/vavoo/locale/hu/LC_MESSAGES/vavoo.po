@@ -12,9 +12,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.8\n"
 
-msgid "(%(count)d channels)"
-msgstr "(%(count)d csatorna)"
-
 msgid "(%d channels)?"
 msgstr "(%d csatorna)?"
 
@@ -23,6 +20,9 @@ msgstr "(%s fájl törölve)"
 
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Automatikus tokenfrissítés 9 percenként"
+
+msgid "- Automatic Epg generation with Service Reference"
+msgstr ""
 
 msgid "- Automatic bouquet generation"
 msgstr "- Automatikus csokorgenerálás"
@@ -83,12 +83,21 @@ msgstr "Aktív vagy inaktív LAN Ipv6."
 msgid "All countries (%d)"
 msgstr "Minden ország (%d)"
 
+msgid "An export for another country is already in progress. Please wait."
+msgstr ""
+
 #, fuzzy
 msgid "At an interval hours or fixed time"
 msgstr "Órák időközönként vagy meghatározott időpontban"
 
 msgid "Author:"
 msgstr "Szerző:"
+
+msgid "Auto-update EPG"
+msgstr ""
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr ""
 
 msgid "Back"
 msgstr "Vissza"
@@ -99,13 +108,11 @@ msgstr "Backspace"
 msgid "Bottom"
 msgstr "Alul"
 
-msgid "Bouquet '%(name)s' created successfully!"
-msgstr "A(z) „%(name)s” csokor sikeresen létrehozva!"
-
 msgid "Bouquet Position in List"
 msgstr "Csokor pozíciója a listában"
 
-msgid "Bouquet creation error: %s"
+#, fuzzy
+msgid "Bouquet creation error: {}"
 msgstr "Csokor létrehozási hiba: %s"
 
 msgid "Bouquets reorganized successfully!"
@@ -157,6 +164,9 @@ msgstr "Országok: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "Ország: %s"
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr ""
+
 msgid "Credits:"
 msgstr "Kreditek:"
 
@@ -169,11 +179,34 @@ msgstr "Alapértelmezett nézet a bővítmény megnyitásakor"
 msgid "Do you want to export this bouquet?"
 msgstr "Exportálni szeretné ezt a csokrot?"
 
+msgid "EPG is disabled. Please enable it in Vavoo settings first."
+msgstr ""
+
+msgid "EPG processing completed for {} channels"
+msgstr ""
+
+msgid "EPG update completed"
+msgstr ""
+
+msgid "EPG update failed"
+msgstr ""
+
+#, fuzzy
+msgid "EPG update started successfully"
+msgstr "Konfiguráció sikeresen mentve!"
+
+msgid "Enable Vavoo EPG"
+msgstr ""
+
 msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Írjon be szöveget a kereséshez..."
+
+#, fuzzy
+msgid "Error starting EPG update: {}"
+msgstr "Hiba a csatorna indításakor"
 
 msgid "Error starting channel"
 msgstr "Hiba a csatorna indításakor"
@@ -181,11 +214,21 @@ msgstr "Hiba a csatorna indításakor"
 msgid "Error: %s"
 msgstr "Hiba: %s"
 
+#, fuzzy
+msgid "Error: {}"
+msgstr "Hiba: %s"
+
 msgid "Exit"
 msgstr "Kilépés"
 
 msgid "Export"
 msgstr "Exportálás"
+
+msgid "Export failed: {}"
+msgstr ""
+
+msgid "Export started. Bouquet will be available shortly."
+msgstr ""
 
 msgid "Failed to refresh proxy token"
 msgstr ""
@@ -219,6 +262,9 @@ msgstr ".m3u fájlok generálása MINDEN %d ország számára?"
 
 msgid "Hide/Show"
 msgstr "Elrejtés/Megjelenítés"
+
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr ""
 
 msgid "Important Notes:"
 msgstr "Fontos megjegyzések:"
@@ -261,9 +307,6 @@ msgstr ""
 
 msgid "No channels found"
 msgstr "Nem található csatorna a következőhöz: {}"
-
-msgid "No channels found for '%(name)s'"
-msgstr "Nem található csatorna a következőhöz: '%(name)s'"
 
 msgid "No channels found for: %s"
 msgstr "Nem található csatorna a következőhöz: %s"
@@ -322,6 +365,9 @@ msgstr ""
 "Vavoo csokrok sikeresen eltávolítva!\n"
 "\n"
 "(%s fájl törölve)"
+
+msgid "Ready"
+msgstr ""
 
 msgid "Really close without saving settings?"
 msgstr "Tényleg bezárja a beállítások mentése nélkül?"
@@ -400,6 +446,9 @@ msgstr "Az összes csatorna megjelenítése: {}"
 msgid "Space"
 msgstr "Tér"
 
+msgid "Start EPG update now?"
+msgstr ""
+
 msgid "Stream ended. Too many connection issues."
 msgstr "A streamelés véget ért. Túl sok kapcsolódási probléma."
 
@@ -424,8 +473,21 @@ msgstr "Összes csatorna: %(total_channels)d"
 msgid "UPPERCASE"
 msgstr "NAGYBETŰS"
 
+#, fuzzy
+msgid "Update interval (hours)"
+msgstr "Frissítési időköz (perc):"
+
 msgid "Update interval (minutes):"
 msgstr "Frissítési időköz (perc):"
+
+msgid "Updating EPG..."
+msgstr ""
+
+msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
+msgstr ""
+
+msgid "Vavoo EPG source not found. Please export at least one bouquet first."
+msgstr ""
 
 msgid "Vavoo Stream Live"
 msgstr "Vavoo Stream élőben"
@@ -451,6 +513,9 @@ msgstr "Verzió:"
 msgid "Waiting for proxy..."
 msgstr ""
 
+msgid "Welcome to Vavoo Proxy with EPG support"
+msgstr ""
+
 msgid "You can start it from the menu or by pressing the TEXT button."
 msgstr ""
 
@@ -465,6 +530,9 @@ msgstr "kisbetűk"
 
 msgid "seconds"
 msgstr ""
+
+#~ msgid "(%(count)d channels)"
+#~ msgstr "(%(count)d csatorna)"
 
 #, fuzzy
 #~ msgid "- Community: Linuxsat-support.com, Corvoboys Forum"
@@ -483,6 +551,9 @@ msgstr ""
 #, fuzzy
 #~ msgid "Auto-refresh stream (minutes):"
 #~ msgstr "Automatikus frissítésű stream (perc):"
+
+#~ msgid "Bouquet '%(name)s' created successfully!"
+#~ msgstr "A(z) „%(name)s” csokor sikeresen létrehozva!"
 
 #~ msgid "Changelog: {changelog}"
 #~ msgstr "Változási napló: {changelog}"
@@ -516,6 +587,9 @@ msgstr ""
 
 #~ msgid "New version {version} is available."
 #~ msgstr "Új verzió ({version}) érhető el."
+
+#~ msgid "No channels found for '%(name)s'"
+#~ msgstr "Nem található csatorna a következőhöz: '%(name)s'"
 
 #~ msgid "Scheduled List Update:"
 #~ msgstr "Ütemezett lista frissítése:"
