@@ -32,7 +32,8 @@ PROXY_COUNTRIES_URL = PROXY_BASE_URL + "/countries"
 PROXY_REFRESH_URL = PROXY_BASE_URL + "/refresh_token"
 PROXY_SHUTDOWN_URL = PROXY_BASE_URL + "/shutdown"
 
-
+HOST_MAIN = 'https://raw.githubusercontent.com/Belfagor2005/vavoo/main'
+HOST_GIT = "https://raw.githubusercontent.com/Belfagor2005"
 FLAG_CACHE_DIR = "/tmp/vavoo_flags"
 LOG_FILE = "/tmp/vavoo.log"
 PRIMARY_BASE_URL = "https://vavoo.to"

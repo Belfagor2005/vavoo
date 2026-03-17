@@ -145,6 +145,7 @@ from .vUtils import (
     decodeHtml,
     download_flag_online,
     ensure_str,
+    fix_cache_format,
     getUrl,
     get_country_code,
     initialize_cache_with_local_flags,
@@ -1683,6 +1684,8 @@ class MainVavoo(Screen):
             'epg': self.manual_epg_update,
             'info': self.info,
             'InfoPressed': self.info,
+            'infoLong': self._fix_cache_format,
+            'yellow': self._fix_cache_format,
             'text': self.refresh_proxy,
         }
         actions_list = [
@@ -1694,6 +1697,64 @@ class MainVavoo(Screen):
             'ColorActions'
         ]
         self['actions'] = ActionMap(actions_list, actions, -1)
+
+    def _fix_cache_format(self, result=None):
+        """Fix cache format with confirmation and show result popup"""
+
+        if result is None:
+            message_lines = []
+            message_lines.append(_("Do you want to fix the cache format?"))
+            message_lines.append(_("This will:"))
+            message_lines.append(_("  - Add missing fields to all entries"))
+            message_lines.append(_("  - Remove duplicate entries"))
+            message_lines.append(_("  - Clean up the cache file"))
+            message = "\n".join(message_lines)
+
+            self.session.openWithCallback(
+                self._fix_cache_format,  # Richiama stessa funzione con result
+                MessageBox,
+                message,
+                MessageBox.TYPE_YESNO
+            )
+            return
+
+        if not result:
+            print("[DEBUG] fix_cache_format cancelled by user")
+            return
+
+        try:
+            if NOTIFICATION_AVAILABLE:
+                quick_notify(_("Fixing cache format..."), 2)
+
+            fixed, removed = fix_cache_format(remove_duplicates=True)
+
+            if fixed == 0 and removed == 0:
+                message = _("Cache is already in correct format. No changes needed.")
+            else:
+                message_lines = []
+                message_lines.append(_("Cache format fix completed:"))
+                if fixed > 0:
+                    message_lines.append(_("  - {} entries updated").format(fixed))
+                if removed > 0:
+                    message_lines.append(_("  - {} duplicate entries removed").format(removed))
+                message = "\n".join(message_lines)
+
+            self.session.open(
+                MessageBox,
+                message,
+                MessageBox.TYPE_INFO,
+                timeout=5
+            )
+            print("[DEBUG] fix_cache_format completed: fixed={}, removed={}".format(fixed, removed))
+
+        except Exception as e:
+            print("[DEBUG] Error in fix_cache_format: {}".format(e))
+            self.session.open(
+                MessageBox,
+                _("Error fixing cache: {}").format(str(e)),
+                MessageBox.TYPE_ERROR,
+                timeout=5
+            )
 
     def _reload_services(self, showMsg=True):
         print("[DEBUG] Reload services | showMsg =", showMsg)
@@ -2308,7 +2369,7 @@ class MainVavoo(Screen):
                 MessageBox.TYPE_INFO)
             return
 
-        # Optional: check if the source is enabled in EPGImport config
+        # Check if the source is enabled in EPGImport config
         epgimport_conf = "/etc/enigma2/epgimport.conf"
         source_enabled = False
         if isfile(epgimport_conf):
@@ -2321,17 +2382,20 @@ class MainVavoo(Screen):
             except Exception as e:
                 print("[EPG] Error reading epgimport.conf: {}".format(e))
 
-            if not source_enabled:
-                self.session.open(
-                    MessageBox,
-                    _("Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."),
-                    MessageBox.TYPE_WARNING,
-                    timeout=5)
+        if not source_enabled:
+            self.session.open(
+                MessageBox,
+                _("Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."),
+                MessageBox.TYPE_WARNING,
+                timeout=5)
+            return
 
-        self.session.openWithCallback(self._epg_update_callback,
-                                      MessageBox,
-                                      _("Start EPG update now?"),
-                                      MessageBox.TYPE_YESNO)
+        self.session.openWithCallback(
+            self._epg_update_callback,
+            MessageBox,
+            _("Start EPG update now?"),
+            MessageBox.TYPE_YESNO
+        )
 
     def _epg_update_callback(self, answer):
         if answer:
