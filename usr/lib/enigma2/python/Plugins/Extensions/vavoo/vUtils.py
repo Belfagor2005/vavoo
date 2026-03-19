@@ -34,6 +34,7 @@ import types
 from collections import OrderedDict
 from difflib import SequenceMatcher
 from json import dump, load, loads
+from Components.NimManager import nimmanager  # , getConfigSatlist
 from os import listdir, makedirs, remove, system, unlink, rename
 from os.path import basename, exists, getmtime, getsize, isfile, join, splitext
 from random import choice
@@ -59,8 +60,8 @@ from . import (
     LOG_FILE,
     CACHE_FILE,
     UNMATCHED_FILE,
-    ENIGMA_PATH,
-    SREF_MAP_FILE,
+    # ENIGMA_PATH,
+    # SREF_MAP_FILE,
     HOST_MAIN,
     country_codes
 )
@@ -70,9 +71,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 _original_getaddrinfo = socket.getaddrinfo
 
 try:
-    from urllib.parse import quote, unquote
+    from urllib.parse import quote  # , unquote
 except ImportError:
-    from urllib import quote, unquote
+    from urllib import quote  # , unquote
 
 try:
     import requests
@@ -1536,14 +1537,107 @@ def calculate_similarity(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
+def get_orbital_position(self, service_ref):
+    """
+    Extract orbital position from service reference namespace.
+    Returns orbital position in tenths of a degree (e.g., 130 = 13.0°E, -50 = 5.0°W)
+    """
+    parts = service_ref.split(':')
+    if len(parts) < 4:
+        return 0
+
+    try:
+        namespace_str = parts[3] if parts[3] else '0'
+        namespace = int(namespace_str, 16)
+
+        # Case 1: Default - Position * 65536
+        # The namespace is a multiple of 65536 (0x10000)
+        if namespace % 0x10000 == 0:
+            pos = namespace // 0x10000
+            # Determine East/West from sign (Enigma convention)
+            if pos < 1800:  # East
+                return pos
+            else:  # West (pos > 1800, e.g., 3600-50=3550 for 5°W)
+                return -(3600 - pos)
+
+        # Case 2: Exception - also contains frequency and polarization
+        # Extract the base part (Position * 65536)
+        base = namespace & 0xFFFF0000
+        pos = base // 0x10000
+
+        if pos < 1800:
+            return pos
+        else:
+            return -(3600 - pos)
+
+    except (ValueError, TypeError):
+        return 0
+
+
+def get_configured_satellites():
+    """
+    Get list of satellites configured by user in Enigma2.
+    Returns list of orbital positions in tenths of degree (e.g., [130, 192, 282])
+    """
+    try:
+        configured_sats = []
+
+        # Method 1: Direct from NimManager
+        if hasattr(nimmanager, 'getConfiguredSats'):
+            sats = nimmanager.getConfiguredSats()
+            if sats:
+                configured_sats = list(sats)
+                print("[SatConfig] Found {} configured satellites via NimManager".format(len(configured_sats)))
+                return configured_sats
+
+        # Method 2: Parse from config
+        for slot in nimmanager.nim_slots:
+            if slot.isCompatible("DVB-S") and slot.config.dvbs.configMode.value != "nothing":
+                # Simple mode - check diseqc settings
+                if slot.config.dvbs.configMode.value == "simple":
+                    for port in ['diseqcA', 'diseqcB', 'diseqcC', 'diseqcD']:
+                        orbpos = getattr(slot.config.dvbs, port).value
+                        if orbpos and orbpos not in configured_sats and orbpos < 3600:
+                            configured_sats.append(orbpos)
+                            print("[SatConfig] Found configured sat: {} (port {})".format(orbpos, port))
+
+                # Advanced mode - check each configured satellite
+                elif hasattr(slot.config.dvbs, 'advanced') and slot.config.dvbs.advanced:
+                    for sat_config in slot.config.dvbs.advanced.sat.values():
+                        if sat_config.enabled.value:
+                            orbpos = sat_config.sat.value.orbital_position
+                            if orbpos and orbpos not in configured_sats:
+                                configured_sats.append(orbpos)
+                                print("[SatConfig] Found configured sat: {}".format(orbpos))
+
+        print("[SatConfig] Total configured satellites: {}".format(configured_sats))
+        return configured_sats
+
+    except Exception as e:
+        print("[SatConfig] Error getting configured satellites: {}".format(e))
+        return []
+
+
+def get_satellite_priority(orbpos, configured_sats):
+    """
+    Returns priority boost for a satellite based on user configuration.
+    1.0 = same as configured
+    0.5 = other satellite
+    """
+    if orbpos in configured_sats:
+        return 1.0
+    return 0.5
+
+
 class VavooEPGMatcher:
     def __init__(self, similarity_threshold=0.85):
         self.similarity_threshold = similarity_threshold
         self.rytec_entries = []     # (clean_name, original_name, service_ref)
-        self.rytec_by_id = {}
+        self.rytec_by_id = {}       # (original_id, service_ref)
         self.cache = load_cache()   # persistent cache
         self.new_matches = {}       # matches found in this session
-        self._load_rytec_database()
+        if not self.rytec_entries:
+            self._load_rytec_database()
 
     def _load_rytec_database(self):
         rytec_paths = [
@@ -1607,8 +1701,164 @@ class VavooEPGMatcher:
         cleaned = sub(r'\s+', ' ', cleaned).strip()
         return cleaned
 
+    def _get_signal_priority(self, service_ref, country_code=None):
+        """
+        Determine signal priority based on service reference type.
+
+        Priority levels:
+        1 = Satellite (best) - with bonus for Italian satellites
+        2 = Terrestrial DVB-T
+        3 = Cable
+        4 = Other / IPTV or unknown
+        """
+        parts = service_ref.split(':')
+        if len(parts) < 4:
+            return 4  # Unknown / other
+
+        try:
+            namespace_str = parts[3] if parts[3] else '0'
+            namespace = int(namespace_str, 16)
+
+            # Known satellite namespaces
+            satellite_namespaces = [
+                0x5A0000,   # 13.0°E HotBird (Italy)
+                0xC00000,   # 19.2°E Astra
+                0xEB0000,   # 23.5°E Astra 3
+                0xEF0000,   # 28.2°E Astra 2
+                0xE080000,  # 16.0°E Eutelsat 16A
+                0x9E0000,   # 9.0°E Eutelsat 9B
+                0x7E0000,   # 7.0°E Eutelsat 7E
+                0xDDE0000,  # 5.0°W Eutelsat 5WA (Italy)
+                0xCE40000,  # 30.0°W Hispasat
+                0x2A00000,  # 42.0°E Türksat
+                0x4C0000,   # 4.8°E Astra 4A / Sirius
+                0x1F80000,  # 31.5°E Astra 5B
+                0x2100000,  # 33.0°E Eutelsat 33E
+                0x1980000,  # 25.5°E Es'hail / Arabsat
+                0x1C20000,  # 45.0°E AzerSpace
+                0x1860000,  # 39.0°E Hellas Sat
+                0x36E0000,  # 36.0°E Eutelsat 36B
+                0x1040000,  # 26.0°E Badr
+                0x130000,   # 1.9°E BulgariaSat
+            ]
+
+            # Italian satellites (bonus priority)
+            italian_satellites = [0x5A0000, 0xDDE0000]
+
+            # Check for satellite match
+            for sat_ns in satellite_namespaces:
+                if namespace & 0xFFF00000 == sat_ns:
+                    if country_code == 'it' and sat_ns in italian_satellites:
+                        return 1  # Italian satellite - top priority
+                    return 1      # Other satellite
+
+            # Terrestrial DVB-T
+            if namespace & 0xFFFF0000 == 0xEEEE0000:
+                return 2  # Terrestrial
+
+            # Cable
+            if namespace & 0xFFFF0000 == 0xFFFF0000:
+                return 3  # Cable
+
+            # Default fallback
+            return 4  # Other / IPTV / unknown
+
+        except (ValueError, TypeError):
+            return 4
+
+    def _find_match_internal(self, channel_name, country_code):
+        """
+        Search for a match in ALL Rytec channels, then apply boost based on user configuration.
+        """
+        if not channel_name:
+            return None, None
+
+        # Clean the input channel name
+        clean_input = self._clean_name(channel_name)
+
+        # Load user-configured satellites (e.g., [130] for 13°E)
+        if not hasattr(self, '_configured_sats'):
+            self._configured_sats = get_configured_satellites()
+            print("[Match] User has {} configured satellites: {}".format(
+                len(self._configured_sats), self._configured_sats))
+
+        candidates = []
+
+        # Pass 1: search all matches by similarity (ignore priority for now)
+        for clean_entry, orig_name, rytec_id, service_ref in self.rytec_entries:
+            entry_country = rytec_id.split('.')[-1] if '.' in rytec_id else ""
+
+            # Filter by country
+            if country_code and entry_country != country_code:
+                continue
+
+            # Calculate base similarity
+            score = calculate_similarity(clean_input, clean_entry)
+            if score < self.similarity_threshold:
+                continue
+
+            # Extract additional info
+            signal_priority = self._get_signal_priority(service_ref)
+            orbpos = 0
+            if signal_priority == 1:  # Satellite
+                orbpos = self.get_orbital_position(service_ref)
+
+            # Calculate boost
+            boost = 1.0
+
+            # 1. User-configured satellite → max boost
+            if orbpos and self._configured_sats and orbpos in self._configured_sats:
+                boost = 1.5
+                print("[Match] FOUND! Satellite {} is user-configured!".format(orbpos))
+
+            # 2. Italian satellite (important) but not configured
+            elif country_code == 'it' and orbpos in [130, -50]:  # 13°E or 5°W
+                boost = 1.3
+
+            # 3. Other satellites
+            elif signal_priority == 1:
+                boost = 1.2
+
+            # 4. Terrestrial
+            elif signal_priority == 2:
+                boost = 1.1
+
+            # 5. Cable/IPTV
+            else:
+                boost = 1.0
+
+            adjusted_score = score * boost
+
+            candidates.append((
+                adjusted_score, score, signal_priority, orbpos,
+                clean_entry, orig_name, rytec_id, service_ref
+            ))
+
+        # Sort by adjusted score (highest first)
+        candidates.sort(key=lambda x: -x[0])
+
+        for adj_score, orig_score, priority, orbpos, clean_entry, orig_name, rytec_id, service_ref in candidates:
+            # Pick the first candidate above base similarity threshold
+            if orig_score >= self.similarity_threshold:
+                parts = service_ref.split(':')
+                if parts and parts[0] == '1':
+                    parts[0] = '4097'  # Conversion for Enigma2 service reference
+                converted = ':'.join(parts)
+
+                sat_info = " (sat {})".format(orbpos) if orbpos else ""
+                conf_info = " [CONFIGURED]" if orbpos in self._configured_sats else ""
+                print("[Match] CHOSEN: '{}' -> {}{}{} (score:{}→{}, priority:{})".format(
+                    channel_name, rytec_id, sat_info, conf_info,
+                    orig_score, adj_score, priority
+                ))
+
+                return rytec_id, converted
+
+        print("[Match] No match found for '{}'".format(channel_name))
+        return None, "4097:0:0:0:0:0:0:0:0:0:"
+
     def find_match(self, channel_name, country_code=None, servicetype="4097"):
-        """Search matches: 1) Local cache, 2) Download if needed, 3) Local matching"""
+        """Search matches: 1) Local cache, 2) Temp cache (once), 3) Local matching"""
         if not channel_name:
             return None, None
 
@@ -1620,35 +1870,36 @@ class VavooEPGMatcher:
             print("[Match] Local cache HIT: {}".format(cache_key))
             return cached.get('id'), cached.get('sref')
 
-        # 2. IF NOT FOUND, CHECK TEMP CACHE (/tmp/vavoo_epg_cache.json)
-        print("[Match] Local cache miss, checking temp cache...")
-        temp_cache = load_temp_cache()
-        if not temp_cache:
-            # Not in /tmp, download it
-            print("[Match] Temp cache not found, downloading...")
-            if download_epg_cache_if_needed():
-                temp_cache = load_temp_cache()
+        # 2. TRY TEMP CACHE ONLY ONCE
+        if not hasattr(self, '_checked_temp_cache'):
+            self._checked_temp_cache = False
+            self._temp_cache = None
 
-        if temp_cache and cache_key in temp_cache:
-            cached = temp_cache[cache_key]
+        if not self._checked_temp_cache:
+            print("[Match] Checking temp cache once...")
+            self._temp_cache = load_temp_cache()
+            if not self._temp_cache:
+                print("[Match] Temp cache not found, downloading once...")
+                if download_epg_cache_if_needed():
+                    self._temp_cache = load_temp_cache()
+            self._checked_temp_cache = True
+
+        if self._temp_cache and cache_key in self._temp_cache:
+            cached = self._temp_cache[cache_key]
             print("[Match] Temp cache HIT: {}".format(cache_key))
-
-            # Also save to local cache for future use
+            # Save to local cache for future
             self.cache[cache_key] = cached
             save_cache(self.cache)
-
             return cached.get('id'), cached.get('sref')
 
-        # 3. FALLBACK TO LOCAL MATCHING WITH RYTEC
+        # 3. FALLBACK TO LOCAL MATCHING
         print("[Match] Doing local matching for: {}".format(cache_key))
 
         if cache_key in self.new_matches:
             m = self.new_matches[cache_key]
             return m['id'], m['sref']
 
-        result_id, result_sref = self._find_match_internal(
-            channel_name, country_code)
-
+        result_id, result_sref = self._find_match_internal(channel_name, country_code)
         if result_id and result_sref:
             self.new_matches[cache_key] = {
                 'id': result_id, 'sref': result_sref}
@@ -1663,60 +1914,33 @@ class VavooEPGMatcher:
                 country_code,
                 servicetype,
                 matched=False)
-
         return result_id, result_sref
 
-    def _find_match_internal(self, channel_name, country_code):
-        clean_input = self._clean_name(channel_name)
-        best_match = None
-        best_score = 0.0
-        best_id = None
-        best_ref = None
-
-        words = [w for w in clean_input.split() if len(w) >= 3]
-        candidates = []
-        if words:
-            for clean_entry, orig_name, rytec_id, service_ref in self.rytec_entries:  # ora salviamo anche rytec_id
-                if any(word in clean_entry for word in words):
-                    candidates.append(
-                        (clean_entry, orig_name, rytec_id, service_ref))
-        if not candidates:
-            candidates = [(ce, on, rid, sref)
-                          for ce, on, rid, sref in self.rytec_entries]
-
-        for clean_entry, orig_name, rytec_id, service_ref in candidates:
-            score = calculate_similarity(clean_input, clean_entry)
-            if country_code and '.{}'.format(
-                    country_code) in orig_name.lower():
-                score += 0.15
-            if score > best_score and score >= self.similarity_threshold:
-                best_score = score
-                best_match = orig_name
-                best_id = rytec_id
-                best_ref = service_ref
-
-        if best_ref:
-            print("DEBUG: best_id = '{}'".format(best_id))
-
-            parts = best_ref.split(':')
-            if parts and parts[0] == '1':
-                parts[0] = '4097'
-            converted = ':'.join(parts)
-            print("[VavooEPGMatcher] Match: '{}' -> '{}' (ID: {}) score: {:.2f}".format(
-                channel_name, best_match, best_id, best_score))
-            return best_id, converted
-        else:
-            print("[VavooEPGMatcher] No match for '{}'".format(channel_name))
-            return None, None
-
     def save_cache(self):
-        """Save accumulated new matches to disk."""
+        """Save accumulated new matches to disk with COMPLETE format."""
         if self.new_matches:
-            self.cache.update(self.new_matches)
-            save_cache(self.cache)
+            # Load existing complete cache
+            complete_cache = load_cache()
+
+            # Update with new matches (complete format)
+            for key, value in self.new_matches.items():
+                # Extract name and country from key (format: "name_country")
+                name = key.split('_')[0] if '_' in key else key
+                country = key.split('_')[1] if '_' in key else ''
+
+                complete_cache[key] = {
+                    'id': value.get('id'),
+                    'sref': value.get('sref'),
+                    'name': name,
+                    'country': country,
+                    'matched': True,
+                    'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
+                }
+
+            # Save the COMPLETE cache
+            save_cache(complete_cache)
             self.new_matches.clear()
-            print("[VavooEPGMatcher] Cache saved with {} total entries".format(
-                len(self.cache)))
+            print("[VavooEPGMatcher] Cache saved with {} total entries".format(len(complete_cache)))
 
 
 # ==================== FUNCTION generate_epg_files ====================
@@ -1745,12 +1969,24 @@ def load_cache():
 
 
 def save_cache(cache):
+    """Save cache to file with complete format validation"""
     try:
+        # Verify all entries have required fields
+        required_fields = ['id', 'name', 'country', 'sref', 'timestamp', 'matched']
+
+        for key, value in cache.items():
+            missing = [f for f in required_fields if f not in value]
+            if missing:
+                print("[Cache] ERROR: Entry {} missing fields: {}".format(key, missing))
+                return False
+
         with open(CACHE_FILE, 'w') as f:
-            # OrderedDict is serialized while preserving order
-            dump(cache, f, indent=2)
+            dump(cache, f, indent=2, sort_keys=True)
+        print("[Cache] Saved {} entries".format(len(cache)))
+        return True
     except Exception as e:
-        print("[EPG Cache] Error saving cache: {}".format(e))
+        print("[Cache] Error saving cache: {}".format(e))
+        return False
 
 
 def download_epg_cache_if_needed():
@@ -1778,124 +2014,6 @@ def download_epg_cache_if_needed():
     return False
 
 
-# def download_epg_cache(force=False):
-    # """
-    # Download vavoo_epg_cache.json from GitHub to /tmp/
-    # Returns path to downloaded file or None if failed
-    # """
-    # try:
-
-    # # URL del file
-    # url = "{}/vavoo_epg_cache.json".format(HOST_MAIN)
-    # print("[Cache] Downloading from: {}".format(url))
-
-    # # Scarica in /tmp/vavoo_epg_cache.json
-    # temp_file = "/tmp/vavoo_epg_cache.json"
-
-    # # Se esiste già e non force, usalo
-    # if exists(temp_file) and not force:
-    # file_age = time() - getmtime(temp_file)
-    # if file_age < 3600:  # 1 ora
-    # print("[Cache] Using existing temp file ({} min old)".format(int(file_age / 60)))
-    # return temp_file
-
-    # response = requests.get(url, timeout=10)
-    # if response.status_code == 200:
-    # with open(temp_file, 'wb') as f:
-    # f.write(response.content)
-    # print("[Cache] Downloaded to: {}".format(temp_file))
-    # return temp_file
-    # else:
-    # print("[Cache] Download failed: HTTP {}".format(response.status_code))
-    # return None
-
-    # except Exception as e:
-    # print("[Cache] Download error: {}".format(e))
-    # return None
-
-
-# def load_epg_cache_from_file(cache_file=None):
-    # """Load EPG cache from specified file or default temp file"""
-    # if cache_file is None:
-    # cache_file = "/tmp/vavoo_epg_cache.json"
-
-    # try:
-    # if exists(cache_file):
-    # with open(cache_file, 'r') as f:
-    # return load(f)
-    # except Exception as e:
-    # print("[Cache] Error loading {}: {}".format(cache_file, e))
-
-    # return None
-
-
-# def update_epg_cache_incremental(
-    # matched_channels,
-    # unmatched_channels,
-    # country_code):
-    # """
-    # Update the EPG cache incrementally, preserving existing entries.
-
-    # Args:
-    # matched_channels: List of dicts with keys 'name', 'rytec_id', 'dvb_ref'
-    # unmatched_channels: List of dicts with key 'name'
-    # country_code: ISO country code string
-    # """
-    # try:
-    # # Load existing cache
-    # complete_cache = {}
-    # if exists(CACHE_FILE):
-    # try:
-    # with open(CACHE_FILE, 'r') as f:
-    # complete_cache = load(f)
-    # print(
-    # "[EPG Cache] Loaded {} existing entries".format(
-    # len(complete_cache)))
-    # except Exception as e:
-    # print(
-    # "[EPG Cache] Error loading cache, starting fresh: {}".format(e))
-    # complete_cache = {}
-
-    # # Add matched channels
-    # for m in matched_channels:
-    # key = "{}_{}".format(m['name'], country_code)
-    # complete_cache[key] = {
-    # 'id': m['rytec_id'],
-    # 'sref': m['dvb_ref'],
-    # 'name': m['name'],
-    # 'country': country_code,
-    # 'matched': True,
-    # 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
-    # }
-
-    # # Add unmatched channels (only if not already present)
-    # for u in unmatched_channels:
-    # key = "{}_{}".format(u['name'], country_code)
-    # if key not in complete_cache:
-    # complete_cache[key] = {
-    # 'id': key,
-    # 'sref': "4097:0:0:0:0:0:0:0:0:0:",
-    # 'name': u['name'],
-    # 'country': country_code,
-    # 'matched': False,
-    # 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
-    # }
-
-    # # Save updated cache
-    # try:
-    # with open(CACHE_FILE, 'w') as f:
-    # dump(complete_cache, f, indent=2, sort_keys=True)
-    # print(
-    # "[EPG Cache] Saved {} total entries".format(
-    # len(complete_cache)))
-    # except Exception as e:
-    # print("[EPG Cache] Error saving cache: {}".format(e))
-
-    # except Exception as e:
-    # print("[EPG Cache] Error updating cache: {}".format(e))
-    # trace_error()
-
-
 def update_complete_cache(matched_channels, unmatched_channels, country_code):
     """Update the complete cache with matched and unmatched channels - CONSISTENT FORMAT"""
     try:
@@ -1919,7 +2037,7 @@ def update_complete_cache(matched_channels, unmatched_channels, country_code):
             complete_cache[key] = {
                 'id': m['rytec_id'],  # Rytec ID
                 'sref': m['dvb_ref'],  # Service reference
-                'name': m['name'],     # Nome canale
+                'name': m['name'],     # Channel name
                 'country': country_code,
                 'matched': True,
                 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
@@ -1929,9 +2047,9 @@ def update_complete_cache(matched_channels, unmatched_channels, country_code):
         # Add unmatched channels
         for u in unmatched_channels:
             key = "%s_%s" % (u['name'], country_code)
-            if key not in complete_cache:  # Non sovrascrivere matched
+            if key not in complete_cache:  # Do not overwrite matched entries
                 complete_cache[key] = {
-                    'id': key,  # Usa key come ID fallback
+                    'id': key,  # Use key as fallback ID
                     'sref': "4097:0:0:0:0:0:0:0:0:0:",
                     'name': u['name'],
                     'country': country_code,
@@ -2034,82 +2152,6 @@ def save_unmatched(
         print("[Unmatched] Error: %s" % e)
 
 
-# def get_unmatched_channels(country_code=None):
-    # """
-    # Retrieve unmatched channels, optionally filtered by country.
-    # Returns dict of unmatched channels.
-    # """
-    # try:
-        # if not exists(UNMATCHED_FILE):
-        # return {}
-
-        # with open(UNMATCHED_FILE, 'r') as f:
-        # content = f.read().strip()
-        # if not content:
-        # return {}
-
-        # unmatched_data = loads(content)
-
-        # # Filter by country if specified
-        # if country_code:
-        # filtered = {}
-        # for key, value in unmatched_data.items():
-        # if value.get('country') == country_code:
-        # filtered[key] = value
-        # return filtered
-
-        # return unmatched_data
-
-    # except Exception as e:
-        # print("[Unmatched] Error reading cache: %s" % e)
-        # return {}
-
-
-# def cleanup_old_unmatched(max_age_days=30):
-    # """
-    # Remove unmatched entries older than max_age_days.
-    # """
-    # try:
-        # if not exists(UNMATCHED_FILE):
-        # return 0
-
-        # with open(UNMATCHED_FILE, 'r') as f:
-        # unmatched_data = load(f)
-
-        # now = time()
-        # max_age_seconds = max_age_days * 24 * 3600
-        # removed = 0
-
-        # # Convert timestamp strings to time for comparison
-        # for key, value in list(unmatched_data.items()):
-        # try:
-        # timestamp_str = value.get('timestamp', '')
-        # if timestamp_str:
-        # # Parse timestamp (format: YYYY-MM-DD HH:MM:SS)
-        # from time import mktime, strptime
-        # timestamp = mktime(
-        # strptime(
-        # timestamp_str,
-        # '%Y-%m-%d %H:%M:%S'))
-        # if now - timestamp > max_age_seconds:
-        # del unmatched_data[key]
-        # removed += 1
-        # except BaseException:
-        # # If timestamp parsing fails, keep the entry
-        # continue
-
-        # if removed > 0:
-        # with open(UNMATCHED_FILE, 'w') as f:
-        # dump(unmatched_data, f, indent=2, sort_keys=True)
-        # print("[Unmatched] Cleaned %d old entries" % removed)
-
-        # return removed
-
-    # except Exception as e:
-        # print("[Unmatched] Error during cleanup: %s" % e)
-        # return 0
-
-
 def write_epg_mapping_file(epg_entries, country_code):
     """
     Write the EPG mapping file for a specific country.
@@ -2157,134 +2199,6 @@ def write_epg_mapping_file(epg_entries, country_code):
         except Exception as e:
             print("[EPG] Error writing {}: {}".format(filename, e))
             return None
-
-
-# def rewrite_bouquet_with_converted_srefs(bouquet_path, country_code):
-    # """
-    # Rewrite a single bouquet file, replacing fallback service references
-    # with converted ones using the matcher cache. Also updates the sref map.
-    # Returns number of changes.
-    # """
-    # if not exists(bouquet_path):
-        # print("[Rewrite] Bouquet not found: {}".format(bouquet_path))
-        # return 0
-
-    # matcher = get_epg_matcher(similarity_threshold=0.85)
-
-    # # Load existing sref map
-    # try:
-        # with open(SREF_MAP_FILE, 'r') as f:
-            # sref_map = load(f)
-    # except BaseException:
-        # sref_map = {}
-    # new_sref_map = {}
-
-    # with open(bouquet_path, 'r') as f:
-        # lines = f.readlines()
-
-    # new_lines = []
-    # i = 0
-    # changes = 0
-
-    # while i < len(lines):
-        # line = lines[i].strip()
-        # if line.startswith('#SERVICE '):
-            # service_line = line[9:]
-            # parts = service_line.split(':')
-            # if len(parts) < 11:
-            # new_lines.append(lines[i])
-            # i += 1
-            # continue
-
-            # url_part = parts[10] if len(parts) > 10 else ''
-
-            # # Check if it is already converted (the first 10 fields are not all zero except the third which is 1)
-            # # Fields 1 to 10 (indexes 0–9) should be: 4097,0,1,0,0,0,0,0,0,0 for fallback
-            # # If this is not the case, it means it is already converted
-            # already_converted = False
-            # if len(parts) >= 10:
-            # for idx in range(3, 10):
-            # if idx < len(parts) and parts[idx] != '0':
-            # already_converted = True
-            # break
-
-            # if already_converted:
-            # new_lines.append(lines[i])
-            # i += 1
-            # continue
-
-            # # Get the description line
-            # if i + 1 < len(lines) and lines[i +
-            # 1].strip().startswith('#DESCRIPTION '):
-            # desc_line = lines[i + 1].strip()
-            # name = desc_line[12:]  # after '#DESCRIPTION '
-            # name = sub(r' \.(c|s)$', '', name)  # remove .c or .s
-            # else:
-            # new_lines.append(lines[i])
-            # i += 1
-            # continue
-
-            # # Extract channel ID from the original URL
-            # channel_id = None
-            # try:
-            # url_decoded = unquote(url_part)
-            # match = search(r'[?&]channel=([^&]+)', url_decoded)
-            # if match:
-            # channel_id = match.group(1)
-            # except BaseException:
-            # pass
-
-            # # Try to find a converted sref using the matcher
-            # rytec_id, converted_sref = matcher.find_match(name, country_code)
-            # if converted_sref:
-            # # Ensure that converted_sref does NOT have a trailing colon
-            # if converted_sref.endswith(':'):
-            # converted_sref = converted_sref[:-1]
-
-            # # The new line: #SERVICE <converted_sref>:<url_part>
-            # new_service_line = "#SERVICE {}:{}".format(
-            # converted_sref, url_part)
-            # new_lines.append(new_service_line + '\n')
-            # new_lines.append(lines[i + 1])  # keep original description
-            # changes += 1
-
-            # # Store mapping for proxy (optional)
-            # if converted_sref and channel_id:
-            # new_sref_map[converted_sref] = channel_id
-
-            # i += 2
-            # continue
-            # else:
-            # # No match, keep original
-            # new_lines.append(lines[i])
-            # new_lines.append(lines[i + 1])
-            # i += 2
-        # else:
-            # new_lines.append(lines[i])
-            # i += 1
-
-    # if changes > 0:
-        # with open(bouquet_path, 'w') as f:
-            # f.writelines(new_lines)
-        # print(
-            # "[Bouquet] Rewrote {} channels in {}".format(
-            # changes,
-            # basename(bouquet_path)))
-
-        # # Update sref map
-        # if new_sref_map:
-            # sref_map.update(new_sref_map)
-            # try:
-            # with open(SREF_MAP_FILE, 'w') as f:
-            # dump(sref_map, f, indent=2)
-            # print("[SREF Map] Added {} entries".format(len(new_sref_map)))
-            # except Exception as e:
-            # print("[SREF Map] Error saving: {}".format(e))
-    # else:
-        # print(
-            # "[Bouquet] No changes needed for {}".format(
-            # basename(bouquet_path)))
-    # return changes
 
 
 def update_epg_sources():
@@ -2350,164 +2264,6 @@ def update_epg_sources():
         print("[EPG] Error writing sources file: %s" % e)
 
 
-# def generate_epg_files():
-    # """
-    # Generate the EPG mapping file from existing Vavoo bouquets.
-    # Uses the Rytec database to assign correct EPG IDs.
-    # """
-    # with _epg_lock:
-        # try:
-        # from Components.config import config
-        # if not config.plugins.vavoo.epg_enabled.value:
-        # return False
-        # except BaseException:
-        # return False
-
-        # epg_dir = "/etc/epgimport"
-        # channels_file = join(epg_dir, "vavoo.channels.xml")
-        # source_file = join(epg_dir, "vavoo.sources.xml")
-
-        # if not exists(epg_dir):
-        # makedirs(epg_dir)
-
-        # bouquet_dir = ENIGMA_PATH
-        # bouquet_pattern = join(bouquet_dir, "userbouquet.vavoo_*.tv")
-        # bouquet_files = glob.glob(bouquet_pattern)
-
-        # if not bouquet_files:
-        # print("[EPG] No Vavoo bouquets found")
-        # return False
-
-        # # Get matcher singleton
-        # matcher = get_epg_matcher(similarity_threshold=0.85)
-
-        # # key: service reference (first 10 fields), value: epg_id
-        # channels = {}
-
-        # for bq_file in bouquet_files:
-        # base = basename(bq_file)
-        # country_key = base.replace(
-        # "userbouquet.vavoo_", "").replace(
-        # ".tv", "")
-        # country_name = country_key.capitalize()
-        # country_code = country_codes.get(country_name, "")
-
-        # try:
-        # with open(bq_file, 'r') as f:
-        # lines = f.readlines()
-
-        # i = 0
-        # while i < len(lines):
-        # line = lines[i].strip()
-        # if line.startswith('#SERVICE '):
-        # full_service_ref = line[9:].strip()
-
-        # # Get description line
-        # name = ''
-        # if i + \
-        # 1 < len(lines) and lines[i + 1].strip().startswith('#DESCRIPTION '):
-        # desc_line = lines[i + 1].strip()
-        # name = desc_line[12:]  # after '#DESCRIPTION '
-        # name = sub(
-        # r' \.(c|s)$', '', name)  # remove .c or .s
-
-        # # Extract the first 10 fields (up to the tenth ':')
-        # parts = full_service_ref.split(':')
-        # if len(parts) >= 10:
-        # dvb_ref = ':'.join(parts[:10])
-        # else:
-        # dvb_ref = full_service_ref  # fallback
-
-        # # Search in the matcher cache to obtain the ID
-        # epg_id = None
-        # for cache_key, cache_value in matcher.cache.items():
-        # # cache_value['sref'] may have 10 or 11 fields, so
-        # # compare carefully
-        # cache_sref = cache_value.get('sref', '')
-
-        # # Remove trailing colon if present
-        # if cache_sref.endswith(':'):
-        # cache_sref = cache_sref[:-1]
-
-        # if cache_sref == dvb_ref:
-        # epg_id = cache_value.get('id')
-        # break
-
-        # if not epg_id:
-        # # Generate a fallback ID from the channel name
-        # normalized = sub(r'[^\w\s-]', '', name.lower())
-        # normalized = sub(r'\s+', '-', normalized.strip())
-        # epg_id = "{}.{}".format(
-        # normalized, country_code) if country_code else normalized
-
-        # # Save only if not duplicated (use dvb_ref as key)
-        # if dvb_ref not in channels:
-        # channels[dvb_ref] = epg_id
-
-        # i += 2  # skip description line
-        # else:
-        # i += 1
-        # except Exception as e:
-        # print("[EPG] Error reading {}: {}".format(bq_file, e))
-        # continue
-
-        # if not channels:
-        # print("[EPG] No channels found in bouquets")
-        # return False
-
-        # # Save cache for future runs
-        # matcher.save_cache()
-
-        # # Write mapping file with the correct format (DVB reference with 10
-        # # fields only)
-        # xml_lines = ['<?xml version="1.0" encoding="utf-8"?>', '<channels>']
-        # for sref, epg_id in channels.items():
-        # # Ensure sref has 10 fields and add a trailing ':' for the XML tag
-        # xml_lines.append(
-        # '  <channel id="{}">{}:</channel>'.format(epg_id, sref))
-        # xml_lines.append('</channels>')
-
-        # try:
-        # with open(channels_file, 'w') as f:
-        # f.write('\n'.join(xml_lines))
-        # print(
-        # "[EPG] Generated mapping for {} channels".format(
-        # len(channels)))
-        # except Exception as e:
-        # print("[EPG] Error writing channels file: {}".format(e))
-        # return False
-
-        # # Generate source file (points to the local EPG endpoint)
-        # local_ip = PROXY_HOST
-        # try:
-        # from .vavoo_proxy import proxy
-        # if proxy and hasattr(proxy, 'get_local_ip'):
-        # local_ip = proxy.get_local_ip()
-        # except BaseException:
-        # pass
-
-        # epg_url = "http://{}:{}/epg.xml".format(local_ip, PORT)
-        # source_content = '''<?xml version="1.0" encoding="utf-8"?>
-# <sources>
-  # <sourcecat sourcecatname="Vavoo">
-    # <source type="gen_xmltv" channels="vavoo.channels.xml">
-      # <description>Vavoo EPG</description>
-      # <url>{}</url>
-    # </source>
-  # </sourcecat>
-# </sources>'''.format(epg_url)
-
-        # try:
-        # with open(source_file, 'w') as f:
-        # f.write(source_content)
-        # print("[EPG] Source file generated")
-        # except Exception as e:
-        # print("[EPG] Error writing source file: {}".format(e))
-        # return False
-
-        # return True
-
-
 def fix_cache_format(remove_duplicates=True):
     """Fix all cache entries and optionally remove duplicates.
        Returns tuple (fixed_count, removed_duplicates_count)"""
@@ -2520,34 +2276,26 @@ def fix_cache_format(remove_duplicates=True):
             cache = load(f)
 
         modified = 0
-        id_map = {}
-        keys_to_remove = []
+        # keys_to_remove = []
 
         for key, value in list(cache.items()):
-            current_id = value.get('id')
-
-            if current_id:
-                if current_id in id_map:
-                    print(
-                        "[Cache] Duplicate ID '{}' for key '{}' (already in '{}')".format(
-                            current_id, key, id_map[current_id]))
-
-                    if remove_duplicates:
-                        keys_to_remove.append(key)
-                        print(
-                            "[Cache] Will remove duplicate entry: {}".format(key))
-                else:
-                    id_map[current_id] = key
-
+            # FIX: Do not modify the name if already present
             if 'name' not in value:
-                value['name'] = key.rsplit('_', 1)[0] if '_' in key else key
+                # Use the original key as the name, do not trim it
+                value['name'] = key
                 modified += 1
 
             if 'country' not in value:
-                value['country'] = key.rsplit('_', 1)[-1] if '_' in key else ''
+                # Extract country from the key (last part after _)
+                parts = key.rsplit('_', 1)
+                if len(parts) > 1:
+                    value['country'] = parts[-1]
+                else:
+                    value['country'] = ''
                 modified += 1
 
             if 'matched' not in value:
+                # Preserve matched status if it existed, otherwise default True
                 value['matched'] = True
                 modified += 1
 
@@ -2556,14 +2304,28 @@ def fix_cache_format(remove_duplicates=True):
                 value['timestamp'] = strftime('%Y-%m-%d %H:%M:%S', localtime())
                 modified += 1
 
-        removed = 0
-        if remove_duplicates and keys_to_remove:
-            for key in keys_to_remove:
-                del cache[key]
-                removed += 1
-            print("[Cache] Removed {} duplicate entries".format(removed))
+            # Ensure id exists
+            if 'id' not in value:
+                # Try to extract a meaningful ID or use the key
+                if '.' in key:
+                    # Try to extract the part after the last dot
+                    parts = key.split('.')
+                    if len(parts) > 1:
+                        # Take the first two parts as base
+                        base_id = '.'.join(parts[:2])
+                        value['id'] = base_id
+                    else:
+                        value['id'] = key
+                else:
+                    value['id'] = key
+                modified += 1
 
-        if modified > 0 or removed > 0:
+            # REMOVED duplicate removal logic based on id
+            # We keep all original entries
+
+        removed = 0
+
+        if modified > 0:
             with open(CACHE_FILE, 'w') as f:
                 dump(cache, f, indent=4, sort_keys=True)
             print(
@@ -2613,3 +2375,88 @@ def returnIMDB(text_clear, session):
             print("[XCF] IMDb error: ", str(e))
 
     return False
+
+
+satellite_positions = {
+    # Satelliti a Est (positive)
+    130: "13.0°E HotBird",      # 0x820000
+    192: "19.2°E Astra 1",      # 0xC00000
+    235: "23.5°E Astra 3",      # 0xEB0000
+    282: "28.2°E Astra 2",      # 0x11A0000? Verifica
+    160: "16.0°E Eutelsat",     # 0xA00000
+    90:  "9.0°E Eutelsat",      # 0x5A0000
+    70:  "7.0°E Eutelsat",      # 0x460000
+    48:  "4.8°E Astra 4A",      # 0x300000
+    42:  "4.2°E?",
+    39:  "3.9°E?",
+    36:  "3.6°E?",
+    33:  "3.3°E?",
+    31:  "3.1°E?",
+    28:  "2.8°E?",
+    26:  "2.6°E?",
+    23:  "2.3°E?",
+    21:  "2.1°E?",
+    19:  "1.9°E BulgariaSat",   # 0x130000
+    16:  "1.6°E?",
+    13:  "1.3°E?",
+    10:  "1.0°E?",
+    7:   "0.7°E?",
+    5:   "0.5°E?",
+    2:   "0.2°E?",
+    0:   "0.0°E?",
+
+    # Satelliti a Ovest (negative)
+    -8:   "0.8°W Thor",         # 0xFFF80000? In realtà 3592 * 65536 = 0xE080000
+    -50:  "5.0°W Eutelsat",     # 3550 * 65536 = 0xDDE0000
+    -125: "12.5°W Eutelsat",    # 3475 * 65536 = 0xD8C0000
+    -140: "14.0°W Express",     # 3460 * 65536 = 0xD840000
+    -150: "15.0°W Telstar",     # 3450 * 65536 = 0xD7A0000
+    -180: "18.0°W Intelsat",    # 3420 * 65536 = 0xD3C0000
+    -200: "20.0°W NSS",         # 3400 * 65536 = 0xD240000
+    -220: "22.0°W SES",         # 3380 * 65536 = 0xD0C0000
+    -245: "24.5°W Intelsat",    # 3355 * 65536 = 0xCEC0000
+    -275: "27.5°W Intelsat",    # 3325 * 65536 = 0xCBC0000
+    -300: "30.0°W Hispasat",    # 3300 * 65536 = 0xC900000? No, 0xCE40000 = 3300*65536? Calcola: 3300*65536=216.268.800=0xCE40000 Sì!
+    -315: "31.5°W Hylas",       # 3285 * 65536 = 0xCD40000
+    -345: "34.5°W Intelsat",    # 3255 * 65536 = 0xCB40000
+    -360: "36.0°W Hispasat",    # 3240 * 65536 = 0xCA80000
+    -430: "43.0°W Intelsat",    # 3170 * 65536 = 0xC620000
+    -450: "45.0°W Intelsat",    # 3150 * 65536 = 0xC4E0000
+    -500: "50.0°W Intelsat",    # 3100 * 65536 = 0xC1C0000
+    -530: "53.0°W Intelsat",    # 3070 * 65536 = 0xBFC0000
+    -555: "55.5°W Intelsat",    # 3045 * 65536 = 0xBE40000
+    -580: "58.0°W Intelsat",    # 3020 * 65536 = 0xBCC0000
+    -610: "61.0°W Amazonas",    # 2990 * 65536 = 0xBAC0000
+    -630: "63.0°W Telstar",     # 2970 * 65536 = 0xB940000
+    -650: "65.0°W Eutelsat",    # 2950 * 65536 = 0xB7C0000
+    -670: "67.0°W SES",         # 2930 * 65536 = 0xB640000
+    -700: "70.0°W Star One",    # 2900 * 65536 = 0xB3C0000
+    -718: "71.8°W Arsat",       # 2882 * 65536 = 0xB360000
+    -727: "72.7°W Nimiq",       # 2873 * 65536 = 0xB2E0000
+    -739: "73.9°W Hispasat",    # 2861 * 65536 = 0xB260000
+    -750: "75.0°W Star One",    # 2850 * 65536 = 0xB1E0000
+    -770: "77.0°W QuetzSat",    # 2830 * 65536 = 0xB0E0000
+    -788: "78.8°W Sky Mexico",  # 2812 * 65536 = 0xAFC0000
+    -810: "81.0°W Arsat",       # 2790 * 65536 = 0xAE60000
+    -820: "82.0°W Nimiq",       # 2780 * 65536 = 0xADC0000
+    -871: "87.1°W SES",         # 2729 * 65536 = 0xAA80000
+    -890: "89.0°W Galaxy",      # 2710 * 65536 = 0xA8C0000
+    -910: "91.0°W Galaxy",      # 2690 * 65536 = 0xA700000
+    -950: "95.0°W Galaxy",      # 2650 * 65536 = 0xA380000
+    -970: "97.0°W Galaxy",      # 2630 * 65536 = 0xA1C0000
+    -992: "99.2°W Galaxy",      # 2608 * 65536 = 0xA000000? 2608*65536=170.917.888=0xA300000? No, calcola: 2608*65536=170.917.888=0xA300000
+    -1010: "101.0°W SES",       # 2590 * 65536 = 0xA180000
+    -1030: "103.0°W SES",       # 2570 * 65536 = 0xA000000? 2570*65536=168.427.520=0xA0A0000
+    -1050: "105.0°W AMC",       # 2550 * 65536 = 0x9F60000
+    -1073: "107.3°W Anik",      # 2527 * 65536 = 0x9DC0000
+    -1100: "110.0°W EchoStar",  # 2500 * 65536 = 0x9C40000
+    -1130: "113.0°W Eutelsat",  # 2470 * 65536 = 0x9AC0000
+    -1149: "114.9°W Eutelsat",  # 2451 * 65536 = 0x9900000? 2451*65536=160.563.200=0x9920000
+    -1170: "117.0°W Eutelsat",  # 2430 * 65536 = 0x97E0000
+    -1190: "119.0°W Anik",      # 2410 * 65536 = 0x96A0000
+    -1210: "121.0°W EchoStar",  # 2390 * 65536 = 0x9560000
+    -1230: "123.0°W Galaxy",    # 2370 * 65536 = 0x9420000
+    -1250: "125.0°W AMC",       # 2350 * 65536 = 0x92E0000
+    -1290: "129.0°W Ciel",      # 2310 * 65536 = 0x9060000
+    -1330: "133.0°W Galaxy",    # 2270 * 65536 = 0x8DE0000
+}

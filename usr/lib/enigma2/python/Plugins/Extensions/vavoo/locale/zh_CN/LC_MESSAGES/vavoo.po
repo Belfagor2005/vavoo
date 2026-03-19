@@ -11,6 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# vavoo translations
+# Copyright (C) 2025 Lululla Team
+# This file is distributed under the same license as the Lululla package.
+# [lululla] <ekekaz@gmail.com>, 2025.
+#
+msgid "! Proxy Expiring"
+msgstr ""
+
 msgid "(%d channels)?"
 msgstr ""
 
@@ -86,6 +94,12 @@ msgstr ""
 msgid "- {} entries updated"
 msgstr ""
 
+msgid "? Proxy Status"
+msgstr ""
+
+msgid "? Proxy Unknown"
+msgstr ""
+
 msgid "Active Automatic Bouquet Update"
 msgstr ""
 
@@ -125,7 +139,16 @@ msgstr ""
 msgid "Bouquet creation error: {}"
 msgstr ""
 
+msgid "Bouquet ready with {} channels"
+msgstr ""
+
+msgid "Bouquets reload scheduled."
+msgstr ""
+
 msgid "Bouquets reorganized successfully!"
+msgstr ""
+
+msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
 msgstr ""
 
 msgid "Cache format fix completed:"
@@ -141,6 +164,9 @@ msgid "Cancel execution?"
 msgstr ""
 
 msgid "Case: {}"
+msgstr ""
+
+msgid "Channels"
 msgstr ""
 
 msgid "Channels: %d"
@@ -200,6 +226,9 @@ msgstr ""
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr ""
 
+msgid "EPG processing completed (no matches)"
+msgstr ""
+
 msgid "EPG processing completed for {} channels"
 msgstr ""
 
@@ -221,7 +250,13 @@ msgstr ""
 msgid "Enter text to search..."
 msgstr ""
 
+msgid "Error"
+msgstr ""
+
 msgid "Error fixing cache: {}"
+msgstr ""
+
+msgid "Error parsing data"
 msgstr ""
 
 msgid "Error starting EPG update: {}"
@@ -255,6 +290,9 @@ msgid "Failed to refresh proxy:"
 msgstr ""
 
 msgid "Failed: %(failed)d"
+msgstr ""
+
+msgid "Fix Cache"
 msgstr ""
 
 msgid "Fixing cache format..."
@@ -323,6 +361,9 @@ msgstr ""
 msgid "Movie Services Reference"
 msgstr ""
 
+msgid "No IMDb/TMDB plugin found"
+msgstr ""
+
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
 
@@ -333,6 +374,15 @@ msgid "No channels found for: %s"
 msgstr ""
 
 msgid "No channels found in search!!!"
+msgstr ""
+
+msgid "No items available"
+msgstr ""
+
+msgid "No programme info available"
+msgstr ""
+
+msgid "No selection"
 msgstr ""
 
 msgid "No valid channels for: %s"
@@ -357,6 +407,9 @@ msgid "Proxy Disabled"
 msgstr ""
 
 msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy Error:"
 msgstr ""
 
 msgid "Proxy disabled"
@@ -401,6 +454,9 @@ msgstr ""
 msgid "Reload Bouqet"
 msgstr ""
 
+msgid "Reload bouquets and service list?"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
@@ -408,6 +464,9 @@ msgid "Remove ALL Vavoo bouquets?"
 msgstr ""
 
 msgid "Restart"
+msgstr ""
+
+msgid "Restarting..."
 msgstr ""
 
 msgid "SELECT YOUR CHOICE"
@@ -543,4 +602,28 @@ msgid "lowercase"
 msgstr ""
 
 msgid "seconds"
+msgstr ""
+
+msgid "✓ Proxy ({0}s)"
+msgstr ""
+
+msgid "✓ Proxy OK"
+msgstr ""
+
+msgid "✓ Restarted"
+msgstr ""
+
+msgid "✗ Error"
+msgstr ""
+
+msgid "✗ Proxy Error"
+msgstr ""
+
+msgid "✗ Proxy Expired"
+msgstr ""
+
+msgid "✗ Proxy Offline"
+msgstr ""
+
+msgid "✗ Restart Failed"
 msgstr ""

@@ -1,4 +1,5 @@
 <screen name="VavooSearch" position="center,center" size="1920,1080" backgroundColor="#181b2e" title="Vavoo Search">
+	<widget name="version" position="1678,998" size="211,48" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffff00" transparent="1" font="cvfont; 34" halign="center" valign="center" />
 	<widget name="search_label" position="27,27" size="1870,54" font="cvfont;43" halign="left" valign="center" />
 	<widget name="search_text" position="27,94" size="1870,80" font="cvfont;43" halign="left" valign="center" backgroundColor="#00008B" />
 	<widget name="input_info" position="27,187" size="1870,40" font="cvfont;32" halign="center" valign="center" />

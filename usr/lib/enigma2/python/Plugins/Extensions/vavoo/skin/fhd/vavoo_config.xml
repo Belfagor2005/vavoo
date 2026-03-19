@@ -1,8 +1,8 @@
-<screen name="vavoo_config" position="0,0" size="1920,1080" backgroundColor="#181b2e" flags="wfNoBorder">
+<screen name="vavoo_config" position="center,center" size="1920,1080" backgroundColor="#181b2e" flags="wfNoBorder">
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1078" alphatest="blend" zPosition="-1" />
-    <widget name="description" position="118,878" size="707,90" zPosition="1" transparent="1" font="cvfont; 34" halign="center" valign="center" backgroundColor="#181b2e" foregroundColor="#ffffff" />
+    <widget name="description" position="109,863" size="725,110" zPosition="1" transparent="1" font="cvfont; 28" halign="center" valign="center" backgroundColor="#181b2e" foregroundColor="#ffffff" />
     <widget name="config" position="152,170" size="640,650" zPosition="1" font="cvfont; 32" itemHeight="50" scrollbarMode="showNever" transparent="1" backgroundColor="#181b2e" foregroundColor="#ffffff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffff" />
-    <widget name="version" position="1631,1045" size="158,28" zPosition="1" foregroundColor="#ffffff" backgroundColor="#181b2e" transparent="1" font="cvfont; 24" halign="center" valign="center" />
+	<widget name="version" position="1748,53" size="158,28" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffff00" transparent="1" font="cvfont; 24" halign="center" valign="center" />
     <widget name="statusbar" position="940,940" size="1050,55" font="cvfont; 34" foregroundColor="#ffffff" backgroundColor="#181b2e" transparent="1" zPosition="3" halign="left" valign="center" />
     <eLabel position="58,1048" size="300,6" zPosition="4" backgroundColor="#ff0000" />
     <eLabel position="617,1048" size="300,6" zPosition="4" backgroundColor="#00ff00" />

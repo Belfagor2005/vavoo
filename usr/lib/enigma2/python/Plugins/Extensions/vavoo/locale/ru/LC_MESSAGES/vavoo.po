@@ -12,6 +12,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# vavoo translations
+# Copyright (C) 2025 Lululla Team
+# This file is distributed under the same license as the Lululla package.
+# [lululla] <ekekaz@gmail.com>, 2025.
+#
+msgid "! Proxy Expiring"
+msgstr ""
+
 msgid "(%d channels)?"
 msgstr "(%d каналов)?"
 
@@ -87,6 +95,12 @@ msgstr ""
 msgid "- {} entries updated"
 msgstr ""
 
+msgid "? Proxy Status"
+msgstr ""
+
+msgid "? Proxy Unknown"
+msgstr ""
+
 msgid "Active Automatic Bouquet Update"
 msgstr "Активное автоматическое обновление букетов"
 
@@ -126,8 +140,19 @@ msgstr "Позиция букета в списке"
 msgid "Bouquet creation error: {}"
 msgstr "Ошибка создания букета: {}"
 
+#, fuzzy
+msgid "Bouquet ready with {} channels"
+msgstr "Найдено: {} каналов"
+
+#, fuzzy
+msgid "Bouquets reload scheduled."
+msgstr "Букеты успешно реорганизованы!"
+
 msgid "Bouquets reorganized successfully!"
 msgstr "Букеты успешно реорганизованы!"
+
+msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
+msgstr ""
 
 msgid "Cache format fix completed:"
 msgstr ""
@@ -143,6 +168,10 @@ msgstr "Отменить выполнение?"
 
 msgid "Case: {}"
 msgstr "Регистр: {}"
+
+#, fuzzy
+msgid "Channels"
+msgstr "Каналы: %d"
 
 msgid "Channels: %d"
 msgstr "Каналы: %d"
@@ -202,6 +231,10 @@ msgstr "Хотите экспортировать этот букет?"
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG отключен. Пожалуйста, сначала включите его в настройках Vavoo."
 
+#, fuzzy
+msgid "EPG processing completed (no matches)"
+msgstr "Обработка EPG завершена для {} каналов"
+
 msgid "EPG processing completed for {} channels"
 msgstr "Обработка EPG завершена для {} каналов"
 
@@ -224,8 +257,16 @@ msgid "Enter text to search..."
 msgstr "Введите текст для поиска..."
 
 #, fuzzy
+msgid "Error"
+msgstr "Ошибка: %s"
+
+#, fuzzy
 msgid "Error fixing cache: {}"
 msgstr "Ошибка запуска обновления EPG: {}"
+
+#, fuzzy
+msgid "Error parsing data"
+msgstr "Ошибка запуска канала"
 
 msgid "Error starting EPG update: {}"
 msgstr "Ошибка запуска обновления EPG: {}"
@@ -259,6 +300,9 @@ msgstr "Не удалось обновить прокси:"
 
 msgid "Failed: %(failed)d"
 msgstr "Не удалось: %(failed)d"
+
+msgid "Fix Cache"
+msgstr ""
 
 msgid "Fixing cache format..."
 msgstr ""
@@ -326,6 +370,9 @@ msgstr "Ошибка генерации M3U: %s"
 msgid "Movie Services Reference"
 msgstr "Ссылка на сервисы фильмов"
 
+msgid "No IMDb/TMDB plugin found"
+msgstr ""
+
 msgid "No Internet connection detected. Please check your network."
 msgstr "Не обнаружено подключение к Интернету. Пожалуйста, проверьте вашу сеть."
 
@@ -337,6 +384,15 @@ msgstr "Каналы не найдены для: %s"
 
 msgid "No channels found in search!!!"
 msgstr "Каналы не найдены в поиске!!!"
+
+msgid "No items available"
+msgstr ""
+
+msgid "No programme info available"
+msgstr ""
+
+msgid "No selection"
+msgstr ""
 
 msgid "No valid channels for: %s"
 msgstr "Нет действительных каналов для: %s"
@@ -361,6 +417,9 @@ msgstr "Прокси отключен"
 
 msgid "Proxy Enabled"
 msgstr "Прокси включен"
+
+msgid "Proxy Error:"
+msgstr ""
 
 msgid "Proxy disabled"
 msgstr "Прокси отключен"
@@ -404,6 +463,9 @@ msgstr "Обновлять поток каждые X минут (1-15)"
 msgid "Reload Bouqet"
 msgstr "Перезагрузить букет"
 
+msgid "Reload bouquets and service list?"
+msgstr ""
+
 msgid "Remove"
 msgstr "Удалить"
 
@@ -411,6 +473,10 @@ msgid "Remove ALL Vavoo bouquets?"
 msgstr "Удалить ВСЕ букеты Vavoo?"
 
 msgid "Restart"
+msgstr "Перезапуск"
+
+#, fuzzy
+msgid "Restarting..."
 msgstr "Перезапуск"
 
 msgid "SELECT YOUR CHOICE"
@@ -548,3 +614,29 @@ msgstr "нижний регистр"
 
 msgid "seconds"
 msgstr "секунд"
+
+msgid "✓ Proxy ({0}s)"
+msgstr ""
+
+msgid "✓ Proxy OK"
+msgstr ""
+
+#, fuzzy
+msgid "✓ Restarted"
+msgstr "Перезапуск"
+
+msgid "✗ Error"
+msgstr ""
+
+msgid "✗ Proxy Error"
+msgstr ""
+
+#, fuzzy
+msgid "✗ Proxy Expired"
+msgstr "Прокси включен"
+
+msgid "✗ Proxy Offline"
+msgstr ""
+
+msgid "✗ Restart Failed"
+msgstr ""

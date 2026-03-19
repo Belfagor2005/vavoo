@@ -19,6 +19,14 @@ msgstr ""
 "X-Poedit-SearchPath-4: vavoo_proxy.py\n"
 "X-Poedit-SearchPath-5: vUtils.py\n"
 
+# vavoo translations
+# Copyright (C) 2025 Lululla Team
+# This file is distributed under the same license as the Lululla package.
+# [lululla] <ekekaz@gmail.com>, 2025.
+#
+msgid "! Proxy Expiring"
+msgstr ""
+
 msgid "(%d channels)?"
 msgstr "(%d chaînes) ?"
 
@@ -94,6 +102,12 @@ msgstr ""
 msgid "- {} entries updated"
 msgstr ""
 
+msgid "? Proxy Status"
+msgstr ""
+
+msgid "? Proxy Unknown"
+msgstr ""
+
 #, fuzzy
 msgid "Active Automatic Bouquet Update"
 msgstr "- Génération automatique de bouquet"
@@ -136,8 +150,19 @@ msgstr "Position du bouquet dans la liste"
 msgid "Bouquet creation error: {}"
 msgstr "Erreur de création du bouquet : %s"
 
+#, fuzzy
+msgid "Bouquet ready with {} channels"
+msgstr "Trouvé : {} chaînes"
+
+#, fuzzy
+msgid "Bouquets reload scheduled."
+msgstr "Bouquets réorganisés avec succès !"
+
 msgid "Bouquets reorganized successfully!"
 msgstr "Bouquets réorganisés avec succès !"
+
+msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
+msgstr ""
 
 msgid "Cache format fix completed:"
 msgstr ""
@@ -153,6 +178,10 @@ msgstr "Annuler l'exécution ?"
 
 msgid "Case: {}"
 msgstr "Casse : {}"
+
+#, fuzzy
+msgid "Channels"
+msgstr "Chaînes : %d"
 
 msgid "Channels: %d"
 msgstr "Chaînes : %d"
@@ -213,6 +242,10 @@ msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "L'EPG est désactivé. Veuillez d'abord l'activer dans les paramètres Vavoo."
 
 #, fuzzy
+msgid "EPG processing completed (no matches)"
+msgstr "Traitement de l'EPG terminé pour %d chaînes"
+
+#, fuzzy
 msgid "EPG processing completed for {} channels"
 msgstr "Traitement de l'EPG terminé pour %d chaînes"
 
@@ -235,8 +268,16 @@ msgid "Enter text to search..."
 msgstr "Entrez le texte à rechercher..."
 
 #, fuzzy
+msgid "Error"
+msgstr "Erreur : %s"
+
+#, fuzzy
 msgid "Error fixing cache: {}"
 msgstr "Erreur lors du démarrage de la mise à jour de l'EPG : {}"
+
+#, fuzzy
+msgid "Error parsing data"
+msgstr "Erreur lors du démarrage de la chaîne"
 
 msgid "Error starting EPG update: {}"
 msgstr "Erreur lors du démarrage de la mise à jour de l'EPG : {}"
@@ -271,6 +312,9 @@ msgstr "Échec de l'actualisation du proxy :"
 
 msgid "Failed: %(failed)d"
 msgstr "Échec : %(failed)d"
+
+msgid "Fix Cache"
+msgstr ""
 
 msgid "Fixing cache format..."
 msgstr ""
@@ -339,6 +383,9 @@ msgstr "Erreur de génération M3U : %s"
 msgid "Movie Services Reference"
 msgstr ""
 
+msgid "No IMDb/TMDB plugin found"
+msgstr ""
+
 msgid "No Internet connection detected. Please check your network."
 msgstr "Aucune connexion Internet détectée. Veuillez vérifier votre réseau."
 
@@ -351,6 +398,15 @@ msgstr "Aucune chaîne trouvée pour : %s"
 #, fuzzy
 msgid "No channels found in search!!!"
 msgstr "Aucune chaîne trouvée pour : %s"
+
+msgid "No items available"
+msgstr ""
+
+msgid "No programme info available"
+msgstr ""
+
+msgid "No selection"
+msgstr ""
 
 msgid "No valid channels for: %s"
 msgstr "Aucune chaîne valide pour : %s"
@@ -375,6 +431,9 @@ msgstr "Proxy désactivé"
 
 msgid "Proxy Enabled"
 msgstr "Proxy activé"
+
+msgid "Proxy Error:"
+msgstr ""
 
 msgid "Proxy disabled"
 msgstr "Proxy désactivé"
@@ -418,6 +477,9 @@ msgstr "Actualiser le flux toutes les X minutes (1-15)"
 msgid "Reload Bouqet"
 msgstr "Recharger le bouquet"
 
+msgid "Reload bouquets and service list?"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
@@ -425,6 +487,10 @@ msgid "Remove ALL Vavoo bouquets?"
 msgstr "Supprimer TOUS les bouquets Vavoo ?"
 
 msgid "Restart"
+msgstr "Redémarrer"
+
+#, fuzzy
+msgid "Restarting..."
 msgstr "Redémarrer"
 
 msgid "SELECT YOUR CHOICE"
@@ -567,3 +633,29 @@ msgstr "minuscules"
 
 msgid "seconds"
 msgstr "secondes"
+
+msgid "✓ Proxy ({0}s)"
+msgstr ""
+
+msgid "✓ Proxy OK"
+msgstr ""
+
+#, fuzzy
+msgid "✓ Restarted"
+msgstr "Redémarrer"
+
+msgid "✗ Error"
+msgstr ""
+
+msgid "✗ Proxy Error"
+msgstr ""
+
+#, fuzzy
+msgid "✗ Proxy Expired"
+msgstr "Proxy activé"
+
+msgid "✗ Proxy Offline"
+msgstr ""
+
+msgid "✗ Restart Failed"
+msgstr ""

@@ -347,6 +347,7 @@ def convert_bouquet_sync(
         # 10. Update complete cache with ALL channels (matched + unmatched)
         update_complete_cache(matched, unmatched, country_code)
 
+        return ch_count
     except Exception as e:
         print("[Bouquet] Error in convert_bouquet_sync: " + str(e))
         trace_error()
@@ -606,8 +607,8 @@ def process_epg_matching_background(
             time.sleep(0.001)
 
         # Save callback and matched count AFTER the loop
-        saved_callback = callback
         saved_matched = len(matched)
+        saved_callback = callback
 
         # 3. Update cache files
         complete_cache = {}
@@ -1201,6 +1202,7 @@ def create_bouquet_file(
         return 0, "", [], []
 
 
+# not used
 def _create_flat_bouquet(name, url, service, bouquet_type, server_url):
     """Create flat bouquet using PROXY ONLY"""
     try:
@@ -1286,6 +1288,7 @@ def _create_flat_bouquet(name, url, service, bouquet_type, server_url):
         return 0
 
 
+# not used
 def _create_hierarchical_bouquet(
         country_name,
         url,
@@ -1359,6 +1362,7 @@ def _create_hierarchical_bouquet(
         )
 
 
+# not used
 def _create_or_update_container_bouquet(
         country_name, new_categories, bouquet_type, list_position="bottom"):
     """Create or update container bouquet"""
@@ -1444,6 +1448,7 @@ def _create_or_update_container_bouquet(
         return 0
 
 
+# not used
 def _create_category_bouquet(
         category_name,
         url,

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 EPG Manager - Optimized EPG download and caching module.
 

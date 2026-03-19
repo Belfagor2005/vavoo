@@ -5,7 +5,7 @@ __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
 __license__ = "CC BY-NC-SA 4.0"
-__version__ = "1.60"
+__version__ = "1.61"
 
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
@@ -67,6 +67,7 @@ ENIGMA_PATH = get_enigma2_path()
 CACHE_FILE = os.path.join(ENIGMA_PATH, "vavoo_epg_cache.json")
 UNMATCHED_FILE = os.path.join(ENIGMA_PATH, "vavoo_epg_unmatched_cache.json")
 SREF_MAP_FILE = os.path.join(ENIGMA_PATH, "vavoo_sref_map.json")
+EPGIMPORT_CONF = os.path.join(ENIGMA_PATH, "epgimport.conf")
 
 
 def _init_log(msg, level="INFO"):

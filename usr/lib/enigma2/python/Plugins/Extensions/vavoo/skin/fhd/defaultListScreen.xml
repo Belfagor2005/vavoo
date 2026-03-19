@@ -1,4 +1,4 @@
-<screen name="MainVavoo" position="0,0" size="1920,1080" backgroundColor="#181b2e" flags="wfNoBorder">
+<screen name="MainVavoo" position="center,center" size="1920,1080" backgroundColor="#181b2e" flags="wfNoBorder">
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images_new/default.png" position="0,0" size="1920,1080" alphatest="off" zPosition="-1"/>
 	<widget name="menulist" position="152,170" size="640,650" zPosition="1" scrollbarMode="showNever" transparent="1" font="cvfont; 42" backgroundColor="#181b2e" foregroundColor="#ffffff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffff"/>
 	<widget name="name" position="116,864" size="707,54" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" font="cvfont; 42" halign="center" valign="center"/>

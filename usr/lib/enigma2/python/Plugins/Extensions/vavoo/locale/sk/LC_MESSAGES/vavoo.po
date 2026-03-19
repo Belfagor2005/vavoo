@@ -12,6 +12,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.8\n"
 
+# vavoo translations
+# Copyright (C) 2025 Lululla Team
+# This file is distributed under the same license as the Lululla package.
+# [lululla] <ekekaz@gmail.com>, 2025.
+#
+msgid "! Proxy Expiring"
+msgstr ""
+
 msgid "(%d channels)?"
 msgstr "(%d kanálov)?"
 
@@ -88,6 +96,12 @@ msgstr ""
 msgid "- {} entries updated"
 msgstr ""
 
+msgid "? Proxy Status"
+msgstr ""
+
+msgid "? Proxy Unknown"
+msgstr ""
+
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktívna automatická aktualizácia kytice"
 
@@ -130,8 +144,19 @@ msgstr "Pozícia kytice v zozname"
 msgid "Bouquet creation error: {}"
 msgstr "Chyba pri vytváraní kytice: %s"
 
+#, fuzzy
+msgid "Bouquet ready with {} channels"
+msgstr "Nájdených kanálov: {}"
+
+#, fuzzy
+msgid "Bouquets reload scheduled."
+msgstr "Kytice boli úspešne reorganizované!"
+
 msgid "Bouquets reorganized successfully!"
 msgstr "Kytice boli úspešne reorganizované!"
+
+msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
+msgstr ""
 
 msgid "Cache format fix completed:"
 msgstr ""
@@ -147,6 +172,10 @@ msgstr "Zrušiť exekúciu?"
 
 msgid "Case: {}"
 msgstr "Prípad: {}"
+
+#, fuzzy
+msgid "Channels"
+msgstr "Kanály: %d"
 
 msgid "Channels: %d"
 msgstr "Kanály: %d"
@@ -207,6 +236,9 @@ msgstr "Chcete túto kyticu exportovať?"
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr ""
 
+msgid "EPG processing completed (no matches)"
+msgstr ""
+
 msgid "EPG processing completed for {} channels"
 msgstr ""
 
@@ -230,7 +262,15 @@ msgid "Enter text to search..."
 msgstr "Zadajte text na vyhľadávanie..."
 
 #, fuzzy
+msgid "Error"
+msgstr "Chyba: %s"
+
+#, fuzzy
 msgid "Error fixing cache: {}"
+msgstr "Chyba pri spustení kanála"
+
+#, fuzzy
+msgid "Error parsing data"
 msgstr "Chyba pri spustení kanála"
 
 #, fuzzy
@@ -267,6 +307,9 @@ msgstr ""
 
 msgid "Failed: %(failed)d"
 msgstr "Zlyhalo: %(failed)d"
+
+msgid "Fix Cache"
+msgstr ""
 
 msgid "Fixing cache format..."
 msgstr ""
@@ -334,6 +377,9 @@ msgstr "Chyba generovania M3U: %s"
 msgid "Movie Services Reference"
 msgstr "Odkaz na filmové služby"
 
+msgid "No IMDb/TMDB plugin found"
+msgstr ""
+
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
 
@@ -345,6 +391,15 @@ msgstr "Nenašli sa žiadne kanály pre: %s"
 
 msgid "No channels found in search!!!"
 msgstr "Vo vyhľadávaní sa nenašli žiadne kanály!!!"
+
+msgid "No items available"
+msgstr ""
+
+msgid "No programme info available"
+msgstr ""
+
+msgid "No selection"
+msgstr ""
 
 msgid "No valid channels for: %s"
 msgstr "Žiadne platné kanály pre: %s"
@@ -368,6 +423,9 @@ msgid "Proxy Disabled"
 msgstr ""
 
 msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy Error:"
 msgstr ""
 
 msgid "Proxy disabled"
@@ -416,6 +474,9 @@ msgstr "Obnoviť stream každých X minút (1-15)"
 msgid "Reload Bouqet"
 msgstr "Obnoviť kyticu"
 
+msgid "Reload bouquets and service list?"
+msgstr ""
+
 msgid "Remove"
 msgstr "Odstrániť"
 
@@ -423,6 +484,10 @@ msgid "Remove ALL Vavoo bouquets?"
 msgstr "Odstrániť VŠETKY kytice Vavoo?"
 
 msgid "Restart"
+msgstr "Reštart"
+
+#, fuzzy
+msgid "Restarting..."
 msgstr "Reštart"
 
 msgid "SELECT YOUR CHOICE"
@@ -563,6 +628,31 @@ msgid "lowercase"
 msgstr "malé písmo"
 
 msgid "seconds"
+msgstr ""
+
+msgid "✓ Proxy ({0}s)"
+msgstr ""
+
+msgid "✓ Proxy OK"
+msgstr ""
+
+#, fuzzy
+msgid "✓ Restarted"
+msgstr "Reštart"
+
+msgid "✗ Error"
+msgstr ""
+
+msgid "✗ Proxy Error"
+msgstr ""
+
+msgid "✗ Proxy Expired"
+msgstr ""
+
+msgid "✗ Proxy Offline"
+msgstr ""
+
+msgid "✗ Restart Failed"
 msgstr ""
 
 #~ msgid "(%(count)d channels)"

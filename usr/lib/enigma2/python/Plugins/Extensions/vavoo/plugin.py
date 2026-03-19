@@ -86,7 +86,7 @@ from Components.config import (
 from enigma import (
     RT_HALIGN_LEFT,
     RT_VALIGN_CENTER,
-    eDVBDB,
+    # eDVBDB,
     eListboxPythonMultiContent,
     ePicLoad,
     eServiceReference,
@@ -117,7 +117,7 @@ from . import (
     _, __author__, __version__, __license__, export_lock, PORT,
     PLUGIN_ROOT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL,
     PROXY_COUNTRIES_URL, PROXY_REFRESH_URL, PROXY_SHUTDOWN_URL,
-    FLAG_CACHE_DIR, PRIMARY_BASE_URL, FALLBACK_BASE_URL  # , LOG_FILE
+    FLAG_CACHE_DIR, PRIMARY_BASE_URL, FALLBACK_BASE_URL, EPGIMPORT_CONF
 )
 from . import PY2, PY3, vUtils
 from .bouquet_manager import (
@@ -129,7 +129,7 @@ from .bouquet_manager import (
 )
 from .vUtils import (
     make_print,
-    error,
+    # error,
     # log,
     # debug,
     # warning,
@@ -151,6 +151,7 @@ from .vUtils import (
     initialize_cache_with_local_flags,
     is_proxy_ready,
     is_proxy_running,
+    returnIMDB,
     rimuovi_parentesi,
     ReloadBouquets,
     trace_error
@@ -1383,10 +1384,9 @@ class vavoo_config(Screen, ConfigListScreen):
             # the source is selected and auto-update is enabled in EPGImport
 
             # Option 1: Use EPGImport's own configuration
-            epg_config = "/etc/enigma2/epgimport.conf"
-            if file_exists(epg_config):
+            if file_exists(EPGIMPORT_CONF):
                 # Read existing config
-                with open(epg_config, 'r') as f:
+                with open(EPGIMPORT_CONF, 'r') as f:
                     lines = f.readlines()
 
                 # Check if our source is already enabled
@@ -1398,7 +1398,7 @@ class vavoo_config(Screen, ConfigListScreen):
 
                 if not source_enabled:
                     # Add our source to the config
-                    with open(epg_config, 'a') as f:
+                    with open(EPGIMPORT_CONF, 'a') as f:
                         f.write('\nsources=/etc/epgimport/vavoo.sources.xml\n')
 
             # Option 2: Trigger an immediate update (optional)
@@ -1664,6 +1664,8 @@ class MainVavoo(Screen):
         self['red'] = Label(_('Exit'))
         self['green'] = Label(_('Remove') + ' Fav')
         self['yellow'] = Label()
+        if cfg.epg_enabled.value:
+            self['yellow'].setText(_("Fix Cache"))
         self["blue"] = Label(_('Reload Bouqet'))
         self['name'] = Label('Loading...')
         self['version'] = Label()
@@ -1678,9 +1680,9 @@ class MainVavoo(Screen):
             'mainMenu': self.goConfig,
             'menu': self.goConfig,
             'green': self.msgdeleteBouquets,
-            'blue': lambda: self._reload_services(showMsg=True),
-            'cancel': lambda: self._reload_services(showMsg=False),
-            'red': lambda: self._reload_services(showMsg=False),
+            'blue': self.reload_bouquets_with_popup,
+            'cancel': self.closex,
+            'red': self.closex,
             'epg': self.manual_epg_update,
             'info': self.info,
             'InfoPressed': self.info,
@@ -1711,7 +1713,7 @@ class MainVavoo(Screen):
             message = "\n".join(message_lines)
 
             self.session.openWithCallback(
-                self._fix_cache_format,  # Richiama stessa funzione con result
+                self._fix_cache_format,
                 MessageBox,
                 message,
                 MessageBox.TYPE_YESNO
@@ -1761,25 +1763,34 @@ class MainVavoo(Screen):
                 timeout=5
             )
 
-    def _reload_services(self, showMsg=True):
-        print("[DEBUG] Reload services | showMsg =", showMsg)
+    def reload_bouquets_with_popup(self):
+        """Reload bouquets with confirmation popup"""
+        print("[DEBUG] reload_bouquets_with_popup called")
+        self.session.openWithCallback(
+            self._confirm_reload_bouquets,
+            MessageBox,
+            _("Reload bouquets and service list?"),
+            MessageBox.TYPE_YESNO,
+            timeout=10,
+            default=True
+        )
 
-        eDVBDB.getInstance().reloadBouquets()
-        eDVBDB.getInstance().reloadServicelist()
-
-        if showMsg:
+    def _confirm_reload_bouquets(self, result):
+        """Callback after user confirmation"""
+        if result:
+            print("[DEBUG] User confirmed reload")
+            ReloadBouquets(500)
             try:
                 self.session.open(
                     MessageBox,
-                    "Bouquets reloaded successfully.",
+                    _("Bouquets reload scheduled."),
                     MessageBox.TYPE_INFO,
-                    timeout=5
+                    timeout=2
                 )
             except Exception as e:
                 print("[MessageBox] Error:", e)
-
-        if not showMsg:
-            self.close()
+        else:
+            print("[DEBUG] User cancelled reload")
 
     def closex(self):
         print("[DEBUG] Exit from plugin. Cleaning up plugin timers...")
@@ -1799,7 +1810,9 @@ class MainVavoo(Screen):
         except Exception as e:
             print("[Cleanup] Error: %s" % str(e))
 
-        self._reload_services(showMsg=False)
+        # Reload bouquets in background without popup
+        ReloadBouquets(500)
+
         self.close()
 
     def preload_flags_for_visible_countries(self):
@@ -1883,17 +1896,17 @@ class MainVavoo(Screen):
                 return
             if not is_proxy_running():
                 print("[Watchdog] Proxy not running, attempting restart...")
-                self['proxy_status'].setText(" Restarting...")
+                self['proxy_status'].setText(_(" Restarting..."))
 
                 # Try restart
                 success = run_proxy_in_background()
 
                 if success:
                     print("[Watchdog] Proxy restarted successfully")
-                    self['proxy_status'].setText("✓ Restarted")
+                    self['proxy_status'].setText(_("✓ Restarted"))
                 else:
                     print("[Watchdog] Proxy restart failed")
-                    self['proxy_status'].setText("✗ Restart Failed")
+                    self['proxy_status'].setText(_("✗ Restart Failed"))
 
         except Exception as e:
             print("[Watchdog] Error: " + str(e))
@@ -1914,7 +1927,7 @@ class MainVavoo(Screen):
             # self.update_proxy_status_display()
         except Exception as e:
             print("[MainVavoo] Error in proxy monitor: " + str(e))
-            self['proxy_status'].setText("✗ Proxy Error")
+            self['proxy_status'].setText(_("✗ Proxy Error"))
 
     def update_proxy_status(self):
         """Public method to update proxy status (can be called manually)"""
@@ -1959,7 +1972,7 @@ class MainVavoo(Screen):
 
         except Exception as e:
             print("[MainVavoo] Error updating proxy status: " + str(e))
-            self['proxy_status'].setText("✗ Error")
+            self['proxy_status'].setText(_("✗ Error"))
 
     def refresh_proxy(self):
         """Force proxy refresh"""
@@ -2261,7 +2274,7 @@ class MainVavoo(Screen):
             return loads(content)
         except ValueError:
             print("Error parsing JSON data")
-            self["name"].setText("Error parsing data")
+            self["name"].setText(_("Error parsing data"))
             return None
 
     def show_categories_view(self):
@@ -2375,11 +2388,10 @@ class MainVavoo(Screen):
             return
 
         # Check if the source is enabled in EPGImport config
-        epgimport_conf = "/etc/enigma2/epgimport.conf"
         source_enabled = False
-        if isfile(epgimport_conf):
+        if isfile(EPGIMPORT_CONF):
             try:
-                with open(epgimport_conf, 'r') as f:
+                with open(EPGIMPORT_CONF, 'r') as f:
                     for line in f:
                         if 'vavoo.sources.xml' in line and not line.strip().startswith('#'):
                             source_enabled = True
@@ -2623,11 +2635,11 @@ class MainVavoo(Screen):
                 self["menulist"].l.setList(self.cat_list)
                 self._update_selection_name()
             else:
-                self["name"].setText("No items available")
+                self["name"].setText(_("No items available"))
                 self.cat_list = []
         except Exception as e:
             print("Error updating UI:", e)
-            self["name"].setText("Error")
+            self["name"].setText(_("Error"))
             self.cat_list = []
 
     def _update_selection_name(self):
@@ -2639,10 +2651,10 @@ class MainVavoo(Screen):
                 self['name'].setText(to_string(name))
                 print("MainVavoo _update_selection_name: " + to_string(name))
             else:
-                self['name'].setText("No selection")  # Testo di fallback
+                self['name'].setText(_("No selection"))  # fallback
         except Exception as e:
             print("Error in MainVavoo _update_selection_name:", e)
-            self['name'].setText("Error")
+            self['name'].setText(_("Error"))
 
 
 class vavoo(Screen):
@@ -2738,7 +2750,7 @@ class vavoo(Screen):
                 "ok": self.ok,
                 "green": self.message1,
                 "yellow": self.search_vavoo,
-                "blue": self._reload_services_after_delay,
+                "blue": ReloadBouquets,
                 "cancel": self.backhome,
                 "menu": self.goConfig,
                 # "info": self.info,
@@ -2946,7 +2958,7 @@ class vavoo(Screen):
         try:
             self.session.open(
                 MessageBox,
-                "Error loading channels: " + str(error)[:100],
+                "Error loading channels: " + str(e)[:100],
                 MessageBox.TYPE_ERROR,
                 timeout=5
             )
@@ -3014,7 +3026,7 @@ class vavoo(Screen):
 
         except Exception as e:
             print("[MainVavoo] Error updating proxy status: " + str(e))
-            self['proxy_status'].setText("✗ Error")
+            self['proxy_status'].setText(_("✗ Error"))
 
     def _check_and_ensure_proxy_ready(self):
         """Check proxy status and try to fix issues if needed"""
@@ -3110,7 +3122,7 @@ class vavoo(Screen):
 
     def _show_proxy_error(self, status):
         """Show proxy error message"""
-        error_msg = "Proxy Error: " + status["message"]
+        error_msg = _("Proxy Error: ") + status["message"]
         print("[vavoo] " + error_msg)
         self['name'].setText(error_msg)
 
@@ -3183,8 +3195,8 @@ class vavoo(Screen):
             # User selected specific category - exact match only
             return country_field == selected_name
 
-    def _reload_services_after_delay(self):
-        ReloadBouquets()
+    # def _reload_services_after_delay(self):
+        # ReloadBouquets()
 
     def ok(self):
         try:
@@ -3272,14 +3284,40 @@ class vavoo(Screen):
                 quick_notify(_("Bouquet creation error: {}").format(str(e)), 5)
 
     def _on_export_complete(self, success, ch_count, message):
-        if success:
-            if message != "Bouquet created":
+        """Callback for bouquet export completion"""
+        print("[DEBUG] _on_export_complete CALLED - success=%s, ch_count=%s, message='%s'" % (success, ch_count, message))
+
+        try:
+            if not success:
+                # Export failed
                 if NOTIFICATION_AVAILABLE:
-                    quick_notify(
-                        _("EPG processing completed for {} channels").format(ch_count), 4)
-        else:
-            if NOTIFICATION_AVAILABLE:
-                quick_notify(_("Export failed: {}").format(message), 5)
+                    quick_notify(_("Export failed: {}").format(message), 5)
+                return
+
+            # Success - two cases:
+            if message == "Bouquet created":
+                # First callback - base bouquet ready
+                print("[DEBUG] Bouquet ready with {} channels".format(ch_count))
+                if NOTIFICATION_AVAILABLE:
+                    quick_notify(_("Bouquet ready with {} channels").format(ch_count), 3)
+
+            elif message == "EPG processing completed":
+                # Second callback - EPG completed
+                print("[DEBUG] EPG completed for {} channels".format(ch_count))
+                if NOTIFICATION_AVAILABLE:
+                    if ch_count > 0:
+                        quick_notify(_("EPG processing completed for {} channels").format(ch_count), 4)
+                    else:
+                        quick_notify(_("EPG processing completed (no matches)"), 3)
+
+            else:
+                # Other messages
+                print("[DEBUG] Export completed: {}".format(message))
+                if NOTIFICATION_AVAILABLE:
+                    quick_notify(message, 3)
+
+        except Exception as e:
+            print("[Bouquet] Error in _on_export_complete: %s" % e)
 
     def search_vavoo(self):
         self.saved_itemlist = self.itemlist
@@ -3328,7 +3366,7 @@ class vavoo(Screen):
             except Exception as e:
                 print(e)
                 trace_error()
-                self['name'].setText('Error')
+                self['name'].setText(_('Error'))
                 search_ok = False
 
     def goConfig(self):
@@ -3370,10 +3408,10 @@ class vavoo(Screen):
                 self['menulist'].l.setList(self.cat_list)
                 # self['menulist'].moveToIndex(0)
             else:
-                self['name'].setText("No channels found")
+                self['name'].setText(_("No channels found"))
         except Exception as e:
             print("Error updating menu:", e)
-            self['name'].setText("Error")
+            self['name'].setText(_("Error"))
 
     def close(self, *args, **kwargs):
         try:
@@ -3416,6 +3454,7 @@ class VavooSearch(Screen):
         Screen.__init__(self, session)
         self["search_label"] = Label(_("Search Channels:"))
         self["search_text"] = Label("")
+        self['version'] = Label()
         self["input_info"] = Label(
             _("Press TEXT button to type, BACKSPACE to delete"))
         self["channel_list"] = m2list([])
@@ -3621,6 +3660,8 @@ class VavooSearch(Screen):
         else:
             self.selectedIndex = -1
 
+        self["version"].setText(to_string("V." + __version__))
+
     def updateChannelList(self):
         display_list = []
         for item in self.filteredList:
@@ -3764,12 +3805,12 @@ class TvInfoBarShowHide():
             self.proxy_update_timer.callback.append(
                 self.update_proxy_status_overlay)
 
-        # Timer per nascondere l'overlay dopo un po' (DISATTIVATO)
-        # self.hideTimer = eTimer()
-        # try:
-        #     self.hideTimer.timeout.connect(self.doTimerHide)
-        # except BaseException:
-        #     self.hideTimer.callback.append(self.doTimerHide)
+        # Timer to hide the overlay after a while (OFF)
+        self.hideTimer = eTimer()
+        try:
+            self.hideTimer.timeout.connect(self.doTimerHide)
+        except BaseException:
+            self.hideTimer.callback.append(self.doTimerHide)
         # self.hideTimer.start(30000, True)
 
         self.onShow.append(self.__onShow)
@@ -3778,24 +3819,25 @@ class TvInfoBarShowHide():
     def get_proxy_status_text(self):
         try:
             if not is_proxy_running():
-                return "✗ Proxy Offline"
+                return _("✗ Proxy Offline")
             status = get_proxy_status()
             if not status:
-                return "? Proxy Unknown"
+                return _("? Proxy Unknown")
             if status.get("initialized", False):
                 token_age = status.get("addon_sig_age", 0)
                 if token_age < 300:
-                    return "✓ Proxy OK"
+                    return _("✓ Proxy OK")
                 elif token_age < 420:
                     ttl = 600 - token_age
-                    return "✓ Proxy ({0}s)".format(int(ttl))
+                    # Translators: {0} is the time in seconds until token refresh
+                    return _("✓ Proxy ({0}s)").format(int(ttl))
                 else:
-                    return "! Proxy Expiring"
+                    return _("! Proxy Expiring")
             else:
-                return "✗ Proxy Error"
+                return _("✗ Proxy Error")
         except Exception as e:
             print("[Proxy Status] Error: " + str(e))
-            return "? Proxy Status"
+            return _("? Proxy Status")
 
     def update_proxy_status_overlay(self):
         if self["helpOverlay"].visible:
@@ -3803,10 +3845,10 @@ class TvInfoBarShowHide():
                 current_text = self["helpOverlay"].getText()
                 parts = current_text.split("|")
                 if len(parts) > 1:
-                    base_parts = parts[:-2]
+                    base_parts = parts[:-1]
                     base_help = "|".join(base_parts).strip()
                     proxy_status = self.get_proxy_status_text()
-                    new_text = base_help + " | " + proxy_status + " | by Lululla"
+                    new_text = base_help + " | " + proxy_status + " | " + "by Lululla"
                     self["helpOverlay"].setText(new_text)
             except Exception as e:
                 print("[Update Proxy Overlay] Error: " + str(e))
@@ -3824,21 +3866,26 @@ class TvInfoBarShowHide():
                 if status:
                     token_age = status.get("addon_sig_age", 0)
                     channels = status.get("channels_count", 0)
+
                     if token_age < 300:
-                        proxy_msg = "✓ Proxy OK"
+                        proxy_msg = _("✓ Proxy OK")
                     elif token_age < 420:
                         ttl = 600 - token_age
-                        proxy_msg = " Proxy (" + str(int(ttl)) + "s)"
+                        proxy_msg = _("✓ Proxy ({0}s)").format(int(ttl))
                     else:
-                        proxy_msg = "✗ Proxy Expired"
-                    proxy_details = proxy_msg + " | Channels: " + str(channels)
-                else:
-                    proxy_details = "? Proxy Unknown"
-            else:
-                proxy_details = "✗ Proxy Offline"
+                        proxy_msg = _("✗ Proxy Expired")
 
-            help_text = "CH±=Change | OK=Toggle | STOP=Exit | " + \
-                proxy_details + " | by Lululla"
+                    channels_text = _("Channels")
+                    proxy_details = "{} | {}: {}".format(proxy_msg, channels_text, channels)
+                else:
+                    proxy_details = _("? Proxy Unknown")
+            else:
+                proxy_details = _("✗ Proxy Offline")
+
+            controls = _("CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit")
+            credit = "by Lululla"
+
+            help_text = "{} | {} | {}".format(controls, proxy_details, credit)
             self["helpOverlay"].setText(help_text)
             self["helpOverlay"].show()
 
@@ -3846,8 +3893,11 @@ class TvInfoBarShowHide():
             self["epgOverlay"].setText(epg_text)
             self["epgOverlay"].show()
 
-            self.proxy_update_timer.start(15000, True)
+            # Update proxy status every 30 seconds while the overlay is visible
+            if not self.proxy_update_timer.isActive():
+                self.proxy_update_timer.start(30000, True)
 
+            self.hideTimer.start(5000, True)  # 5 seconds
         except Exception as e:
             print("[Show Help] Error: " + str(e))
 
@@ -3855,11 +3905,12 @@ class TvInfoBarShowHide():
         """Hide both overlays."""
         if self["helpOverlay"].visible:
             self.proxy_update_timer.stop()
+            self.hideTimer.stop()
             self["helpOverlay"].hide()
             self["epgOverlay"].hide()
 
     def OkPressed(self):
-        """Toggle overlays on OK press. No auto-hide."""
+        """Toggle overlays on OK press."""
         if self["helpOverlay"].visible:
             self.hide_help_overlay()
         else:
@@ -3883,12 +3934,16 @@ class TvInfoBarShowHide():
     def serviceStarted(self):
         if self.execing and config.usage.show_infobar_on_zap.value:
             self.doShow()
+            self.show_help_overlay()
 
     def startHideTimer(self):
         pass
 
     def doTimerHide(self):
-        pass
+        """Called when hide timer expires"""
+        print("[TvInfoBar] Auto-hiding overlay after timeout")
+        self.hide_help_overlay()
+        self.toggleShow()
 
     def toggleShow(self):
         if not self.skipToggleShow:
@@ -3972,8 +4027,6 @@ class Playstream2(
         ):
             x.__init__(self)
 
-        # self.infobar = self
-
         self['actions'] = ActionMap(
             [
                 'MoviePlayerActions',
@@ -3993,7 +4046,9 @@ class Playstream2(
                 "channelUp": self.nextitem,
                 "down": self.previousitem,
                 "up": self.nextitem,
-                "back": self.cancel
+                "back": self.cancel,
+                'epg': self.showIMDB,
+                "info": self.showIMDB,
             },
             -1
         )
@@ -4006,9 +4061,52 @@ class Playstream2(
                 # iPlayableService.evStopped: self.__evStopped,
             }
         )
+
+        try:
+            for screen in self.session.dialog_stack:
+                if hasattr(screen[0], 'proxy_monitor_timer'):
+                    screen[0].proxy_monitor_timer.stop()
+                    print("[Playstream2] Stopped proxy monitor timer")
+                if hasattr(screen[0], 'proxy_watchdog_timer'):
+                    screen[0].proxy_watchdog_timer.stop()
+                    print("[Playstream2] Stopped proxy watchdog timer")
+        except Exception as e:
+            print("[Playstream2] Error stopping timers: {}".format(e))
+
         self.eof_recovery_timer = eTimer()
         self.onFirstExecBegin.append(lambda: self.startStream())
         self.onClose.append(self.cancel)
+
+    def showIMDB(self):
+        try:
+            epg_text = self.get_current_epg()
+            if epg_text and epg_text not in ["EPG not available", "No programme found"]:
+                if " - " in epg_text:
+                    title = epg_text.split(" - ")[0].strip()
+                    if " " in title and title[2] == ":":
+                        parts = title.split(" ", 1)
+                        if len(parts) > 1:
+                            title = parts[1].strip()
+                else:
+                    title = epg_text
+
+                print("[IMDB] Searching for: %s" % title)
+
+                if returnIMDB(title, self.session):
+                    print('[Playstream2] TMDB/IMDb opened for programme: %s' % title)
+                else:
+                    print('[Playstream2] No TMDB/IMDb plugin found')
+                    if NOTIFICATION_AVAILABLE:
+                        print('notify started')
+                        quick_notify(_("No IMDb/TMDB plugin found"), 4)
+            else:
+                print("[IMDB] No EPG available for current channel")
+                if NOTIFICATION_AVAILABLE:
+                    print('notify started')
+                    quick_notify(_("No programme info available"), 3)
+
+        except Exception as e:
+            print('[Playstream2] Error opening IMDb/TMDB: %s' % e)
 
     def nextitem(self):
         """Switch to next channel"""
@@ -4190,71 +4288,160 @@ class Playstream2(
             print("[Playstream2] Error restarting after EOF: " + str(e))
 
     def get_current_epg(self):
+        """
+        Get current EPG program for the playing channel.
+        Results are cached for 5 minutes to avoid repeated lookups.
+        """
+        start_time = time.time()
+
         try:
             if not self.country_code:
                 return "EPG not available (no country code)"
 
-            matcher = get_epg_matcher()
-            rytec_id, _ = matcher.find_match(
-                self.name, country_code=self.country_code)
-            if not rytec_id:
-                return "EPG not available (ID not found)"
+            # Clean channel name for better matching
+            from .vUtils import rimuovi_parentesi, decodeHtml
+            clean_name = decodeHtml(self.name)
+            clean_name = rimuovi_parentesi(clean_name)
 
+            # Create cache key
+            cache_key = "epg_{}_{}".format(clean_name, self.country_code)
+
+            # Check if we have cached result (5 minutes TTL)
+            if hasattr(self, '_epg_cache') and cache_key in self._epg_cache:
+                cached_time, cached_result = self._epg_cache[cache_key]
+                if time.time() - cached_time < 300:  # 5 minutes
+                    elapsed = time.time() - start_time
+                    if elapsed > 0.05:
+                        print("[EPG] Cache HIT for {} (took {:.3f}s)".format(clean_name, elapsed))
+                    return cached_result
+
+            # Initialize cache dict if needed
+            if not hasattr(self, '_epg_cache'):
+                self._epg_cache = {}
+
+            # Get matcher (singleton, already loaded)
+            matcher = get_epg_matcher()
+
+            # Find Rytec ID - this is the expensive part
+            match_start = time.time()
+            rytec_id, _ = matcher.find_match(clean_name, country_code=self.country_code)
+            match_time = time.time() - match_start
+
+            if match_time > 0.1:
+                print("[EPG] Slow match for {}: {:.3f}s".format(clean_name, match_time))
+
+            if not rytec_id:
+                result = "EPG not available (ID not found)"
+                self._epg_cache[cache_key] = (time.time(), result)
+                return result
+
+            # Build EPG URL
             epg_url = "http://{}:{}/epg/{}.xml".format(
                 PROXY_HOST, PORT, self.country_code or "")
-            xml_data = getUrl(epg_url, timeout=5)
+
+            # Fetch XML data
+            fetch_start = time.time()
+            xml_data = getUrl(epg_url, timeout=3)  # Reduced timeout to 3 seconds
+            fetch_time = time.time() - fetch_start
+
+            if fetch_time > 0.5:
+                print("[EPG] Slow fetch from {}: {:.3f}s".format(epg_url, fetch_time))
+
             if not xml_data:
-                return "EPG not available"
+                result = "EPG not available"
+                self._epg_cache[cache_key] = (time.time(), result)
+                return result
 
-            root = ET.fromstring(xml_data)
-            now = time.time()
+            # Parse XML
+            parse_start = time.time()
+            try:
+                root = ET.fromstring(xml_data)
+                now = time.time()
 
-            def id_match(epg_id, rid):
-                return epg_id.replace('.', '') == rid.replace('.', '')
+                def id_match(epg_id, rid):
+                    # Simple ID matching without regex
+                    return epg_id.replace('.', '') == rid.replace('.', '')
 
-            current_prog = None
-            for prog in root.findall('programme'):
-                prog_channel = prog.get('channel')
-                if not prog_channel or not id_match(prog_channel, rytec_id):
-                    continue
+                current_prog = None
 
-                start_str = prog.get('start')
-                stop_str = prog.get('stop')
-                if not start_str or not stop_str:
-                    continue
+                # Optimize: break early when found
+                for prog in root.findall('programme'):
+                    prog_channel = prog.get('channel')
+                    if not prog_channel or not id_match(prog_channel, rytec_id):
+                        continue
 
-                try:
-                    start_dt = datetime.datetime.strptime(
-                        start_str, "%Y%m%d%H%M%S %z")
-                    stop_dt = datetime.datetime.strptime(
-                        stop_str, "%Y%m%d%H%M%S %z")
-                    if start_dt.timestamp() <= now <= stop_dt.timestamp():
-                        current_prog = prog
-                        break
-                except BaseException:
-                    continue
+                    start_str = prog.get('start')
+                    stop_str = prog.get('stop')
+                    if not start_str or not stop_str:
+                        continue
 
-            if current_prog is not None:
-                title = current_prog.findtext('title', '')
-                desc = current_prog.findtext('desc', '')
-                start_str = current_prog.get('start')
-                stop_str = current_prog.get('stop')
-                try:
-                    start_dt = datetime.datetime.strptime(
-                        start_str, "%Y%m%d%H%M%S %z")
-                    stop_dt = datetime.datetime.strptime(
-                        stop_str, "%Y%m%d%H%M%S %z")
-                    start_local = start_dt.strftime('%H:%M')
-                    end_local = stop_dt.strftime('%H:%M')
-                    return "{}-{} {} - {}".format(start_local,
-                                                  end_local, title, desc)
-                except Exception:
-                    return "{} - {}".format(title, desc)
-            else:
-                return "No programme found"
+                    try:
+                        # Parse dates without timezone for speed
+                        start_dt = datetime.datetime.strptime(
+                            start_str.split(' ')[0], "%Y%m%d%H%M%S")
+                        stop_dt = datetime.datetime.strptime(
+                            stop_str.split(' ')[0], "%Y%m%d%H%M%S")
+
+                        # Convert to timestamps
+                        start_ts = time.mktime(start_dt.timetuple())
+                        stop_ts = time.mktime(stop_dt.timetuple())
+
+                        if start_ts <= now <= stop_ts:
+                            current_prog = prog
+                            break
+                    except Exception:
+                        continue
+
+                parse_time = time.time() - parse_start
+                if parse_time > 0.1:
+                    print("[EPG] Slow parse: {:.3f}s".format(parse_time))
+
+                if current_prog is not None:
+                    title = current_prog.findtext('title', '')
+                    desc = current_prog.findtext('desc', '')
+
+                    # Extract start/stop times for display
+                    start_str = current_prog.get('start')
+                    stop_str = current_prog.get('stop')
+
+                    try:
+                        start_dt = datetime.datetime.strptime(
+                            start_str.split(' ')[0], "%Y%m%d%H%M%S")
+                        stop_dt = datetime.datetime.strptime(
+                            stop_str.split(' ')[0], "%Y%m%d%H%M%S")
+
+                        start_local = start_dt.strftime('%H:%M')
+                        end_local = stop_dt.strftime('%H:%M')
+
+                        result = "{}-{} {} - {}".format(start_local, end_local, title, desc)
+                    except Exception:
+                        result = "{} - {}".format(title, desc)
+                else:
+                    result = "No programme found"
+
+                # # Cache the result
+                # self._epg_cache[cache_key] = (time.time(), result)
+
+                # # Log total time
+                # elapsed = time.time() - start_time
+                # if elapsed > 0.2:
+                    # print("[EPG] Total time for {}: {:.3f}s".format(clean_name, elapsed))
+
+                # Cache the result
+                self._epg_cache[cache_key] = (time.time(), result)
+                return result
+
+            except Exception as e:
+                print("[EPG] XML parsing error: {}".format(e))
+                result = "EPG parsing error"
+                self._epg_cache[cache_key] = (time.time(), result)
+                return result
+
         except Exception as e:
-            print("[EPG] Exception: {}".format(e))
-            return "EPG not available"
+            print("[EPG] Exception in get_current_epg: {}".format(e))
+            import traceback
+            traceback.print_exc()
+            return "EPG error"
 
     def playProxyStream(self):
         """Play via proxy - token management is handled by proxy"""
@@ -4309,6 +4496,13 @@ class Playstream2(
             self.eof_count = 0
             self.last_eof_time = 0
 
+            try:
+                from .vavoo_proxy import proxy
+                proxy.stream_started()
+                print("[Playstream2] Notified proxy: stream started")
+            except Exception as e:
+                print("[Playstream2] Failed to notify proxy: {}".format(e))
+
             # Play the stream
             self.session.nav.stopService()
             self.session.nav.playService(self.sref)
@@ -4358,6 +4552,12 @@ class Playstream2(
             self.is_streaming = False
             print("[Playstream2] Stream stopped")
 
+            try:
+                from .vavoo_proxy import proxy
+                proxy.stream_ended()
+                print("[Playstream2] Notified proxy: stream ended")
+            except Exception as e:
+                print("[Playstream2] Failed to notify proxy: {}".format(e))
         # Stop recovery timer
         if hasattr(self, 'eof_recovery_timer'):
             self.eof_recovery_timer.stop()
@@ -4374,6 +4574,18 @@ class Playstream2(
         """Close the player"""
         print("[Playstream2] Closing player...")
         self.stopStream()
+
+        # Riavvia i timer di MainVavoo
+        try:
+            for screen in self.session.dialog_stack:
+                if hasattr(screen[0], 'proxy_monitor_timer'):
+                    screen[0].proxy_monitor_timer.start(10000)
+                    print("[Playstream2] Restarted proxy monitor timer")
+                if hasattr(screen[0], 'proxy_watchdog_timer'):
+                    screen[0].proxy_watchdog_timer.start(60000)
+                    print("[Playstream2] Restarted proxy watchdog timer")
+        except Exception as e:
+            print("[Playstream2] Error restarting timers: {}".format(e))
 
         # Reset EOF counter
         if hasattr(self, 'eof_count'):

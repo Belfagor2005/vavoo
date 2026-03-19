@@ -46,7 +46,8 @@ from . import (
     PROXY_HEALTH_URL,
     PROXY_SHUTDOWN_URL,
     BASE_SITES,
-    HOST_GIT
+    HOST_GIT,
+    SREF_MAP_FILE
 )
 
 from .vUtils import (
@@ -59,8 +60,7 @@ from .vUtils import (
     is_proxy_running,
     make_print,
     trace_error,
-    RequestAgent,
-    SREF_MAP_FILE
+    RequestAgent
 )
 
 
@@ -328,23 +328,24 @@ class VavooProxy:
         # 2. REPLACE request wrapper with safer version
         self.session.request = self._robust_request
 
-        self.addon_sig_lock = threading.Lock()
+        self.active_streams = 0
+        self.active_streams = {}
         self.addon_sig_data = {"sig": None, "ts": 0}
+        self.addon_sig_lock = threading.Lock()
         self.all_filtered_items = []
-        self.initialized = False
+        self.channels_by_country = {}
+        self.channels_by_id = {}
+        self.countries_list = []
         self.current_language = "en"
         self.current_region = "US"
-        self.refresh_timer = None
-        self.active_streams = {}
+        self.initialized = False
         self.last_heartbeat = time.time()
-        self.server = None
-        self.start_time = time.time()
-        self.channels_by_id = {}
-        self.channels_by_country = {}
-        self.countries_list = []
+        self.local_ip = None
+        self.refresh_timer = None
         self.resolve_cache = {}
         self.resolve_cache_ttl = 30
-        self.local_ip = None
+        self.server = None
+        self.start_time = time.time()
 
         # Stop flag for background workers
         self._stop_event = threading.Event()
@@ -358,6 +359,15 @@ class VavooProxy:
         # Start lightweight token monitor only
         self.start_token_monitor()
         print(" Initialized at " + time.ctime())
+
+    def stream_started(self):
+        self.active_streams += 1
+        print("[Proxy] Stream started. Active streams: {}".format(self.active_streams))
+
+    def stream_ended(self):
+        if self.active_streams > 0:
+            self.active_streams -= 1
+        print("[Proxy] Stream ended. Active streams: {}".format(self.active_streams))
 
     def _update_endpoints(self):
         """Update API endpoints from the current base site."""
@@ -398,11 +408,31 @@ class VavooProxy:
             print(" Error on " + str(url) + ": " + str(e))
             raise
 
+    def token_monitor_loop(self):
+        while not self._stop_event.is_set():
+            if hasattr(self, 'active_streams') and self.active_streams > 0:
+                time.sleep(30)
+                continue
+
+            try:
+                now = time.time()
+                token_age = now - self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
+                if self.addon_sig_data["sig"] and token_age > TOKEN_REFRESH_AGE:
+                    print("[Token Monitor] Token old ({}s), refreshing...".format(int(token_age)))
+                    self.refresh_addon_sig_if_needed(force=True)
+            except Exception as e:
+                print("[Token Monitor] Error: " + str(e))
+
+            time.sleep(60)
+
     def start_token_monitor(self):
         """Monitor token age with minimal background traffic"""
         def token_monitor_loop():
             while not self._stop_event.is_set():
-                time.sleep(60)
+                if hasattr(self, 'active_streams') and self.active_streams:
+                    time.sleep(120)
+                else:
+                    time.sleep(60)
                 try:
                     now = time.time()
                     token_age = now - \
@@ -1097,8 +1127,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
             # Redirect per-country EPG requests to GitHub raw files
             elif parsed_path.path.startswith('/epg/') and parsed_path.path.endswith('.xml'):
-                country_code = parsed_path.path.split(
-                    '/')[-1].replace('.xml', '')
+                country_code = parsed_path.path.split('/')[-1].replace('.xml', '')
                 github_url = "{}/vavoo-player/master/epg_{}.xml".format(
                     HOST_GIT, country_code)
                 self.send_response(302)

@@ -1,8 +1,18 @@
 #!/bin/bash
 
-version='1.60'
-changelog='\nImproved EPG\nOffer coffee please :)'
+version='1.61'
+changelog="
+- Cache fix
+- HTTP 451 fallback
+- Proxy monitoring improved
+- Satellite detection improved
+- EPG fixes
+- Performance improvements
 
+Improved EPG
+Offer coffee please :)
+"
+echo "$changelog"
 TMPPATH=/tmp/vavoo-install
 FILEPATH=/tmp/vavoo-main.tar.gz
 

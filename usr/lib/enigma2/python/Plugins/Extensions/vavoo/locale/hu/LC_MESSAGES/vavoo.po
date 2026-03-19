@@ -12,6 +12,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.8\n"
 
+# vavoo translations
+# Copyright (C) 2025 Lululla Team
+# This file is distributed under the same license as the Lululla package.
+# [lululla] <ekekaz@gmail.com>, 2025.
+#
+msgid "! Proxy Expiring"
+msgstr ""
+
 msgid "(%d channels)?"
 msgstr "(%d csatorna)?"
 
@@ -88,6 +96,12 @@ msgstr ""
 msgid "- {} entries updated"
 msgstr ""
 
+msgid "? Proxy Status"
+msgstr ""
+
+msgid "? Proxy Unknown"
+msgstr ""
+
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktív automatikus csokorfrissítés"
 
@@ -130,8 +144,19 @@ msgstr "Csokor pozíciója a listában"
 msgid "Bouquet creation error: {}"
 msgstr "Csokor létrehozási hiba: %s"
 
+#, fuzzy
+msgid "Bouquet ready with {} channels"
+msgstr "{} csatorna található"
+
+#, fuzzy
+msgid "Bouquets reload scheduled."
+msgstr "A csokrok átrendezése sikeresen megtörtént!"
+
 msgid "Bouquets reorganized successfully!"
 msgstr "A csokrok átrendezése sikeresen megtörtént!"
+
+msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
+msgstr ""
 
 msgid "Cache format fix completed:"
 msgstr ""
@@ -147,6 +172,10 @@ msgstr "Végrehajtás megszakítva?"
 
 msgid "Case: {}"
 msgstr "Ügy: {}"
+
+#, fuzzy
+msgid "Channels"
+msgstr "Csatornák: %d"
 
 msgid "Channels: %d"
 msgstr "Csatornák: %d"
@@ -207,6 +236,9 @@ msgstr "Exportálni szeretné ezt a csokrot?"
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr ""
 
+msgid "EPG processing completed (no matches)"
+msgstr ""
+
 msgid "EPG processing completed for {} channels"
 msgstr ""
 
@@ -230,7 +262,15 @@ msgid "Enter text to search..."
 msgstr "Írjon be szöveget a kereséshez..."
 
 #, fuzzy
+msgid "Error"
+msgstr "Hiba: %s"
+
+#, fuzzy
 msgid "Error fixing cache: {}"
+msgstr "Hiba a csatorna indításakor"
+
+#, fuzzy
+msgid "Error parsing data"
 msgstr "Hiba a csatorna indításakor"
 
 #, fuzzy
@@ -267,6 +307,9 @@ msgstr ""
 
 msgid "Failed: %(failed)d"
 msgstr "Sikertelen: %(failed)d"
+
+msgid "Fix Cache"
+msgstr ""
 
 msgid "Fixing cache format..."
 msgstr ""
@@ -334,6 +377,9 @@ msgstr "M3U generálási hiba: %s"
 msgid "Movie Services Reference"
 msgstr "Filmszolgáltatások referencia"
 
+msgid "No IMDb/TMDB plugin found"
+msgstr ""
+
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
 
@@ -345,6 +391,15 @@ msgstr "Nem található csatorna a következőhöz: %s"
 
 msgid "No channels found in search!!!"
 msgstr "Nem található csatorna a keresésben!!!"
+
+msgid "No items available"
+msgstr ""
+
+msgid "No programme info available"
+msgstr ""
+
+msgid "No selection"
+msgstr ""
 
 msgid "No valid channels for: %s"
 msgstr "Nincsenek érvényes csatornák ehhez: %s"
@@ -368,6 +423,9 @@ msgid "Proxy Disabled"
 msgstr ""
 
 msgid "Proxy Enabled"
+msgstr ""
+
+msgid "Proxy Error:"
 msgstr ""
 
 msgid "Proxy disabled"
@@ -417,6 +475,9 @@ msgstr "Stream frissítése X percenként (1-15)"
 msgid "Reload Bouqet"
 msgstr "Bouqet újratöltése"
 
+msgid "Reload bouquets and service list?"
+msgstr ""
+
 msgid "Remove"
 msgstr "Eltávolítás"
 
@@ -424,6 +485,10 @@ msgid "Remove ALL Vavoo bouquets?"
 msgstr "Eltávolítom az ÖSSZES Vavoo csokrot?"
 
 msgid "Restart"
+msgstr "Újraindítás"
+
+#, fuzzy
+msgid "Restarting..."
 msgstr "Újraindítás"
 
 msgid "SELECT YOUR CHOICE"
@@ -565,6 +630,31 @@ msgid "lowercase"
 msgstr "kisbetűk"
 
 msgid "seconds"
+msgstr ""
+
+msgid "✓ Proxy ({0}s)"
+msgstr ""
+
+msgid "✓ Proxy OK"
+msgstr ""
+
+#, fuzzy
+msgid "✓ Restarted"
+msgstr "Újraindítás"
+
+msgid "✗ Error"
+msgstr ""
+
+msgid "✗ Proxy Error"
+msgstr ""
+
+msgid "✗ Proxy Expired"
+msgstr ""
+
+msgid "✗ Proxy Offline"
+msgstr ""
+
+msgid "✗ Restart Failed"
 msgstr ""
 
 #~ msgid "(%(count)d channels)"

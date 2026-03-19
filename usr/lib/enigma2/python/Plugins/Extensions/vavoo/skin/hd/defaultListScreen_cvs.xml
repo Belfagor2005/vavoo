@@ -2,7 +2,7 @@
     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/vavoo/skin/images/default.png" position="0,0" size="1280,720" alphatest="off" zPosition="-1" />
     <widget name="menulist" position="46,130" size="455,400" zPosition="1" scrollbarMode="showNever" transparent="1" backgroundColor="#181b2e" foregroundColor="#ffffff" backgroundColorSelected="#743554" foregroundColorSelected="#ffffff" />
     <widget name="name" position="42,576" size="471,36" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" font="cvfont; 28" halign="center" valign="center" />
-    <widget name="version" position="840,682" size="105,18" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" font="cvfont; 22" halign="center" valign="center" />
+    <widget name="version" position="1138,14" size="105,18" zPosition="1" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" font="cvfont; 22" halign="center" valign="center" />
     <widget name="red" position="38,663" size="198,39" font="cvfont;20" halign="center" valign="center" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" zPosition="1" />
     <widget name="green" position="238,663" size="198,39" font="cvfont;20" halign="center" valign="center" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" zPosition="1" />
     <widget name="yellow" position="435,663" size="198,39" font="cvfont;20" halign="center" valign="center" backgroundColor="#181b2e" foregroundColor="#ffffff" transparent="1" zPosition="1" />

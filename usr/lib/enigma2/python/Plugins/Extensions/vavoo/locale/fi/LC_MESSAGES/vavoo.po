@@ -11,6 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# vavoo translations
+# Copyright (C) 2025 Lululla Team
+# This file is distributed under the same license as the Lululla package.
+# [lululla] <ekekaz@gmail.com>, 2025.
+#
+msgid "! Proxy Expiring"
+msgstr ""
+
 msgid "(%d channels)?"
 msgstr "(%d kanavaa)?"
 
@@ -86,6 +94,12 @@ msgstr ""
 msgid "- {} entries updated"
 msgstr ""
 
+msgid "? Proxy Status"
+msgstr ""
+
+msgid "? Proxy Unknown"
+msgstr ""
+
 msgid "Active Automatic Bouquet Update"
 msgstr "Aktiivinen automaattinen nippupäivitys"
 
@@ -125,8 +139,19 @@ msgstr "Nipun sijainti listassa"
 msgid "Bouquet creation error: {}"
 msgstr "Nipun luontivirhe: {}"
 
+#, fuzzy
+msgid "Bouquet ready with {} channels"
+msgstr "Löytyi: {} kanavaa"
+
+#, fuzzy
+msgid "Bouquets reload scheduled."
+msgstr "Niput uudelleenjärjestetty onnistuneesti!"
+
 msgid "Bouquets reorganized successfully!"
 msgstr "Niput uudelleenjärjestetty onnistuneesti!"
+
+msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
+msgstr ""
 
 msgid "Cache format fix completed:"
 msgstr ""
@@ -142,6 +167,10 @@ msgstr "Peruutetaanko suoritus?"
 
 msgid "Case: {}"
 msgstr "Kirjainkoko: {}"
+
+#, fuzzy
+msgid "Channels"
+msgstr "Kanavat: %d"
 
 msgid "Channels: %d"
 msgstr "Kanavat: %d"
@@ -201,6 +230,10 @@ msgstr "Haluatko viedä tämän nipun?"
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG on poissa käytöstä. Ota se ensin käyttöön Vavoo-asetuksista."
 
+#, fuzzy
+msgid "EPG processing completed (no matches)"
+msgstr "EPG-käsittely valmistui {} kanavalle"
+
 msgid "EPG processing completed for {} channels"
 msgstr "EPG-käsittely valmistui {} kanavalle"
 
@@ -223,8 +256,16 @@ msgid "Enter text to search..."
 msgstr "Syötä teksti haettavaksi..."
 
 #, fuzzy
+msgid "Error"
+msgstr "Virhe: %s"
+
+#, fuzzy
 msgid "Error fixing cache: {}"
 msgstr "Virhe käynnistettäessä EPG-päivitystä: {}"
+
+#, fuzzy
+msgid "Error parsing data"
+msgstr "Virhe käynnistettäessä kanavaa"
 
 msgid "Error starting EPG update: {}"
 msgstr "Virhe käynnistettäessä EPG-päivitystä: {}"
@@ -258,6 +299,9 @@ msgstr "Välityspalvelimen päivitys epäonnistui:"
 
 msgid "Failed: %(failed)d"
 msgstr "Epäonnistui: %(failed)d"
+
+msgid "Fix Cache"
+msgstr ""
 
 msgid "Fixing cache format..."
 msgstr ""
@@ -325,6 +369,9 @@ msgstr "M3U-luontivirhe: %s"
 msgid "Movie Services Reference"
 msgstr "Elokuvapalveluiden viite"
 
+msgid "No IMDb/TMDB plugin found"
+msgstr ""
+
 msgid "No Internet connection detected. Please check your network."
 msgstr "Internet-yhteyttä ei havaittu. Tarkista verkkosi."
 
@@ -336,6 +383,15 @@ msgstr "Kanavia ei löytynyt kohteelle: %s"
 
 msgid "No channels found in search!!!"
 msgstr "Kanavia ei löytynyt haussa!!!"
+
+msgid "No items available"
+msgstr ""
+
+msgid "No programme info available"
+msgstr ""
+
+msgid "No selection"
+msgstr ""
 
 msgid "No valid channels for: %s"
 msgstr "Ei kelvollisia kanavia kohteelle: %s"
@@ -360,6 +416,9 @@ msgstr "Välityspalvelin poissa käytöstä"
 
 msgid "Proxy Enabled"
 msgstr "Välityspalvelin käytössä"
+
+msgid "Proxy Error:"
+msgstr ""
 
 msgid "Proxy disabled"
 msgstr "Välityspalvelin poissa käytöstä"
@@ -403,6 +462,9 @@ msgstr "Päivitä suoratoisto X minuutin välein (1-15)"
 msgid "Reload Bouqet"
 msgstr "Lataa nippu uudelleen"
 
+msgid "Reload bouquets and service list?"
+msgstr ""
+
 msgid "Remove"
 msgstr "Poista"
 
@@ -410,6 +472,10 @@ msgid "Remove ALL Vavoo bouquets?"
 msgstr "Poistetaanko KAIKKI Vavoo-niput?"
 
 msgid "Restart"
+msgstr "Käynnistä uudelleen"
+
+#, fuzzy
+msgid "Restarting..."
 msgstr "Käynnistä uudelleen"
 
 msgid "SELECT YOUR CHOICE"
@@ -547,3 +613,29 @@ msgstr "pienaakkoset"
 
 msgid "seconds"
 msgstr "sekuntia"
+
+msgid "✓ Proxy ({0}s)"
+msgstr ""
+
+msgid "✓ Proxy OK"
+msgstr ""
+
+#, fuzzy
+msgid "✓ Restarted"
+msgstr "Käynnistä uudelleen"
+
+msgid "✗ Error"
+msgstr ""
+
+msgid "✗ Proxy Error"
+msgstr ""
+
+#, fuzzy
+msgid "✗ Proxy Expired"
+msgstr "Välityspalvelin käytössä"
+
+msgid "✗ Proxy Offline"
+msgstr ""
+
+msgid "✗ Restart Failed"
+msgstr ""

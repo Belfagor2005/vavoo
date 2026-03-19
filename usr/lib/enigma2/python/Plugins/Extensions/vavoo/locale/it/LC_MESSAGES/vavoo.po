@@ -14,6 +14,14 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
+# vavoo translations
+# Copyright (C) 2025 Lululla Team
+# This file is distributed under the same license as the Lululla package.
+# [lululla] <ekekaz@gmail.com>, 2025.
+#
+msgid "! Proxy Expiring"
+msgstr "! Proxy in Scadenza"
+
 msgid "(%d channels)?"
 msgstr "(%d canali)?"
 
@@ -21,7 +29,7 @@ msgid "(%s files deleted)"
 msgstr "(%s file rimossi)"
 
 msgid "- Add missing fields to all entries"
-msgstr ""
+msgstr "- Aggiungi i campi mancanti a tutte le voci"
 
 msgid "- Auto token refresh every 9 minutes"
 msgstr "- Aggiornamento automatico Token ogni 9 minuti"
@@ -36,7 +44,7 @@ msgid "- Category bouquets"
 msgstr "- Bouquets Categorie"
 
 msgid "- Clean up the cache file"
-msgstr ""
+msgstr "- Pulizia del file di cache"
 
 msgid "- Commercial use is strictly prohibited"
 msgstr "- L'uso commerciale è severamente vietato"
@@ -69,10 +77,10 @@ msgid "- Redistribution must maintain attribution"
 msgstr "- La ridistribuzione deve mantenere l'attribuzione"
 
 msgid "- Remove duplicate entries"
-msgstr ""
+msgstr "- Rimuovere le voci duplicate"
 
 msgid "- Service references: 4097, 5001, 5002"
-msgstr ""
+msgstr "- Riferimenti di servizio: 4097, 5001, 5002"
 
 msgid "- Streams from public sources"
 msgstr "-- Flussi da fonti pubbliche"
@@ -84,10 +92,16 @@ msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
 msgstr "- Supporto tecnico: Qu4k3, @KiddaC, @giorbak"
 
 msgid "- {} duplicate entries removed"
-msgstr ""
+msgstr "- {} voci duplicate rimosse"
 
 msgid "- {} entries updated"
-msgstr ""
+msgstr "- {} voci aggiornate"
+
+msgid "? Proxy Status"
+msgstr "? Proxy Stato"
+
+msgid "? Proxy Unknown"
+msgstr "? Proxy Sconosciuto"
 
 msgid "Active Automatic Bouquet Update"
 msgstr "Attivare aggiornamento automatico del bouquet"
@@ -128,14 +142,23 @@ msgstr "Posizione del bouquet nell'elenco"
 msgid "Bouquet creation error: {}"
 msgstr "Errore nella creazione del bouquet: {}"
 
+msgid "Bouquet ready with {} channels"
+msgstr "Bouquet pronto con canali {}"
+
+msgid "Bouquets reload scheduled."
+msgstr "Bouquets riorganizzati con successo."
+
 msgid "Bouquets reorganized successfully!"
 msgstr "Bouquets riorganizzati con successo!"
 
+msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
+msgstr "CH±=Cambia | OK=On/Off | INFO=IMDb | STOP=Esci"
+
 msgid "Cache format fix completed:"
-msgstr ""
+msgstr "Correzione del formato della cache completata:"
 
 msgid "Cache is already in correct format. No changes needed."
-msgstr ""
+msgstr "La cache è già nel formato corretto. Non sono necessarie modifiche."
 
 msgid "Cancel"
 msgstr "Annulla"
@@ -145,6 +168,9 @@ msgstr "Annullare l'esecuzione?"
 
 msgid "Case: {}"
 msgstr "Caso: {}"
+
+msgid "Channels"
+msgstr "Canali"
 
 msgid "Channels: %d"
 msgstr "Canali: %d"
@@ -197,12 +223,14 @@ msgstr "Visualizzazione predefinita all'apertura del plugin"
 msgid "Do you want to export this bouquet?"
 msgstr "Vuoi esportare questo bouquet?"
 
-#, fuzzy
 msgid "Do you want to fix the cache format?"
-msgstr "Vuoi esportare questo bouquet?"
+msgstr "Vuoi correggere il formato della cache?"
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "L'EPG) è disabilitato. Si prega di abilitarlo prima nelle impostazioni di Vavoo."
+
+msgid "EPG processing completed (no matches)"
+msgstr "Elaborazione EPG completata (nessuna corrispondenza)"
 
 msgid "EPG processing completed for {} channels"
 msgstr "Elaborazione EPG completata per {} canali"
@@ -225,9 +253,14 @@ msgstr "Abilita o disabilita il proxy."
 msgid "Enter text to search..."
 msgstr "Inserisci testo da cercare..."
 
-#, fuzzy
+msgid "Error"
+msgstr "Errore"
+
 msgid "Error fixing cache: {}"
-msgstr "Errore all'avvio dell'aggiornamento EPG: {}"
+msgstr "Errore durante la correzione della cache: {}"
+
+msgid "Error parsing data"
+msgstr "Errore durante l'analisi dei dati"
 
 msgid "Error starting EPG update: {}"
 msgstr "Errore all'avvio dell'aggiornamento EPG: {}"
@@ -262,8 +295,11 @@ msgstr "Impossibile aggiornare il proxy:"
 msgid "Failed: %(failed)d"
 msgstr "Fallito: %(failed)d"
 
+msgid "Fix Cache"
+msgstr "Correggi Cache"
+
 msgid "Fixing cache format..."
-msgstr ""
+msgstr "Correzione del formato della cache in corso..."
 
 msgid "Force proxy refresh?"
 msgstr "Forzare l'aggiornamento del proxy?"
@@ -328,6 +364,9 @@ msgstr "Errore di generazione M3U: %s"
 msgid "Movie Services Reference"
 msgstr "Service Reference del Player"
 
+msgid "No IMDb/TMDB plugin found"
+msgstr "Nessun plugin IMDb/TMDB trovato"
+
 msgid "No Internet connection detected. Please check your network."
 msgstr "Nessuna connessione Internet rilevata. Controlla la tua rete."
 
@@ -339,6 +378,15 @@ msgstr "Nessun canale trovato per: %s"
 
 msgid "No channels found in search!!!"
 msgstr "Nessun canale trovato corrispondente alla ricerca!!!"
+
+msgid "No items available"
+msgstr "Nessun dato disponibile"
+
+msgid "No programme info available"
+msgstr "Nessuna informazione sul programma disponibile"
+
+msgid "No selection"
+msgstr "Nessuna selezione"
 
 msgid "No valid channels for: %s"
 msgstr "Nessun canale valido per: %s"
@@ -363,6 +411,9 @@ msgstr "Proxy Disabilitato"
 
 msgid "Proxy Enabled"
 msgstr "Proxy Abilitato"
+
+msgid "Proxy Error:"
+msgstr "Proxy Errore:"
 
 msgid "Proxy disabled"
 msgstr "Proxy disabilitato"
@@ -406,6 +457,9 @@ msgstr "Aggiorna lo streaming ogni X minuti (1-15)"
 msgid "Reload Bouqet"
 msgstr "Ricarica Bouquet"
 
+msgid "Reload bouquets and service list?"
+msgstr "Ricaricare i bouquet e l'elenco dei servizi?"
+
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -414,6 +468,9 @@ msgstr "Rimuovere TUTTI i bouquet Vavoo?"
 
 msgid "Restart"
 msgstr "Riavviare"
+
+msgid "Restarting..."
+msgstr "Riavvio in corso..."
 
 msgid "SELECT YOUR CHOICE"
 msgstr "SELEZIONA LA TUA SCELTA"
@@ -481,9 +538,8 @@ msgstr "Questo aggiornerà il token di autenticazione."
 msgid "This will remove:"
 msgstr "Questo rimuoverà:"
 
-#, fuzzy
 msgid "This will:"
-msgstr "Questo rimuoverà:"
+msgstr "Questo permetterà di:"
 
 msgid "Time to start update:"
 msgstr "Ora inizio l'aggiornamento:"
@@ -550,6 +606,30 @@ msgstr "minuscola"
 
 msgid "seconds"
 msgstr "secondi"
+
+msgid "✓ Proxy ({0}s)"
+msgstr "✓ Proxy ({0}s)"
+
+msgid "✓ Proxy OK"
+msgstr "✓ Proxy OK"
+
+msgid "✓ Restarted"
+msgstr "✓ iavviato"
+
+msgid "✗ Error"
+msgstr "✗ Errore"
+
+msgid "✗ Proxy Error"
+msgstr "✗ Proxy Error"
+
+msgid "✗ Proxy Expired"
+msgstr "✗ Proxy Scaduto"
+
+msgid "✗ Proxy Offline"
+msgstr "✗ Proxy offline"
+
+msgid "✗ Restart Failed"
+msgstr "✗ Riavvio non riuscito"
 
 #~ msgid "(%(count)d channels)"
 #~ msgstr "(%(count)d canali)"
