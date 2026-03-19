@@ -12,12 +12,12 @@ Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousan
 
 |----------------|-----------------|----------|
 | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen1.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen2.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen3.png" width="200"> |
-|--------|----------------|--------|
+|----------------|-----------------|----------|
 | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen4.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen5.png" width="200"> | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen7.png" width="200"> |
-|--------|----------------|--------|
-| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen8.png" width="200"> |
-|--------|----------------|--------|
-| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen9.gif" width="400"> |
+|----------------|-----------------|----------|
+| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen8.png" width="200"> | | |
+|----------------|-----------------|----------|
+| <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen9.gif" width="400"> | | |
 |----------------|-----------------|----------|
 
 ## ✨ Key Features
