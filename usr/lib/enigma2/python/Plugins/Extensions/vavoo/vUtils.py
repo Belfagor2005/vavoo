@@ -1587,19 +1587,24 @@ def get_configured_satellites():
             sats = nimmanager.getConfiguredSats()
             if sats:
                 configured_sats = list(sats)
-                print("[SatConfig] Found {} configured satellites via NimManager".format(len(configured_sats)))
+                print(
+                    "[SatConfig] Found {} configured satellites via NimManager".format(
+                        len(configured_sats)))
                 return configured_sats
 
         # Method 2: Parse from config
         for slot in nimmanager.nim_slots:
-            if slot.isCompatible("DVB-S") and slot.config.dvbs.configMode.value != "nothing":
+            if slot.isCompatible(
+                    "DVB-S") and slot.config.dvbs.configMode.value != "nothing":
                 # Simple mode - check diseqc settings
                 if slot.config.dvbs.configMode.value == "simple":
                     for port in ['diseqcA', 'diseqcB', 'diseqcC', 'diseqcD']:
                         orbpos = getattr(slot.config.dvbs, port).value
                         if orbpos and orbpos not in configured_sats and orbpos < 3600:
                             configured_sats.append(orbpos)
-                            print("[SatConfig] Found configured sat: {} (port {})".format(orbpos, port))
+                            print(
+                                "[SatConfig] Found configured sat: {} (port {})".format(
+                                    orbpos, port))
 
                 # Advanced mode - check each configured satellite
                 elif hasattr(slot.config.dvbs, 'advanced') and slot.config.dvbs.advanced:
@@ -1608,7 +1613,8 @@ def get_configured_satellites():
                             orbpos = sat_config.sat.value.orbital_position
                             if orbpos and orbpos not in configured_sats:
                                 configured_sats.append(orbpos)
-                                print("[SatConfig] Found configured sat: {}".format(orbpos))
+                                print(
+                                    "[SatConfig] Found configured sat: {}".format(orbpos))
 
         print("[SatConfig] Total configured satellites: {}".format(configured_sats))
         return configured_sats
@@ -1809,7 +1815,8 @@ class VavooEPGMatcher:
             # 1. User-configured satellite → max boost
             if orbpos and self._configured_sats and orbpos in self._configured_sats:
                 boost = 1.5
-                print("[Match] FOUND! Satellite {} is user-configured!".format(orbpos))
+                print(
+                    "[Match] FOUND! Satellite {} is user-configured!".format(orbpos))
 
             # 2. Italian satellite (important) but not configured
             elif country_code == 'it' and orbpos in [130, -50]:  # 13°E or 5°W
@@ -1842,7 +1849,8 @@ class VavooEPGMatcher:
             if orig_score >= self.similarity_threshold:
                 parts = service_ref.split(':')
                 if parts and parts[0] == '1':
-                    parts[0] = '4097'  # Conversion for Enigma2 service reference
+                    # Conversion for Enigma2 service reference
+                    parts[0] = '4097'
                 converted = ':'.join(parts)
 
                 sat_info = " (sat {})".format(orbpos) if orbpos else ""
@@ -1899,7 +1907,8 @@ class VavooEPGMatcher:
             m = self.new_matches[cache_key]
             return m['id'], m['sref']
 
-        result_id, result_sref = self._find_match_internal(channel_name, country_code)
+        result_id, result_sref = self._find_match_internal(
+            channel_name, country_code)
         if result_id and result_sref:
             self.new_matches[cache_key] = {
                 'id': result_id, 'sref': result_sref}
@@ -1940,7 +1949,9 @@ class VavooEPGMatcher:
             # Save the COMPLETE cache
             save_cache(complete_cache)
             self.new_matches.clear()
-            print("[VavooEPGMatcher] Cache saved with {} total entries".format(len(complete_cache)))
+            print(
+                "[VavooEPGMatcher] Cache saved with {} total entries".format(
+                    len(complete_cache)))
 
 
 # ==================== FUNCTION generate_epg_files ====================
@@ -1972,12 +1983,20 @@ def save_cache(cache):
     """Save cache to file with complete format validation"""
     try:
         # Verify all entries have required fields
-        required_fields = ['id', 'name', 'country', 'sref', 'timestamp', 'matched']
+        required_fields = [
+            'id',
+            'name',
+            'country',
+            'sref',
+            'timestamp',
+            'matched']
 
         for key, value in cache.items():
             missing = [f for f in required_fields if f not in value]
             if missing:
-                print("[Cache] ERROR: Entry {} missing fields: {}".format(key, missing))
+                print(
+                    "[Cache] ERROR: Entry {} missing fields: {}".format(
+                        key, missing))
                 return False
 
         with open(CACHE_FILE, 'w') as f:
@@ -2384,30 +2403,30 @@ satellite_positions = {
     235: "23.5°E Astra 3",      # 0xEB0000
     282: "28.2°E Astra 2",      # 0x11A0000? Verifica
     160: "16.0°E Eutelsat",     # 0xA00000
-    90:  "9.0°E Eutelsat",      # 0x5A0000
-    70:  "7.0°E Eutelsat",      # 0x460000
-    48:  "4.8°E Astra 4A",      # 0x300000
-    42:  "4.2°E?",
-    39:  "3.9°E?",
-    36:  "3.6°E?",
-    33:  "3.3°E?",
-    31:  "3.1°E?",
-    28:  "2.8°E?",
-    26:  "2.6°E?",
-    23:  "2.3°E?",
-    21:  "2.1°E?",
-    19:  "1.9°E BulgariaSat",   # 0x130000
-    16:  "1.6°E?",
-    13:  "1.3°E?",
-    10:  "1.0°E?",
-    7:   "0.7°E?",
-    5:   "0.5°E?",
-    2:   "0.2°E?",
-    0:   "0.0°E?",
+    90: "9.0°E Eutelsat",      # 0x5A0000
+    70: "7.0°E Eutelsat",      # 0x460000
+    48: "4.8°E Astra 4A",      # 0x300000
+    42: "4.2°E?",
+    39: "3.9°E?",
+    36: "3.6°E?",
+    33: "3.3°E?",
+    31: "3.1°E?",
+    28: "2.8°E?",
+    26: "2.6°E?",
+    23: "2.3°E?",
+    21: "2.1°E?",
+    19: "1.9°E BulgariaSat",   # 0x130000
+    16: "1.6°E?",
+    13: "1.3°E?",
+    10: "1.0°E?",
+    7: "0.7°E?",
+    5: "0.5°E?",
+    2: "0.2°E?",
+    0: "0.0°E?",
 
     # Satelliti a Ovest (negative)
-    -8:   "0.8°W Thor",         # 0xFFF80000? In realtà 3592 * 65536 = 0xE080000
-    -50:  "5.0°W Eutelsat",     # 3550 * 65536 = 0xDDE0000
+    -8: "0.8°W Thor",         # 0xFFF80000? In realtà 3592 * 65536 = 0xE080000
+    -50: "5.0°W Eutelsat",     # 3550 * 65536 = 0xDDE0000
     -125: "12.5°W Eutelsat",    # 3475 * 65536 = 0xD8C0000
     -140: "14.0°W Express",     # 3460 * 65536 = 0xD840000
     -150: "15.0°W Telstar",     # 3450 * 65536 = 0xD7A0000
@@ -2416,7 +2435,9 @@ satellite_positions = {
     -220: "22.0°W SES",         # 3380 * 65536 = 0xD0C0000
     -245: "24.5°W Intelsat",    # 3355 * 65536 = 0xCEC0000
     -275: "27.5°W Intelsat",    # 3325 * 65536 = 0xCBC0000
-    -300: "30.0°W Hispasat",    # 3300 * 65536 = 0xC900000? No, 0xCE40000 = 3300*65536? Calcola: 3300*65536=216.268.800=0xCE40000 Sì!
+    # 3300 * 65536 = 0xC900000? No, 0xCE40000 = 3300*65536? Calcola:
+    # 3300*65536=216.268.800=0xCE40000 Sì!
+    -300: "30.0°W Hispasat",
     -315: "31.5°W Hylas",       # 3285 * 65536 = 0xCD40000
     -345: "34.5°W Intelsat",    # 3255 * 65536 = 0xCB40000
     -360: "36.0°W Hispasat",    # 3240 * 65536 = 0xCA80000
@@ -2444,14 +2465,17 @@ satellite_positions = {
     -910: "91.0°W Galaxy",      # 2690 * 65536 = 0xA700000
     -950: "95.0°W Galaxy",      # 2650 * 65536 = 0xA380000
     -970: "97.0°W Galaxy",      # 2630 * 65536 = 0xA1C0000
-    -992: "99.2°W Galaxy",      # 2608 * 65536 = 0xA000000? 2608*65536=170.917.888=0xA300000? No, calcola: 2608*65536=170.917.888=0xA300000
+    # 2608 * 65536 = 0xA000000? 2608*65536=170.917.888=0xA300000? No, calcola:
+    # 2608*65536=170.917.888=0xA300000
+    -992: "99.2°W Galaxy",
     -1010: "101.0°W SES",       # 2590 * 65536 = 0xA180000
     -1030: "103.0°W SES",       # 2570 * 65536 = 0xA000000? 2570*65536=168.427.520=0xA0A0000
     -1050: "105.0°W AMC",       # 2550 * 65536 = 0x9F60000
     -1073: "107.3°W Anik",      # 2527 * 65536 = 0x9DC0000
     -1100: "110.0°W EchoStar",  # 2500 * 65536 = 0x9C40000
     -1130: "113.0°W Eutelsat",  # 2470 * 65536 = 0x9AC0000
-    -1149: "114.9°W Eutelsat",  # 2451 * 65536 = 0x9900000? 2451*65536=160.563.200=0x9920000
+    # 2451 * 65536 = 0x9900000? 2451*65536=160.563.200=0x9920000
+    -1149: "114.9°W Eutelsat",
     -1170: "117.0°W Eutelsat",  # 2430 * 65536 = 0x97E0000
     -1190: "119.0°W Anik",      # 2410 * 65536 = 0x96A0000
     -1210: "121.0°W EchoStar",  # 2390 * 65536 = 0x9560000

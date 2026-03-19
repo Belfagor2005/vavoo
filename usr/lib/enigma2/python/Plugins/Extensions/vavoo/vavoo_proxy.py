@@ -362,12 +362,16 @@ class VavooProxy:
 
     def stream_started(self):
         self.active_streams += 1
-        print("[Proxy] Stream started. Active streams: {}".format(self.active_streams))
+        print(
+            "[Proxy] Stream started. Active streams: {}".format(
+                self.active_streams))
 
     def stream_ended(self):
         if self.active_streams > 0:
             self.active_streams -= 1
-        print("[Proxy] Stream ended. Active streams: {}".format(self.active_streams))
+        print(
+            "[Proxy] Stream ended. Active streams: {}".format(
+                self.active_streams))
 
     def _update_endpoints(self):
         """Update API endpoints from the current base site."""
@@ -416,9 +420,12 @@ class VavooProxy:
 
             try:
                 now = time.time()
-                token_age = now - self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
+                token_age = now - \
+                    self.addon_sig_data["ts"] if self.addon_sig_data["sig"] else 0
                 if self.addon_sig_data["sig"] and token_age > TOKEN_REFRESH_AGE:
-                    print("[Token Monitor] Token old ({}s), refreshing...".format(int(token_age)))
+                    print(
+                        "[Token Monitor] Token old ({}s), refreshing...".format(
+                            int(token_age)))
                     self.refresh_addon_sig_if_needed(force=True)
             except Exception as e:
                 print("[Token Monitor] Error: " + str(e))
@@ -1127,7 +1134,8 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
 
             # Redirect per-country EPG requests to GitHub raw files
             elif parsed_path.path.startswith('/epg/') and parsed_path.path.endswith('.xml'):
-                country_code = parsed_path.path.split('/')[-1].replace('.xml', '')
+                country_code = parsed_path.path.split(
+                    '/')[-1].replace('.xml', '')
                 github_url = "{}/vavoo-player/master/epg_{}.xml".format(
                     HOST_GIT, country_code)
                 self.send_response(302)

@@ -3285,7 +3285,9 @@ class vavoo(Screen):
 
     def _on_export_complete(self, success, ch_count, message):
         """Callback for bouquet export completion"""
-        print("[DEBUG] _on_export_complete CALLED - success=%s, ch_count=%s, message='%s'" % (success, ch_count, message))
+        print(
+            "[DEBUG] _on_export_complete CALLED - success=%s, ch_count=%s, message='%s'" %
+            (success, ch_count, message))
 
         try:
             if not success:
@@ -3299,16 +3301,19 @@ class vavoo(Screen):
                 # First callback - base bouquet ready
                 print("[DEBUG] Bouquet ready with {} channels".format(ch_count))
                 if NOTIFICATION_AVAILABLE:
-                    quick_notify(_("Bouquet ready with {} channels").format(ch_count), 3)
+                    quick_notify(
+                        _("Bouquet ready with {} channels").format(ch_count), 3)
 
             elif message == "EPG processing completed":
                 # Second callback - EPG completed
                 print("[DEBUG] EPG completed for {} channels".format(ch_count))
                 if NOTIFICATION_AVAILABLE:
                     if ch_count > 0:
-                        quick_notify(_("EPG processing completed for {} channels").format(ch_count), 4)
+                        quick_notify(
+                            _("EPG processing completed for {} channels").format(ch_count), 4)
                     else:
-                        quick_notify(_("EPG processing completed (no matches)"), 3)
+                        quick_notify(
+                            _("EPG processing completed (no matches)"), 3)
 
             else:
                 # Other messages
@@ -3829,7 +3834,8 @@ class TvInfoBarShowHide():
                     return _("✓ Proxy OK")
                 elif token_age < 420:
                     ttl = 600 - token_age
-                    # Translators: {0} is the time in seconds until token refresh
+                    # Translators: {0} is the time in seconds until token
+                    # refresh
                     return _("✓ Proxy ({0}s)").format(int(ttl))
                 else:
                     return _("! Proxy Expiring")
@@ -3876,7 +3882,8 @@ class TvInfoBarShowHide():
                         proxy_msg = _("✗ Proxy Expired")
 
                     channels_text = _("Channels")
-                    proxy_details = "{} | {}: {}".format(proxy_msg, channels_text, channels)
+                    proxy_details = "{} | {}: {}".format(
+                        proxy_msg, channels_text, channels)
                 else:
                     proxy_details = _("? Proxy Unknown")
             else:
@@ -4080,7 +4087,8 @@ class Playstream2(
     def showIMDB(self):
         try:
             epg_text = self.get_current_epg()
-            if epg_text and epg_text not in ["EPG not available", "No programme found"]:
+            if epg_text and epg_text not in [
+                    "EPG not available", "No programme found"]:
                 if " - " in epg_text:
                     title = epg_text.split(" - ")[0].strip()
                     if " " in title and title[2] == ":":
@@ -4093,7 +4101,9 @@ class Playstream2(
                 print("[IMDB] Searching for: %s" % title)
 
                 if returnIMDB(title, self.session):
-                    print('[Playstream2] TMDB/IMDb opened for programme: %s' % title)
+                    print(
+                        '[Playstream2] TMDB/IMDb opened for programme: %s' %
+                        title)
                 else:
                     print('[Playstream2] No TMDB/IMDb plugin found')
                     if NOTIFICATION_AVAILABLE:
@@ -4312,7 +4322,9 @@ class Playstream2(
                 if time.time() - cached_time < 300:  # 5 minutes
                     elapsed = time.time() - start_time
                     if elapsed > 0.05:
-                        print("[EPG] Cache HIT for {} (took {:.3f}s)".format(clean_name, elapsed))
+                        print(
+                            "[EPG] Cache HIT for {} (took {:.3f}s)".format(
+                                clean_name, elapsed))
                     return cached_result
 
             # Initialize cache dict if needed
@@ -4324,11 +4336,14 @@ class Playstream2(
 
             # Find Rytec ID - this is the expensive part
             match_start = time.time()
-            rytec_id, _ = matcher.find_match(clean_name, country_code=self.country_code)
+            rytec_id, _ = matcher.find_match(
+                clean_name, country_code=self.country_code)
             match_time = time.time() - match_start
 
             if match_time > 0.1:
-                print("[EPG] Slow match for {}: {:.3f}s".format(clean_name, match_time))
+                print(
+                    "[EPG] Slow match for {}: {:.3f}s".format(
+                        clean_name, match_time))
 
             if not rytec_id:
                 result = "EPG not available (ID not found)"
@@ -4341,11 +4356,14 @@ class Playstream2(
 
             # Fetch XML data
             fetch_start = time.time()
-            xml_data = getUrl(epg_url, timeout=3)  # Reduced timeout to 3 seconds
+            # Reduced timeout to 3 seconds
+            xml_data = getUrl(epg_url, timeout=3)
             fetch_time = time.time() - fetch_start
 
             if fetch_time > 0.5:
-                print("[EPG] Slow fetch from {}: {:.3f}s".format(epg_url, fetch_time))
+                print(
+                    "[EPG] Slow fetch from {}: {:.3f}s".format(
+                        epg_url, fetch_time))
 
             if not xml_data:
                 result = "EPG not available"
@@ -4367,7 +4385,8 @@ class Playstream2(
                 # Optimize: break early when found
                 for prog in root.findall('programme'):
                     prog_channel = prog.get('channel')
-                    if not prog_channel or not id_match(prog_channel, rytec_id):
+                    if not prog_channel or not id_match(
+                            prog_channel, rytec_id):
                         continue
 
                     start_str = prog.get('start')
@@ -4413,7 +4432,8 @@ class Playstream2(
                         start_local = start_dt.strftime('%H:%M')
                         end_local = stop_dt.strftime('%H:%M')
 
-                        result = "{}-{} {} - {}".format(start_local, end_local, title, desc)
+                        result = "{}-{} {} - {}".format(
+                            start_local, end_local, title, desc)
                     except Exception:
                         result = "{} - {}".format(title, desc)
                 else:
