@@ -10,9 +10,9 @@ Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousan
 
 ## 🖼️ Screenshots
 
-|-------------------------------------------|
+|------------------------------------------------------------------------------------------------------|
 | <img src="https://raw.githubusercontent.com/Belfagor2005/vavoo/main/screen/screen9.gif" width="400"> |
-|-------------------------------------------|
+|------------------------------------------------------------------------------------------------------|
 
 ## ✨ Key Features
 - **Live TV Streaming** – Watch live channels from various countries
