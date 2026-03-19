@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Lululla package.
 # [lululla] <ekekaz@gmail.com>, 2025.
 #
+
 msgid "! Proxy Expiring"
 msgstr ""
 
