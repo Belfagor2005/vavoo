@@ -24219,7 +24219,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TV DEN .c_tr",
-        "matched": false,
+        "matched": true,
         "name": "TV DEN .c",
         "sref": "4097:0:1:CA6F:7B0E:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:23"
@@ -24268,7 +24268,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TV KAYSERI .c_tr",
-        "matched": false,
+        "matched": true,
         "name": "TV KAYSERI .c",
         "sref": "4097:0:1:CA5D:7B0E:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:24"
@@ -24277,7 +24277,7 @@
         "attempts": 2,
         "country": "it",
         "id": "TV LUNA .c_it",
-        "matched": false,
+        "matched": true,
         "name": "TV LUNA .c",
         "sref": "4097:0:19:1F4A:80E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:46"
@@ -24326,7 +24326,7 @@
         "attempts": 3,
         "country": "it",
         "id": "TV QUI (MODENA) .s_it",
-        "matched": false,
+        "matched": true,
         "name": "TV QUI (MODENA) .s",
         "sref": "4097:0:1:12C5:48E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 20:49:33"
@@ -24335,7 +24335,7 @@
         "attempts": 2,
         "country": "it",
         "id": "TV QUI .c_it",
-        "matched": false,
+        "matched": true,
         "name": "TV QUI .c",
         "sref": "4097:0:1:12C5:48E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:46"
@@ -24368,7 +24368,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TV5 .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "TV5 .b",
         "sref": "4097:0:1:C9B1:76C1:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:24"
@@ -24449,7 +24449,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TV8 HD .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "TV8 HD .b",
         "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:24"
@@ -24466,7 +24466,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TV8 RAW .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "TV8 RAW .b",
         "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:24"
@@ -24475,7 +24475,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TV8 SD .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "TV8 SD .b",
         "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:25"
@@ -24484,7 +24484,7 @@
         "attempts": 2,
         "country": "it",
         "id": "TVA VICENZA .c_it",
-        "matched": false,
+        "matched": true,
         "name": "TVA VICENZA .c",
         "sref": "4097:0:1:425C:3DB8:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 12:46:47"
@@ -24493,7 +24493,7 @@
         "attempts": 2,
         "country": "it",
         "id": "TVA VICENZA .s_it",
-        "matched": false,
+        "matched": true,
         "name": "TVA VICENZA .s",
         "sref": "4097:0:1:425C:3DB8:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 12:46:48"
@@ -24622,7 +24622,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TVNET .s_tr",
-        "matched": false,
+        "matched": true,
         "name": "TVNET .s",
         "sref": "4097:0:1:30D4:A155:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:25"
@@ -24631,7 +24631,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TVNET HD .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "TVNET HD .b",
         "sref": "4097:0:1:30D4:A155:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:25"
@@ -24720,7 +24720,7 @@
         "attempts": 2,
         "country": "it",
         "id": "TVRS .c_it",
-        "matched": false,
+        "matched": true,
         "name": "TVRS .c",
         "sref": "4097:0:1:1774:60E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:48"
@@ -24745,7 +24745,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "TÜRKHABER TV .c_tr",
-        "matched": false,
+        "matched": true,
         "name": "TÜRKHABER TV .c",
         "sref": "4097:0:1:C687:7BD6:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:21"
@@ -24786,7 +24786,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "ULKE TV .s_tr",
-        "matched": false,
+        "matched": true,
         "name": "ULKE TV .s",
         "sref": "4097:0:1:2CEE:A02A:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:25"
@@ -24795,7 +24795,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "ULKE TV HD .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "ULKE TV HD .b",
         "sref": "4097:0:1:2D51:A02B:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:26"
@@ -24804,7 +24804,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "ULKETV HD .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "ULKETV HD .b",
         "sref": "4097:0:1:2D51:A02B:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:26"
@@ -24813,7 +24813,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "ULTRA AKSIYON .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "ULTRA AKSIYON .b",
         "sref": "4097:0:19:3E85:A8C3:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:26"
@@ -24974,7 +24974,7 @@
         "attempts": 2,
         "country": "it",
         "id": "VCO AZZURRA TV .c_it",
-        "matched": false,
+        "matched": true,
         "name": "VCO AZZURRA TV .c",
         "sref": "4097:0:1:408:10E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:49"
@@ -24983,7 +24983,7 @@
         "attempts": 2,
         "country": "it",
         "id": "VH1 .c_it",
-        "matched": false,
+        "matched": true,
         "name": "VH1 .c",
         "sref": "4097:0:1:78:200:1D:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:49"
@@ -25096,7 +25096,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "VIASAT EXPLORE .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "VIASAT EXPLORE .b",
         "sref": "4097:0:1:262:2774:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 00:14:27"
@@ -25121,7 +25121,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "VIASAT EXPLORE .c_tr",
-        "matched": false,
+        "matched": true,
         "name": "VIASAT EXPLORE .c",
         "sref": "4097:0:1:262:2774:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 00:14:27"
@@ -25130,7 +25130,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "VIASAT EXPLORE .s_tr",
-        "matched": false,
+        "matched": true,
         "name": "VIASAT EXPLORE .s",
         "sref": "4097:0:1:262:2774:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 00:14:28"
@@ -25211,7 +25211,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "VIASAT HISTORY .c_tr",
-        "matched": false,
+        "matched": true,
         "name": "VIASAT HISTORY .c",
         "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
         "timestamp": "2026-03-19 00:14:28"
@@ -25244,7 +25244,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "VIASAT HISTORY .s_tr",
-        "matched": false,
+        "matched": true,
         "name": "VIASAT HISTORY .s",
         "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
         "timestamp": "2026-03-19 00:14:28"
@@ -25253,7 +25253,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "VIASAT HISTORY HD+ .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "VIASAT HISTORY HD+ .b",
         "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
         "timestamp": "2026-03-19 00:14:28"
@@ -25262,7 +25262,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "VIASAT HISTORY HEVC .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "VIASAT HISTORY HEVC .b",
         "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
         "timestamp": "2026-03-19 00:14:28"
@@ -25359,7 +25359,7 @@
         "attempts": 2,
         "country": "it",
         "id": "VIDEOSTAR TV .c_it",
-        "matched": false,
+        "matched": true,
         "name": "VIDEOSTAR TV .c",
         "sref": "4097:0:1:7D2:20E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:49"
@@ -25776,7 +25776,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "X NOSTALJI T RK E KLASIK .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "X NOSTALJI T RK E KLASIK .b",
         "sref": "4097:0:2:C747:7789:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:29"
@@ -25809,7 +25809,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "YABAN .c_tr",
-        "matched": false,
+        "matched": true,
         "name": "YABAN .c",
         "sref": "4097:0:11:4204:A929:2A:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:29"
@@ -25818,7 +25818,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "YABAN TV .s_tr",
-        "matched": false,
+        "matched": true,
         "name": "YABAN TV .s",
         "sref": "4097:0:11:4204:A929:2A:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:29"
@@ -25827,7 +25827,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "YABAN TV HD .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "YABAN TV HD .b",
         "sref": "4097:0:11:4204:A929:2A:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:29"
@@ -25860,7 +25860,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "YILDIZ EN TV .b_tr",
-        "matched": false,
+        "matched": true,
         "name": "YILDIZ EN TV .b",
         "sref": "4097:0:1:C615:A3AD:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:30"
@@ -25869,7 +25869,7 @@
         "attempts": 1,
         "country": "tr",
         "id": "YILDIZ TV EN .c_tr",
-        "matched": false,
+        "matched": true,
         "name": "YILDIZ TV EN .c",
         "sref": "4097:0:1:C615:A3AD:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:30"
@@ -25974,7 +25974,7 @@
         "attempts": 1,
         "country": "",
         "id": "ZEE TV INDIA .s_",
-        "matched": false,
+        "matched": true,
         "name": "ZEE TV INDIA .s",
         "sref": "4097:0:1:C4B8:811:2:11A0000:0:0:0:",
         "timestamp": "2026-03-19 00:48:21"
@@ -26135,7 +26135,7 @@
         "attempts": 3,
         "country": "it",
         "id": "ÈTV RETE 7 .c_it",
-        "matched": false,
+        "matched": true,
         "name": "ÈTV RETE 7 .c",
         "sref": "4097:0:1:12D1:48E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 20:49:26"
