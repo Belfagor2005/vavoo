@@ -368,6 +368,15 @@
         "sref": "4097:0:1:4B7:C:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "70-80.IT .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "70-80.IT .c_it",
+        "matched": true,
+        "name": "70-80.IT .c",
+        "sref": "4097:0:16:7D9:20E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:45:53"
+    },
     "92 NEWS .b_": {
         "country": "",
         "id": "92News.uk",
@@ -2219,7 +2228,7 @@
         "id": "Bein5Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 5 .b_fr",
-        "sref": "4097:0:19:200A:430:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200A:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 5 .c_fr": {
@@ -2227,7 +2236,7 @@
         "id": "Bein5Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 5 .c_fr",
-        "sref": "4097:0:19:200A:430:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200A:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 5 FHD (EVENT ONLY) .s_fr": {
@@ -2235,7 +2244,7 @@
         "id": "Bein5Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 5 FHD (EVENT ONLY) .s_fr",
-        "sref": "4097:0:19:200A:430:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200A:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 5 HD (BACKUP) .b_fr": {
@@ -2243,23 +2252,7 @@
         "id": "Bein5Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 5 HD (BACKUP) .b_fr",
-        "sref": "4097:0:19:200A:430:1:C00000:0:0:0:",
-        "timestamp": "2026-03-19 11:02:36"
-    },
-    "BEIN SPORTS MAX 5 HD (EVENT ONLY) .s_fr": {
-        "country": "fr",
-        "id": "Bein5Max.fr",
-        "matched": true,
-        "name": "BEIN SPORTS MAX 5 HD (EVENT ONLY) .s_fr",
-        "sref": "4097:0:19:200A:430:1:C00000:0:0:0:",
-        "timestamp": "2026-03-19 11:02:36"
-    },
-    "BEIN SPORTS MAX 5 HD .b_fr": {
-        "country": "fr",
-        "id": "Bein5Max.fr",
-        "matched": true,
-        "name": "BEIN SPORTS MAX 5 HD .b_fr",
-        "sref": "4097:0:19:200A:430:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200A:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 6 .b_fr": {
@@ -2267,7 +2260,7 @@
         "id": "Bein6Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 6 .b_fr",
-        "sref": "4097:0:19:200B:430:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200B:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 6 .c_fr": {
@@ -2275,7 +2268,7 @@
         "id": "Bein6Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 6 .c_fr",
-        "sref": "4097:0:19:200B:430:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200B:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 6 FHD (EVENT ONLY) .s_fr": {
@@ -2315,7 +2308,7 @@
         "id": "Bein7Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 7 .b_fr",
-        "sref": "4097:0:19:2071:432:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200C:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 7 .c_fr": {
@@ -2323,15 +2316,15 @@
         "id": "Bein7Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 7 .c_fr",
-        "sref": "4097:0:19:2071:432:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200C:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
-    "BEIN SPORTS MAX 7 FHD (EVENT ONLY) .s_fr": {
+    "BEIN SPORTS MAX 7 .s_fr": {
         "country": "fr",
         "id": "Bein7Max.fr",
         "matched": true,
-        "name": "BEIN SPORTS MAX 7 FHD (EVENT ONLY) .s_fr",
-        "sref": "4097:0:19:2071:432:1:C00000:0:0:0:",
+        "name": "BEIN SPORTS MAX 7 .s_fr",
+        "sref": "4097:0:1:200C:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 7 HD (BACKUP) .b_fr": {
@@ -2363,7 +2356,7 @@
         "id": "Bein8Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 8 .b_fr",
-        "sref": "4097:0:19:2072:432:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200D:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 8 .c_fr": {
@@ -2371,15 +2364,15 @@
         "id": "Bein8Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 8 .c_fr",
-        "sref": "4097:0:19:2072:432:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200D:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
-    "BEIN SPORTS MAX 8 FHD (EVENT ONLY) .s_fr": {
+    "BEIN SPORTS MAX 8 .s_fr": {
         "country": "fr",
         "id": "Bein8Max.fr",
         "matched": true,
-        "name": "BEIN SPORTS MAX 8 FHD (EVENT ONLY) .s_fr",
-        "sref": "4097:0:19:2072:432:1:C00000:0:0:0:",
+        "name": "BEIN SPORTS MAX 8 .s_fr",
+        "sref": "4097:0:1:200D:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 8 HD (BACKUP) .b_fr": {
@@ -2403,7 +2396,7 @@
         "id": "Bein9Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 9 .b_fr",
-        "sref": "4097:0:19:2073:432:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200E:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 9 .c_fr": {
@@ -2411,7 +2404,7 @@
         "id": "Bein9Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 9 .c_fr",
-        "sref": "4097:0:19:2073:432:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200E:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 9 FHD (EVENT ONLY) .s_fr": {
@@ -2419,7 +2412,7 @@
         "id": "Bein9Max.fr",
         "matched": true,
         "name": "BEIN SPORTS MAX 9 FHD (EVENT ONLY) .s_fr",
-        "sref": "4097:0:19:2073:432:1:C00000:0:0:0:",
+        "sref": "4097:0:1:200E:430:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BEIN SPORTS MAX 9 HD (BACKUP) .b_fr": {
@@ -2453,6 +2446,14 @@
         "name": "BELLA RADIO TV .c",
         "sref": "4097:0:16:1c16:384:110:5a0000:0:0:0:",
         "timestamp": "2026-03-19 20:49:34"
+    },
+    "BEN TV .s_": {
+        "country": "",
+        "id": "Ben.uk",
+        "matched": true,
+        "name": "BEN TV .s_",
+        "sref": "4097:0:1:C6F3:82A:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
     },
     "BENFICA TV (BACKUP) .b_pt": {
         "country": "pt",
@@ -2495,28 +2496,52 @@
         "sref": "4097:0:16:1013:451:35:C00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "BERGISCHE UNIVERSITAT .c_de": {
+        "country": "de",
+        "id": "BergischeUni.de",
+        "matched": true,
+        "name": "BERGISCHE UNIVERSITAT .c_de",
+        "sref": "4097:0:1:169F:3E6:1:C00000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BERLIN 1 .c_de": {
+        "country": "de",
+        "id": "Berlin1.de",
+        "matched": true,
+        "name": "BERLIN 1 .c_de",
+        "sref": "4097:0:16:12D6:3F0:1:C00000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BET .b_": {
+        "country": "",
+        "id": "BET.uk",
+        "matched": true,
+        "name": "BET .b_",
+        "sref": "4097:0:1:CF2:82A:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BET .s_": {
+        "country": "",
+        "id": "BET.uk",
+        "matched": true,
+        "name": "BET .s_",
+        "sref": "4097:0:1:CF2:82A:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
     "BFM BUSINESS .c_fr": {
         "country": "fr",
         "id": "BFMBusiness.fr",
         "matched": true,
         "name": "BFM BUSINESS .c_fr",
-        "sref": "4097:0:19:11FD:11F8:FD2A:FFFF0000:0:0:0:",
+        "sref": "4097:0:19:71E:2904:55F:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
-    "BFM BUSINESS FHD .s_fr": {
+    "BFM BUSINESS .s_fr": {
         "country": "fr",
         "id": "BFMBusiness.fr",
         "matched": true,
-        "name": "BFM BUSINESS FHD .s_fr",
-        "sref": "4097:0:19:11FD:11F8:FD2A:FFFF0000:0:0:0:",
-        "timestamp": "2026-03-19 11:02:36"
-    },
-    "BFM LYON .c_fr": {
-        "country": "fr",
-        "id": "BFM_Lyon.fr",
-        "matched": true,
-        "name": "BFM LYON .c_fr",
-        "sref": "4097:0:19:723:2904:55F:DDE0000:0:0:0:",
+        "name": "BFM BUSINESS .s_fr",
+        "sref": "4097:0:19:71E:2904:55F:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BFM PARIS FHD .s_fr": {
@@ -2527,12 +2552,20 @@
         "sref": "4097:0:19:57B:5398:55F:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
-    "BFM TV .c_fr": {
+    "BFM TV .b_fr": {
         "country": "fr",
         "id": "BFMTV.fr",
         "matched": true,
-        "name": "BFM TV .c_fr",
-        "sref": "4097:0:16:6AE:11:1:FFFF0000:0:0:0:",
+        "name": "BFM TV .b_fr",
+        "sref": "4097:0:19:71D:2904:55F:DDE0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BFM TV .s_fr": {
+        "country": "fr",
+        "id": "BFMTV.fr",
+        "matched": true,
+        "name": "BFM TV .s_fr",
+        "sref": "4097:0:19:71D:2904:55F:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BFM TV HD .b_fr": {
@@ -2591,12 +2624,44 @@
         "sref": "4097:0:1:22D:13C:3:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "BIG BROTHER 24/7 .s_": {
+        "country": "",
+        "id": "BigBrother.uk",
+        "matched": true,
+        "name": "BIG BROTHER 24/7 .s_",
+        "sref": "4097:0:1:449:384:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BIGGEST LITTLE FARM .c_fr": {
+        "country": "fr",
+        "id": "BiggestLittleFarm.fr",
+        "matched": true,
+        "name": "BIGGEST LITTLE FARM .c_fr",
+        "sref": "4097:0:1:55F:7:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
     "BIKE .c_it": {
         "country": "it",
         "id": "BIKE.it",
         "matched": true,
         "name": "BIKE .c_it",
         "sref": "4097:0:16:3C:204:1D:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BILD .c_de": {
+        "country": "de",
+        "id": "BILD.de",
+        "matched": true,
+        "name": "BILD .c_de",
+        "sref": "4097:0:1:3C5F:260:3:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BILD .s_de": {
+        "country": "de",
+        "id": "BILD.de",
+        "matched": true,
+        "name": "BILD .s_de",
+        "sref": "4097:0:1:3C5F:260:3:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BILD TV .c_de": {
@@ -2613,6 +2678,14 @@
         "matched": true,
         "name": "BILD TV .s_de",
         "sref": "4097:0:19:2775:409:1:C00000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BINGE .s_": {
+        "country": "",
+        "id": "Binge.uk",
+        "matched": true,
+        "name": "BINGE .s_",
+        "sref": "4097:0:1:1C16:83B:2:11A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BLAZE .b_": {
@@ -2645,6 +2718,22 @@
         "matched": true,
         "name": "BLAZE .s_",
         "sref": "4097:0:19:DD7:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BLOOMBERG .b_": {
+        "country": "",
+        "id": "Bloomberg.nws",
+        "matched": true,
+        "name": "BLOOMBERG .b_",
+        "sref": "4097:0:1:42D:147:3:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BLOOMBERG .c_de": {
+        "country": "de",
+        "id": "Bloomberg.de",
+        "matched": true,
+        "name": "BLOOMBERG .c_de",
+        "sref": "4097:0:1:42D:147:3:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BLOOMBERG .s_": {
@@ -2688,6 +2777,22 @@
         "name": "BLOOMBERG TV 4K .c",
         "sref": "4097:0:1:1C86:332C:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 12:45:58"
+    },
+    "BLUE HUSTLER .b_fr": {
+        "country": "fr",
+        "id": "BlueHustler.fr",
+        "matched": true,
+        "name": "BLUE HUSTLER .b_fr",
+        "sref": "4097:0:1:186B:15:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BLUE HUSTLER .c_fr": {
+        "country": "fr",
+        "id": "BlueHustler.fr",
+        "matched": true,
+        "name": "BLUE HUSTLER .c_fr",
+        "sref": "4097:0:1:186B:15:1:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
     },
     "BNT 1 .c_bg": {
         "country": "bg",
@@ -2774,7 +2879,7 @@
         "id": "Boing.it",
         "matched": true,
         "name": "BOING .c",
-        "sref": "4097:0:1:110B:1A8:4:FFFF0000:0:0:0:",
+        "sref": "4097:0:19:79:4B0:110:820000:0:0:0:",
         "timestamp": "2026-03-19 20:49:34"
     },
     "BOING .s_it": {
@@ -2873,6 +2978,14 @@
         "sref": "4097:0:1:2C4F:1AF4:FBFF:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "BOOMERANG .b_de": {
+        "country": "de",
+        "id": "Boomerang.de",
+        "matched": true,
+        "name": "BOOMERANG .b_de",
+        "sref": "4097:0:1:2AF:22:7:FFFF0000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
     "BOOMERANG .b_fr": {
         "country": "fr",
         "id": "Boomerang.fr",
@@ -2887,6 +3000,14 @@
         "matched": true,
         "name": "BOOMERANG .b_ro",
         "sref": "4097:0:1:4:1F4:5:A00000:0:0:0:",
+        "timestamp": "2026-03-19 11:02:36"
+    },
+    "BOOMERANG .c_bg": {
+        "country": "bg",
+        "id": "Boomerang.bg",
+        "matched": true,
+        "name": "BOOMERANG .c_bg",
+        "sref": "4097:0:1:1E5:17:3:130000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
     "BOOMERANG .c_fr": {
@@ -7715,6 +7836,15 @@
         "sref": "4097:0:1:264E:98E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:05"
     },
+    "ESPERIA TV 18 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ESPERIA TV 18 .s_it",
+        "matched": true,
+        "name": "ESPERIA TV 18 .s",
+        "sref": "4097:0:1:264E:98E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:05"
+    },
     "ESPN .c_nl": {
         "country": "nl",
         "id": "ESPN.nl",
@@ -7850,6 +7980,15 @@
         "name": "ETV MARCHE .s",
         "sref": "4097:0:1:1773:60E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 20:49:34"
+    },
+    "ETV1 .b_": {
+        "attempts": 1,
+        "country": "",
+        "id": "ETV1 .b_",
+        "matched": true,
+        "name": "ETV1 .b",
+        "sref": "4097:0:1:284B:0:0:302EB6:0:0:0:",
+        "timestamp": "2026-03-19 00:25:30"
     },
     "ETV5 .b_": {
         "attempts": 1,
@@ -11317,7 +11456,7 @@
         "attempts": 2,
         "country": "it",
         "id": "KISS KISS ITALIA .c_it",
-        "matched": false,
+        "matched": true,
         "name": "KISS KISS ITALIA .c",
         "sref": "4097:0:2:2E6:1B58:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 12:46:12"
@@ -11326,7 +11465,7 @@
         "attempts": 2,
         "country": "it",
         "id": "KISS KISS NAPOLI .c_it",
-        "matched": false,
+        "matched": true,
         "name": "KISS KISS NAPOLI .c",
         "sref": "4097:0:1:1F4C:80E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 12:46:13"
@@ -11459,6 +11598,15 @@
         "sref": "4097:0:19:2E0:0:0:DDE313E:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "LA C ONAIR .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "LA C ONAIR .c_it",
+        "matched": true,
+        "name": "LA C ONAIR .c",
+        "sref": "4097:0:1:2650:98E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:13"
+    },
     "LA C TV .c_it": {
         "country": "it",
         "id": "LaC-tv.it",
@@ -11482,6 +11630,15 @@
         "name": "LA CHAINE METEO .s_fr",
         "sref": "4097:0:1:22C6:45A:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "LA NUOVA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "LA NUOVA TV .c_it",
+        "matched": true,
+        "name": "LA NUOVA TV .c",
+        "sref": "4097:0:19:56:8800:217C:DDE0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:13"
     },
     "LALIGA TV .s_": {
         "country": "",
@@ -11627,6 +11784,15 @@
         "sref": "4097:0:1:FA3:107:217C:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "LIVE 360 .b_": {
+        "attempts": 1,
+        "country": "",
+        "id": "LIVE 360 .b_",
+        "matched": true,
+        "name": "LIVE 360 .b",
+        "sref": "4097:0:1:2922:0:0:30AEA2:0:0:0:",
+        "timestamp": "2026-03-19 00:30:28"
+    },
     "LOCAL VISÃO .c_pt": {
         "country": "pt",
         "id": "Localvisao.pt",
@@ -11651,6 +11817,15 @@
         "sref": "4097:0:1:D32D:836:2:11A0000:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "LOVE FM TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "LOVE FM TV .c_it",
+        "matched": true,
+        "name": "LOVE FM TV .c",
+        "sref": "4097:0:2:135:157C:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:14"
+    },
     "LUXE TV (LUXEMBOURG) .c_de": {
         "country": "de",
         "id": "FolxTV.de",
@@ -11674,6 +11849,15 @@
         "name": "M1 FILM GOLD .c_hr",
         "sref": "4097:0:16:128:3:40:A00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "M2O .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "M2O .c_it",
+        "matched": true,
+        "name": "M2O .c",
+        "sref": "4097:0:19:78:4B0:110:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:14"
     },
     "M6 .c_fr": {
         "country": "fr",
@@ -11802,6 +11986,15 @@
         "name": "MARCO POLO TV .c_de",
         "sref": "4097:0:1:200:2134:9C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "MARIA+VISION .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MARIA+VISION .c_it",
+        "matched": true,
+        "name": "MARIA+VISION .c",
+        "sref": "4097:0:16:7E5:3:40:A00000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:15"
     },
     "MATCH! PLANETA .s_ru": {
         "country": "ru",
@@ -12275,6 +12468,24 @@
         "sref": "4097:0:1:17C0:26:36:CE40000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "MOTORTREND .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MOTORTREND .c_it",
+        "matched": true,
+        "name": "MOTORTREND .c",
+        "sref": "4097:0:19:10E1:3E8:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:15"
+    },
+    "MOTORTREND .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MOTORTREND .s_it",
+        "matched": true,
+        "name": "MOTORTREND .s",
+        "sref": "4097:0:19:10E1:3E8:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:16"
+    },
     "MOTORVISION (BACKUP) .b_pt": {
         "country": "pt",
         "id": "Motorvision.pt",
@@ -12458,6 +12669,15 @@
         "name": "MTV HITS .s_",
         "sref": "4097:0:19:1AF7:E:46:E080000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "MTV HITS .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MTV HITS .s_it",
+        "matched": true,
+        "name": "MTV HITS .s",
+        "sref": "4097:0:1:192:1518:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:16"
     },
     "MTV LIVE .s_": {
         "country": "",
@@ -12747,6 +12967,15 @@
         "sref": "4097:0:19:304:C94:3:EB0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "NAT GEO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO .c_it",
+        "matched": true,
+        "name": "NAT GEO .c",
+        "sref": "4097:0:19:13C:2648:D5:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:16"
+    },
     "NAT GEO .c_nl": {
         "country": "nl",
         "id": "NatGeoZiggo.nl",
@@ -12795,6 +13024,15 @@
         "sref": "4097:0:1:2522:440:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "NAT GEO .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO .s_it",
+        "matched": true,
+        "name": "NAT GEO .s",
+        "sref": "4097:0:19:13C:2648:D5:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:17"
+    },
     "NAT GEO .s_nl": {
         "country": "nl",
         "id": "NatGeoZiggo.nl",
@@ -12818,6 +13056,15 @@
         "name": "NAT GEO FHD .s_fr",
         "sref": "4097:0:1:2522:440:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "NAT GEO PEOPLE .b_": {
+        "attempts": 1,
+        "country": "",
+        "id": "NAT GEO PEOPLE .b_",
+        "matched": true,
+        "name": "NAT GEO PEOPLE .b",
+        "sref": "4097:0:1:2907:1EDC:71:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:31:46"
     },
     "NAT GEO WILD .b_": {
         "country": "",
@@ -12867,6 +13114,15 @@
         "sref": "4097:0:19:304:C94:3:EB0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "NAT GEO WILD .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO WILD .c_it",
+        "matched": true,
+        "name": "NAT GEO WILD .c",
+        "sref": "4097:0:1:195:1518:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:17"
+    },
     "NAT GEO WILD .c_nl": {
         "country": "nl",
         "id": "NatGeoWild.nl",
@@ -12914,6 +13170,15 @@
         "name": "NAT GEO WILD .s_fr",
         "sref": "4097:0:1:2522:440:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "NAT GEO WILD .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO WILD .s_it",
+        "matched": true,
+        "name": "NAT GEO WILD .s",
+        "sref": "4097:0:1:195:1518:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:17"
     },
     "NAT GEO WILD .s_nl": {
         "country": "nl",
@@ -14059,6 +14324,15 @@
         "sref": "4097:0:1F:DE:B2:39E:1860000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "ONDA NOVARA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ONDA NOVARA TV .c_it",
+        "matched": true,
+        "name": "ONDA NOVARA TV .c",
+        "sref": "4097:0:16:3F6:10E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:18"
+    },
     "ONDA TV .c_it": {
         "country": "it",
         "id": "DonnaTV.it",
@@ -14347,6 +14621,15 @@
         "sref": "4097:0:1:10FE:2260:FBFF:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "PESCA E CACCIA .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PESCA E CACCIA .s_it",
+        "matched": true,
+        "name": "PESCA E CACCIA .s",
+        "sref": "4097:0:1:10FE:2260:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:20"
+    },
     "PFC (BACKUP) .b_pt": {
         "country": "pt",
         "id": "pfc.pt",
@@ -14611,6 +14894,60 @@
         "sref": "4097:0:1:677:9FC4:16E:A00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "POP .s_": {
+        "attempts": 1,
+        "country": "",
+        "id": "POP .s_",
+        "matched": true,
+        "name": "POP .s",
+        "sref": "4097:0:1:35A:C3B4:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-19 00:33:44"
+    },
+    "POP MAX (BACKUP) .b_": {
+        "attempts": 2,
+        "country": "",
+        "id": "POP MAX (BACKUP) .b_",
+        "matched": true,
+        "name": "POP MAX (BACKUP) .b",
+        "sref": "4097:0:1:D066:83E:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 00:34:01"
+    },
+    "POP MAX .b_": {
+        "attempts": 1,
+        "country": "",
+        "id": "POP MAX .b_",
+        "matched": true,
+        "name": "POP MAX .b",
+        "sref": "4097:0:1:D066:83E:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 00:33:47"
+    },
+    "POP MAX .s_": {
+        "attempts": 2,
+        "country": "",
+        "id": "POP MAX .s_",
+        "matched": true,
+        "name": "POP MAX .s",
+        "sref": "4097:0:1:D066:83E:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 00:33:58"
+    },
+    "POP MAX+1 .b_": {
+        "attempts": 2,
+        "country": "",
+        "id": "POP MAX+1 .b_",
+        "matched": true,
+        "name": "POP MAX+1 .b",
+        "sref": "4097:0:1:D070:83E:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 00:34:04"
+    },
+    "POP+1 .b_": {
+        "attempts": 1,
+        "country": "",
+        "id": "POP+1 .b_",
+        "matched": true,
+        "name": "POP+1 .b",
+        "sref": "4097:0:1:D07A:83E:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 00:34:06"
+    },
     "PORTO CANAL (BACKUP) .b_pt": {
         "country": "pt",
         "id": "PortoCanal.pt",
@@ -14683,6 +15020,15 @@
         "sref": "4097:0:19:1526:7E9:2:11A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "PREMIUM CRIME .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PREMIUM CRIME .s_it",
+        "matched": true,
+        "name": "true CRIME .s",
+        "sref": "4097:0:19:84:4B0:110:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:20"
+    },
     "PRIMA SPORT .s_ro": {
         "country": "ro",
         "id": "PrimaSport1.ro",
@@ -14690,6 +15036,24 @@
         "name": "PRIMA SPORT .s_ro",
         "sref": "4097:0:1:70:D:1C:1860000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "PRIMA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMA TV .c_it",
+        "matched": true,
+        "name": "PRIMA TV .c",
+        "sref": "4097:0:1:1F48:80E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:20"
+    },
+    "PRIMA TV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMA TV .s_it",
+        "matched": true,
+        "name": "PRIMA TV .s",
+        "sref": "4097:0:1:1F48:80E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:21"
     },
     "PRIMA TV .s_ro": {
         "country": "ro",
@@ -14706,6 +15070,24 @@
         "name": "PRIMA TV RO .b_ro",
         "sref": "4097:0:1:3EE:1:1:E08318F:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "PRIMO CANALE .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMO CANALE .s_it",
+        "matched": true,
+        "name": "PRIMO CANALE .s",
+        "sref": "4097:0:1:FA1:40E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:21"
+    },
+    "PRIMOCANALE .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMOCANALE .c_it",
+        "matched": true,
+        "name": "PRIMOCANALE .c",
+        "sref": "4097:0:1:FA1:40E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:21"
     },
     "PRO 2 HD .b_ro": {
         "country": "ro",
@@ -15187,6 +15569,15 @@
         "sref": "4097:0:1:C7:34:19:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "RAI SPORT [LIVE DURING EVENTS ONLY] .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RAI SPORT [LIVE DURING EVENTS ONLY] .s_it",
+        "matched": true,
+        "name": "RAI SPORT [LIVE DURING EVENTS ONLY] .s",
+        "sref": "4097:0:19:4532:30D4:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:23"
+    },
     "RAI SPORT+ .s_it": {
         "country": "it",
         "id": "RaiSport.it",
@@ -15306,6 +15697,15 @@
         "name": "RECORD TV .c_pt",
         "sref": "4097:0:1:A8C:6:6:CE40000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "REGGIO TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "REGGIO TV .c_it",
+        "matched": true,
+        "name": "REGGIO TV .c",
+        "sref": "4097:0:1:2655:98E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:24"
     },
     "REGIO TV .c_nl": {
         "country": "nl",
@@ -15946,6 +16346,42 @@
         "name": "ROUGE TV .s_fr",
         "sref": "4097:0:1:1AA:4FB0:55F:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "RSI LA 1 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 1 .c_it",
+        "matched": true,
+        "name": "RSI LA 1 .c",
+        "sref": "4097:0:19:4337:300C:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:26"
+    },
+    "RSI LA 1 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 1 .s_it",
+        "matched": true,
+        "name": "RSI LA 1 .s",
+        "sref": "4097:0:19:4337:300C:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:26"
+    },
+    "RSI LA 2 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 2 .c_it",
+        "matched": true,
+        "name": "RSI LA 2 .c",
+        "sref": "4097:0:19:4338:300C:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:26"
+    },
+    "RSI LA 2 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 2 .s_it",
+        "matched": true,
+        "name": "RSI LA 2 .s",
+        "sref": "4097:0:19:4338:300C:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:27"
     },
     "RT FRANCE .c_fr": {
         "country": "fr",
@@ -16603,6 +17039,15 @@
         "sref": "4097:0:1:CFDC:2715:F001:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "RTTR TV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RTTR TV .s_it",
+        "matched": true,
+        "name": "RTTR TV .s",
+        "sref": "4097:0:19:AF2:28E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:29"
+    },
     "RTV 7 .c_nl": {
         "country": "nl",
         "id": "RTV7.nl",
@@ -17258,6 +17703,24 @@
         "name": "SEASONS .c_fr",
         "sref": "4097:0:16:6AA:11:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "SENATO TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SENATO TV .c_it",
+        "matched": true,
+        "name": "SENATO TV .c",
+        "sref": "4097:0:19:D50:1450:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:29"
+    },
+    "SENATO TV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SENATO TV .s_it",
+        "matched": true,
+        "name": "SENATO TV .s",
+        "sref": "4097:0:19:D50:1450:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:30"
     },
     "SERIE CLUB .b_fr": {
         "country": "fr",
@@ -19171,6 +19634,249 @@
         "sref": "4097:0:19:83:6:85:C00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "SKY PRIMAFILA 1 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 1 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 1 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:27"
+    },
+    "SKY PRIMAFILA 1 .s_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 1 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 1 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:28"
+    },
+    "SKY PRIMAFILA 10 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 10 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 10 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:28"
+    },
+    "SKY PRIMAFILA 10 .s_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 10 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 10 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:29"
+    },
+    "SKY PRIMAFILA 11 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 11 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 11 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:29"
+    },
+    "SKY PRIMAFILA 12 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 12 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 12 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:30"
+    },
+    "SKY PRIMAFILA 13 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 13 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 13 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:30"
+    },
+    "SKY PRIMAFILA 14 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 14 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 14 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:30"
+    },
+    "SKY PRIMAFILA 15 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 15 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 15 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:31"
+    },
+    "SKY PRIMAFILA 16 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 16 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 16 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:31"
+    },
+    "SKY PRIMAFILA 17 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 17 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 17 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:32"
+    },
+    "SKY PRIMAFILA 2 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 2 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 2 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:32"
+    },
+    "SKY PRIMAFILA 2 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 2 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 2 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:30"
+    },
+    "SKY PRIMAFILA 3 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 3 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 3 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:31"
+    },
+    "SKY PRIMAFILA 3 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 3 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 3 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:31"
+    },
+    "SKY PRIMAFILA 4 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 4 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 4 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:32"
+    },
+    "SKY PRIMAFILA 4 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 4 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 4 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:32"
+    },
+    "SKY PRIMAFILA 5 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 5 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 5 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:32"
+    },
+    "SKY PRIMAFILA 5 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 5 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 5 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:33"
+    },
+    "SKY PRIMAFILA 6 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 6 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 6 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:33"
+    },
+    "SKY PRIMAFILA 6 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 6 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 6 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:34"
+    },
+    "SKY PRIMAFILA 7 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 7 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 7 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:34"
+    },
+    "SKY PRIMAFILA 7 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 7 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 7 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:34"
+    },
+    "SKY PRIMAFILA 8 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 8 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 8 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:35"
+    },
+    "SKY PRIMAFILA 8 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 8 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 8 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:35"
+    },
+    "SKY PRIMAFILA 9 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 9 .c_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 9 .c",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:36"
+    },
+    "SKY PRIMAFILA 9 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 9 .s_it",
+        "matched": true,
+        "name": "SKY PRIMAFILA 9 .s",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:36"
+    },
     "SKY REPLAY .c_de": {
         "country": "de",
         "id": "SkyReplay.de",
@@ -19314,6 +20020,15 @@
         "name": "SKY SPORT 24 .c_it",
         "sref": "4097:0:19:108A:1A90:FBFF:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "SKY SPORT 24 [LIVE DURING EVENTS ONLY] .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY SPORT 24 [LIVE DURING EVENTS ONLY] .s_it",
+        "matched": true,
+        "name": "SKY SPORT 24 [LIVE DURING EVENTS ONLY] .s",
+        "sref": "4097:0:19:2B1B:1644:FBFF:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:37"
     },
     "SKY SPORT 3 (MATCH TIME) .s_de": {
         "country": "de",
