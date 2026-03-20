@@ -27,9 +27,17 @@
         "country": "it",
         "id": "R101TV.it",
         "matched": true,
-        "name": "111 TV .c_it",
-        "sref": "4097:0:16:65:385:110:EEEE0000:0:0:0:",
-        "timestamp": "2026-03-19 11:02:36"
+        "name": "111 TV .c",
+        "sref": "4097:0:16:65:385:110:EEEE0000:0:0:0",
+        "timestamp": "2026-03-19 20:49:34"
+    },
+    "12 TV PARMA .c_it": {
+        "country": "it",
+        "id": null,
+        "matched": true,
+        "name": "12 TV PARMA .c",
+        "sref": "4097:0:1:5F81:FF2:EC:0:0:0:0",
+        "timestamp": "2026-03-19 20:49:34"
     },
     "123 TV .c_de": {
         "country": "de",
@@ -374,6 +382,14 @@
         "name": "A BOLA TV .c_pt",
         "sref": "4097:0:1:A0:65:53:CE40000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "A3 .c_it": {
+        "country": "it",
+        "id": null,
+        "matched": false,
+        "name": "A3 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0",
+        "timestamp": "2026-03-19 20:49:34"
     },
     "AB 1 .c_fr": {
         "country": "fr",
