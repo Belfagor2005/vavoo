@@ -21046,6 +21046,15 @@
         "sref": "4097:0:16:DD:4:85:C00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "SKYSHOWTIME 1 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKYSHOWTIME 1 .c_it",
+        "matched": true,
+        "name": "SKYSHOWTIME 1 .c",
+        "sref": "4097:0:19:1D3A:48:46:E080000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:38"
+    },
     "SLAM .c_nl": {
         "country": "nl",
         "id": "SLAM!TV.nl",
@@ -21205,6 +21214,15 @@
         "name": "SPORT ITALIA .s_it",
         "sref": "4097:0:1:1C17:384:110:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "SPORT ITALIA SOLO CALCIO [LIVE DURING EVENTS ONLY] .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SPORT ITALIA SOLO CALCIO [LIVE DURING EVENTS ONLY] .s_it",
+        "matched": true,
+        "name": "SPORT ITALIA SOLO CALCIO [LIVE DURING EVENTS ONLY] .s",
+        "sref": "4097:0:19:51:7918:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:39"
     },
     "SPORT KLUB 1 .c_hr": {
         "country": "hr",
@@ -21638,6 +21656,15 @@
         "sref": "4097:0:1:1C17:384:110:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "SPORTITALIA SOLOCALCIO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SPORTITALIA SOLOCALCIO .c_it",
+        "matched": true,
+        "name": "SPORTITALIA SOLOCALCIO .c",
+        "sref": "4097:0:19:51:7918:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:39"
+    },
     "SPOTLIGHT TV .b_": {
         "country": "",
         "id": "SPORTINGTV.pt",
@@ -21837,6 +21864,15 @@
         "name": "SUPER TENNIS .s_it",
         "sref": "4097:0:1:28:21:B:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "SUPER TV ARISTANIS .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SUPER TV ARISTANIS .c_it",
+        "matched": true,
+        "name": "SUPER TV ARISTANIS .c",
+        "sref": "4097:0:1:26BB:A801:217C:DDE0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:41"
     },
     "SUPER! .c_it": {
         "country": "it",
@@ -22126,6 +22162,15 @@
         "sref": "4097:0:1:32:3000:217C:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TELE LIGURIA SUD .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELE LIGURIA SUD .c_it",
+        "matched": true,
+        "name": "TELE LIGURIA SUD .c",
+        "sref": "4097:0:1:FBA:40E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:42"
+    },
     "TELE ROMAGNA .s_it": {
         "country": "it",
         "id": "TeleOne.it",
@@ -22197,6 +22242,15 @@
         "name": "TELECOLOR .c_it",
         "sref": "4097:0:1:712:18E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TELEFOGGIA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELEFOGGIA .c_it",
+        "matched": true,
+        "name": "TELEFOGGIA .c",
+        "sref": "4097:0:16:53:8800:217C:DDE0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:44"
     },
     "TELEGRENOBLE ISERE .c_fr": {
         "country": "fr",
@@ -22278,6 +22332,15 @@
         "sref": "4097:0:1:233f:2328:13e:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TELEPACE TRENTO (HISTORY LAB) .c_it": {
+        "attempts": 3,
+        "country": "it",
+        "id": "TELEPACE TRENTO (HISTORY LAB) .c_it",
+        "matched": true,
+        "name": "TELEPACE TRENTO (HISTORY LAB) .c",
+        "sref": "4097:0:19:AF3:28E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:33"
+    },
     "TELERAMA .c_it": {
         "country": "it",
         "id": "TeleNorba.it",
@@ -22285,6 +22348,15 @@
         "name": "TELERAMA .c_it",
         "sref": "4097:0:1:4A:8800:217C:DDE0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TELEROMAGNA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELEROMAGNA .c_it",
+        "matched": true,
+        "name": "TELEROMAGNA .c",
+        "sref": "4097:0:1:12C6:48E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:45"
     },
     "TELESPAZIO TV .c_it": {
         "country": "it",
@@ -22357,6 +22429,15 @@
         "name": "TELETRICOLORE .c_it",
         "sref": "4097:0:1:712:18E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TELETUTTO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELETUTTO .c_it",
+        "matched": true,
+        "name": "TELETUTTO .c",
+        "sref": "4097:0:19:7D7:20E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
     },
     "TEVA .b_fr": {
         "country": "fr",
@@ -22574,6 +22655,150 @@
         "sref": "4097:0:19:D5B:28:6FF:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TIVIBU SPOR 1 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 1 .c_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 1 .c",
+        "sref": "4097:0:19:39D2:A989:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:12"
+    },
+    "TIVIBU SPOR 1 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 1 .s_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 1 .s",
+        "sref": "4097:0:19:39D2:A989:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:12"
+    },
+    "TIVIBU SPOR 2 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 2 .c_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 2 .c",
+        "sref": "4097:0:19:3AFC:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:12"
+    },
+    "TIVIBU SPOR 2 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 2 .s_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 2 .s",
+        "sref": "4097:0:19:3AFC:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:12"
+    },
+    "TIVIBU SPOR 3 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 3 .c_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 3 .c",
+        "sref": "4097:0:19:3B1B:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:12"
+    },
+    "TIVIBU SPOR 3 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 3 .s_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 3 .s",
+        "sref": "4097:0:19:3B1B:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:12"
+    },
+    "TIVIBU SPOR 4 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 4 .c_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 4 .c",
+        "sref": "4097:0:19:3B18:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBU SPOR 5 HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR 5 HD .b_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR 5 HD .b",
+        "sref": "4097:0:19:39D8:A989:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBU SPOR RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBU SPOR RAW .b_tr",
+        "matched": true,
+        "name": "TIVIBU SPOR RAW .b",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBUSPOR 1 FHD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBUSPOR 1 FHD .b_tr",
+        "matched": true,
+        "name": "TIVIBUSPOR 1 FHD .b",
+        "sref": "4097:0:19:39D2:A989:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBUSPOR 1 HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBUSPOR 1 HD .b_tr",
+        "matched": true,
+        "name": "TIVIBUSPOR 1 HD .b",
+        "sref": "4097:0:19:39D2:A989:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBUSPOR 2 FHD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBUSPOR 2 FHD .b_tr",
+        "matched": true,
+        "name": "TIVIBUSPOR 2 FHD .b",
+        "sref": "4097:0:19:3AFC:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBUSPOR 2 HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBUSPOR 2 HD .b_tr",
+        "matched": true,
+        "name": "TIVIBUSPOR 2 HD .b",
+        "sref": "4097:0:19:3AFC:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBUSPOR 3 FHD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBUSPOR 3 FHD .b_tr",
+        "matched": true,
+        "name": "TIVIBUSPOR 3 FHD .b",
+        "sref": "4097:0:19:3B1B:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBUSPOR 3 HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBUSPOR 3 HD .b_tr",
+        "matched": true,
+        "name": "TIVIBUSPOR 3 HD .b",
+        "sref": "4097:0:19:3B1B:A98A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TIVIBUSPOR SPOR HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TIVIBUSPOR SPOR HD .b_tr",
+        "matched": true,
+        "name": "TIVIBUSPOR SPOR HD .b",
+        "sref": "4097:0:19:39D8:A989:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
     "TJC .b_": {
         "country": "",
         "id": "TJC.uk",
@@ -22581,6 +22806,33 @@
         "name": "TJC .b_",
         "sref": "4097:0:1:D73C:82F:2:11A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TJK TV .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TJK TV .c_tr",
+        "matched": true,
+        "name": "TJK TV .c",
+        "sref": "4097:0:11:3CA8:C5A8:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TJK TV .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TJK TV .s_tr",
+        "matched": true,
+        "name": "TJK TV .s",
+        "sref": "4097:0:11:3CA8:C5A8:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
+    },
+    "TJK TV HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TJK TV HD .b_tr",
+        "matched": true,
+        "name": "TJK TV HD .b",
+        "sref": "4097:0:11:3CA8:C5A8:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:13"
     },
     "TLC (BACKUP) .b_de": {
         "country": "de",
@@ -22646,6 +22898,15 @@
         "sref": "4097:0:1:1389:30:36:CE40000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TLC .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TLC .c_tr",
+        "matched": true,
+        "name": "TLC .c",
+        "sref": "4097:0:1:3C92:1BBC:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
     "TLC .s_": {
         "country": "",
         "id": "TLC.be",
@@ -22678,6 +22939,15 @@
         "sref": "4097:0:1:405:2:1:E080000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TLC .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TLC .s_tr",
+        "matched": true,
+        "name": "TLC .s",
+        "sref": "4097:0:1:3C92:1BBC:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
     "TLC HD+ .b_de": {
         "country": "de",
         "id": "TLC.de",
@@ -22685,6 +22955,33 @@
         "name": "TLC HD+ .b_de",
         "sref": "4097:0:1:47:7:85:C00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TLC TV .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TLC TV .b_tr",
+        "matched": true,
+        "name": "TLC TV .b",
+        "sref": "4097:0:1:3C92:1BBC:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
+    "TMB .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TMB .c_tr",
+        "matched": true,
+        "name": "TMB .c",
+        "sref": "4097:0:1:CA59:7B0E:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
+    "TMB .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TMB .s_tr",
+        "matched": true,
+        "name": "TMB .s",
+        "sref": "4097:0:1:CA59:7B0E:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
     },
     "TMC .c_fr": {
         "country": "fr",
@@ -23054,6 +23351,24 @@
         "sref": "4097:0:19:4FB1:CC:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TRENTINO TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TRENTINO TV .c_it",
+        "matched": true,
+        "name": "TRENTINO TV .c",
+        "sref": "4097:0:19:AF1:28E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
+    },
+    "TRENTINO TV .s_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "TRENTINO TV .s_it",
+        "matched": true,
+        "name": "TRENTINO TV .s",
+        "sref": "4097:0:19:AF1:28E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:33"
+    },
     "TRINITAS .s_ro": {
         "country": "ro",
         "id": "TrinitasTV.ro",
@@ -23069,6 +23384,177 @@
         "name": "TRSPORT .c_it",
         "sref": "4097:0:1:C7:34:19:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TRT 1 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 .c_tr",
+        "matched": true,
+        "name": "TRT 1 .c",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
+    "TRT 1 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 .s_tr",
+        "matched": true,
+        "name": "TRT 1 .s",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
+    "TRT 1 4K .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 4K .b_tr",
+        "matched": true,
+        "name": "TRT 1 4K .b",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
+    "TRT 1 FHD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 FHD .b_tr",
+        "matched": true,
+        "name": "TRT 1 FHD .b",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:14"
+    },
+    "TRT 1 HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 HD .b_tr",
+        "matched": true,
+        "name": "TRT 1 HD .b",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:15"
+    },
+    "TRT 1 HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 HEVC .b_tr",
+        "matched": true,
+        "name": "TRT 1 HEVC .b",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:15"
+    },
+    "TRT 1 RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 RAW .b_tr",
+        "matched": true,
+        "name": "TRT 1 RAW .b",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:15"
+    },
+    "TRT 1 SD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 1 SD .b_tr",
+        "matched": true,
+        "name": "TRT 1 SD .b",
+        "sref": "4097:0:1:1:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:15"
+    },
+    "TRT 2 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 2 .c_tr",
+        "matched": true,
+        "name": "TRT 2 .c",
+        "sref": "4097:0:19:290A:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:15"
+    },
+    "TRT 2 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 2 .s_tr",
+        "matched": true,
+        "name": "TRT 2 .s",
+        "sref": "4097:0:19:290A:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:15"
+    },
+    "TRT 2 UHD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 2 UHD .b_tr",
+        "matched": true,
+        "name": "TRT 2 UHD .b",
+        "sref": "4097:0:19:290A:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:15"
+    },
+    "TRT 4K .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT 4K .c_tr",
+        "matched": true,
+        "name": "TRT 4K .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
+    },
+    "TRT AVAZ .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT AVAZ .c_tr",
+        "matched": true,
+        "name": "TRT AVAZ .c",
+        "sref": "4097:0:19:C41D:A4D9:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
+    },
+    "TRT AVAZ .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT AVAZ .s_tr",
+        "matched": true,
+        "name": "TRT AVAZ .s",
+        "sref": "4097:0:19:C41D:A4D9:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
+    },
+    "TRT BELGESEL .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT BELGESEL .c_tr",
+        "matched": true,
+        "name": "TRT BELGESEL .c",
+        "sref": "4097:0:19:296C:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
+    },
+    "TRT BELGESEL .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT BELGESEL .s_tr",
+        "matched": true,
+        "name": "TRT BELGESEL .s",
+        "sref": "4097:0:19:296C:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
+    },
+    "TRT BELGESEL HD+ .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT BELGESEL HD+ .b_tr",
+        "matched": true,
+        "name": "TRT BELGESEL HD+ .b",
+        "sref": "4097:0:19:296C:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
+    },
+    "TRT BELGESEL HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT BELGESEL HEVC .b_tr",
+        "matched": true,
+        "name": "TRT BELGESEL HEVC .b",
+        "sref": "4097:0:19:296C:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
+    },
+    "TRT BELGESEL RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT BELGESEL RAW .b_tr",
+        "matched": true,
+        "name": "TRT BELGESEL RAW .b",
+        "sref": "4097:0:19:296C:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:16"
     },
     "TRT COCUK .c_tr": {
         "country": "tr",
@@ -23086,6 +23572,105 @@
         "sref": "4097:0:1:710:12:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TRT COCUK RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT COCUK RAW .b_tr",
+        "matched": true,
+        "name": "TRT COCUK RAW .b",
+        "sref": "4097:0:19:2968:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:17"
+    },
+    "TRT DIYANET .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT DIYANET .s_tr",
+        "matched": true,
+        "name": "TRT DIYANET .s",
+        "sref": "4097:0:19:2986:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:17"
+    },
+    "TRT DIYANET COCUK .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT DIYANET COCUK .c_tr",
+        "matched": true,
+        "name": "TRT DIYANET COCUK .c",
+        "sref": "4097:0:19:2986:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:17"
+    },
+    "TRT EBA .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT EBA .c_tr",
+        "matched": true,
+        "name": "TRT EBA .c",
+        "sref": "4097:0:1:C866:9CA5:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:17"
+    },
+    "TRT EBA ILKOKUL .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT EBA ILKOKUL .s_tr",
+        "matched": true,
+        "name": "TRT EBA ILKOKUL .s",
+        "sref": "4097:0:1:C866:9CA5:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:17"
+    },
+    "TRT EBA ORTAOKUL .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT EBA ORTAOKUL .s_tr",
+        "matched": true,
+        "name": "TRT EBA ORTAOKUL .s",
+        "sref": "4097:0:1:C866:9CA5:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:17"
+    },
+    "TRT HABER .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT HABER .c_tr",
+        "matched": true,
+        "name": "TRT HABER .c",
+        "sref": "4097:0:19:296A:7919:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:17"
+    },
+    "TRT HABER .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT HABER .s_tr",
+        "matched": true,
+        "name": "TRT HABER .s",
+        "sref": "4097:0:19:296A:7919:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:18"
+    },
+    "TRT HABER HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT HABER HD .b_tr",
+        "matched": true,
+        "name": "TRT HABER HD .b",
+        "sref": "4097:0:19:296A:7919:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:18"
+    },
+    "TRT HABER HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT HABER HEVC .b_tr",
+        "matched": true,
+        "name": "TRT HABER HEVC .b",
+        "sref": "4097:0:19:296A:7919:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:18"
+    },
+    "TRT HABER RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT HABER RAW .b_tr",
+        "matched": true,
+        "name": "TRT HABER RAW .b",
+        "sref": "4097:0:19:296A:7919:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:18"
+    },
     "TRT KURDI .s_tr": {
         "country": "tr",
         "id": "TRTturk.tr",
@@ -23093,6 +23678,15 @@
         "name": "TRT KURDI .s_tr",
         "sref": "4097:0:1:710:12:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TRT KURDI RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT KURDI RAW .b_tr",
+        "matched": true,
+        "name": "TRT KURDI RAW .b",
+        "sref": "4097:0:1:1A:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:18"
     },
     "TRT MUZIK .c_tr": {
         "country": "tr",
@@ -23109,6 +23703,114 @@
         "name": "TRT MUZIK .s_tr",
         "sref": "4097:0:1:710:12:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TRT MUZIK HD+ .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT MUZIK HD+ .b_tr",
+        "matched": true,
+        "name": "TRT MUZIK HD+ .b",
+        "sref": "4097:0:1:C:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:18"
+    },
+    "TRT MUZIK RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT MUZIK RAW .b_tr",
+        "matched": true,
+        "name": "TRT MUZIK RAW .b",
+        "sref": "4097:0:1:C:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT OCUK HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT OCUK HD .b_tr",
+        "matched": true,
+        "name": "TRT OCUK HD .b",
+        "sref": "4097:0:1:10:3D:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR .c_tr",
+        "matched": true,
+        "name": "TRT SPOR .c",
+        "sref": "4097:0:19:296B:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR .s_tr",
+        "matched": true,
+        "name": "TRT SPOR .s",
+        "sref": "4097:0:19:296B:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR FHD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR FHD .b_tr",
+        "matched": true,
+        "name": "TRT SPOR FHD .b",
+        "sref": "4097:0:19:296B:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR RAW .b_tr",
+        "matched": true,
+        "name": "TRT SPOR RAW .b",
+        "sref": "4097:0:19:296B:42E:A861:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR YILDIZ .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR YILDIZ .c_tr",
+        "matched": true,
+        "name": "TRT SPOR YILDIZ .c",
+        "sref": "4097:0:19:291D:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR YILDIZ .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR YILDIZ .s_tr",
+        "matched": true,
+        "name": "TRT SPOR YILDIZ .s",
+        "sref": "4097:0:19:291D:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR YILDIZ HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR YILDIZ HD .b_tr",
+        "matched": true,
+        "name": "TRT SPOR YILDIZ HD .b",
+        "sref": "4097:0:19:291D:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR YILDIZ HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR YILDIZ HEVC .b_tr",
+        "matched": true,
+        "name": "TRT SPOR YILDIZ HEVC .b",
+        "sref": "4097:0:19:291D:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
+    },
+    "TRT SPOR YILDIZ RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT SPOR YILDIZ RAW .b_tr",
+        "matched": true,
+        "name": "TRT SPOR YILDIZ RAW .b",
+        "sref": "4097:0:19:291D:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:19"
     },
     "TRT TURK .c_tr": {
         "country": "tr",
@@ -23142,6 +23844,51 @@
         "sref": "4097:0:1:710:12:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TRT WORLD .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT WORLD .c_tr",
+        "matched": true,
+        "name": "TRT WORLD .c",
+        "sref": "4097:0:19:296D:1:29CC:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:20"
+    },
+    "TRT WORLD .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT WORLD .s_tr",
+        "matched": true,
+        "name": "TRT WORLD .s",
+        "sref": "4097:0:19:296D:1:29CC:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:20"
+    },
+    "TRT WORLD HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT WORLD HEVC .b_tr",
+        "matched": true,
+        "name": "TRT WORLD HEVC .b",
+        "sref": "4097:0:2:5:1:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:20"
+    },
+    "TRT WORLD RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT WORLD RAW .b_tr",
+        "matched": true,
+        "name": "TRT WORLD RAW .b",
+        "sref": "4097:0:2:5:1:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:20"
+    },
+    "TRT2 RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TRT2 RAW .b_tr",
+        "matched": true,
+        "name": "TRT2 RAW .b",
+        "sref": "4097:0:19:290A:9D6D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:21"
+    },
     "TV 1 .c_bg": {
         "country": "bg",
         "id": "TV1Bulgaria.bg",
@@ -23150,6 +23897,15 @@
         "sref": "4097:0:1:1389:2710:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TV 1 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 1 .c_tr",
+        "matched": true,
+        "name": "TV 1 .c",
+        "sref": "4097:0:1:1389:2710:D5:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:21"
+    },
     "TV 1 .s_bg": {
         "country": "bg",
         "id": "TV1Bulgaria.bg",
@@ -23157,6 +23913,42 @@
         "name": "TV 1 .s_bg",
         "sref": "4097:0:1:1389:2710:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TV 100 .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 100 .b_tr",
+        "matched": true,
+        "name": "TV 100 .b",
+        "sref": "4097:0:19:CBE8:A925:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:21"
+    },
+    "TV 100 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 100 .c_tr",
+        "matched": true,
+        "name": "TV 100 .c",
+        "sref": "4097:0:19:CBE8:A925:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:21"
+    },
+    "TV 100 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 100 .s_tr",
+        "matched": true,
+        "name": "TV 100 .s",
+        "sref": "4097:0:19:CBE8:A925:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:21"
+    },
+    "TV 100 HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 100 HEVC .b_tr",
+        "matched": true,
+        "name": "TV 100 HEVC .b",
+        "sref": "4097:0:19:CBE8:A925:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:21"
     },
     "TV 1000 .b_ro": {
         "country": "ro",
@@ -23190,6 +23982,87 @@
         "sref": "4097:0:19:5B:1770:BE:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TV 4 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 4 .c_tr",
+        "matched": true,
+        "name": "TV 4 .c",
+        "sref": "4097:0:1:1B:1:FFFF:D343182:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 4 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 4 .s_tr",
+        "matched": true,
+        "name": "TV 4 .s",
+        "sref": "4097:0:1:1B:1:FFFF:D343182:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 41 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 41 .c_tr",
+        "matched": true,
+        "name": "TV 41 .c",
+        "sref": "4097:0:1:3919:A21D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 41 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 41 .s_tr",
+        "matched": true,
+        "name": "TV 41 .s",
+        "sref": "4097:0:1:3919:A21D:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 5 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 5 .c_tr",
+        "matched": true,
+        "name": "TV 5 .c",
+        "sref": "4097::1:5:0:0:D1B2FC8:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 5 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 5 .s_tr",
+        "matched": true,
+        "name": "TV 5 .s",
+        "sref": "4097::1:5:0:0:D1B2FC8:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 52 .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 52 .b_tr",
+        "matched": true,
+        "name": "TV 52 .b",
+        "sref": "4097:0:1:CA6D:7B0E:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 52 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 52 .c_tr",
+        "matched": true,
+        "name": "TV 52 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
+    "TV 52 ORDU .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 52 ORDU .s_tr",
+        "matched": true,
+        "name": "TV 52 ORDU .s",
+        "sref": "4097:0:1:CA6D:7B0E:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
     "TV 538 .c_nl": {
         "country": "nl",
         "id": "TV538.nl",
@@ -23214,6 +24087,15 @@
         "sref": "4097:0:1:110D:1A8:4:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TV 8 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 8 .c_tr",
+        "matched": true,
+        "name": "TV 8 .c",
+        "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:22"
+    },
     "TV 8 .s_it": {
         "country": "it",
         "id": "Tv8.it",
@@ -23221,6 +24103,24 @@
         "name": "TV 8 .s_it",
         "sref": "4097:0:1:110D:1A8:4:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TV 8 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 8 .s_tr",
+        "matched": true,
+        "name": "TV 8 .s",
+        "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
+    },
+    "TV 8 HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 8 HEVC .b_tr",
+        "matched": true,
+        "name": "TV 8 HEVC .b",
+        "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
     },
     "TV 8 INT .s_tr": {
         "country": "tr",
@@ -23237,6 +24137,51 @@
         "name": "TV 8 INTERNATIONAL .c_tr",
         "sref": "4097:0:1F:47E:B11:39E:1860000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TV 8 SD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 8 SD .b_tr",
+        "matched": true,
+        "name": "TV 8 SD .b",
+        "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
+    },
+    "TV 8.5 .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 8.5 .c_tr",
+        "matched": true,
+        "name": "TV 8.5 .c",
+        "sref": "4097:0:1:3265:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
+    },
+    "TV 8.5 FHD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 8.5 FHD .b_tr",
+        "matched": true,
+        "name": "TV 8.5 FHD .b",
+        "sref": "4097:0:1:3265:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
+    },
+    "TV 8.5 HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 8.5 HD .b_tr",
+        "matched": true,
+        "name": "TV 8.5 HD .b",
+        "sref": "4097:0:1:3265:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
+    },
+    "TV 85 .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV 85 .s_tr",
+        "matched": true,
+        "name": "TV 85 .s",
+        "sref": "4097:0:1:3265:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
     },
     "TV BREIZH .b_fr": {
         "country": "fr",
@@ -23269,6 +24214,15 @@
         "name": "TV BREIZH HD .s_fr",
         "sref": "4097:0:19:203:5:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TV DEN .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV DEN .c_tr",
+        "matched": false,
+        "name": "TV DEN .c",
+        "sref": "4097:0:1:CA6F:7B0E:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:23"
     },
     "TV GELDERLAND .c_nl": {
         "country": "nl",
@@ -23310,6 +24264,24 @@
         "sref": "4097:0:19:16AC:3FF:1:C00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TV KAYSERI .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV KAYSERI .c_tr",
+        "matched": false,
+        "name": "TV KAYSERI .c",
+        "sref": "4097:0:1:CA5D:7B0E:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:24"
+    },
+    "TV LUNA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TV LUNA .c_it",
+        "matched": false,
+        "name": "TV LUNA .c",
+        "sref": "4097:0:19:1F4A:80E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
+    },
     "TV NET .c_tr": {
         "country": "tr",
         "id": "TV8int.tr",
@@ -23350,6 +24322,24 @@
         "sref": "4097:0:16:5292:C99:3:EB0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TV QUI (MODENA) .s_it": {
+        "attempts": 3,
+        "country": "it",
+        "id": "TV QUI (MODENA) .s_it",
+        "matched": false,
+        "name": "TV QUI (MODENA) .s",
+        "sref": "4097:0:1:12C5:48E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:33"
+    },
+    "TV QUI .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TV QUI .c_it",
+        "matched": false,
+        "name": "TV QUI .c",
+        "sref": "4097:0:1:12C5:48E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
+    },
     "TV RECORD .b_pt": {
         "country": "pt",
         "id": "tvrecord.pt",
@@ -23373,6 +24363,15 @@
         "name": "TV2000 .s_it",
         "sref": "4097:0:19:5B:1770:BE:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TV5 .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV5 .b_tr",
+        "matched": false,
+        "name": "TV5 .b",
+        "sref": "4097:0:1:C9B1:76C1:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:24"
     },
     "TV5 MONDE .s_fr": {
         "country": "fr",
@@ -23446,6 +24445,15 @@
         "sref": "4097:0:19:88:4B0:110:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TV8 HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV8 HD .b_tr",
+        "matched": false,
+        "name": "TV8 HD .b",
+        "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:24"
+    },
     "TV8 MONT BLANC .c_fr": {
         "country": "fr",
         "id": "TV8MontBlanc.fr",
@@ -23453,6 +24461,42 @@
         "name": "TV8 MONT BLANC .c_fr",
         "sref": "4097:0:1:259:6:1:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TV8 RAW .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV8 RAW .b_tr",
+        "matched": false,
+        "name": "TV8 RAW .b",
+        "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:24"
+    },
+    "TV8 SD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TV8 SD .b_tr",
+        "matched": false,
+        "name": "TV8 SD .b",
+        "sref": "4097:0:1:3264:A414:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:25"
+    },
+    "TVA VICENZA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TVA VICENZA .c_it",
+        "matched": false,
+        "name": "TVA VICENZA .c",
+        "sref": "4097:0:1:425C:3DB8:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:47"
+    },
+    "TVA VICENZA .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TVA VICENZA .s_it",
+        "matched": false,
+        "name": "TVA VICENZA .s",
+        "sref": "4097:0:1:425C:3DB8:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:48"
     },
     "TVCINE ACTION .c_pt": {
         "country": "pt",
@@ -23574,6 +24618,24 @@
         "sref": "4097:0:1:13B2:30:36:CE40000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TVNET .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TVNET .s_tr",
+        "matched": false,
+        "name": "TVNET .s",
+        "sref": "4097:0:1:30D4:A155:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:25"
+    },
+    "TVNET HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TVNET HD .b_tr",
+        "matched": false,
+        "name": "TVNET HD .b",
+        "sref": "4097:0:1:30D4:A155:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:25"
+    },
     "TVR 1 .b_ro": {
         "country": "ro",
         "id": "TVR1.ro",
@@ -23654,6 +24716,15 @@
         "sref": "4097:0:1:A:C8:1:A00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "TVRS .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TVRS .c_it",
+        "matched": false,
+        "name": "TVRS .c",
+        "sref": "4097:0:1:1774:60E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:48"
+    },
     "TWENTY SEVEN .c_it": {
         "country": "it",
         "id": "Twentyseven.it",
@@ -23669,6 +24740,15 @@
         "name": "TWENTY SEVEN .s_it",
         "sref": "4097:0:19:87:4B0:110:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "TÜRKHABER TV .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "TÜRKHABER TV .c_tr",
+        "matched": false,
+        "name": "TÜRKHABER TV .c",
+        "sref": "4097:0:1:C687:7BD6:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:21"
     },
     "U TV .s_ro": {
         "country": "ro",
@@ -23701,6 +24781,42 @@
         "name": "UKSD : TNT SPORTS BOX OFFICE .s_",
         "sref": "4097:0:1:D225:841:2:11A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "ULKE TV .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "ULKE TV .s_tr",
+        "matched": false,
+        "name": "ULKE TV .s",
+        "sref": "4097:0:1:2CEE:A02A:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:25"
+    },
+    "ULKE TV HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "ULKE TV HD .b_tr",
+        "matched": false,
+        "name": "ULKE TV HD .b",
+        "sref": "4097:0:1:2D51:A02B:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:26"
+    },
+    "ULKETV HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "ULKETV HD .b_tr",
+        "matched": false,
+        "name": "ULKETV HD .b",
+        "sref": "4097:0:1:2D51:A02B:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:26"
+    },
+    "ULTRA AKSIYON .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "ULTRA AKSIYON .b_tr",
+        "matched": false,
+        "name": "ULTRA AKSIYON .b",
+        "sref": "4097:0:19:3E85:A8C3:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:26"
     },
     "ULTRA TURK .b_tr": {
         "country": "tr",
@@ -23854,6 +24970,24 @@
         "sref": "4097:0:1:177F:26:36:CE40000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "VCO AZZURRA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "VCO AZZURRA TV .c_it",
+        "matched": false,
+        "name": "VCO AZZURRA TV .c",
+        "sref": "4097:0:1:408:10E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:49"
+    },
+    "VH1 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "VH1 .c_it",
+        "matched": false,
+        "name": "VH1 .c",
+        "sref": "4097:0:1:78:200:1D:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:49"
+    },
     "VIAPLAY EVENT 1 .c_nl": {
         "country": "nl",
         "id": "ViaplayTV.nl",
@@ -23958,6 +25092,15 @@
         "sref": "4097:0:19:4A68:807:600:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "VIASAT EXPLORE .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "VIASAT EXPLORE .b_tr",
+        "matched": false,
+        "name": "VIASAT EXPLORE .b",
+        "sref": "4097:0:1:262:2774:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:27"
+    },
     "VIASAT EXPLORE .c_bg": {
         "country": "bg",
         "id": "ViasatExplorer.bg",
@@ -23973,6 +25116,24 @@
         "name": "VIASAT EXPLORE .c_hr",
         "sref": "4097:0:1:192:9:3:130000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "VIASAT EXPLORE .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "VIASAT EXPLORE .c_tr",
+        "matched": false,
+        "name": "VIASAT EXPLORE .c",
+        "sref": "4097:0:1:262:2774:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:27"
+    },
+    "VIASAT EXPLORE .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "VIASAT EXPLORE .s_tr",
+        "matched": false,
+        "name": "VIASAT EXPLORE .s",
+        "sref": "4097:0:1:262:2774:13E:820000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:28"
     },
     "VIASAT EXPLORER .c_it": {
         "country": "it",
@@ -24046,6 +25207,15 @@
         "sref": "4097:0:1:1:1:40:0:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "VIASAT HISTORY .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "VIASAT HISTORY .c_tr",
+        "matched": false,
+        "name": "VIASAT HISTORY .c",
+        "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:28"
+    },
     "VIASAT HISTORY .s_bg": {
         "country": "bg",
         "id": "ViasatHistory.bg",
@@ -24069,6 +25239,33 @@
         "name": "VIASAT HISTORY .s_ro",
         "sref": "4097:0:1:7982:2C7:600:E080000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "VIASAT HISTORY .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "VIASAT HISTORY .s_tr",
+        "matched": false,
+        "name": "VIASAT HISTORY .s",
+        "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:28"
+    },
+    "VIASAT HISTORY HD+ .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "VIASAT HISTORY HD+ .b_tr",
+        "matched": false,
+        "name": "VIASAT HISTORY HD+ .b",
+        "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:28"
+    },
+    "VIASAT HISTORY HEVC .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "VIASAT HISTORY HEVC .b_tr",
+        "matched": false,
+        "name": "VIASAT HISTORY HEVC .b",
+        "sref": "4097:0:19:452:526C:16E:A00000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:28"
     },
     "VIASAT KINO .c_bg": {
         "country": "bg",
@@ -24157,6 +25354,15 @@
         "name": "VIDEOLINA .c_it",
         "sref": "4097:0:16:3F5:10E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "VIDEOSTAR TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "VIDEOSTAR TV .c_it",
+        "matched": false,
+        "name": "VIDEOSTAR TV .c",
+        "sref": "4097:0:1:7D2:20E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 12:46:49"
     },
     "VIRGIN MEDIA ONE .s_": {
         "country": "",
@@ -24566,6 +25772,15 @@
         "sref": "4097:0:1:D3CD:839:2:11A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "X NOSTALJI T RK E KLASIK .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "X NOSTALJI T RK E KLASIK .b_tr",
+        "matched": false,
+        "name": "X NOSTALJI T RK E KLASIK .b",
+        "sref": "4097:0:2:C747:7789:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:29"
+    },
     "XITE .c_nl": {
         "country": "nl",
         "id": "XITE.nl",
@@ -24590,6 +25805,33 @@
         "sref": "4097:0:1:2904:45E:1:C00000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "YABAN .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "YABAN .c_tr",
+        "matched": false,
+        "name": "YABAN .c",
+        "sref": "4097:0:11:4204:A929:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:29"
+    },
+    "YABAN TV .s_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "YABAN TV .s_tr",
+        "matched": false,
+        "name": "YABAN TV .s",
+        "sref": "4097:0:11:4204:A929:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:29"
+    },
+    "YABAN TV HD .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "YABAN TV HD .b_tr",
+        "matched": false,
+        "name": "YABAN TV HD .b",
+        "sref": "4097:0:11:4204:A929:2A:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:29"
+    },
     "YESTERDAY .b_": {
         "country": "",
         "id": "YesterdayPlus1.uk",
@@ -24613,6 +25855,24 @@
         "name": "YESTERDAY+1 .b_",
         "sref": "4097:0:1:621C:7E6:2:11A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "YILDIZ EN TV .b_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "YILDIZ EN TV .b_tr",
+        "matched": false,
+        "name": "YILDIZ EN TV .b",
+        "sref": "4097:0:1:C615:A3AD:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:30"
+    },
+    "YILDIZ TV EN .c_tr": {
+        "attempts": 1,
+        "country": "tr",
+        "id": "YILDIZ TV EN .c_tr",
+        "matched": false,
+        "name": "YILDIZ TV EN .c",
+        "sref": "4097:0:1:C615:A3AD:42E:1A40000:0:0:0:",
+        "timestamp": "2026-03-19 00:14:30"
     },
     "Z1 .c_hr": {
         "country": "hr",
@@ -24709,6 +25969,15 @@
         "name": "ZDF NEO HD [SAT] [] .c_de",
         "sref": "4097:0:1:232A:9:601:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "ZEE TV INDIA .s_": {
+        "attempts": 1,
+        "country": "",
+        "id": "ZEE TV INDIA .s_",
+        "matched": false,
+        "name": "ZEE TV INDIA .s",
+        "sref": "4097:0:1:C4B8:811:2:11A0000:0:0:0:",
+        "timestamp": "2026-03-19 00:48:21"
     },
     "ZIGGO SPORT .c_nl": {
         "country": "nl",
@@ -24861,5 +26130,14 @@
         "name": "ÈTV MARCHE .c_it",
         "sref": "4097:0:1:1773:60E1:217C:5A0000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
+    },
+    "ÈTV RETE 7 .c_it": {
+        "attempts": 3,
+        "country": "it",
+        "id": "ÈTV RETE 7 .c_it",
+        "matched": false,
+        "name": "ÈTV RETE 7 .c",
+        "sref": "4097:0:1:12D1:48E1:217C:5A0000:0:0:0:",
+        "timestamp": "2026-03-19 20:49:26"
     }
 }
