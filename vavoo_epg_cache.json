@@ -23265,7 +23265,7 @@
         "id": "SKY PRIMAFILA 2 .s_it",
         "matched": true,
         "name": "SKY PRIMAFILA 2 .s",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "sref": "4097:0:82:1FD1:189C:FBFF:820000:0:0:0:",
         "timestamp": "2026-03-19 12:46:30"
     },
     "SKY PRIMAFILA 3 .c_it": {
@@ -26682,7 +26682,7 @@
         "id": "TIVIBU SPOR RAW .b_tr",
         "matched": true,
         "name": "TIVIBU SPOR RAW .b",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "sref": "4097:0:19:39D8:A989:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:13"
     },
     "TIVIBUSPOR 1 FHD .b_tr": {
@@ -27524,7 +27524,7 @@
         "id": "TRT 4K .c_tr",
         "matched": true,
         "name": "TRT 4K .c",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "sref": "4097:0:1:3E4C:260:3:FFFF0000:0:0:0:",
         "timestamp": "2026-03-19 00:14:16"
     },
     "TRT AVAZ .c_tr": {
@@ -28146,7 +28146,7 @@
         "id": "TV 5 .c_tr",
         "matched": true,
         "name": "TV 5 .c",
-        "sref": "4097::1:5:0:0:D1B2FC8:0:0:0:",
+        "sref": "4097:1:5:0:0:D1B2FC8:0:0:0:",
         "timestamp": "2026-03-19 00:14:22"
     },
     "TV 5 .s_tr": {
@@ -28155,7 +28155,7 @@
         "id": "TV 5 .s_tr",
         "matched": true,
         "name": "TV 5 .s",
-        "sref": "4097::1:5:0:0:D1B2FC8:0:0:0:",
+        "sref": "4097:1:5:0:0:D1B2FC8:0:0:0:",
         "timestamp": "2026-03-19 00:14:22"
     },
     "TV 52 .b_tr": {
@@ -28173,7 +28173,7 @@
         "id": "TV 52 .c_tr",
         "matched": true,
         "name": "TV 52 .c",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "sref": "4097:0:1:CA6D:7B0E:42E:1A40000:0:0:0:",
         "timestamp": "2026-03-19 00:14:22"
     },
     "TV 52 ORDU .s_tr": {
