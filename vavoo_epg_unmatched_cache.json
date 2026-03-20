@@ -1,12 +1,21 @@
 {
-    "5STAR+1 .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "5STAR+1 .b_",
+    "7 YOU & ME .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "7 YOU & ME .c_it",
         "matched": false,
-        "name": "5STAR+1 .b",
+        "name": "7 YOU & ME .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:15:23"
+        "timestamp": "2026-03-19 12:45:52"
+    },
+    "70-80.IT .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "70-80.IT .c_it",
+        "matched": false,
+        "name": "70-80.IT .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:45:53"
     },
     "ABSOLUTE .b_": {
         "attempts": 1,
@@ -16,6 +25,51 @@
         "name": "ABSOLUTE .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:15:39"
+    },
+    "ALTO ADIGE TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ALTO ADIGE TV .c_it",
+        "matched": false,
+        "name": "ALTO ADIGE TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:45:53"
+    },
+    "ANTENNA 2 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ANTENNA 2 .c_it",
+        "matched": false,
+        "name": "ANTENNA 2 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:45:54"
+    },
+    "ARANCIA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ARANCIA TV .c_it",
+        "matched": false,
+        "name": "ARANCIA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:45:55"
+    },
+    "AVENGERS GRIMM CHANNEL .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "AVENGERS GRIMM CHANNEL .c_it",
+        "matched": false,
+        "name": "AVENGERS GRIMM CHANNEL .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:45:56"
+    },
+    "BELLLA & MONELLA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "BELLLA & MONELLA TV .c_it",
+        "matched": false,
+        "name": "BELLLA & MONELLA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:45:57"
     },
     "BFBS RADIO .b_": {
         "attempts": 1,
@@ -71,6 +125,33 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:20:28"
     },
+    "CAFE 24 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "CAFE 24 .c_it",
+        "matched": false,
+        "name": "CAFE 24 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:45:59"
+    },
+    "CANALE 21 EXTRA .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "CANALE 21 EXTRA .s_it",
+        "matched": false,
+        "name": "CANALE 21 EXTRA .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:00"
+    },
+    "CATFISH .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "CATFISH .c_it",
+        "matched": false,
+        "name": "CATFISH .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:01"
+    },
     "CBS JUSTICE .b_": {
         "attempts": 1,
         "country": "",
@@ -89,14 +170,23 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:21:22"
     },
-    "CELEBRATION TV .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "CELEBRATION TV .b_",
+    "COMPANY TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "COMPANY TV .c_it",
         "matched": false,
-        "name": "CELEBRATION TV .b",
+        "name": "COMPANY TV .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:21:40"
+        "timestamp": "2026-03-19 12:46:02"
+    },
+    "COMPANY TV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "COMPANY TV .s_it",
+        "matched": false,
+        "name": "COMPANY TV .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:02"
     },
     "CRAFT EXTRA .b_": {
         "attempts": 1,
@@ -107,6 +197,24 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:22:58"
     },
+    "CREMONA 1 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "CREMONA 1 .c_it",
+        "matched": false,
+        "name": "CREMONA 1 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:02"
+    },
+    "CREMONA + INV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "CRIME + INV .s_it",
+        "matched": false,
+        "name": "CRIME + INV .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:03"
+    },
     "DESI RADIO .b_": {
         "attempts": 1,
         "country": "",
@@ -115,6 +223,24 @@
         "name": "DESI RADIO .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:23:22"
+    },
+    "ENTELLA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ENTELLA TV .c_it",
+        "matched": false,
+        "name": "ENTELLA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:04"
+    },
+    "ESPERIA TV 18 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ESPERIA TV 18 .s_it",
+        "matched": false,
+        "name": "ESPERIA TV 18 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:05"
     },
     "ETV1 .b_": {
         "attempts": 1,
@@ -125,14 +251,59 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:25:30"
     },
-    "ETV5 .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "ETV5 .b_",
+    "EURO INDIE MUSIC CHART TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "EURO INDIE MUSIC CHART TV .c_it",
         "matched": false,
-        "name": "ETV5 .b",
+        "name": "EURO INDIE MUSIC CHART TV .c",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:25:32"
+        "timestamp": "2026-03-19 12:46:06"
+    },
+    "EUROSPORT 2 TIMVISION .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "EUROSPORT 2 TIMVISION .c_it",
+        "matched": false,
+        "name": "EUROSPORT 2 TIMVISION .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:26"
+    },
+    "EUROSPORT 4 TIMVISION .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "EUROSPORT 4 TIMVISION .c_it",
+        "matched": false,
+        "name": "EUROSPORT 4 TIMVISION .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:07"
+    },
+    "EUROSPORT 5 TIMVISION .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "EUROSPORT 5 TIMVISION .c_it",
+        "matched": false,
+        "name": "EUROSPORT 5 TIMVISION .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:08"
+    },
+    "EUROSPORT 6 TIMVISION .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "EUROSPORT 6 TIMVISION .c_it",
+        "matched": false,
+        "name": "EUROSPORT 6 TIMVISION .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:08"
+    },
+    "EXTRA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "EXTRA TV .c_it",
+        "matched": false,
+        "name": "EXTRA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:09"
     },
     "FC LIVERPOOL TV .b_": {
         "attempts": 1,
@@ -161,6 +332,15 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:26:23"
     },
+    "GLOBUS TELEVISION .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "GLOBUS TELEVISION .c_it",
+        "matched": false,
+        "name": "GLOBUS TELEVISION .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:10"
+    },
     "GOOD FOOD .s_": {
         "attempts": 1,
         "country": "",
@@ -178,51 +358,6 @@
         "name": "GOOD NEWS TV .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:27:00"
-    },
-    "GREAT! ACTION .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "GREAT! ACTION .b_",
-        "matched": false,
-        "name": "GREAT! ACTION .b",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:27:03"
-    },
-    "GREAT! TV .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "GREAT! TV .b_",
-        "matched": false,
-        "name": "GREAT! TV .b",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:27:26"
-    },
-    "GREAT! TV+1 .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "GREAT! TV+1 .b_",
-        "matched": false,
-        "name": "GREAT! TV+1 .b",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:27:29"
-    },
-    "GREAT!ACTION+1 .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "GREAT!ACTION+1 .b_",
-        "matched": false,
-        "name": "GREAT!ACTION+1 .b",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:27:33"
-    },
-    "HGTV+1 .b_": {
-        "attempts": 1,
-        "country": "",
-        "id": "HGTV+1 .b_",
-        "matched": false,
-        "name": "HGTV+1 .b",
-        "sref": "4097:0:0:0:0:0:0:0:0:0:",
-        "timestamp": "2026-03-19 00:27:41"
     },
     "HI-IMPACT TV .b_": {
         "attempts": 1,
@@ -269,6 +404,33 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:30:15"
     },
+    "LA C ONAIR .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "LA C ONAIR .c_it",
+        "matched": false,
+        "name": "LA C ONAIR .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:13"
+    },
+    "LA NUOVA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "LA NUOVA TV .c_it",
+        "matched": false,
+        "name": "LA NUOVA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:13"
+    },
+    "LA TR3 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "LA TR3 .c_it",
+        "matched": false,
+        "name": "LA TR3 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:14"
+    },
     "LIVE 360 .b_": {
         "attempts": 1,
         "country": "",
@@ -296,6 +458,51 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:30:37"
     },
+    "LOVE FM TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "LOVE FM TV .c_it",
+        "matched": false,
+        "name": "LOVE FM TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:14"
+    },
+    "M2O .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "M2O .c_it",
+        "matched": false,
+        "name": "M2O .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:14"
+    },
+    "MARIA+VISION .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MARIA+VISION .c_it",
+        "matched": false,
+        "name": "MARIA+VISION .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:15"
+    },
+    "MOTORTREND .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MOTORTREND .c_it",
+        "matched": false,
+        "name": "MOTORTREND .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:15"
+    },
+    "MOTORTREND .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MOTORTREND .s_it",
+        "matched": false,
+        "name": "MOTORTREND .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:16"
+    },
     "MOVIES4MEN .b_": {
         "attempts": 1,
         "country": "",
@@ -313,6 +520,15 @@
         "name": "MTA-MUSLIM TV .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:31:14"
+    },
+    "MTV HITS .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "MTV HITS .s_it",
+        "matched": false,
+        "name": "MTV HITS .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:16"
     },
     "MTV ROCKS .s_": {
         "attempts": 1,
@@ -332,6 +548,24 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:31:39"
     },
+    "NAT GEO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO .c_it",
+        "matched": false,
+        "name": "NAT GEO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:16"
+    },
+    "NAT GEO .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO .s_it",
+        "matched": false,
+        "name": "NAT GEO .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:17"
+    },
     "NAT GEO PEOPLE .b_": {
         "attempts": 1,
         "country": "",
@@ -340,6 +574,69 @@
         "name": "NAT GEO PEOPLE .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:31:46"
+    },
+    "NAT GEO WILD .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO WILD .c_it",
+        "matched": false,
+        "name": "NAT GEO WILD .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:17"
+    },
+    "NAT GEO WILD .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "NAT GEO WILD .s_it",
+        "matched": false,
+        "name": "NAT GEO WILD .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:17"
+    },
+    "OL3 RADIO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "OL3 RADIO .c_it",
+        "matched": false,
+        "name": "OL3 RADIO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:18"
+    },
+    "ONDA NOVARA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ONDA NOVARA TV .c_it",
+        "matched": false,
+        "name": "ONDA NOVARA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:18"
+    },
+    "PEER TV ALTO ADIGE .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PEER TV ALTO ADIGE .c_it",
+        "matched": false,
+        "name": "PEER TV ALTO ADIGE .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:19"
+    },
+    "PEOPLE ARE AWESOME .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PEOPLE ARE AWESOME .c_it",
+        "matched": false,
+        "name": "PEOPLE ARE AWESOME .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:19"
+    },
+    "PESCA E CACCIA .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PESCA E CACCIA .s_it",
+        "matched": false,
+        "name": "PESCA E CACCIA .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:20"
     },
     "PICK+1 .b_": {
         "attempts": 1,
@@ -413,6 +710,78 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:34:06"
     },
+    "PREMIUM CRIME .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PREMIUM CRIME .s_it",
+        "matched": false,
+        "name": "PREMIUM CRIME .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:20"
+    },
+    "PRIMA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMA TV .c_it",
+        "matched": false,
+        "name": "PRIMA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:20"
+    },
+    "PRIMA TV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMA TV .s_it",
+        "matched": false,
+        "name": "PRIMA TV .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:21"
+    },
+    "PRIMO CANALE .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMO CANALE .s_it",
+        "matched": false,
+        "name": "PRIMO CANALE .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:21"
+    },
+    "PRIMOCANALE .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "PRIMOCANALE .c_it",
+        "matched": false,
+        "name": "PRIMOCANALE .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:21"
+    },
+    "QUARTA RETE .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "QUARTA RETE .s_it",
+        "matched": false,
+        "name": "QUARTA RETE .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:22"
+    },
+    "RAI SPORT [LIVE DURING EVENTS ONLY] .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RAI SPORT [LIVE DURING EVENTS ONLY] .s_it",
+        "matched": false,
+        "name": "RAI SPORT [LIVE DURING EVENTS ONLY] .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:23"
+    },
+    "RAKUTEN FAMILY .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RAKUTEN FAMILY .s_it",
+        "matched": false,
+        "name": "RAKUTEN FAMILY .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:23"
+    },
     "RANGERS FC .b_": {
         "attempts": 1,
         "country": "",
@@ -431,6 +800,87 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:35:02"
     },
+    "REGGIO TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "REGGIO TV .c_it",
+        "matched": false,
+        "name": "REGGIO TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:24"
+    },
+    "RETE TV ITALIA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RETE TV ITALIA .c_it",
+        "matched": false,
+        "name": "RETE TV ITALIA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:24"
+    },
+    "RETE VENETA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RETE VENETA .c_it",
+        "matched": false,
+        "name": "RETE VENETA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:25"
+    },
+    "RETEBIELLA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RETEBIELLA TV .c_it",
+        "matched": false,
+        "name": "RETEBIELLA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:25"
+    },
+    "RMC 101 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RMC 101 .c_it",
+        "matched": false,
+        "name": "RMC 101 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:25"
+    },
+    "RSI LA 1 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 1 .c_it",
+        "matched": false,
+        "name": "RSI LA 1 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:26"
+    },
+    "RSI LA 1 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 1 .s_it",
+        "matched": false,
+        "name": "RSI LA 1 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:26"
+    },
+    "RSI LA 2 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 2 .c_it",
+        "matched": false,
+        "name": "RSI LA 2 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:26"
+    },
+    "RSI LA 2 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RSI LA 2 .s_it",
+        "matched": false,
+        "name": "RSI LA 2 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:27"
+    },
     "RT HD .b_": {
         "attempts": 1,
         "country": "",
@@ -439,6 +889,339 @@
         "name": "RT HD .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:35:08"
+    },
+    "RTC TELECALABRIA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RTC TELECALABRIA .c_it",
+        "matched": false,
+        "name": "RTC TELECALABRIA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:27"
+    },
+    "RTM TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RTM TV .c_it",
+        "matched": false,
+        "name": "RTM TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:27"
+    },
+    "RTP (RETE TELEVISIVA) .c_it": {
+        "attempts": 3,
+        "country": "it",
+        "id": "RTP (RETE TELEVISIVA) .c_it",
+        "matched": false,
+        "name": "RTP (RETE TELEVISIVA) .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:27"
+    },
+    "RTR 99 TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RTR 99 TV .c_it",
+        "matched": false,
+        "name": "RTR 99 TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:28"
+    },
+    "RTTR .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RTTR .c_it",
+        "matched": false,
+        "name": "RTTR .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:28"
+    },
+    "RTTR TV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "RTTR TV .s_it",
+        "matched": false,
+        "name": "RTTR TV .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:29"
+    },
+    "SENATO TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SENATO TV .c_it",
+        "matched": false,
+        "name": "SENATO TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:29"
+    },
+    "SENATO TV .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SENATO TV .s_it",
+        "matched": false,
+        "name": "SENATO TV .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:30"
+    },
+    "SKY PRIMAFILA 1 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 1 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 1 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:27"
+    },
+    "SKY PRIMAFILA 1 .s_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 1 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 1 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:28"
+    },
+    "SKY PRIMAFILA 10 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 10 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 10 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:28"
+    },
+    "SKY PRIMAFILA 10 .s_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 10 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 10 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:29"
+    },
+    "SKY PRIMAFILA 11 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 11 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 11 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:29"
+    },
+    "SKY PRIMAFILA 12 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 12 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 12 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:30"
+    },
+    "SKY PRIMAFILA 13 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 13 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 13 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:30"
+    },
+    "SKY PRIMAFILA 14 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 14 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 14 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:30"
+    },
+    "SKY PRIMAFILA 15 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 15 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 15 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:31"
+    },
+    "SKY PRIMAFILA 16 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 16 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 16 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:31"
+    },
+    "SKY PRIMAFILA 17 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 17 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 17 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:32"
+    },
+    "SKY PRIMAFILA 2 .c_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "SKY PRIMAFILA 2 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 2 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:32"
+    },
+    "SKY PRIMAFILA 2 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 2 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 2 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:30"
+    },
+    "SKY PRIMAFILA 3 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 3 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 3 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:31"
+    },
+    "SKY PRIMAFILA 3 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 3 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 3 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:31"
+    },
+    "SKY PRIMAFILA 4 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 4 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 4 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:32"
+    },
+    "SKY PRIMAFILA 4 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 4 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 4 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:32"
+    },
+    "SKY PRIMAFILA 5 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 5 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 5 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:32"
+    },
+    "SKY PRIMAFILA 5 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 5 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 5 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:33"
+    },
+    "SKY PRIMAFILA 6 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 6 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 6 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:33"
+    },
+    "SKY PRIMAFILA 6 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 6 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 6 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:34"
+    },
+    "SKY PRIMAFILA 7 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 7 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 7 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:34"
+    },
+    "SKY PRIMAFILA 7 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 7 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 7 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:34"
+    },
+    "SKY PRIMAFILA 8 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 8 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 8 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:35"
+    },
+    "SKY PRIMAFILA 8 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 8 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 8 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:35"
+    },
+    "SKY PRIMAFILA 9 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 9 .c_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 9 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:36"
+    },
+    "SKY PRIMAFILA 9 .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY PRIMAFILA 9 .s_it",
+        "matched": false,
+        "name": "SKY PRIMAFILA 9 .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:36"
+    },
+    "SKY SPORT 24 [LIVE DURING EVENTS ONLY] .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY SPORT 24 [LIVE DURING EVENTS ONLY] .s_it",
+        "matched": false,
+        "name": "SKY SPORT 24 [LIVE DURING EVENTS ONLY] .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:37"
+    },
+    "SKY SPORT FOOTBALL [LIVE DURING EVENTS ONLY] .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKY SPORT FOOTBALL [LIVE DURING EVENTS ONLY] .s_it",
+        "matched": false,
+        "name": "SKY SPORT FOOTBALL [LIVE DURING EVENTS ONLY] .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:38"
     },
     "SKY SPORTS FOOTBALL [LIVE DURING EVENTS ONLY] .s_": {
         "attempts": 1,
@@ -727,6 +1510,177 @@
         "name": "SKY STORE PREMIERE 9 ᴴᴰ .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:44:41"
+    },
+    "SKYSHOWTIME 1 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SKYSHOWTIME 1 .c_it",
+        "matched": false,
+        "name": "SKYSHOWTIME 1 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:38"
+    },
+    "SPORT ITALIA SOLO CALCIO [LIVE DURING EVENTS ONLY] .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SPORT ITALIA SOLO CALCIO [LIVE DURING EVENTS ONLY] .s_it",
+        "matched": false,
+        "name": "SPORT ITALIA SOLO CALCIO [LIVE DURING EVENTS ONLY] .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:39"
+    },
+    "SPORTITALIA SOLOCALCIO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SPORTITALIA SOLOCALCIO .c_it",
+        "matched": false,
+        "name": "SPORTITALIA SOLOCALCIO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:39"
+    },
+    "ST EUROPE CHANNEL .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "ST EUROPE CHANNEL .c_it",
+        "matched": false,
+        "name": "ST EUROPE CHANNEL .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:40"
+    },
+    "STEREO 5 TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "STEREO 5 TV .c_it",
+        "matched": false,
+        "name": "STEREO 5 TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:40"
+    },
+    "SUPER TV ARISTANIS .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SUPER TV ARISTANIS .c_it",
+        "matched": false,
+        "name": "SUPER TV ARISTANIS .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:41"
+    },
+    "SUPER TV BRESCIA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "SUPER TV BRESCIA .c_it",
+        "matched": false,
+        "name": "SUPER TV BRESCIA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:41"
+    },
+    "TELE ABRUZZO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELE ABRUZZO .c_it",
+        "matched": false,
+        "name": "TELE ABRUZZO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:41"
+    },
+    "TELE FRIULI .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELE FRIULI .s_it",
+        "matched": false,
+        "name": "TELE FRIULI .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:42"
+    },
+    "TELE LIGURIA SUD .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELE LIGURIA SUD .c_it",
+        "matched": false,
+        "name": "TELE LIGURIA SUD .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:42"
+    },
+    "TELE PAVIA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELE PAVIA .c_it",
+        "matched": false,
+        "name": "TELE PAVIA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:42"
+    },
+    "TELE TUSCIASABINA 2000 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELE TUSCIASABINA 2000 .c_it",
+        "matched": false,
+        "name": "TELE TUSCIASABINA 2000 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:43"
+    },
+    "TELEBELLUNO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELEBELLUNO .c_it",
+        "matched": false,
+        "name": "TELEBELLUNO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:43"
+    },
+    "TELEBOARIO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELEBOARIO .c_it",
+        "matched": false,
+        "name": "TELEBOARIO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:44"
+    },
+    "TELEFOGGIA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELEFOGGIA .c_it",
+        "matched": false,
+        "name": "TELEFOGGIA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:44"
+    },
+    "TELEPACE TRENTO (HISTORY LAB) .c_it": {
+        "attempts": 3,
+        "country": "it",
+        "id": "TELEPACE TRENTO (HISTORY LAB) .c_it",
+        "matched": false,
+        "name": "TELEPACE TRENTO (HISTORY LAB) .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:33"
+    },
+    "TELEQUATTRO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELEQUATTRO .c_it",
+        "matched": false,
+        "name": "TELEQUATTRO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:45"
+    },
+    "TELEROMAGNA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELEROMAGNA .c_it",
+        "matched": false,
+        "name": "TELEROMAGNA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:45"
+    },
+    "TELETUTTO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TELETUTTO .c_it",
+        "matched": false,
+        "name": "TELETUTTO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
     },
     "THATS TV GOLD .b_": {
         "attempts": 1,
@@ -1042,6 +1996,24 @@
         "name": "TRANSFORMERS .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:14"
+    },
+    "TRENTINO TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TRENTINO TV .c_it",
+        "matched": false,
+        "name": "TRENTINO TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
+    },
+    "TRENTINO TV .s_it": {
+        "attempts": 1,
+        "country": "it",
+        "id": "TRENTINO TV .s_it",
+        "matched": false,
+        "name": "TRENTINO TV .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:33"
     },
     "TROL AVCILARI .b_tr": {
         "attempts": 1,
@@ -1754,6 +2726,33 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:24"
     },
+    "TV LUNA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TV LUNA .c_it",
+        "matched": false,
+        "name": "TV LUNA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
+    },
+    "TV QUI (MODENA) .s_it": {
+        "attempts": 3,
+        "country": "it",
+        "id": "TV QUI (MODENA) .s_it",
+        "matched": false,
+        "name": "TV QUI (MODENA) .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:33"
+    },
+    "TV QUI .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TV QUI .c_it",
+        "matched": false,
+        "name": "TV QUI .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:46"
+    },
     "TV5 .b_tr": {
         "attempts": 1,
         "country": "tr",
@@ -1762,6 +2761,15 @@
         "name": "TV5 .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:24"
+    },
+    "TV7 NEWS .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TV7 NEWS .c_it",
+        "matched": false,
+        "name": "TV7 NEWS .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:47"
     },
     "TV8 5 RAW .b_tr": {
         "attempts": 1,
@@ -1808,6 +2816,24 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:25"
     },
+    "TVA VICENZA .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TVA VICENZA .c_it",
+        "matched": false,
+        "name": "TVA VICENZA .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:47"
+    },
+    "TVA VICENZA .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TVA VICENZA .s_it",
+        "matched": false,
+        "name": "TVA VICENZA .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:48"
+    },
     "TVDEN TV .b_tr": {
         "attempts": 1,
         "country": "tr",
@@ -1852,6 +2878,15 @@
         "name": "TVO TV .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:25"
+    },
+    "TVRS .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "TVRS .c_it",
+        "matched": false,
+        "name": "TVRS .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:48"
     },
     "TÜRKHABER TV .c_tr": {
         "attempts": 1,
@@ -2006,6 +3041,15 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:27"
     },
+    "UNINETTUNO .s_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "UNINETTUNO .s_it",
+        "matched": false,
+        "name": "UNINETTUNO .s",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:48"
+    },
     "UR FANATIK TV .c_tr": {
         "attempts": 1,
         "country": "tr",
@@ -2032,6 +3076,24 @@
         "name": "VATAN TV .s",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:27"
+    },
+    "VCO AZZURRA TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "VCO AZZURRA TV .c_it",
+        "matched": false,
+        "name": "VCO AZZURRA TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:49"
+    },
+    "VH1 .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "VH1 .c_it",
+        "matched": false,
+        "name": "VH1 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:49"
     },
     "VIASAT EXPLORE .b_tr": {
         "attempts": 1,
@@ -2095,6 +3157,24 @@
         "name": "VIASAT HISTORY HEVC .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:28"
+    },
+    "VIDEOSTAR TV .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "VIDEOSTAR TV .c_it",
+        "matched": false,
+        "name": "VIDEOSTAR TV .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:49"
+    },
+    "VIDEOTOLENTINO .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "VIDEOTOLENTINO .c_it",
+        "matched": false,
+        "name": "VIDEOTOLENTINO .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:50"
     },
     "VIKINGLER TV .b_tr": {
         "attempts": 1,
@@ -2348,6 +3428,15 @@
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:31"
     },
+    "YU-GI-OH! ITALY .c_it": {
+        "attempts": 2,
+        "country": "it",
+        "id": "YU-GI-OH! ITALY .c_it",
+        "matched": false,
+        "name": "YU-GI-OH! ITALY .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 12:46:51"
+    },
     "ZEE TV INDIA .s_": {
         "attempts": 1,
         "country": "",
@@ -2365,6 +3454,15 @@
         "name": "ZONGULDAK KANAL Z .b",
         "sref": "4097:0:0:0:0:0:0:0:0:0:",
         "timestamp": "2026-03-19 00:14:31"
+    },
+    "ÈTV RETE 7 .c_it": {
+        "attempts": 3,
+        "country": "it",
+        "id": "ÈTV RETE 7 .c_it",
+        "matched": false,
+        "name": "ÈTV RETE 7 .c",
+        "sref": "4097:0:0:0:0:0:0:0:0:0:",
+        "timestamp": "2026-03-19 20:49:26"
     },
     "ÜLKE TV .c_tr": {
         "attempts": 1,
