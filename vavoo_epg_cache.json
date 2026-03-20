@@ -20463,6 +20463,14 @@
         "sref": "4097:0:1:1C56:1C20:13E:820000:0:0:0:",
         "timestamp": "2026-03-19 11:02:36"
     },
+    "RTV SAN MARINO sport_it": {
+        "country": "it",
+        "id": "SMtvSport.it",
+        "matched": true,
+        "name": "rtv san marino sport",
+        "sref": "4097:0:1:5D:4A1E:217C:EEEE0000:0:0:0:",
+        "timestamp": "2026-03-20 18:01:08"
+    },
     "RTV UTRECHT (BACKUP) .s_nl": {
         "country": "nl",
         "id": "RTVUtrecht.nl",
