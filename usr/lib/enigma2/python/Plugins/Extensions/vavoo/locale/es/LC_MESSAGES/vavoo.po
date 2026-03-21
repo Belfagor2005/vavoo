@@ -109,14 +109,30 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
+#, fuzzy
+msgid "Active Automatic Bouquet Update"
+msgstr "- Generación automática de bouquet"
+
+msgid "Active or Disactive Ipv6."
+msgstr "Activar o desactivar IPv6."
+
 msgid "All countries (%d)"
 msgstr "Todos los países (%d)"
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr "Ya hay una exportación para otro país en curso. Por favor espere."
 
+msgid "At an interval hours or fixed time"
+msgstr "En un intervalo de horas o hora fija"
+
 msgid "Author:"
 msgstr "Autor:"
+
+msgid "Auto-update EPG"
+msgstr "Actualización automática de EPG"
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr "Activar automáticamente la actualización de EPG después de crear la fuente"
 
 #, fuzzy
 msgid "Back"
@@ -127,6 +143,9 @@ msgstr "Retroceso"
 
 msgid "Bottom"
 msgstr "Inferior"
+
+msgid "Bouquet Position in List"
+msgstr "Posición del bouquet en la lista"
 
 #, fuzzy
 msgid "Bouquet creation error: {}"
@@ -177,6 +196,18 @@ msgstr "Limpiar todo"
 msgid "Configuration saved successfully!"
 msgstr "¡Configuración guardada con éxito!"
 
+msgid "Configure Main Background Image."
+msgstr "Configurar imagen de fondo principal."
+
+msgid "Configure at a fixed time"
+msgstr ""
+
+msgid "Configure interval minutes from now"
+msgstr "Configurar intervalo de minutos desde ahora"
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr ""
+
 msgid "Console"
 msgstr "Consola"
 
@@ -189,8 +220,17 @@ msgstr "Países: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "País: %s"
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr "Crear fuente EPG para EPGImport con datos de programa Vavoo"
+
 msgid "Credits:"
 msgstr "Créditos:"
+
+msgid "Default View"
+msgstr "Vista predeterminada"
+
+msgid "Default view when opening the plugin"
+msgstr "Vista predeterminada al abrir el plugin"
 
 msgid "Do you want to export this bouquet?"
 msgstr "¿Quieres exportar este bouquet?"
@@ -198,6 +238,9 @@ msgstr "¿Quieres exportar este bouquet?"
 #, fuzzy
 msgid "Do you want to fix the cache format?"
 msgstr "¿Quieres exportar este bouquet?"
+
+msgid "EPG Similarity Threshold (%)"
+msgstr ""
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG está desactivado. Por favor actívalo primero en la configuración de Vavoo."
@@ -218,6 +261,12 @@ msgstr "Error en la actualización de EPG"
 
 msgid "EPG update started successfully"
 msgstr "Actualización de EPG iniciada con éxito"
+
+msgid "Enable Vavoo EPG"
+msgstr "Activar EPG de Vavoo"
+
+msgid "Enable or disable proxy."
+msgstr "Activar o desactivar proxy."
 
 msgid "Enter text to search..."
 msgstr "Introduce texto para buscar..."
@@ -283,6 +332,12 @@ msgstr "Encontrados: {} canales"
 msgid "Generate .m3u file for:"
 msgstr "Generar archivo .m3u para:"
 
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr "Generar archivos .m3u (válido para ejecutar)"
+
+msgid "Generate .m3u files and save to device %s."
+msgstr "Generar archivos .m3u y guardar en dispositivo %s."
+
 msgid "Generate .m3u files and save to device %s?"
 msgstr "¿Generar archivos .m3u y guardar en dispositivo %s?"
 
@@ -292,8 +347,14 @@ msgstr "¿Generar archivos .m3u para TODOS los %d países?"
 msgid "Hide/Show"
 msgstr "Ocultar/Mostrar"
 
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr "Frecuencia de actualización automática de EPG (requiere programador de EPGImport)"
+
 msgid "Important Notes:"
 msgstr "Notas importantes:"
+
+msgid "Ipv6 State Of Lan (On/Off)"
+msgstr "Estado de IPv6 en LAN (Activar/Desactivar)"
 
 msgid "Keyboard"
 msgstr "Teclado"
@@ -308,6 +369,9 @@ msgstr "Licencia:"
 msgid "License: CC BY-NC-SA 4.0"
 msgstr "Licencia: CC BY-NC-SA 4.0"
 
+msgid "Link in Main Menu"
+msgstr ""
+
 msgid "Lower = less interruption but more refreshes"
 msgstr "Valor bajo = menos interrupciones pero más actualizaciones"
 
@@ -319,6 +383,12 @@ msgstr "¡Generación de M3U completada!"
 
 msgid "M3U generation error: %s"
 msgstr "Error al generar M3U: %s"
+
+msgid "Minimum similarity for matching channels (higher = stricter)."
+msgstr ""
+
+msgid "Movie Services Reference"
+msgstr ""
 
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
@@ -348,17 +418,26 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr "No hay canales válidos para: %s"
 
+msgid "Now %s"
+msgstr "Ahora %s"
+
 msgid "Only one specific country"
 msgstr "Solo un país específico"
 
 msgid "Please try another channel."
 msgstr "Por favor prueba otro canal."
 
+msgid "Position of Vavoo bouquets in the main list"
+msgstr "Posición de los bouquets de Vavoo en la lista principal"
+
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Pulsa el botón TEXT para escribir, BACKSPACE para borrar"
 
 msgid "Proxy Disabled"
 msgstr "Proxy desactivado"
+
+msgid "Proxy Enabled"
+msgstr "Proxy activado"
 
 msgid "Proxy Error:"
 msgstr ""
@@ -396,6 +475,9 @@ msgstr ""
 msgid "Recommended: 5-8 minutes"
 msgstr "Recomendado: 5-8 minutos"
 
+msgid "Refresh stream (minutes):"
+msgstr "Actualizar stream (minutos):"
+
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Actualizar stream cada X minutos (1-15)"
 
@@ -431,6 +513,13 @@ msgid "Saved in: %s"
 msgstr "Guardado en: %s"
 
 #, fuzzy
+msgid "Schedule type:"
+msgstr "Lista programada:"
+
+msgid "Scheduled List:"
+msgstr "Lista programada:"
+
+#, fuzzy
 msgid "Search"
 msgstr "Buscar:"
 
@@ -443,11 +532,20 @@ msgstr "Buscar..."
 msgid "Search:"
 msgstr "Buscar:"
 
+msgid "Select Background"
+msgstr "Seleccionar fondo"
+
 msgid "Select M3U export mode:"
 msgstr "Seleccionar modo de exportación M3U:"
 
 msgid "Select country to export M3U:"
 msgstr "Seleccionar país para exportar M3U:"
+
+msgid "Server for Player Used"
+msgstr "Servidor para el reproductor utilizado"
+
+msgid "Server for player."
+msgstr "Servidor para el reproductor."
 
 msgid "Showing all channels: {}"
 msgstr "Mostrando todos los canales: {}"
@@ -474,6 +572,10 @@ msgstr "Esto eliminará:"
 msgid "This will:"
 msgstr "Esto eliminará:"
 
+#, fuzzy
+msgid "Time to start update:"
+msgstr "Error al iniciar la actualización de EPG: {}"
+
 msgid "Top"
 msgstr "Superior"
 
@@ -482,6 +584,13 @@ msgstr "Canales totales: %(total_channels)d"
 
 msgid "UPPERCASE"
 msgstr "MAYÚSCULAS"
+
+msgid "Update interval (hours)"
+msgstr "Intervalo de actualización (horas)"
+
+#, fuzzy
+msgid "Update interval (minutes):"
+msgstr "Intervalo de actualización (horas)"
 
 msgid "Updating EPG..."
 msgstr "Actualizando EPG..."
@@ -558,94 +667,3 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Active Automatic Bouquet Update"
-#~ msgstr "- Generación automática de bouquet"
-
-#~ msgid "Active or Disactive Ipv6."
-#~ msgstr "Activar o desactivar IPv6."
-
-#~ msgid "At an interval hours or fixed time"
-#~ msgstr "En un intervalo de horas o hora fija"
-
-#~ msgid "Auto-update EPG"
-#~ msgstr "Actualización automática de EPG"
-
-#~ msgid "Automatically trigger EPG update after source creation"
-#~ msgstr "Activar automáticamente la actualización de EPG después de crear la fuente"
-
-#~ msgid "Bouquet Position in List"
-#~ msgstr "Posición del bouquet en la lista"
-
-#~ msgid "Configure Main Background Image."
-#~ msgstr "Configurar imagen de fondo principal."
-
-#~ msgid "Configure interval minutes from now"
-#~ msgstr "Configurar intervalo de minutos desde ahora"
-
-#~ msgid "Create EPG source for EPGImport with Vavoo program data"
-#~ msgstr "Crear fuente EPG para EPGImport con datos de programa Vavoo"
-
-#~ msgid "Default View"
-#~ msgstr "Vista predeterminada"
-
-#~ msgid "Default view when opening the plugin"
-#~ msgstr "Vista predeterminada al abrir el plugin"
-
-#~ msgid "Enable Vavoo EPG"
-#~ msgstr "Activar EPG de Vavoo"
-
-#~ msgid "Enable or disable proxy."
-#~ msgstr "Activar o desactivar proxy."
-
-#~ msgid "Generate .m3u files (Ok for Exec)"
-#~ msgstr "Generar archivos .m3u (válido para ejecutar)"
-
-#~ msgid "Generate .m3u files and save to device %s."
-#~ msgstr "Generar archivos .m3u y guardar en dispositivo %s."
-
-#~ msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
-#~ msgstr "Frecuencia de actualización automática de EPG (requiere programador de EPGImport)"
-
-#~ msgid "Ipv6 State Of Lan (On/Off)"
-#~ msgstr "Estado de IPv6 en LAN (Activar/Desactivar)"
-
-#~ msgid "Now %s"
-#~ msgstr "Ahora %s"
-
-#~ msgid "Position of Vavoo bouquets in the main list"
-#~ msgstr "Posición de los bouquets de Vavoo en la lista principal"
-
-#~ msgid "Proxy Enabled"
-#~ msgstr "Proxy activado"
-
-#~ msgid "Refresh stream (minutes):"
-#~ msgstr "Actualizar stream (minutos):"
-
-#, fuzzy
-#~ msgid "Schedule type:"
-#~ msgstr "Lista programada:"
-
-#~ msgid "Scheduled List:"
-#~ msgstr "Lista programada:"
-
-#~ msgid "Select Background"
-#~ msgstr "Seleccionar fondo"
-
-#~ msgid "Server for Player Used"
-#~ msgstr "Servidor para el reproductor utilizado"
-
-#~ msgid "Server for player."
-#~ msgstr "Servidor para el reproductor."
-
-#, fuzzy
-#~ msgid "Time to start update:"
-#~ msgstr "Error al iniciar la actualización de EPG: {}"
-
-#~ msgid "Update interval (hours)"
-#~ msgstr "Intervalo de actualización (horas)"
-
-#, fuzzy
-#~ msgid "Update interval (minutes):"
-#~ msgstr "Intervalo de actualización (horas)"

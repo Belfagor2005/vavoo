@@ -105,13 +105,28 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
+msgid "Active Automatic Bouquet Update"
+msgstr ""
+
+msgid "Active or Disactive Ipv6."
+msgstr ""
+
 msgid "All countries (%d)"
 msgstr ""
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr ""
 
+msgid "At an interval hours or fixed time"
+msgstr ""
+
 msgid "Author:"
+msgstr ""
+
+msgid "Auto-update EPG"
+msgstr ""
+
+msgid "Automatically trigger EPG update after source creation"
 msgstr ""
 
 msgid "Back"
@@ -122,6 +137,9 @@ msgid "Backspace"
 msgstr "Zurück"
 
 msgid "Bottom"
+msgstr ""
+
+msgid "Bouquet Position in List"
 msgstr ""
 
 msgid "Bouquet creation error: {}"
@@ -169,6 +187,18 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+msgid "Configure Main Background Image."
+msgstr ""
+
+msgid "Configure at a fixed time"
+msgstr ""
+
+msgid "Configure interval minutes from now"
+msgstr ""
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr ""
+
 msgid "Console"
 msgstr ""
 
@@ -181,13 +211,25 @@ msgstr ""
 msgid "Country: %s"
 msgstr ""
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr ""
+
 msgid "Credits:"
+msgstr ""
+
+msgid "Default View"
+msgstr ""
+
+msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
 msgstr ""
 
 msgid "Do you want to fix the cache format?"
+msgstr ""
+
+msgid "EPG Similarity Threshold (%)"
 msgstr ""
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
@@ -206,6 +248,12 @@ msgid "EPG update failed"
 msgstr ""
 
 msgid "EPG update started successfully"
+msgstr ""
+
+msgid "Enable Vavoo EPG"
+msgstr ""
+
+msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
@@ -268,6 +316,12 @@ msgstr ""
 msgid "Generate .m3u file for:"
 msgstr ""
 
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr ""
+
+msgid "Generate .m3u files and save to device %s."
+msgstr ""
+
 msgid "Generate .m3u files and save to device %s?"
 msgstr ""
 
@@ -277,7 +331,13 @@ msgstr ""
 msgid "Hide/Show"
 msgstr ""
 
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr ""
+
 msgid "Important Notes:"
+msgstr ""
+
+msgid "Ipv6 State Of Lan (On/Off)"
 msgstr ""
 
 msgid "Keyboard"
@@ -292,6 +352,9 @@ msgstr ""
 msgid "License: CC BY-NC-SA 4.0"
 msgstr ""
 
+msgid "Link in Main Menu"
+msgstr ""
+
 msgid "Lower = less interruption but more refreshes"
 msgstr ""
 
@@ -302,6 +365,12 @@ msgid "M3U generation completed!"
 msgstr ""
 
 msgid "M3U generation error: %s"
+msgstr ""
+
+msgid "Minimum similarity for matching channels (higher = stricter)."
+msgstr ""
+
+msgid "Movie Services Reference"
 msgstr ""
 
 msgid "No IMDb/TMDB plugin found"
@@ -331,16 +400,25 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr ""
 
+msgid "Now %s"
+msgstr ""
+
 msgid "Only one specific country"
 msgstr ""
 
 msgid "Please try another channel."
 msgstr ""
 
+msgid "Position of Vavoo bouquets in the main list"
+msgstr ""
+
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
 msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
 msgstr ""
 
 msgid "Proxy Error:"
@@ -379,6 +457,9 @@ msgstr ""
 msgid "Recommended: 5-8 minutes"
 msgstr ""
 
+msgid "Refresh stream (minutes):"
+msgstr ""
+
 msgid "Refresh stream every X minutes (1-15)"
 msgstr ""
 
@@ -412,6 +493,12 @@ msgstr ""
 msgid "Saved in: %s"
 msgstr ""
 
+msgid "Schedule type:"
+msgstr ""
+
+msgid "Scheduled List:"
+msgstr ""
+
 msgid "Search"
 msgstr ""
 
@@ -424,10 +511,19 @@ msgstr ""
 msgid "Search:"
 msgstr ""
 
+msgid "Select Background"
+msgstr ""
+
 msgid "Select M3U export mode:"
 msgstr ""
 
 msgid "Select country to export M3U:"
+msgstr ""
+
+msgid "Server for Player Used"
+msgstr ""
+
+msgid "Server for player."
 msgstr ""
 
 msgid "Showing all channels: {}"
@@ -454,6 +550,9 @@ msgstr ""
 msgid "This will:"
 msgstr ""
 
+msgid "Time to start update:"
+msgstr ""
+
 msgid "Top"
 msgstr ""
 
@@ -461,6 +560,12 @@ msgid "Total channels: %(total_channels)d"
 msgstr ""
 
 msgid "UPPERCASE"
+msgstr ""
+
+msgid "Update interval (hours)"
+msgstr ""
+
+msgid "Update interval (minutes):"
 msgstr ""
 
 msgid "Updating EPG..."

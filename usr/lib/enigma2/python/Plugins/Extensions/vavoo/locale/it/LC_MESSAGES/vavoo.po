@@ -544,40 +544,14 @@ msgstr "✗ Proxy offline"
 msgid "✗ Restart Failed"
 msgstr "✗ Riavvio non riuscito"
 
-#~ msgid "Generate .m3u files (Ok for Exec)"
-#~ msgstr "Genera file .m3u (Ok per Eseg)"
+#~ msgid "Active Automatic Bouquet Update"
+#~ msgstr "Attivare aggiornamento automatico del bouquet"
 
-#, python-format
-#~ msgid "Generate .m3u files and save to device %s."
-#~ msgstr "Generare file .m3u e salvarli sul dispositivo %s."
+#~ msgid "Active or Disactive Ipv6."
+#~ msgstr "Attivare o disattivare Ipv6."
 
-#~ msgid "Proxy Enabled"
-#~ msgstr "Proxy Abilitato"
-
-#~ msgid "Enable or disable proxy."
-#~ msgstr "Abilita o disabilita il proxy."
-
-#~ msgid "Default View"
-#~ msgstr "Visualizzazione predefinita"
-
-#~ msgid "Default view when opening the plugin"
-#~ msgstr "Visualizzazione predefinita all'apertura del plugin"
-
-#~ msgid "Server for player."
-#~ msgstr "Server per il Player."
-
-#, python-format
-#~ msgid "Now %s"
-#~ msgstr "Adesso %s"
-
-#~ msgid "Server for Player Used"
-#~ msgstr "Server Utilizzato per il Player"
-
-#~ msgid "Enable Vavoo EPG"
-#~ msgstr "Abilita Vavoo EPG"
-
-#~ msgid "Create EPG source for EPGImport with Vavoo program data"
-#~ msgstr "Crea sorgente EPG per EPGImport con dati Vavoo"
+#~ msgid "At an interval hours or fixed time"
+#~ msgstr "A intervalli di ore o tempo fisso"
 
 #~ msgid "Auto-update EPG"
 #~ msgstr "Aggiornamento automatico EPG"
@@ -585,65 +559,89 @@ msgstr "✗ Riavvio non riuscito"
 #~ msgid "Automatically trigger EPG update after source creation"
 #~ msgstr "Attiva automaticamente l'aggiornamento dell'EPG dopo la creazione della sorgente"
 
-#~ msgid "Update interval (hours)"
-#~ msgstr "Intervallo aggiornamento (ore)"
-
-#~ msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
-#~ msgstr "Con quale frequenza aggiornare automaticamente l'EPG (richiede scheduler EPGImport)?"
-
-#~ msgid "Movie Services Reference"
-#~ msgstr "Service Reference del Player"
-
-#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-#~ msgstr "Impostare il Referenze per il Player. Iptv-Gstreamer-Exteplayer3"
-
 #~ msgid "Bouquet Position in List"
 #~ msgstr "Posizione del bouquet nell'elenco"
-
-#~ msgid "Position of Vavoo bouquets in the main list"
-#~ msgstr "Posizione dei bouquet Vavoo nell'elenco principale"
-
-#~ msgid "Refresh stream (minutes):"
-#~ msgstr "Aggiorna flusso (minuti):"
-
-#~ msgid "Select Background"
-#~ msgstr "Seleziona Sfondo"
 
 #~ msgid "Configure Main Background Image."
 #~ msgstr "Configura Immagine di Background."
 
-#~ msgid "Active or Disactive Ipv6."
-#~ msgstr "Attivare o disattivare Ipv6."
-
-#~ msgid "Ipv6 State Of Lan (On/Off)"
-#~ msgstr "Stato Ipv6 Lan(On/Off)"
-
-#~ msgid "Scheduled List:"
-#~ msgstr "Aggiornamento Liste:"
-
-#~ msgid "Active Automatic Bouquet Update"
-#~ msgstr "Attivare aggiornamento automatico del bouquet"
-
-#~ msgid "Schedule type:"
-#~ msgstr "Tipo programmazione:"
-
-#~ msgid "At an interval hours or fixed time"
-#~ msgstr "A intervalli di ore o tempo fisso"
-
-#~ msgid "Update interval (minutes):"
-#~ msgstr "Intervallo di aggiornamento (minuti):"
+#~ msgid "Configure at a fixed time"
+#~ msgstr "Configura a un'ora fissa"
 
 #~ msgid "Configure interval minutes from now"
 #~ msgstr "Configura l'intervallo in minuti da adesso"
 
-#~ msgid "Time to start update:"
-#~ msgstr "Ora inizio l'aggiornamento:"
+#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+#~ msgstr "Impostare il Referenze per il Player. Iptv-Gstreamer-Exteplayer3"
 
-#~ msgid "Configure at a fixed time"
-#~ msgstr "Configura a un'ora fissa"
+#~ msgid "Create EPG source for EPGImport with Vavoo program data"
+#~ msgstr "Crea sorgente EPG per EPGImport con dati Vavoo"
+
+#~ msgid "Default View"
+#~ msgstr "Visualizzazione predefinita"
+
+#~ msgid "Default view when opening the plugin"
+#~ msgstr "Visualizzazione predefinita all'apertura del plugin"
+
+#~ msgid "Enable Vavoo EPG"
+#~ msgstr "Abilita Vavoo EPG"
+
+#~ msgid "Enable or disable proxy."
+#~ msgstr "Abilita o disabilita il proxy."
+
+#~ msgid "Generate .m3u files (Ok for Exec)"
+#~ msgstr "Genera file .m3u (Ok per Eseg)"
+
+#~ msgid "Generate .m3u files and save to device %s."
+#~ msgstr "Generare file .m3u e salvarli sul dispositivo %s."
+
+#~ msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+#~ msgstr "Con quale frequenza aggiornare automaticamente l'EPG (richiede scheduler EPGImport)?"
+
+#~ msgid "Ipv6 State Of Lan (On/Off)"
+#~ msgstr "Stato Ipv6 Lan(On/Off)"
 
 #~ msgid "Link in Main Menu"
 #~ msgstr "Mostra in Menu Principale"
+
+#~ msgid "Movie Services Reference"
+#~ msgstr "Service Reference del Player"
+
+#~ msgid "Now %s"
+#~ msgstr "Adesso %s"
+
+#~ msgid "Position of Vavoo bouquets in the main list"
+#~ msgstr "Posizione dei bouquet Vavoo nell'elenco principale"
+
+#~ msgid "Proxy Enabled"
+#~ msgstr "Proxy Abilitato"
+
+#~ msgid "Refresh stream (minutes):"
+#~ msgstr "Aggiorna flusso (minuti):"
+
+#~ msgid "Schedule type:"
+#~ msgstr "Tipo programmazione:"
+
+#~ msgid "Scheduled List:"
+#~ msgstr "Aggiornamento Liste:"
+
+#~ msgid "Select Background"
+#~ msgstr "Seleziona Sfondo"
+
+#~ msgid "Server for Player Used"
+#~ msgstr "Server Utilizzato per il Player"
+
+#~ msgid "Server for player."
+#~ msgstr "Server per il Player."
+
+#~ msgid "Time to start update:"
+#~ msgstr "Ora inizio l'aggiornamento:"
+
+#~ msgid "Update interval (hours)"
+#~ msgstr "Intervallo aggiornamento (ore)"
+
+#~ msgid "Update interval (minutes):"
+#~ msgstr "Intervallo di aggiornamento (minuti):"
 
 #~ msgid "(%(count)d channels)"
 #~ msgstr "(%(count)d canali)"

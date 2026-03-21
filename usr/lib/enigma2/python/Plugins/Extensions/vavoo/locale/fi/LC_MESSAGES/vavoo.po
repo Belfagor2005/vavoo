@@ -100,14 +100,29 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
+msgid "Active Automatic Bouquet Update"
+msgstr "Aktiivinen automaattinen nippupäivitys"
+
+msgid "Active or Disactive Ipv6."
+msgstr "Ota Ipv6 käyttöön tai pois käytöstä."
+
 msgid "All countries (%d)"
 msgstr "Kaikki maat (%d)"
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr "Toisen maan vienti on jo käynnissä. Odota."
 
+msgid "At an interval hours or fixed time"
+msgstr "Aikavälillä tunneittain tai kiinteänä aikana"
+
 msgid "Author:"
 msgstr "Tekijä:"
+
+msgid "Auto-update EPG"
+msgstr "Automaattinen EPG-päivitys"
+
+msgid "Automatically trigger EPG update after source creation"
+msgstr "Käynnistä EPG-päivitys automaattisesti lähteen luonnin jälkeen"
 
 msgid "Back"
 msgstr "Takaisin"
@@ -117,6 +132,9 @@ msgstr "Askelluspalautus"
 
 msgid "Bottom"
 msgstr "Alaosa"
+
+msgid "Bouquet Position in List"
+msgstr "Nipun sijainti listassa"
 
 msgid "Bouquet creation error: {}"
 msgstr "Nipun luontivirhe: {}"
@@ -166,6 +184,18 @@ msgstr "Tyhjennä kaikki"
 msgid "Configuration saved successfully!"
 msgstr "Asetukset tallennettu onnistuneesti!"
 
+msgid "Configure Main Background Image."
+msgstr "Määritä päätaustakuva."
+
+msgid "Configure at a fixed time"
+msgstr "Määritä kiinteänä aikana"
+
+msgid "Configure interval minutes from now"
+msgstr "Määritä aikaväli minuutteina tästä hetkestä"
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "Määritä palveluviite Iptv-Gstreamer-Exteplayer3"
+
 msgid "Console"
 msgstr "Konsoli"
 
@@ -178,8 +208,17 @@ msgstr "Maat: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "Maa: %s"
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr "Luo EPG-lähde EPGImportille Vavoo-ohjelmatiedoilla"
+
 msgid "Credits:"
 msgstr "Tekijät:"
+
+msgid "Default View"
+msgstr "Oletusnäkymä"
+
+msgid "Default view when opening the plugin"
+msgstr "Oletusnäkymä liitännäistä avattaessa"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Haluatko viedä tämän nipun?"
@@ -187,6 +226,9 @@ msgstr "Haluatko viedä tämän nipun?"
 #, fuzzy
 msgid "Do you want to fix the cache format?"
 msgstr "Haluatko viedä tämän nipun?"
+
+msgid "EPG Similarity Threshold (%)"
+msgstr ""
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG on poissa käytöstä. Ota se ensin käyttöön Vavoo-asetuksista."
@@ -206,6 +248,12 @@ msgstr "EPG-päivitys epäonnistui"
 
 msgid "EPG update started successfully"
 msgstr "EPG-päivitys käynnistyi onnistuneesti"
+
+msgid "Enable Vavoo EPG"
+msgstr "Ota Vavoo EPG käyttöön"
+
+msgid "Enable or disable proxy."
+msgstr "Ota välityspalvelin käyttöön tai pois käytöstä."
 
 msgid "Enter text to search..."
 msgstr "Syötä teksti haettavaksi..."
@@ -270,6 +318,12 @@ msgstr "Löytyi: {} kanavaa"
 msgid "Generate .m3u file for:"
 msgstr "Luo .m3u-tiedosto kohteelle:"
 
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr "Luo .m3u-tiedostot (Ok suoritusta varten)"
+
+msgid "Generate .m3u files and save to device %s."
+msgstr "Luo .m3u-tiedostot ja tallenna laitteelle %s."
+
 msgid "Generate .m3u files and save to device %s?"
 msgstr "Luodaanko .m3u-tiedostot ja tallennetaan laitteelle %s?"
 
@@ -279,8 +333,14 @@ msgstr "Luodaanko .m3u-tiedostot KAIKILLE %d maalle?"
 msgid "Hide/Show"
 msgstr "Piilota/Näytä"
 
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr "Kuinka usein EPG päivitetään automaattisesti (vaatii EPGImport-ajastimen)"
+
 msgid "Important Notes:"
 msgstr "Tärkeitä huomautuksia:"
+
+msgid "Ipv6 State Of Lan (On/Off)"
+msgstr "IPv6-tila lähiverkossa (päällä/pois)"
 
 msgid "Keyboard"
 msgstr "Näppäimistö"
@@ -294,6 +354,9 @@ msgstr "Lisenssi:"
 msgid "License: CC BY-NC-SA 4.0"
 msgstr "Lisenssi: CC BY-NC-SA 4.0"
 
+msgid "Link in Main Menu"
+msgstr "Linkki päävalikossa"
+
 msgid "Lower = less interruption but more refreshes"
 msgstr "Pienempi = vähemmän keskeytyksiä mutta enemmän päivityksiä"
 
@@ -305,6 +368,12 @@ msgstr "M3U-luonti valmistui!"
 
 msgid "M3U generation error: %s"
 msgstr "M3U-luontivirhe: %s"
+
+msgid "Minimum similarity for matching channels (higher = stricter)."
+msgstr ""
+
+msgid "Movie Services Reference"
+msgstr "Elokuvapalveluiden viite"
 
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
@@ -333,17 +402,26 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr "Ei kelvollisia kanavia kohteelle: %s"
 
+msgid "Now %s"
+msgstr "Nyt %s"
+
 msgid "Only one specific country"
 msgstr "Vain yksi tietty maa"
 
 msgid "Please try another channel."
 msgstr "Yritä toista kanavaa."
 
+msgid "Position of Vavoo bouquets in the main list"
+msgstr "Vavoo-nippujen sijainti päähakemistossa"
+
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Paina TEXT-painiketta kirjoittaaksesi, BACKSPACE poistaaksesi"
 
 msgid "Proxy Disabled"
 msgstr "Välityspalvelin poissa käytöstä"
+
+msgid "Proxy Enabled"
+msgstr "Välityspalvelin käytössä"
 
 msgid "Proxy Error:"
 msgstr ""
@@ -381,6 +459,9 @@ msgstr "Suljetaanko todella tallentamatta asetuksia?"
 msgid "Recommended: 5-8 minutes"
 msgstr "Suositus: 5-8 minuuttia"
 
+msgid "Refresh stream (minutes):"
+msgstr "Päivitä suoratoisto (minuutteina):"
+
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Päivitä suoratoisto X minuutin välein (1-15)"
 
@@ -415,6 +496,12 @@ msgstr "Tallennettu: %(path)s"
 msgid "Saved in: %s"
 msgstr "Tallennettu: %s"
 
+msgid "Schedule type:"
+msgstr "Ajoituksen tyyppi:"
+
+msgid "Scheduled List:"
+msgstr "Ajoitettu lista:"
+
 msgid "Search"
 msgstr "Hae"
 
@@ -427,11 +514,20 @@ msgstr "Hae..."
 msgid "Search:"
 msgstr "Haku:"
 
+msgid "Select Background"
+msgstr "Valitse tausta"
+
 msgid "Select M3U export mode:"
 msgstr "Valitse M3U-vientitila:"
 
 msgid "Select country to export M3U:"
 msgstr "Valitse maa M3U:ta varten:"
+
+msgid "Server for Player Used"
+msgstr "Palvelin soittimelle"
+
+msgid "Server for player."
+msgstr "Palvelin soittimelle."
 
 msgid "Showing all channels: {}"
 msgstr "Näytetään kaikki kanavat: {}"
@@ -458,6 +554,9 @@ msgstr "Tämä poistaa:"
 msgid "This will:"
 msgstr "Tämä poistaa:"
 
+msgid "Time to start update:"
+msgstr "Aika aloittaa päivitys:"
+
 msgid "Top"
 msgstr "Yläosa"
 
@@ -466,6 +565,12 @@ msgstr "Kanavia yhteensä: %(total_channels)d"
 
 msgid "UPPERCASE"
 msgstr "SUURAAKKOSET"
+
+msgid "Update interval (hours)"
+msgstr "Päivitysväli (tunteina)"
+
+msgid "Update interval (minutes):"
+msgstr "Päivitysväli (minuutteina):"
 
 msgid "Updating EPG..."
 msgstr "Päivitetään EPG:tä..."
@@ -540,102 +645,3 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
-
-#~ msgid "Active Automatic Bouquet Update"
-#~ msgstr "Aktiivinen automaattinen nippupäivitys"
-
-#~ msgid "Active or Disactive Ipv6."
-#~ msgstr "Ota Ipv6 käyttöön tai pois käytöstä."
-
-#~ msgid "At an interval hours or fixed time"
-#~ msgstr "Aikavälillä tunneittain tai kiinteänä aikana"
-
-#~ msgid "Auto-update EPG"
-#~ msgstr "Automaattinen EPG-päivitys"
-
-#~ msgid "Automatically trigger EPG update after source creation"
-#~ msgstr "Käynnistä EPG-päivitys automaattisesti lähteen luonnin jälkeen"
-
-#~ msgid "Bouquet Position in List"
-#~ msgstr "Nipun sijainti listassa"
-
-#~ msgid "Configure Main Background Image."
-#~ msgstr "Määritä päätaustakuva."
-
-#~ msgid "Configure at a fixed time"
-#~ msgstr "Määritä kiinteänä aikana"
-
-#~ msgid "Configure interval minutes from now"
-#~ msgstr "Määritä aikaväli minuutteina tästä hetkestä"
-
-#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-#~ msgstr "Määritä palveluviite Iptv-Gstreamer-Exteplayer3"
-
-#~ msgid "Create EPG source for EPGImport with Vavoo program data"
-#~ msgstr "Luo EPG-lähde EPGImportille Vavoo-ohjelmatiedoilla"
-
-#~ msgid "Default View"
-#~ msgstr "Oletusnäkymä"
-
-#~ msgid "Default view when opening the plugin"
-#~ msgstr "Oletusnäkymä liitännäistä avattaessa"
-
-#~ msgid "Enable Vavoo EPG"
-#~ msgstr "Ota Vavoo EPG käyttöön"
-
-#~ msgid "Enable or disable proxy."
-#~ msgstr "Ota välityspalvelin käyttöön tai pois käytöstä."
-
-#~ msgid "Generate .m3u files (Ok for Exec)"
-#~ msgstr "Luo .m3u-tiedostot (Ok suoritusta varten)"
-
-#~ msgid "Generate .m3u files and save to device %s."
-#~ msgstr "Luo .m3u-tiedostot ja tallenna laitteelle %s."
-
-#~ msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
-#~ msgstr "Kuinka usein EPG päivitetään automaattisesti (vaatii EPGImport-ajastimen)"
-
-#~ msgid "Ipv6 State Of Lan (On/Off)"
-#~ msgstr "IPv6-tila lähiverkossa (päällä/pois)"
-
-#~ msgid "Link in Main Menu"
-#~ msgstr "Linkki päävalikossa"
-
-#~ msgid "Movie Services Reference"
-#~ msgstr "Elokuvapalveluiden viite"
-
-#~ msgid "Now %s"
-#~ msgstr "Nyt %s"
-
-#~ msgid "Position of Vavoo bouquets in the main list"
-#~ msgstr "Vavoo-nippujen sijainti päähakemistossa"
-
-#~ msgid "Proxy Enabled"
-#~ msgstr "Välityspalvelin käytössä"
-
-#~ msgid "Refresh stream (minutes):"
-#~ msgstr "Päivitä suoratoisto (minuutteina):"
-
-#~ msgid "Schedule type:"
-#~ msgstr "Ajoituksen tyyppi:"
-
-#~ msgid "Scheduled List:"
-#~ msgstr "Ajoitettu lista:"
-
-#~ msgid "Select Background"
-#~ msgstr "Valitse tausta"
-
-#~ msgid "Server for Player Used"
-#~ msgstr "Palvelin soittimelle"
-
-#~ msgid "Server for player."
-#~ msgstr "Palvelin soittimelle."
-
-#~ msgid "Time to start update:"
-#~ msgstr "Aika aloittaa päivitys:"
-
-#~ msgid "Update interval (hours)"
-#~ msgstr "Päivitysväli (tunteina)"
-
-#~ msgid "Update interval (minutes):"
-#~ msgstr "Päivitysväli (minuutteina):"

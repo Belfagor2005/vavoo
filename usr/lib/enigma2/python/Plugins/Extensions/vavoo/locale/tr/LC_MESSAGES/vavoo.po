@@ -105,13 +105,29 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
+msgid "Active Automatic Bouquet Update"
+msgstr "Aktif Otomatik Buket Güncelleme"
+
+msgid "Active or Disactive Ipv6."
+msgstr ""
+
 msgid "All countries (%d)"
 msgstr ""
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr ""
 
+#, fuzzy
+msgid "At an interval hours or fixed time"
+msgstr "Saatler aralığında veya sabit bir zamanda"
+
 msgid "Author:"
+msgstr ""
+
+msgid "Auto-update EPG"
+msgstr ""
+
+msgid "Automatically trigger EPG update after source creation"
 msgstr ""
 
 msgid "Back"
@@ -121,6 +137,9 @@ msgid "Backspace"
 msgstr ""
 
 msgid "Bottom"
+msgstr ""
+
+msgid "Bouquet Position in List"
 msgstr ""
 
 msgid "Bouquet creation error: {}"
@@ -168,6 +187,19 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+msgid "Configure Main Background Image."
+msgstr ""
+
+msgid "Configure at a fixed time"
+msgstr "Sabit bir zamanda yapılandırın"
+
+#, fuzzy
+msgid "Configure interval minutes from now"
+msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "Hizmeti yapılandırma Referansı Iptv-Gstreamer-Exteplayer3"
+
 msgid "Console"
 msgstr ""
 
@@ -180,13 +212,25 @@ msgstr ""
 msgid "Country: %s"
 msgstr ""
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr ""
+
 msgid "Credits:"
+msgstr ""
+
+msgid "Default View"
+msgstr ""
+
+msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
 msgstr ""
 
 msgid "Do you want to fix the cache format?"
+msgstr ""
+
+msgid "EPG Similarity Threshold (%)"
 msgstr ""
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
@@ -205,6 +249,12 @@ msgid "EPG update failed"
 msgstr ""
 
 msgid "EPG update started successfully"
+msgstr ""
+
+msgid "Enable Vavoo EPG"
+msgstr ""
+
+msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
@@ -270,6 +320,12 @@ msgstr ""
 msgid "Generate .m3u file for:"
 msgstr ""
 
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr ""
+
+msgid "Generate .m3u files and save to device %s."
+msgstr ""
+
 msgid "Generate .m3u files and save to device %s?"
 msgstr ""
 
@@ -279,7 +335,13 @@ msgstr ""
 msgid "Hide/Show"
 msgstr ""
 
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr ""
+
 msgid "Important Notes:"
+msgstr ""
+
+msgid "Ipv6 State Of Lan (On/Off)"
 msgstr ""
 
 msgid "Keyboard"
@@ -294,6 +356,9 @@ msgstr ""
 msgid "License: CC BY-NC-SA 4.0"
 msgstr ""
 
+msgid "Link in Main Menu"
+msgstr "Ana Menüdeki Bağlantı"
+
 msgid "Lower = less interruption but more refreshes"
 msgstr ""
 
@@ -305,6 +370,12 @@ msgstr ""
 
 msgid "M3U generation error: %s"
 msgstr ""
+
+msgid "Minimum similarity for matching channels (higher = stricter)."
+msgstr ""
+
+msgid "Movie Services Reference"
+msgstr "Film Hizmetleri Referansı"
 
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
@@ -334,16 +405,25 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr ""
 
+msgid "Now %s"
+msgstr ""
+
 msgid "Only one specific country"
 msgstr ""
 
 msgid "Please try another channel."
 msgstr ""
 
+msgid "Position of Vavoo bouquets in the main list"
+msgstr ""
+
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
 msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
 msgstr ""
 
 msgid "Proxy Error:"
@@ -382,6 +462,10 @@ msgstr "Ayarları kaydetmeden gerçekten kapatılsın mı?"
 msgid "Recommended: 5-8 minutes"
 msgstr ""
 
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "Güncelleme aralığı (dakika):"
+
 msgid "Refresh stream every X minutes (1-15)"
 msgstr ""
 
@@ -415,6 +499,13 @@ msgstr ""
 msgid "Saved in: %s"
 msgstr ""
 
+msgid "Schedule type:"
+msgstr "Zamanlama türü:"
+
+#, fuzzy
+msgid "Scheduled List:"
+msgstr "Zamanlama türü:"
+
 msgid "Search"
 msgstr "Arama"
 
@@ -429,10 +520,19 @@ msgstr "Arama"
 msgid "Search:"
 msgstr "Arama"
 
+msgid "Select Background"
+msgstr ""
+
 msgid "Select M3U export mode:"
 msgstr ""
 
 msgid "Select country to export M3U:"
+msgstr ""
+
+msgid "Server for Player Used"
+msgstr ""
+
+msgid "Server for player."
 msgstr ""
 
 msgid "Showing all channels: {}"
@@ -459,6 +559,9 @@ msgstr ""
 msgid "This will:"
 msgstr ""
 
+msgid "Time to start update:"
+msgstr "Güncellemeye başlama zamanı:"
+
 msgid "Top"
 msgstr ""
 
@@ -467,6 +570,13 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
+
+#, fuzzy
+msgid "Update interval (hours)"
+msgstr "Güncelleme aralığı (dakika):"
+
+msgid "Update interval (minutes):"
+msgstr "Güncelleme aralığı (dakika):"
 
 msgid "Updating EPG..."
 msgstr ""
@@ -540,50 +650,6 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
-
-#~ msgid "Active Automatic Bouquet Update"
-#~ msgstr "Aktif Otomatik Buket Güncelleme"
-
-#, fuzzy
-#~ msgid "At an interval hours or fixed time"
-#~ msgstr "Saatler aralığında veya sabit bir zamanda"
-
-#~ msgid "Configure at a fixed time"
-#~ msgstr "Sabit bir zamanda yapılandırın"
-
-#, fuzzy
-#~ msgid "Configure interval minutes from now"
-#~ msgstr "Şu andan itibaren her dakika aralığını yapılandırın"
-
-#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-#~ msgstr "Hizmeti yapılandırma Referansı Iptv-Gstreamer-Exteplayer3"
-
-#~ msgid "Link in Main Menu"
-#~ msgstr "Ana Menüdeki Bağlantı"
-
-#~ msgid "Movie Services Reference"
-#~ msgstr "Film Hizmetleri Referansı"
-
-#, fuzzy
-#~ msgid "Refresh stream (minutes):"
-#~ msgstr "Güncelleme aralığı (dakika):"
-
-#~ msgid "Schedule type:"
-#~ msgstr "Zamanlama türü:"
-
-#, fuzzy
-#~ msgid "Scheduled List:"
-#~ msgstr "Zamanlama türü:"
-
-#~ msgid "Time to start update:"
-#~ msgstr "Güncellemeye başlama zamanı:"
-
-#, fuzzy
-#~ msgid "Update interval (hours)"
-#~ msgstr "Güncelleme aralığı (dakika):"
-
-#~ msgid "Update interval (minutes):"
-#~ msgstr "Güncelleme aralığı (dakika):"
 
 #, fuzzy
 #~ msgid "At an interval of hours or at a fixed time"

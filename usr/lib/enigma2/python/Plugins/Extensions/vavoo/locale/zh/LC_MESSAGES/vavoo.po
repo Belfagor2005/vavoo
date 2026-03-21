@@ -105,13 +105,30 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
+msgid "Active Automatic Bouquet Update"
+msgstr "主动自动列表更新"
+
+#, fuzzy
+msgid "Active or Disactive Ipv6."
+msgstr "启用或禁用局域网Ipv6,当前是：%s"
+
 msgid "All countries (%d)"
 msgstr ""
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr ""
 
+#, fuzzy
+msgid "At an interval hours or fixed time"
+msgstr "每隔几个小时或固定时间"
+
 msgid "Author:"
+msgstr ""
+
+msgid "Auto-update EPG"
+msgstr ""
+
+msgid "Automatically trigger EPG update after source creation"
 msgstr ""
 
 msgid "Back"
@@ -122,6 +139,9 @@ msgid "Backspace"
 msgstr "返回"
 
 msgid "Bottom"
+msgstr ""
+
+msgid "Bouquet Position in List"
 msgstr ""
 
 msgid "Bouquet creation error: {}"
@@ -169,6 +189,20 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+#, fuzzy
+msgid "Configure Main Background Image."
+msgstr "在固定时间配置"
+
+msgid "Configure at a fixed time"
+msgstr "在固定时间配置"
+
+#, fuzzy
+msgid "Configure interval minutes from now"
+msgstr "从现在起每隔几分钟配置一次"
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "配置服务引用Dvb-Iptv-Gstreamer-Exteplayer3"
+
 msgid "Console"
 msgstr ""
 
@@ -181,13 +215,25 @@ msgstr ""
 msgid "Country: %s"
 msgstr ""
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr ""
+
 msgid "Credits:"
+msgstr ""
+
+msgid "Default View"
+msgstr ""
+
+msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
 msgstr ""
 
 msgid "Do you want to fix the cache format?"
+msgstr ""
+
+msgid "EPG Similarity Threshold (%)"
 msgstr ""
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
@@ -206,6 +252,12 @@ msgid "EPG update failed"
 msgstr ""
 
 msgid "EPG update started successfully"
+msgstr ""
+
+msgid "Enable Vavoo EPG"
+msgstr ""
+
+msgid "Enable or disable proxy."
 msgstr ""
 
 msgid "Enter text to search..."
@@ -271,6 +323,12 @@ msgstr ""
 msgid "Generate .m3u file for:"
 msgstr ""
 
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr ""
+
+msgid "Generate .m3u files and save to device %s."
+msgstr ""
+
 msgid "Generate .m3u files and save to device %s?"
 msgstr ""
 
@@ -280,8 +338,15 @@ msgstr ""
 msgid "Hide/Show"
 msgstr ""
 
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+msgstr ""
+
 msgid "Important Notes:"
 msgstr ""
+
+#, fuzzy
+msgid "Ipv6 State Of Lan (On/Off)"
+msgstr "Ipv6状态局域网（开/关） ，现在是："
 
 msgid "Keyboard"
 msgstr ""
@@ -295,6 +360,9 @@ msgstr ""
 msgid "License: CC BY-NC-SA 4.0"
 msgstr ""
 
+msgid "Link in Main Menu"
+msgstr "主菜单中显示插件"
+
 msgid "Lower = less interruption but more refreshes"
 msgstr ""
 
@@ -306,6 +374,12 @@ msgstr ""
 
 msgid "M3U generation error: %s"
 msgstr ""
+
+msgid "Minimum similarity for matching channels (higher = stricter)."
+msgstr ""
+
+msgid "Movie Services Reference"
+msgstr "电影服务参考"
 
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
@@ -336,16 +410,25 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr ""
 
+msgid "Now %s"
+msgstr ""
+
 msgid "Only one specific country"
 msgstr ""
 
 msgid "Please try another channel."
 msgstr ""
 
+msgid "Position of Vavoo bouquets in the main list"
+msgstr ""
+
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
 msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
 msgstr ""
 
 msgid "Proxy Error:"
@@ -384,6 +467,10 @@ msgstr "是否关闭而不保存设置？"
 msgid "Recommended: 5-8 minutes"
 msgstr ""
 
+#, fuzzy
+msgid "Refresh stream (minutes):"
+msgstr "更新间隔（分钟） ："
+
 msgid "Refresh stream every X minutes (1-15)"
 msgstr ""
 
@@ -417,6 +504,13 @@ msgstr ""
 msgid "Saved in: %s"
 msgstr ""
 
+msgid "Schedule type:"
+msgstr "计划类型:"
+
+#, fuzzy
+msgid "Scheduled List:"
+msgstr "计划类型:"
+
 msgid "Search"
 msgstr "搜索"
 
@@ -431,11 +525,23 @@ msgstr "搜索"
 msgid "Search:"
 msgstr "搜索"
 
+#, fuzzy
+msgid "Select Background"
+msgstr "选择字体"
+
 msgid "Select M3U export mode:"
 msgstr ""
 
 msgid "Select country to export M3U:"
 msgstr ""
+
+#, fuzzy
+msgid "Server for Player Used"
+msgstr "使用的播放器服务器"
+
+#, fuzzy
+msgid "Server for player."
+msgstr "播放器服务器，使用: %s"
 
 msgid "Showing all channels: {}"
 msgstr ""
@@ -461,6 +567,9 @@ msgstr ""
 msgid "This will:"
 msgstr ""
 
+msgid "Time to start update:"
+msgstr "开始更新的时间："
+
 msgid "Top"
 msgstr ""
 
@@ -469,6 +578,13 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
+
+#, fuzzy
+msgid "Update interval (hours)"
+msgstr "更新间隔（分钟） ："
+
+msgid "Update interval (minutes):"
+msgstr "更新间隔（分钟） ："
 
 msgid "Updating EPG..."
 msgstr ""
@@ -543,74 +659,6 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
-
-#~ msgid "Active Automatic Bouquet Update"
-#~ msgstr "主动自动列表更新"
-
-#, fuzzy
-#~ msgid "Active or Disactive Ipv6."
-#~ msgstr "启用或禁用局域网Ipv6,当前是：%s"
-
-#, fuzzy
-#~ msgid "At an interval hours or fixed time"
-#~ msgstr "每隔几个小时或固定时间"
-
-#, fuzzy
-#~ msgid "Configure Main Background Image."
-#~ msgstr "在固定时间配置"
-
-#~ msgid "Configure at a fixed time"
-#~ msgstr "在固定时间配置"
-
-#, fuzzy
-#~ msgid "Configure interval minutes from now"
-#~ msgstr "从现在起每隔几分钟配置一次"
-
-#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-#~ msgstr "配置服务引用Dvb-Iptv-Gstreamer-Exteplayer3"
-
-#, fuzzy
-#~ msgid "Ipv6 State Of Lan (On/Off)"
-#~ msgstr "Ipv6状态局域网（开/关） ，现在是："
-
-#~ msgid "Link in Main Menu"
-#~ msgstr "主菜单中显示插件"
-
-#~ msgid "Movie Services Reference"
-#~ msgstr "电影服务参考"
-
-#, fuzzy
-#~ msgid "Refresh stream (minutes):"
-#~ msgstr "更新间隔（分钟） ："
-
-#~ msgid "Schedule type:"
-#~ msgstr "计划类型:"
-
-#, fuzzy
-#~ msgid "Scheduled List:"
-#~ msgstr "计划类型:"
-
-#, fuzzy
-#~ msgid "Select Background"
-#~ msgstr "选择字体"
-
-#, fuzzy
-#~ msgid "Server for Player Used"
-#~ msgstr "使用的播放器服务器"
-
-#, fuzzy
-#~ msgid "Server for player."
-#~ msgstr "播放器服务器，使用: %s"
-
-#~ msgid "Time to start update:"
-#~ msgstr "开始更新的时间："
-
-#, fuzzy
-#~ msgid "Update interval (hours)"
-#~ msgstr "更新间隔（分钟） ："
-
-#~ msgid "Update interval (minutes):"
-#~ msgstr "更新间隔（分钟） ："
 
 #, fuzzy
 #~ msgid "Active or Disactive lan Ipv6."
