@@ -687,7 +687,7 @@ def get_proxy_channels(country_name):
 
     for attempt in range(max_retries):
         try:
-            print("Getting channels for '" + str(country_name) +
+            print("Getting channels for '" + str(country_name) + \
                   "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
 
             # URL-encode
@@ -2314,7 +2314,8 @@ def fix_cache_format(remove_duplicates=True):
 
             # Field 'matched': TRUE if id is valid OR sref is valid
             current_matched = value.get('matched', False)
-            correct_matched = VavooEPGMatcher.is_valid_rytec_id(current_id) or is_valid_sref(current_sref)
+            correct_matched = VavooEPGMatcher.is_valid_rytec_id(
+                current_id) or is_valid_sref(current_sref)
             if current_matched != correct_matched:
                 value['matched'] = correct_matched
                 changed = True
@@ -2322,7 +2323,8 @@ def fix_cache_format(remove_duplicates=True):
             if changed:
                 modified += 1
 
-        # If you want to remove duplicates, you can do it here, but not required for now
+        # If you want to remove duplicates, you can do it here, but not
+        # required for now
         if remove_duplicates:
             # possible duplicate removal logic, if needed
             pass

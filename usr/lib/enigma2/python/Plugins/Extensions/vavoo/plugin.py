@@ -844,8 +844,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 add_entry(
                     "Update interval (hours)",
                     cfg.epg_update_interval,
-                    "How often to auto-update the EPG (requires EPGImport scheduler)"
-                )
+                    "How often to auto-update the EPG (requires EPGImport scheduler)")
 
         add_entry(
             "Movie Services Reference",
