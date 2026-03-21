@@ -100,29 +100,14 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
-msgid "Active Automatic Bouquet Update"
-msgstr "激活自动节目列表更新"
-
-msgid "Active or Disactive Ipv6."
-msgstr "启用或禁用 IPv6。"
-
 msgid "All countries (%d)"
 msgstr "所有国家 (%d)"
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr "另一个国家的导出正在进行中。请等待。"
 
-msgid "At an interval hours or fixed time"
-msgstr "按小时间隔或固定时间"
-
 msgid "Author:"
 msgstr "作者:"
-
-msgid "Auto-update EPG"
-msgstr "自动更新 EPG"
-
-msgid "Automatically trigger EPG update after source creation"
-msgstr "创建源后自动触发 EPG 更新"
 
 msgid "Back"
 msgstr "返回"
@@ -132,9 +117,6 @@ msgstr "退格"
 
 msgid "Bottom"
 msgstr "底部"
-
-msgid "Bouquet Position in List"
-msgstr "节目列表在列表中的位置"
 
 #, fuzzy
 msgid "Bouquet creation error: {}"
@@ -185,18 +167,6 @@ msgstr "全部清除"
 msgid "Configuration saved successfully!"
 msgstr "配置保存成功！"
 
-msgid "Configure Main Background Image."
-msgstr "配置主背景图像。"
-
-msgid "Configure at a fixed time"
-msgstr "在固定时间配置"
-
-msgid "Configure interval minutes from now"
-msgstr "从现在开始配置间隔分钟"
-
-msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "配置服务参考 Iptv-Gstreamer-Exteplayer3"
-
 msgid "Console"
 msgstr "控制台"
 
@@ -209,17 +179,8 @@ msgstr "国家: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "国家: %s"
 
-msgid "Create EPG source for EPGImport with Vavoo program data"
-msgstr "使用 Vavoo 节目数据为 EPGImport 创建 EPG 源"
-
 msgid "Credits:"
 msgstr "致谢:"
-
-msgid "Default View"
-msgstr "默认视图"
-
-msgid "Default view when opening the plugin"
-msgstr "打开插件时的默认视图"
 
 msgid "Do you want to export this bouquet?"
 msgstr "是否要导出此节目列表？"
@@ -227,9 +188,6 @@ msgstr "是否要导出此节目列表？"
 #, fuzzy
 msgid "Do you want to fix the cache format?"
 msgstr "是否要导出此节目列表？"
-
-msgid "EPG Similarity Threshold (%)"
-msgstr ""
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
 msgstr "EPG 已禁用。请先在 Vavoo 设置中启用它。"
@@ -250,12 +208,6 @@ msgstr "EPG 更新失败"
 
 msgid "EPG update started successfully"
 msgstr "EPG 更新成功启动"
-
-msgid "Enable Vavoo EPG"
-msgstr "启用 Vavoo EPG"
-
-msgid "Enable or disable proxy."
-msgstr "启用或禁用代理。"
 
 msgid "Enter text to search..."
 msgstr "输入要搜索的文本..."
@@ -321,12 +273,6 @@ msgstr "找到: {} 个频道"
 msgid "Generate .m3u file for:"
 msgstr "为以下内容生成 .m3u 文件:"
 
-msgid "Generate .m3u files (Ok for Exec)"
-msgstr "生成 .m3u 文件（可用于执行）"
-
-msgid "Generate .m3u files and save to device %s."
-msgstr "生成 .m3u 文件并保存到设备 %s。"
-
 msgid "Generate .m3u files and save to device %s?"
 msgstr "生成 .m3u 文件并保存到设备 %s？"
 
@@ -336,14 +282,8 @@ msgstr "为所有 %d 个国家生成 .m3u 文件？"
 msgid "Hide/Show"
 msgstr "隐藏/显示"
 
-msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
-msgstr "自动更新 EPG 的频率（需要 EPGImport 调度程序）"
-
 msgid "Important Notes:"
 msgstr "重要说明:"
-
-msgid "Ipv6 State Of Lan (On/Off)"
-msgstr "局域网 IPv6 状态（开/关）"
 
 msgid "Keyboard"
 msgstr "键盘"
@@ -357,9 +297,6 @@ msgstr "许可证:"
 msgid "License: CC BY-NC-SA 4.0"
 msgstr "许可证: CC BY-NC-SA 4.0"
 
-msgid "Link in Main Menu"
-msgstr "主菜单中的链接"
-
 msgid "Lower = less interruption but more refreshes"
 msgstr "数值越低 = 中断越少但刷新越多"
 
@@ -371,12 +308,6 @@ msgstr "M3U 生成完成！"
 
 msgid "M3U generation error: %s"
 msgstr "M3U 生成错误: %s"
-
-msgid "Minimum similarity for matching channels (higher = stricter)."
-msgstr ""
-
-msgid "Movie Services Reference"
-msgstr "电影服务参考"
 
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
@@ -405,26 +336,17 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr "没有有效的频道: %s"
 
-msgid "Now %s"
-msgstr "现在 %s"
-
 msgid "Only one specific country"
 msgstr "仅限一个特定国家"
 
 msgid "Please try another channel."
 msgstr "请尝试其他频道。"
 
-msgid "Position of Vavoo bouquets in the main list"
-msgstr "Vavoo 节目列表在主列表中的位置"
-
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "按 TEXT 按钮输入，按 BACKSPACE 删除"
 
 msgid "Proxy Disabled"
 msgstr "代理已禁用"
-
-msgid "Proxy Enabled"
-msgstr "代理已启用"
 
 msgid "Proxy Error:"
 msgstr ""
@@ -462,9 +384,6 @@ msgstr "确定不保存设置就关闭吗？"
 msgid "Recommended: 5-8 minutes"
 msgstr "建议: 5-8 分钟"
 
-msgid "Refresh stream (minutes):"
-msgstr "刷新流（分钟）:"
-
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "每 X 分钟刷新流 (1-15)"
 
@@ -499,12 +418,6 @@ msgstr "保存在: %(path)s"
 msgid "Saved in: %s"
 msgstr "保存在: %s"
 
-msgid "Schedule type:"
-msgstr "计划类型:"
-
-msgid "Scheduled List:"
-msgstr "计划列表:"
-
 msgid "Search"
 msgstr "搜索"
 
@@ -517,20 +430,11 @@ msgstr "搜索..."
 msgid "Search:"
 msgstr "搜索:"
 
-msgid "Select Background"
-msgstr "选择背景"
-
 msgid "Select M3U export mode:"
 msgstr "选择 M3U 导出模式:"
 
 msgid "Select country to export M3U:"
 msgstr "选择要导出 M3U 的国家:"
-
-msgid "Server for Player Used"
-msgstr "使用的播放器服务器"
-
-msgid "Server for player."
-msgstr "播放器服务器。"
 
 msgid "Showing all channels: {}"
 msgstr "显示所有频道: {}"
@@ -557,9 +461,6 @@ msgstr "这将移除:"
 msgid "This will:"
 msgstr "这将移除:"
 
-msgid "Time to start update:"
-msgstr "开始更新时间:"
-
 msgid "Top"
 msgstr "顶部"
 
@@ -568,12 +469,6 @@ msgstr "总频道数: %(total_channels)d"
 
 msgid "UPPERCASE"
 msgstr "大写"
-
-msgid "Update interval (hours)"
-msgstr "更新间隔（小时）"
-
-msgid "Update interval (minutes):"
-msgstr "更新间隔（分钟）:"
 
 msgid "Updating EPG..."
 msgstr "正在更新 EPG..."
@@ -648,3 +543,102 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
+
+#~ msgid "Active Automatic Bouquet Update"
+#~ msgstr "激活自动节目列表更新"
+
+#~ msgid "Active or Disactive Ipv6."
+#~ msgstr "启用或禁用 IPv6。"
+
+#~ msgid "At an interval hours or fixed time"
+#~ msgstr "按小时间隔或固定时间"
+
+#~ msgid "Auto-update EPG"
+#~ msgstr "自动更新 EPG"
+
+#~ msgid "Automatically trigger EPG update after source creation"
+#~ msgstr "创建源后自动触发 EPG 更新"
+
+#~ msgid "Bouquet Position in List"
+#~ msgstr "节目列表在列表中的位置"
+
+#~ msgid "Configure Main Background Image."
+#~ msgstr "配置主背景图像。"
+
+#~ msgid "Configure at a fixed time"
+#~ msgstr "在固定时间配置"
+
+#~ msgid "Configure interval minutes from now"
+#~ msgstr "从现在开始配置间隔分钟"
+
+#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+#~ msgstr "配置服务参考 Iptv-Gstreamer-Exteplayer3"
+
+#~ msgid "Create EPG source for EPGImport with Vavoo program data"
+#~ msgstr "使用 Vavoo 节目数据为 EPGImport 创建 EPG 源"
+
+#~ msgid "Default View"
+#~ msgstr "默认视图"
+
+#~ msgid "Default view when opening the plugin"
+#~ msgstr "打开插件时的默认视图"
+
+#~ msgid "Enable Vavoo EPG"
+#~ msgstr "启用 Vavoo EPG"
+
+#~ msgid "Enable or disable proxy."
+#~ msgstr "启用或禁用代理。"
+
+#~ msgid "Generate .m3u files (Ok for Exec)"
+#~ msgstr "生成 .m3u 文件（可用于执行）"
+
+#~ msgid "Generate .m3u files and save to device %s."
+#~ msgstr "生成 .m3u 文件并保存到设备 %s。"
+
+#~ msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+#~ msgstr "自动更新 EPG 的频率（需要 EPGImport 调度程序）"
+
+#~ msgid "Ipv6 State Of Lan (On/Off)"
+#~ msgstr "局域网 IPv6 状态（开/关）"
+
+#~ msgid "Link in Main Menu"
+#~ msgstr "主菜单中的链接"
+
+#~ msgid "Movie Services Reference"
+#~ msgstr "电影服务参考"
+
+#~ msgid "Now %s"
+#~ msgstr "现在 %s"
+
+#~ msgid "Position of Vavoo bouquets in the main list"
+#~ msgstr "Vavoo 节目列表在主列表中的位置"
+
+#~ msgid "Proxy Enabled"
+#~ msgstr "代理已启用"
+
+#~ msgid "Refresh stream (minutes):"
+#~ msgstr "刷新流（分钟）:"
+
+#~ msgid "Schedule type:"
+#~ msgstr "计划类型:"
+
+#~ msgid "Scheduled List:"
+#~ msgstr "计划列表:"
+
+#~ msgid "Select Background"
+#~ msgstr "选择背景"
+
+#~ msgid "Server for Player Used"
+#~ msgstr "使用的播放器服务器"
+
+#~ msgid "Server for player."
+#~ msgstr "播放器服务器。"
+
+#~ msgid "Time to start update:"
+#~ msgstr "开始更新时间:"
+
+#~ msgid "Update interval (hours)"
+#~ msgstr "更新间隔（小时）"
+
+#~ msgid "Update interval (minutes):"
+#~ msgstr "更新间隔（分钟）:"

@@ -14,886 +14,641 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: Console.py:73 plugin.py:967 plugin.py:1038
-msgid "Cancel"
-msgstr "Άκυρο"
-
-#: Console.py:74
-msgid "Hide/Show"
-msgstr "Απόκρυψη/Εμφάνιση"
-
-#: Console.py:75
-msgid "Restart"
-msgstr "Επανεκκίνηση"
-
-#: Console.py:90
-msgid "Console"
-msgstr "Κονσόλα"
-
-#: Console.py:112
-msgid ""
-"Execution progress\n"
-"\n"
-msgstr ""
-"Πρόοδος εκτέλεσης\n"
-"\n"
-
-#: Console.py:167
-msgid "Cancel execution?"
-msgstr "Να γίνει ακύρωση της εκτέλεσης;"
-
-#: plugin.py:458
-msgid "interval"
-msgstr "διάστημα"
-
-#: plugin.py:458
-msgid "fixed time"
-msgstr "σταθερή ώρα"
-
-#: plugin.py:474
-msgid "Countries"
-msgstr "Χώρες"
-
-#: plugin.py:478
-msgid "Bottom"
-msgstr "Κάτω"
-
-#: plugin.py:478
-msgid "Top"
-msgstr "Πάνω"
-
-#: plugin.py:762 plugin.py:2755
-msgid "Back"
-msgstr "Πίσω"
-
-#: plugin.py:763
-msgid "- - - -"
-msgstr "- - - -"
-
-#: plugin.py:788
-#, python-format
-msgid "Last channel update: %s"
-msgstr "Τελευταία ενημέρωση καναλιών: %s"
-
-#: plugin.py:801
-msgid "Generate .m3u files (Ok for Exec)"
-msgstr "Δημιουργία αρχείων .m3u (πιέστε OK)"
-
-#: plugin.py:803
-#, python-format
-msgid "Generate .m3u files and save to device %s."
-msgstr "Δημιουργία αρχείων .m3u και αποθήκευση στο %s."
-
-#: plugin.py:808
-msgid "Proxy Enabled"
-msgstr "Proxy ενεργοποιημένος"
-
-#: plugin.py:810
-msgid "Enable or disable proxy."
-msgstr "Ενεργοποίηση ή απενεργοποίηση του proxy."
-
-#: plugin.py:816
-msgid "Default View"
-msgstr "Προεπιλεγμένη προβολή"
-
-#: plugin.py:818
-msgid "Default view when opening the plugin"
-msgstr "Προεπιλεγμένη προβολή κατά το άνοιγμα του πρόσθετου"
-
-#: plugin.py:819
-msgid "Server for player."
-msgstr "Διακομιστής για αναπαραγωγή."
-
-#: plugin.py:820 plugin.py:886
-#, python-format
-msgid "Now %s"
-msgstr "Τώρα %s"
-
-#: plugin.py:824
-msgid "Server for Player Used"
-msgstr "Διακομιστής για αναπαραγωγή"
-
-#: plugin.py:830
-msgid "Enable Vavoo EPG"
-msgstr "Ενεργοποίηση Vavoo EPG"
-
-#: plugin.py:832
-msgid "Create EPG source for EPGImport with Vavoo program data"
-msgstr "Δημιουργία πηγής EPG για το EPGImport με δεδομένα προγράμματος Vavoo"
-
-#: plugin.py:837
-msgid "Auto-update EPG"
-msgstr "Αυτόματη ενημέρωση EPG"
-
-#: plugin.py:839
-msgid "Automatically trigger EPG update after source creation"
-msgstr "Αυτόματη ενεργοποίηση ενημέρωσης EPG μετά τη δημιουργία πηγής"
-
-#: plugin.py:843
-msgid "EPG Similarity Threshold (%)"
-msgstr "Όριο ομοιότητας EPG (%)"
-
-#: plugin.py:845
-msgid "Minimum similarity for matching channels (higher = stricter)."
-msgstr "Ελάχιστη ομοιότητα για αντιστοίχιση καναλιών (υψηλότερη τιμή = πιο αυστηρή)."
-
-#: plugin.py:851
-msgid "Update interval (hours)"
-msgstr "Διάστημα ενημέρωσης (ώρες)"
-
-#: plugin.py:853
-msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
-msgstr "Πόσο συχνά θα γίνεται αυτόματη ενημέρωση του EPG (απαιτείται προγραμματιστής EPGImport)"
-
-#: plugin.py:857
-msgid "Movie Services Reference"
-msgstr "Αναφορά υπηρεσιών ταινιών"
-
-#: plugin.py:859
-msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "Ρύθμιση αναφοράς υπηρεσιών Iptv-Gstreamer-Exteplayer3"
-
-#: plugin.py:863
-msgid "Bouquet Position in List"
-msgstr "Θέση των μπουκέτων στη λίστα"
-
-#: plugin.py:865
-msgid "Position of Vavoo bouquets in the main list"
-msgstr "Θέση των μπουκέτων Vavoo στην κύρια λίστα"
-
-#: plugin.py:868
-msgid "Refresh stream every X minutes (1-15)"
-msgstr "Ανανέωση ροής κάθε X λεπτά (1-15)"
-
-#: plugin.py:869
-msgid "Recommended: 5-8 minutes"
-msgstr "Προτείνονται: 5-8 λεπτά"
-
-#: plugin.py:870
-msgid "Lower = less interruption but more refreshes"
-msgstr "Χαμηλότερα = λίγες διακοπές, πολλές ανανεώσεις"
-
-#: plugin.py:874
-msgid "Refresh stream (minutes):"
-msgstr "Ανανέωση ροής (λεπτά):"
-
-#: plugin.py:881
-msgid "Select Background"
-msgstr "Επιλογή φόντου"
-
-#: plugin.py:883
-msgid "Configure Main Background Image."
-msgstr "Ρύθμιση της κύριας εικόνας φόντου."
-
-#: plugin.py:885
-msgid "Active or Disactive Ipv6."
-msgstr "Ενεργοποίηση ή απενεργοποίηση IPv6."
-
-#: plugin.py:891
-msgid "Ipv6 State Of Lan (On/Off)"
-msgstr "Κατάσταση Lan Ipv6 (On/Off)"
-
-#: plugin.py:898
-msgid "Scheduled List:"
-msgstr "Προγραμματισμένη λίστα:"
-
-#: plugin.py:900
-msgid "Active Automatic Bouquet Update"
-msgstr "Ενεργοποίηση αυτόματης ενημέρωσης μπουκέτου"
-
-#: plugin.py:904
-msgid "Schedule type:"
-msgstr "Τύπος προγραμματισμού:"
-
-#: plugin.py:906
-msgid "At an interval hours or fixed time"
-msgstr "Σε χρονικό διάστημα ωρών ή σε σταθερή ώρα"
-
-#: plugin.py:910
-msgid "Update interval (minutes):"
-msgstr "Διάστημα ενημέρωσης (λεπτά)"
-
-#: plugin.py:912
-msgid "Configure interval minutes from now"
-msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
-
-#: plugin.py:916
-msgid "Time to start update:"
-msgstr "Ώρα έναρξης ενημέρωσης:"
-
-#: plugin.py:918
-msgid "Configure at a fixed time"
-msgstr "Ρύθμιση σε σταθερή ώρα"
-
-#: plugin.py:922 plugin.py:924
-msgid "Link in Main Menu"
-msgstr "Σύνδεσμος στο κύριο μενού"
-
-#: plugin.py:935
-#, python-format
-msgid "Generate .m3u files and save to device %s?"
-msgstr "Να γίνει δημιουργία αρχείων .m3u και να αποθηκευτούν στη συσκευή %s;"
-
-#: plugin.py:947
-msgid "Proxy not active. Unable to generate M3U file."
-msgstr "Ο proxy δεν είναι ενεργός. Αδυναμία δημιουργίας αρχείου M3U."
-
-#: plugin.py:965
-#, python-format
-msgid "All countries (%d)"
-msgstr "Όλες οι χώρες (%d)"
-
-#: plugin.py:966
-msgid "Only one specific country"
-msgstr "Μόνο μία συγκεκριμένη χώρα"
-
-#: plugin.py:973
-msgid "Select M3U export mode:"
-msgstr "Επιλέξτε λειτουργία εξαγωγής M3U:"
-
-#: plugin.py:981 plugin.py:1021
-#, python-format
-msgid "Error: %s"
-msgstr "Σφάλμα: %s"
-
-#: plugin.py:1010
-#, python-format
-msgid "Generate .m3u files for ALL %d countries?"
-msgstr "Δημιουργία αρχείων .m3u για ΟΛΕΣ τις %d χώρες;"
-
-#: plugin.py:1043
-msgid "Select country to export M3U:"
-msgstr "Επιλέξτε χώρα για εξαγωγή M3U:"
-
-#: plugin.py:1062
-#, python-format
-msgid "No channels found for: %s"
-msgstr "Δεν βρέθηκαν κανάλια για: %s"
-
-#: plugin.py:1071
-msgid "Generate .m3u file for:"
-msgstr "Δημιουργία αρχείου .m3u για:"
-
-#: plugin.py:1073
-#, python-format
-msgid "(%d channels)?"
-msgstr "(%d κανάλια);"
-
-#: plugin.py:1097
-msgid "M3U file generated successfully!"
-msgstr "Το αρχείο M3U δημιουργήθηκε με επιτυχία!"
-
-#: plugin.py:1099
-#, python-format
-msgid "Country: %s"
-msgstr "Χώρα: %s"
-
-#: plugin.py:1100
-#, python-format
-msgid "Channels: %d"
-msgstr "Κανάλια: %d"
-
-#: plugin.py:1101
-#, python-format
-msgid "Saved in: %s"
-msgstr "Αποθηκεύτηκε σε: %s"
-
-#: plugin.py:1112
-#, python-format
-msgid "No valid channels for: %s"
-msgstr "Δεν υπάρχουν έγκυρα κανάλια για: %s"
-
-#: plugin.py:1121 plugin.py:1190
-#, python-format
-msgid "M3U generation error: %s"
-msgstr "Σφάλμα δημιουργίας M3U: %s"
-
-#: plugin.py:1167
-msgid "M3U generation completed!"
-msgstr "Η δημιουργία M3U ολοκληρώθηκε!"
-
-#: plugin.py:1169
-#, python-format
-msgid "Countries: %(generated)d/%(total)d"
-msgstr "Χώρες: %(generated)d/%(total)d"
-
-#: plugin.py:1172
-#, python-format
-msgid "Failed: %(failed)d"
-msgstr "Απέτυχαν: %(failed)d"
-
-#: plugin.py:1174
-#, python-format
-msgid "Total channels: %(total_channels)d"
-msgstr "Σύνολο καναλιών: %(total_channels)d"
-
-#: plugin.py:1177
-#, python-format
-msgid "Saved in: %(path)s"
-msgstr "Αποθηκεύτηκε σε: %(path)s"
-
-#: plugin.py:1319
-msgid "SELECT YOUR CHOICE"
-msgstr "ΕΠΙΛΕΞΤΕ ΤΗΝ ΕΠΙΛΟΓΗ ΣΑΣ"
-
-#: plugin.py:1344
-msgid "Save"
-msgstr "Αποθήκευση"
-
-#: plugin.py:1384
-msgid "Bouquets reorganized successfully!"
-msgstr "Η αναδιοργάνωση των μπουκέτων ολοκληρώθηκε με επιτυχία!"
-
-#: plugin.py:1430
-msgid "EPG update started successfully"
-msgstr "Η ενημέρωση EPG ξεκίνησε επιτυχώς"
-
-#: plugin.py:1435 plugin.py:2455
-msgid "EPG update failed"
-msgstr "Η ενημέρωση EPG απέτυχε"
-
-#: plugin.py:1440
-#, python-brace-format
-msgid "Error starting EPG update: {}"
-msgstr "Σφάλμα κατά την εκκίνηση της ενημέρωσης EPG: {}"
-
-#: plugin.py:1498
-msgid "Configuration saved successfully!"
-msgstr "Η ρύθμιση αποθηκεύτηκε με επιτυχία!"
-
-#: plugin.py:1520
-msgid "Really close without saving settings?"
-msgstr "Θέλετε πραγματικά να κλείσετε χωρίς αποθήκευση των ρυθμίσεων;"
-
-#: plugin.py:1603
-msgid "Welcome to Vavoo Proxy with EPG support"
-msgstr "Καλώς ήρθατε στοn Vavoo proxy με υποστήριξη EPG"
-
-#: plugin.py:1664 plugin.py:2561 plugin.py:2735
-msgid "Checking proxy..."
-msgstr "Έλεγχος proxy..."
-
-#: plugin.py:1673
-msgid "Exit"
-msgstr "Έξοδος"
-
-#: plugin.py:1674
-msgid "Remove"
-msgstr "Αφαίρεση"
-
-#: plugin.py:1677
-msgid "Fix Cache"
-msgstr "Διόρθωση cache"
-
-#: plugin.py:1678 plugin.py:2758
-msgid "Reload Bouqet"
-msgstr "Φόρτωση μπουκέτων"
-
-#: plugin.py:1717
-msgid "Do you want to fix the cache format?"
-msgstr "Θέλετε να διορθωθεί η μορφή της cache;"
-
-#: plugin.py:1718
-msgid "This will:"
-msgstr "Αυτό θα:"
-
-#: plugin.py:1719
-#| msgid "- Add missing fields to all entries"
-msgid "  - Add missing fields to all entries"
-msgstr "  - Προσθήκη πεδίων που λείπουν σε όλες τις καταχωρήσεις"
-
-#: plugin.py:1720
-#| msgid "- Remove duplicate entries"
-msgid "  - Remove duplicate entries"
-msgstr "  - Αφαίρεση διπλότυπων καταχωρήσεων"
-
-#: plugin.py:1721
-#| msgid "- Clean up the cache file"
-msgid "  - Clean up the cache file"
-msgstr "  - Καθαρισμός του αρχείου cache"
-
-#: plugin.py:1738
-msgid "Fixing cache format..."
-msgstr "Διόρθωση μορφής cache..."
-
-#: plugin.py:1744
-msgid "Cache is already in correct format. No changes needed."
-msgstr "Η cache είναι ήδη στη σωστή μορφή. Δεν απαιτούνται αλλαγές."
-
-#: plugin.py:1747
-msgid "Cache format fix completed:"
-msgstr "Η διόρθωση μορφής cache ολοκληρώθηκε:"
-
-#: plugin.py:1750
-#, python-brace-format
-#| msgid "- {} entries updated"
-msgid "  - {} entries updated"
-msgstr "  - Ενημερώθηκαν {} καταχωρήσεις"
-
-#: plugin.py:1753
-#, python-brace-format
-#| msgid "- {} duplicate entries removed"
-msgid "  - {} duplicate entries removed"
-msgstr "  - Αφαιρέθηκαν {} διπλότυπες καταχωρήσεις"
-
-#: plugin.py:1770
-#, python-brace-format
-msgid "Error fixing cache: {}"
-msgstr "Σφάλμα κατά τη διόρθωση της cache: {}"
-
-#: plugin.py:1781
-msgid "Reload bouquets and service list?"
-msgstr "Να γίνει επαναφόρτωση των μπουκέτων και της λίστας υπηρεσιών;"
-
-#: plugin.py:1803
-msgid "Bouquets reload scheduled."
-msgstr "Η επαναφόρτωση των μπουκέτων προγραμματίστηκε."
-
-#: plugin.py:1924
-#| msgid "Restarting..."
-msgid " Restarting..."
-msgstr " Επανεκκίνηση..."
-
-#: plugin.py:1931
-msgid "✓ Restarted"
-msgstr "✓ Επανεκκινήθηκε"
-
-#: plugin.py:1934
-msgid "✗ Restart Failed"
-msgstr "✗ Η επανεκκίνηση απέτυχε"
-
-#: plugin.py:1942 plugin.py:1965 plugin.py:2584 plugin.py:3022
-msgid "Proxy Disabled"
-msgstr "Proxy απενεργοποιημένος"
-
-#: plugin.py:1955 plugin.py:3879
-msgid "✗ Proxy Error"
-msgstr "✗ Σφάλμα proxy"
-
-#: plugin.py:2000 plugin.py:3057
-msgid "✗ Error"
-msgstr "✗ Σφάλμα"
-
-#: plugin.py:2005 plugin.py:2102 plugin.py:2585
-msgid "Proxy disabled"
-msgstr "Ο proxy είναι απενεργοποιημένος"
-
-#: plugin.py:2011
-msgid "Force proxy refresh?"
-msgstr "Εξαναγκασμένη ανανέωση proxy;"
-
-#: plugin.py:2012
-msgid "This will refresh the authentication token."
-msgstr "Αυτό θα ανανεώσει το token πιστοποίησης."
-
-#: plugin.py:2029
-msgid "Proxy token refreshed successfully"
-msgstr "Το token του proxy ανανεώθηκε με επιτυχία"
-
-#: plugin.py:2037
-msgid "Failed to refresh proxy token"
-msgstr "Αποτυχία ανανέωσης του token του proxy"
-
-#: plugin.py:2045
-#| msgid "Failed to refresh proxy:"
-msgid "Failed to refresh proxy: "
-msgstr "Αποτυχία ανανέωσης proxy: "
-
-#: plugin.py:2298
-msgid "Error parsing data"
-msgstr "Σφάλμα ανάλυσης δεδομένων"
-
-#: plugin.py:2306
-msgid "Proxy is disabled. Please enable it in the configuration."
-msgstr "Ο proxy είναι απενεργοποιημένος. Παρακαλώ ενεργοποιήστε τον στις ρυθμίσεις."
-
-#: plugin.py:2368
-msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
-msgstr "Ο proxy είναι απενεργοποιημένος. Παρακαλώ ενεργοποιήστε πρώτα τον proxy. -- Μενού ρυθμίσεων --"
-
-#: plugin.py:2376
-msgid "Proxy is not running. Please start the proxy first."
-msgstr "Ο proxy δεν εκτελείται. Παρακαλώ εκκινήστε πρώτα τον proxy."
-
-#: plugin.py:2378
-msgid "You can start it from the menu or by pressing the TEXT button."
-msgstr "Μπορείτε να τον εκκινήσετε από το μενού ή πατώντας το κουμπί TEXT."
-
-#: plugin.py:2398
-msgid "EPG is disabled. Please enable it in Vavoo settings first."
-msgstr "Το EPG είναι απενεργοποιημένο. Παρακαλώ ενεργοποιήστε το πρώτα στις ρυθμίσεις Vavoo."
-
-#: plugin.py:2407
-msgid "Vavoo EPG source not found. Please export at least one bouquet first."
-msgstr "Η πηγή Vavoo EPG δεν βρέθηκε. Παρακαλώ εξάγετε πρώτα τουλάχιστον ένα μπουκέτο."
-
-#: plugin.py:2426
-msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
-msgstr "Η πηγή Vavoo EPG δεν είναι ενεργοποιημένη στο EPGImport. Παρακαλώ ενεργοποιήστε την στις ρυθμίσεις του EPGImport."
-
-#: plugin.py:2434
-msgid "Start EPG update now?"
-msgstr "Να ξεκινήσει τώρα η ενημέρωση EPG;"
-
-#: plugin.py:2443
-msgid "Updating EPG..."
-msgstr "Ενημέρωση EPG..."
-
-#: plugin.py:2452
-msgid "EPG update completed"
-msgstr "Η ενημέρωση EPG ολοκληρώθηκε"
-
-#: plugin.py:2459
-msgid "Ready"
-msgstr "Έτοιμο"
-
-#: plugin.py:2468
-#, python-brace-format
-msgid "Error: {}"
-msgstr "Σφάλμα: {}"
-
-#: plugin.py:2473
-msgid "Remove ALL Vavoo bouquets?"
-msgstr "Αφαίρεση ΟΛΩΝ των μπουκέτων Vavoo;"
-
-#: plugin.py:2474
-msgid "This will remove:"
-msgstr "Αυτό θα αφαιρέσει:"
-
-#: plugin.py:2475
-msgid "- Country bouquets"
-msgstr "- Μπουκέτα χώρας"
-
-#: plugin.py:2476
-msgid "- Category bouquets"
-msgstr "- Μπουκέτα κατηγορίας"
-
-#: plugin.py:2477
-msgid "- Container bouquets"
-msgstr "- Μπουκέτα κοντέινερ"
-
-#: plugin.py:2501
-msgid "Vavoo bouquets removed successfully!"
-msgstr "Τα μπουκέτα Vavoo αφαιρέθηκαν με επιτυχία!"
-
-#: plugin.py:2503
-#, python-format
-msgid "(%s files deleted)"
-msgstr "(%s αρχεία διαγράφηκαν)"
-
-#: plugin.py:2595
-msgid "Vavoo Stream Live Plugin"
-msgstr "Πρόσθετο Vavoo Stream Live"
-
-#: plugin.py:2598
-#| msgid "Version:"
-msgid "Version: "
-msgstr "Έκδοση: "
-
-#: plugin.py:2599
-#| msgid "Author:"
-msgid "Author: "
-msgstr "Συγγραφέας: "
-
-#: plugin.py:2600
-#| msgid "License:"
-msgid "License: "
-msgstr "Άδεια χρήσης: "
-
-#: plugin.py:2603
-msgid "Technical Features:"
-msgstr "Τεχνικά χαρακτηριστικά:"
-
-#: plugin.py:2604
-msgid "- HTTP Live Streaming"
-msgstr "- Ζωντανή ροή HTTP"
-
-#: plugin.py:2605
-msgid "- TS/M3U8 formats"
-msgstr "- Μορφές TS/M3U8"
-
-#: plugin.py:2606
-msgid "- Service references: 4097, 5001, 5002"
-msgstr "- Αναφορές υπηρεσιών: 4097, 5001, 5002"
-
-#: plugin.py:2607
-msgid "- Automatic bouquet generation"
-msgstr "- Αυτόματη δημιουργία μπουκέτου"
-
-#: plugin.py:2609
-msgid "- Automatic Epg generation with Service Reference"
-msgstr "- Αυτόματη δημιουργία EPG με αναφορά υπηρεσιών"
-
-#: plugin.py:2610
-msgid "- Integrated proxy system"
-msgstr "- Ενσωματωμένο σύστημα proxy"
-
-#: plugin.py:2611
-msgid "- Auto token refresh every 9 minutes"
-msgstr "- Αυτόματη ανανέωση token κάθε 9 λεπτά"
-
-#: plugin.py:2614
-msgid "Credits:"
-msgstr "Συντελεστές:"
-
-#: plugin.py:2615
-msgid "- Graphics: @oktus"
-msgstr "- Γραφικά: @oktus"
-
-#: plugin.py:2617
-msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
-msgstr "- Τεχνική υποστήριξη: Qu4k3, @KiddaC, @giorbak"
-
-#: plugin.py:2619
-msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
-msgstr "- Κοινότητα: Linuxsat-support.com, Corvoboys.org Forum"
-
-#: plugin.py:2622
-msgid "Important Notes:"
-msgstr "Σημαντικές σημειώσεις:"
-
-#: plugin.py:2623
-msgid "- Free content only"
-msgstr "- Μόνο δωρεάν περιεχόμενο"
-
-#: plugin.py:2624
-msgid "- Streams from public sources"
-msgstr "- Ροές από δημόσιες πηγές"
-
-#: plugin.py:2625
-msgid "- No direct server hosting"
-msgstr "- Δεν επιτρέπεται άμεση φιλοξενία διακομιστή"
-
-#: plugin.py:2628
-msgid "License: CC BY-NC-SA 4.0"
-msgstr "Άδεια χρήσης: CC BY-NC-SA 4.0"
-
-#: plugin.py:2629
-msgid "- Redistribution must maintain attribution"
-msgstr "- Η αναδιανομή πρέπει να διατηρεί την αναφορά στον δημιουργό"
-
-#: plugin.py:2630
-msgid "- Commercial use is strictly prohibited"
-msgstr "- Απαγορεύεται αυστηρά η εμπορική χρήση"
-
-#: plugin.py:2639
-msgid "Vavoo Stream Live - Information"
-msgstr "Vavoo Stream Live - Πληροφορίες"
-
-#: plugin.py:2666
-msgid "No items available"
-msgstr "Δεν υπάρχουν διαθέσιμα στοιχεία"
-
-#: plugin.py:2670 plugin.py:2685 plugin.py:3410 plugin.py:3455
-msgid "Error"
-msgstr "Σφάλμα"
-
-#: plugin.py:2682
-msgid "No selection"
-msgstr "Καμία επιλογή"
-
-#: plugin.py:2756
-msgid "Export"
-msgstr "Εξαγωγή"
-
-#: plugin.py:2757
-msgid "Search"
-msgstr "Αναζήτηση"
-
-#: plugin.py:3003
-msgid "Waiting for proxy..."
-msgstr "Αναμονή για τον proxy..."
-
-#: plugin.py:3009
-msgid "Proxy not responding after"
-msgstr "Ο proxy δεν ανταποκρίνεται μετά από"
-
-#: plugin.py:3013
-msgid "seconds"
-msgstr "δευτερόλεπτα"
-
-#: plugin.py:3153
-#| msgid "Proxy Error:"
-msgid "Proxy Error: "
-msgstr "Σφάλμα proxy: "
-
-#: plugin.py:3175
-msgid "Proxy restarting... Please wait"
-msgstr "Επανεκκίνηση proxy... Παρακαλώ περιμένετε"
-
-#: plugin.py:3273
-msgid "Error starting channel"
-msgstr "Σφάλμα εκκίνησης καναλιού"
-
-#: plugin.py:3284
-msgid "Do you want to export this bouquet?"
-msgstr "Θέλετε να εξάγετε αυτό το μπουκέτο;"
-
-#: plugin.py:3296
-msgid "An export for another country is already in progress. Please wait."
-msgstr "Η εξαγωγή για άλλη χώρα βρίσκεται ήδη σε εξέλιξη. Παρακαλώ περιμένετε."
-
-#: plugin.py:3315
-msgid "Export started. Bouquet will be available shortly."
-msgstr "Η εξαγωγή ξεκίνησε. Το μπουκέτο θα είναι διαθέσιμο σύντομα."
-
-#: plugin.py:3320
-#, python-brace-format
-msgid "Bouquet creation error: {}"
-msgstr "Σφάλμα δημιουργίας μπουκέτου: {}"
-
-#: plugin.py:3332
-#, python-brace-format
-msgid "Export failed: {}"
-msgstr "Η εξαγωγή απέτυχε: {}"
-
-#: plugin.py:3341
-#, python-brace-format
-msgid "Bouquet ready with {} channels"
-msgstr "Το μπουκέτο είναι έτοιμο με {} κανάλια"
-
-#: plugin.py:3349
-#, python-brace-format
-msgid "EPG processing completed for {} channels"
-msgstr "Η επεξεργασία EPG ολοκληρώθηκε για {} κανάλια"
-
-#: plugin.py:3352
-msgid "EPG processing completed (no matches)"
-msgstr "Η επεξεργασία EPG ολοκληρώθηκε (χωρίς αντιστοιχίσεις)"
-
-#: plugin.py:3398
-msgid "No channels found in search!!!"
-msgstr "Δεν βρέθηκαν κανάλια στην αναζήτηση!!!"
-
-#: plugin.py:3452 plugin.py:3687
-msgid "No channels found"
-msgstr "Δεν βρέθηκαν κανάλια"
-
-#: plugin.py:3496
-msgid "Search Channels:"
-msgstr "Αναζήτηση καναλιών:"
-
-#: plugin.py:3500
-msgid "Press TEXT button to type, BACKSPACE to delete"
-msgstr "Πατήστε το κουμπί TEXT για πληκτρολόγηση, BACKSPACE για διαγραφή"
-
-#: plugin.py:3502
-msgid "Enter text to search..."
-msgstr "Εισάγετε κείμενο για αναζήτηση..."
-
-#: plugin.py:3503
-msgid "Clear All"
-msgstr "Καθαρισμός όλων"
-
-#: plugin.py:3504
-msgid "Keyboard"
-msgstr "Πληκτρολόγιο"
-
-#: plugin.py:3505
-msgid "Backspace"
-msgstr "Backspace"
-
-#: plugin.py:3506
-msgid "Space"
-msgstr "Διάστημα"
-
-#: plugin.py:3613
-msgid "Search..."
-msgstr "Αναζήτηση..."
-
-#: plugin.py:3641
-msgid "UPPERCASE"
-msgstr "ΚΕΦΑΛΑΙΑ"
-
-#: plugin.py:3641
-msgid "lowercase"
-msgstr "πεζά"
-
-#: plugin.py:3642
-#, python-brace-format
-msgid "Case: {}"
-msgstr "Περίπτωση: {}"
-
-#: plugin.py:3648 plugin.py:3675 plugin.py:3686
-msgid "Search:"
-msgstr "Αναζήτηση:"
-
-#: plugin.py:3649 plugin.py:3676
-#, python-brace-format
-msgid "Found: {} channels"
-msgstr "Βρέθηκαν: {} κανάλια"
-
-#: plugin.py:3654 plugin.py:3662
-#, python-brace-format
-msgid "Showing all channels: {}"
-msgstr "Εμφάνιση όλων των καναλιών: {}"
-
-#: plugin.py:3863 plugin.py:3926
-msgid "✗ Proxy Offline"
-msgstr "✗ Ο proxy είναι εκτός σύνδεσης"
-
-#: plugin.py:3866 plugin.py:3924
-msgid "? Proxy Unknown"
-msgstr "? Άγνωστος proxy"
-
-#: plugin.py:3870 plugin.py:3913
-msgid "✓ Proxy OK"
-msgstr "✓ Proxy OK"
-
-#: plugin.py:3875 plugin.py:3916
-#, python-brace-format
-msgid "✓ Proxy ({0}s)"
-msgstr "✓ Proxy ({0}s)"
-
 # vavoo translations
 # Copyright (C) 2025 Lululla Team
 # This file is distributed under the same license as the Lululla package.
 # [lululla] <ekekaz@gmail.com>, 2025.
 #
-#: plugin.py:3877
 msgid "! Proxy Expiring"
 msgstr "! Ο proxy λήγει"
 
-#: plugin.py:3882
+msgid "(%d channels)?"
+msgstr "(%d κανάλια);"
+
+msgid "(%s files deleted)"
+msgstr "(%s αρχεία διαγράφηκαν)"
+
+#, fuzzy
+msgid "- Add missing fields to all entries"
+msgstr "  - Προσθήκη πεδίων που λείπουν σε όλες τις καταχωρήσεις"
+
+msgid "- Auto token refresh every 9 minutes"
+msgstr "- Αυτόματη ανανέωση token κάθε 9 λεπτά"
+
+msgid "- Automatic Epg generation with Service Reference"
+msgstr "- Αυτόματη δημιουργία EPG με αναφορά υπηρεσιών"
+
+msgid "- Automatic bouquet generation"
+msgstr "- Αυτόματη δημιουργία μπουκέτου"
+
+msgid "- Category bouquets"
+msgstr "- Μπουκέτα κατηγορίας"
+
+#, fuzzy
+msgid "- Clean up the cache file"
+msgstr "  - Καθαρισμός του αρχείου cache"
+
+msgid "- Commercial use is strictly prohibited"
+msgstr "- Απαγορεύεται αυστηρά η εμπορική χρήση"
+
+msgid "- Community: Linuxsat-support.com, Corvoboys.org Forum"
+msgstr "- Κοινότητα: Linuxsat-support.com, Corvoboys.org Forum"
+
+msgid "- Container bouquets"
+msgstr "- Μπουκέτα κοντέινερ"
+
+msgid "- Country bouquets"
+msgstr "- Μπουκέτα χώρας"
+
+msgid "- Free content only"
+msgstr "- Μόνο δωρεάν περιεχόμενο"
+
+msgid "- Graphics: @oktus"
+msgstr "- Γραφικά: @oktus"
+
+msgid "- HTTP Live Streaming"
+msgstr "- Ζωντανή ροή HTTP"
+
+msgid "- Integrated proxy system"
+msgstr "- Ενσωματωμένο σύστημα proxy"
+
+msgid "- No direct server hosting"
+msgstr "- Δεν επιτρέπεται άμεση φιλοξενία διακομιστή"
+
+msgid "- Redistribution must maintain attribution"
+msgstr "- Η αναδιανομή πρέπει να διατηρεί την αναφορά στον δημιουργό"
+
+#, fuzzy
+msgid "- Remove duplicate entries"
+msgstr "  - Αφαίρεση διπλότυπων καταχωρήσεων"
+
+msgid "- Service references: 4097, 5001, 5002"
+msgstr "- Αναφορές υπηρεσιών: 4097, 5001, 5002"
+
+msgid "- Streams from public sources"
+msgstr "- Ροές από δημόσιες πηγές"
+
+msgid "- TS/M3U8 formats"
+msgstr "- Μορφές TS/M3U8"
+
+msgid "- Technical support: Qu4k3, @KiddaC, @giorbak"
+msgstr "- Τεχνική υποστήριξη: Qu4k3, @KiddaC, @giorbak"
+
+#, fuzzy
+msgid "- {} duplicate entries removed"
+msgstr "  - Αφαιρέθηκαν {} διπλότυπες καταχωρήσεις"
+
+#, fuzzy
+msgid "- {} entries updated"
+msgstr "  - Ενημερώθηκαν {} καταχωρήσεις"
+
 msgid "? Proxy Status"
 msgstr "? Κατάσταση proxy"
 
-#: plugin.py:3918
-msgid "✗ Proxy Expired"
-msgstr "✗ Ο proxy έληξε"
+msgid "? Proxy Unknown"
+msgstr "? Άγνωστος proxy"
 
-#: plugin.py:3920
-msgid "Channels"
-msgstr "Κανάλια"
+msgid "All countries (%d)"
+msgstr "Όλες οι χώρες (%d)"
 
-#: plugin.py:3928
+msgid "An export for another country is already in progress. Please wait."
+msgstr "Η εξαγωγή για άλλη χώρα βρίσκεται ήδη σε εξέλιξη. Παρακαλώ περιμένετε."
+
+#, fuzzy
+msgid "Author:"
+msgstr "Συγγραφέας: "
+
+msgid "Back"
+msgstr "Πίσω"
+
+msgid "Backspace"
+msgstr "Backspace"
+
+msgid "Bottom"
+msgstr "Κάτω"
+
+msgid "Bouquet creation error: {}"
+msgstr "Σφάλμα δημιουργίας μπουκέτου: {}"
+
+msgid "Bouquet ready with {} channels"
+msgstr "Το μπουκέτο είναι έτοιμο με {} κανάλια"
+
+msgid "Bouquets reload scheduled."
+msgstr "Η επαναφόρτωση των μπουκέτων προγραμματίστηκε."
+
+msgid "Bouquets reorganized successfully!"
+msgstr "Η αναδιοργάνωση των μπουκέτων ολοκληρώθηκε με επιτυχία!"
+
 msgid "CH±=Change | OK=Toggle | INFO=IMDb | STOP=Exit"
 msgstr "CH±=Αλλαγή | OK=Εναλλαγή | INFO=IMDb | STOP=Έξοδος"
 
-#: plugin.py:4147
+msgid "Cache format fix completed:"
+msgstr "Η διόρθωση μορφής cache ολοκληρώθηκε:"
+
+msgid "Cache is already in correct format. No changes needed."
+msgstr "Η cache είναι ήδη στη σωστή μορφή. Δεν απαιτούνται αλλαγές."
+
+msgid "Cancel"
+msgstr "Άκυρο"
+
+msgid "Cancel execution?"
+msgstr "Να γίνει ακύρωση της εκτέλεσης;"
+
+msgid "Case: {}"
+msgstr "Περίπτωση: {}"
+
+msgid "Channels"
+msgstr "Κανάλια"
+
+msgid "Channels: %d"
+msgstr "Κανάλια: %d"
+
+msgid "Checking proxy..."
+msgstr "Έλεγχος proxy..."
+
+msgid "Clear All"
+msgstr "Καθαρισμός όλων"
+
+msgid "Configuration saved successfully!"
+msgstr "Η ρύθμιση αποθηκεύτηκε με επιτυχία!"
+
+msgid "Console"
+msgstr "Κονσόλα"
+
+msgid "Countries"
+msgstr "Χώρες"
+
+msgid "Countries: %(generated)d/%(total)d"
+msgstr "Χώρες: %(generated)d/%(total)d"
+
+msgid "Country: %s"
+msgstr "Χώρα: %s"
+
+msgid "Credits:"
+msgstr "Συντελεστές:"
+
+msgid "Do you want to export this bouquet?"
+msgstr "Θέλετε να εξάγετε αυτό το μπουκέτο;"
+
+msgid "Do you want to fix the cache format?"
+msgstr "Θέλετε να διορθωθεί η μορφή της cache;"
+
+msgid "EPG is disabled. Please enable it in Vavoo settings first."
+msgstr "Το EPG είναι απενεργοποιημένο. Παρακαλώ ενεργοποιήστε το πρώτα στις ρυθμίσεις Vavoo."
+
+msgid "EPG processing completed (no matches)"
+msgstr "Η επεξεργασία EPG ολοκληρώθηκε (χωρίς αντιστοιχίσεις)"
+
+msgid "EPG processing completed for {} channels"
+msgstr "Η επεξεργασία EPG ολοκληρώθηκε για {} κανάλια"
+
+msgid "EPG update completed"
+msgstr "Η ενημέρωση EPG ολοκληρώθηκε"
+
+msgid "EPG update failed"
+msgstr "Η ενημέρωση EPG απέτυχε"
+
+msgid "EPG update started successfully"
+msgstr "Η ενημέρωση EPG ξεκίνησε επιτυχώς"
+
+msgid "Enter text to search..."
+msgstr "Εισάγετε κείμενο για αναζήτηση..."
+
+msgid "Error"
+msgstr "Σφάλμα"
+
+msgid "Error fixing cache: {}"
+msgstr "Σφάλμα κατά τη διόρθωση της cache: {}"
+
+msgid "Error parsing data"
+msgstr "Σφάλμα ανάλυσης δεδομένων"
+
+msgid "Error starting EPG update: {}"
+msgstr "Σφάλμα κατά την εκκίνηση της ενημέρωσης EPG: {}"
+
+msgid "Error starting channel"
+msgstr "Σφάλμα εκκίνησης καναλιού"
+
+msgid "Error: %s"
+msgstr "Σφάλμα: %s"
+
+msgid "Error: {}"
+msgstr "Σφάλμα: {}"
+
+msgid "Exit"
+msgstr "Έξοδος"
+
+msgid "Export"
+msgstr "Εξαγωγή"
+
+msgid "Export failed: {}"
+msgstr "Η εξαγωγή απέτυχε: {}"
+
+msgid "Export started. Bouquet will be available shortly."
+msgstr "Η εξαγωγή ξεκίνησε. Το μπουκέτο θα είναι διαθέσιμο σύντομα."
+
+msgid "Failed to refresh proxy token"
+msgstr "Αποτυχία ανανέωσης του token του proxy"
+
+#, fuzzy
+msgid "Failed to refresh proxy:"
+msgstr "Αποτυχία ανανέωσης proxy: "
+
+msgid "Failed: %(failed)d"
+msgstr "Απέτυχαν: %(failed)d"
+
+msgid "Fix Cache"
+msgstr "Διόρθωση cache"
+
+msgid "Fixing cache format..."
+msgstr "Διόρθωση μορφής cache..."
+
+msgid "Force proxy refresh?"
+msgstr "Εξαναγκασμένη ανανέωση proxy;"
+
+msgid "Found: {} channels"
+msgstr "Βρέθηκαν: {} κανάλια"
+
+msgid "Generate .m3u file for:"
+msgstr "Δημιουργία αρχείου .m3u για:"
+
+msgid "Generate .m3u files and save to device %s?"
+msgstr "Να γίνει δημιουργία αρχείων .m3u και να αποθηκευτούν στη συσκευή %s;"
+
+msgid "Generate .m3u files for ALL %d countries?"
+msgstr "Δημιουργία αρχείων .m3u για ΟΛΕΣ τις %d χώρες;"
+
+msgid "Hide/Show"
+msgstr "Απόκρυψη/Εμφάνιση"
+
+msgid "Important Notes:"
+msgstr "Σημαντικές σημειώσεις:"
+
+msgid "Keyboard"
+msgstr "Πληκτρολόγιο"
+
+msgid "Last channel update: %s"
+msgstr "Τελευταία ενημέρωση καναλιών: %s"
+
+#, fuzzy
+msgid "License:"
+msgstr "Άδεια χρήσης: "
+
+msgid "License: CC BY-NC-SA 4.0"
+msgstr "Άδεια χρήσης: CC BY-NC-SA 4.0"
+
+msgid "Lower = less interruption but more refreshes"
+msgstr "Χαμηλότερα = λίγες διακοπές, πολλές ανανεώσεις"
+
+msgid "M3U file generated successfully!"
+msgstr "Το αρχείο M3U δημιουργήθηκε με επιτυχία!"
+
+msgid "M3U generation completed!"
+msgstr "Η δημιουργία M3U ολοκληρώθηκε!"
+
+msgid "M3U generation error: %s"
+msgstr "Σφάλμα δημιουργίας M3U: %s"
+
 msgid "No IMDb/TMDB plugin found"
 msgstr "Δεν βρέθηκε πρόσθετο IMDb/TMDB"
 
-#: plugin.py:4152
+msgid "No Internet connection detected. Please check your network."
+msgstr "Δεν εντοπίστηκε σύνδεση στο Διαδίκτυο. Παρακαλώ ελέγξτε το δίκτυό σας."
+
+msgid "No channels found"
+msgstr "Δεν βρέθηκαν κανάλια"
+
+msgid "No channels found for: %s"
+msgstr "Δεν βρέθηκαν κανάλια για: %s"
+
+msgid "No channels found in search!!!"
+msgstr "Δεν βρέθηκαν κανάλια στην αναζήτηση!!!"
+
+msgid "No items available"
+msgstr "Δεν υπάρχουν διαθέσιμα στοιχεία"
+
 msgid "No programme info available"
 msgstr "Δεν υπάρχουν διαθέσιμες πληροφορίες προγράμματος"
 
-#: plugin.py:4227
-msgid "Stream ended. Too many connection issues."
-msgstr "Η ροή τερματίστηκε. Πάρα πολλά προβλήματα σύνδεσης."
+msgid "No selection"
+msgstr "Καμία επιλογή"
 
-#: plugin.py:4228
+msgid "No valid channels for: %s"
+msgstr "Δεν υπάρχουν έγκυρα κανάλια για: %s"
+
+msgid "Only one specific country"
+msgstr "Μόνο μία συγκεκριμένη χώρα"
+
 msgid "Please try another channel."
 msgstr "Παρακαλώ δοκιμάστε άλλο κανάλι."
 
-#: plugin.py:4911 plugin.py:4960
+msgid "Press TEXT button to type, BACKSPACE to delete"
+msgstr "Πατήστε το κουμπί TEXT για πληκτρολόγηση, BACKSPACE για διαγραφή"
+
+msgid "Proxy Disabled"
+msgstr "Proxy απενεργοποιημένος"
+
+#, fuzzy
+msgid "Proxy Error:"
+msgstr "Σφάλμα proxy: "
+
+msgid "Proxy disabled"
+msgstr "Ο proxy είναι απενεργοποιημένος"
+
+msgid "Proxy is disabled. Please Set Proxy On first. -- Menu Config --"
+msgstr "Ο proxy είναι απενεργοποιημένος. Παρακαλώ ενεργοποιήστε πρώτα τον proxy. -- Μενού ρυθμίσεων --"
+
+msgid "Proxy is disabled. Please enable it in the configuration."
+msgstr "Ο proxy είναι απενεργοποιημένος. Παρακαλώ ενεργοποιήστε τον στις ρυθμίσεις."
+
+msgid "Proxy is not running. Please start the proxy first."
+msgstr "Ο proxy δεν εκτελείται. Παρακαλώ εκκινήστε πρώτα τον proxy."
+
+msgid "Proxy not active. Unable to generate M3U file."
+msgstr "Ο proxy δεν είναι ενεργός. Αδυναμία δημιουργίας αρχείου M3U."
+
+msgid "Proxy not responding after"
+msgstr "Ο proxy δεν ανταποκρίνεται μετά από"
+
+msgid "Proxy restarting... Please wait"
+msgstr "Επανεκκίνηση proxy... Παρακαλώ περιμένετε"
+
+msgid "Proxy token refreshed successfully"
+msgstr "Το token του proxy ανανεώθηκε με επιτυχία"
+
+msgid "Ready"
+msgstr "Έτοιμο"
+
+msgid "Really close without saving settings?"
+msgstr "Θέλετε πραγματικά να κλείσετε χωρίς αποθήκευση των ρυθμίσεων;"
+
+msgid "Recommended: 5-8 minutes"
+msgstr "Προτείνονται: 5-8 λεπτά"
+
+msgid "Refresh stream every X minutes (1-15)"
+msgstr "Ανανέωση ροής κάθε X λεπτά (1-15)"
+
+msgid "Reload Bouqet"
+msgstr "Φόρτωση μπουκέτων"
+
+msgid "Reload bouquets and service list?"
+msgstr "Να γίνει επαναφόρτωση των μπουκέτων και της λίστας υπηρεσιών;"
+
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+msgid "Remove ALL Vavoo bouquets?"
+msgstr "Αφαίρεση ΟΛΩΝ των μπουκέτων Vavoo;"
+
+msgid "Restart"
+msgstr "Επανεκκίνηση"
+
+#, fuzzy
+msgid "Restarting..."
+msgstr " Επανεκκίνηση..."
+
+msgid "SELECT YOUR CHOICE"
+msgstr "ΕΠΙΛΕΞΤΕ ΤΗΝ ΕΠΙΛΟΓΗ ΣΑΣ"
+
+msgid "Save"
+msgstr "Αποθήκευση"
+
+msgid "Saved in: %(path)s"
+msgstr "Αποθηκεύτηκε σε: %(path)s"
+
+msgid "Saved in: %s"
+msgstr "Αποθηκεύτηκε σε: %s"
+
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgid "Search Channels:"
+msgstr "Αναζήτηση καναλιών:"
+
+msgid "Search..."
+msgstr "Αναζήτηση..."
+
+msgid "Search:"
+msgstr "Αναζήτηση:"
+
+msgid "Select M3U export mode:"
+msgstr "Επιλέξτε λειτουργία εξαγωγής M3U:"
+
+msgid "Select country to export M3U:"
+msgstr "Επιλέξτε χώρα για εξαγωγή M3U:"
+
+msgid "Showing all channels: {}"
+msgstr "Εμφάνιση όλων των καναλιών: {}"
+
+msgid "Space"
+msgstr "Διάστημα"
+
+msgid "Start EPG update now?"
+msgstr "Να ξεκινήσει τώρα η ενημέρωση EPG;"
+
+msgid "Stream ended. Too many connection issues."
+msgstr "Η ροή τερματίστηκε. Πάρα πολλά προβλήματα σύνδεσης."
+
+msgid "Technical Features:"
+msgstr "Τεχνικά χαρακτηριστικά:"
+
+msgid "This will refresh the authentication token."
+msgstr "Αυτό θα ανανεώσει το token πιστοποίησης."
+
+msgid "This will remove:"
+msgstr "Αυτό θα αφαιρέσει:"
+
+msgid "This will:"
+msgstr "Αυτό θα:"
+
+msgid "Top"
+msgstr "Πάνω"
+
+msgid "Total channels: %(total_channels)d"
+msgstr "Σύνολο καναλιών: %(total_channels)d"
+
+msgid "UPPERCASE"
+msgstr "ΚΕΦΑΛΑΙΑ"
+
+msgid "Updating EPG..."
+msgstr "Ενημέρωση EPG..."
+
+msgid "Vavoo EPG source is not enabled in EPGImport. Please enable it in EPGImport settings."
+msgstr "Η πηγή Vavoo EPG δεν είναι ενεργοποιημένη στο EPGImport. Παρακαλώ ενεργοποιήστε την στις ρυθμίσεις του EPGImport."
+
+msgid "Vavoo EPG source not found. Please export at least one bouquet first."
+msgstr "Η πηγή Vavoo EPG δεν βρέθηκε. Παρακαλώ εξάγετε πρώτα τουλάχιστον ένα μπουκέτο."
+
 msgid "Vavoo Stream Live"
 msgstr "Vavoo Stream Live"
 
-#: plugin.py:4933
+msgid "Vavoo Stream Live - Information"
+msgstr "Vavoo Stream Live - Πληροφορίες"
+
+msgid "Vavoo Stream Live Plugin"
+msgstr "Πρόσθετο Vavoo Stream Live"
+
+msgid "Vavoo bouquets removed successfully!"
+msgstr "Τα μπουκέτα Vavoo αφαιρέθηκαν με επιτυχία!"
+
 msgid "Vavoo is already running."
 msgstr "Το Vavoo εκτελείται ήδη."
 
-#: plugin.py:4941
-msgid "No Internet connection detected. Please check your network."
-msgstr "Δεν εντοπίστηκε σύνδεση στο Διαδίκτυο. Παρακαλώ ελέγξτε το δίκτυό σας."
+#, fuzzy
+msgid "Version:"
+msgstr "Έκδοση: "
+
+msgid "Waiting for proxy..."
+msgstr "Αναμονή για τον proxy..."
+
+msgid "Welcome to Vavoo Proxy with EPG support"
+msgstr "Καλώς ήρθατε στοn Vavoo proxy με υποστήριξη EPG"
+
+msgid "You can start it from the menu or by pressing the TEXT button."
+msgstr "Μπορείτε να τον εκκινήσετε από το μενού ή πατώντας το κουμπί TEXT."
+
+msgid "fixed time"
+msgstr "σταθερή ώρα"
+
+msgid "interval"
+msgstr "διάστημα"
+
+msgid "lowercase"
+msgstr "πεζά"
+
+msgid "seconds"
+msgstr "δευτερόλεπτα"
+
+msgid "✓ Proxy ({0}s)"
+msgstr "✓ Proxy ({0}s)"
+
+msgid "✓ Proxy OK"
+msgstr "✓ Proxy OK"
+
+msgid "✓ Restarted"
+msgstr "✓ Επανεκκινήθηκε"
+
+msgid "✗ Error"
+msgstr "✗ Σφάλμα"
+
+msgid "✗ Proxy Error"
+msgstr "✗ Σφάλμα proxy"
+
+msgid "✗ Proxy Expired"
+msgstr "✗ Ο proxy έληξε"
+
+msgid "✗ Proxy Offline"
+msgstr "✗ Ο proxy είναι εκτός σύνδεσης"
+
+msgid "✗ Restart Failed"
+msgstr "✗ Η επανεκκίνηση απέτυχε"
+
+#~ msgid "- - - -"
+#~ msgstr "- - - -"
+
+#~ msgid "Generate .m3u files (Ok for Exec)"
+#~ msgstr "Δημιουργία αρχείων .m3u (πιέστε OK)"
+
+#, python-format
+#~ msgid "Generate .m3u files and save to device %s."
+#~ msgstr "Δημιουργία αρχείων .m3u και αποθήκευση στο %s."
+
+#~ msgid "Proxy Enabled"
+#~ msgstr "Proxy ενεργοποιημένος"
+
+#~ msgid "Enable or disable proxy."
+#~ msgstr "Ενεργοποίηση ή απενεργοποίηση του proxy."
+
+#~ msgid "Default View"
+#~ msgstr "Προεπιλεγμένη προβολή"
+
+#~ msgid "Default view when opening the plugin"
+#~ msgstr "Προεπιλεγμένη προβολή κατά το άνοιγμα του πρόσθετου"
+
+#~ msgid "Server for player."
+#~ msgstr "Διακομιστής για αναπαραγωγή."
+
+#, python-format
+#~ msgid "Now %s"
+#~ msgstr "Τώρα %s"
+
+#~ msgid "Server for Player Used"
+#~ msgstr "Διακομιστής για αναπαραγωγή"
+
+#~ msgid "Enable Vavoo EPG"
+#~ msgstr "Ενεργοποίηση Vavoo EPG"
+
+#~ msgid "Create EPG source for EPGImport with Vavoo program data"
+#~ msgstr "Δημιουργία πηγής EPG για το EPGImport με δεδομένα προγράμματος Vavoo"
+
+#~ msgid "Auto-update EPG"
+#~ msgstr "Αυτόματη ενημέρωση EPG"
+
+#~ msgid "Automatically trigger EPG update after source creation"
+#~ msgstr "Αυτόματη ενεργοποίηση ενημέρωσης EPG μετά τη δημιουργία πηγής"
+
+#~ msgid "EPG Similarity Threshold (%)"
+#~ msgstr "Όριο ομοιότητας EPG (%)"
+
+#~ msgid "Minimum similarity for matching channels (higher = stricter)."
+#~ msgstr "Ελάχιστη ομοιότητα για αντιστοίχιση καναλιών (υψηλότερη τιμή = πιο αυστηρή)."
+
+#~ msgid "Update interval (hours)"
+#~ msgstr "Διάστημα ενημέρωσης (ώρες)"
+
+#~ msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
+#~ msgstr "Πόσο συχνά θα γίνεται αυτόματη ενημέρωση του EPG (απαιτείται προγραμματιστής EPGImport)"
+
+#~ msgid "Movie Services Reference"
+#~ msgstr "Αναφορά υπηρεσιών ταινιών"
+
+#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+#~ msgstr "Ρύθμιση αναφοράς υπηρεσιών Iptv-Gstreamer-Exteplayer3"
+
+#~ msgid "Bouquet Position in List"
+#~ msgstr "Θέση των μπουκέτων στη λίστα"
+
+#~ msgid "Position of Vavoo bouquets in the main list"
+#~ msgstr "Θέση των μπουκέτων Vavoo στην κύρια λίστα"
+
+#~ msgid "Refresh stream (minutes):"
+#~ msgstr "Ανανέωση ροής (λεπτά):"
+
+#~ msgid "Select Background"
+#~ msgstr "Επιλογή φόντου"
+
+#~ msgid "Configure Main Background Image."
+#~ msgstr "Ρύθμιση της κύριας εικόνας φόντου."
+
+#~ msgid "Active or Disactive Ipv6."
+#~ msgstr "Ενεργοποίηση ή απενεργοποίηση IPv6."
+
+#~ msgid "Ipv6 State Of Lan (On/Off)"
+#~ msgstr "Κατάσταση Lan Ipv6 (On/Off)"
+
+#~ msgid "Scheduled List:"
+#~ msgstr "Προγραμματισμένη λίστα:"
+
+#~ msgid "Active Automatic Bouquet Update"
+#~ msgstr "Ενεργοποίηση αυτόματης ενημέρωσης μπουκέτου"
+
+#~ msgid "Schedule type:"
+#~ msgstr "Τύπος προγραμματισμού:"
+
+#~ msgid "At an interval hours or fixed time"
+#~ msgstr "Σε χρονικό διάστημα ωρών ή σε σταθερή ώρα"
+
+#~ msgid "Update interval (minutes):"
+#~ msgstr "Διάστημα ενημέρωσης (λεπτά)"
+
+#~ msgid "Configure interval minutes from now"
+#~ msgstr "Ρύθμιση διαστήματος σε λεπτά από τώρα"
+
+#~ msgid "Time to start update:"
+#~ msgstr "Ώρα έναρξης ενημέρωσης:"
+
+#~ msgid "Configure at a fixed time"
+#~ msgstr "Ρύθμιση σε σταθερή ώρα"
+
+#~ msgid "Link in Main Menu"
+#~ msgstr "Σύνδεσμος στο κύριο μενού"
