@@ -121,7 +121,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     allow_reuse_address = True
 
 
-# ========== CONFIGURAZIONE ==========
+# ========== CONFIGURATIONS ==========
 
 """
 VAVOO PROXY ENDPOINTS (PROXY_HOST:{PORT})
@@ -329,7 +329,6 @@ class VavooProxy:
         self.session.request = self._robust_request
 
         self.active_streams = 0
-        self.active_streams = {}
         self.addon_sig_data = {"sig": None, "ts": 0}
         self.addon_sig_lock = threading.Lock()
         self.all_filtered_items = []
@@ -678,7 +677,7 @@ class VavooProxy:
                                 " 502 Bad Gateway on page {0}, attempt {1}" .format(
                                     page, attempt + 1))
                             if attempt < max_retries - 1:
-                                # Backoff esponenziale
+                                # exponential backoff
                                 time.sleep(2 ** attempt)
                                 continue
                             else:
@@ -1269,7 +1268,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                 return
 
     def handle_one_request(self):
-        """Gestisci una singola richiesta con cleanup garantito"""
+        """Handle a single request with guaranteed cleanup"""
         try:
             BaseHTTPRequestHandler.handle_one_request(self)
         except (socket.timeout, socket.error) as e:
@@ -1282,14 +1281,14 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
             print(" Unexpected error in request: " + str(e))
 
     def finish(self):
-        """Override finish per gestire cleanup"""
+        """Override finish to manage cleanup"""
         try:
             BaseHTTPRequestHandler.finish(self)
         except (BrokenPipeError, ConnectionResetError):
             pass
 
     def setup(self):
-        """Setup con timeout"""
+        """Setup with timeout"""
         BaseHTTPRequestHandler.setup(self)
         self.request.settimeout(self.timeout)
 

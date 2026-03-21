@@ -52,7 +52,7 @@ from .vUtils import (
     get_proxy_channels,
     is_proxy_ready,
     is_proxy_running,
-    rimuovi_parentesi,
+    remove_parentheses,
     ReloadBouquets,
     sanitizeFilename,
     # save_unmatched,
@@ -302,7 +302,7 @@ def convert_bouquet_sync(
         country_code = country_codes.get(base_name.capitalize(), "")
 
         # 5. Get matcher
-        matcher = get_epg_matcher(similarity_threshold=0.85)
+        matcher = get_epg_matcher(similarity_threshold=0.80)
 
         # 6. Create bouquet file (this does matching and writes the bouquet)
         ch_count, bouquet_filename, matched, unmatched = create_bouquet_file(
@@ -345,7 +345,7 @@ def convert_bouquet_sync(
             print("[Bouquet] Error saving cache: %s" % e)
 
         # 10. Update complete cache with ALL channels (matched + unmatched)
-        update_complete_cache(matched, unmatched, country_code)
+        # update_complete_cache(matched, unmatched, country_code)
 
         return ch_count
     except Exception as e:
@@ -392,7 +392,7 @@ def export_bouquet_async(
                 timer.start(0, True)
                 return
 
-            # Ricarica immediata dei servizi per rendere visibile il bouquet
+            # Instant recharge of services to make the bouquet visible
             def do_reload():
                 try:
                     ReloadBouquets()
@@ -577,7 +577,7 @@ def process_epg_matching_background(
         print("[EPGBackground] Starting EPG matching for %s" % name)
 
         # 1. Get matcher
-        matcher = get_epg_matcher(similarity_threshold=0.85)
+        matcher = get_epg_matcher(similarity_threshold=0.80)
 
         # 2. Prepare lists for matched/unmatched
         # each: {'name': clean_name, 'channel_id': id, 'dvb_ref': ref, 'rytec_id': id, 'original_url': url}
@@ -735,6 +735,7 @@ def process_epg_matching_background(
         except Exception as cb_e:
             print("[EPGBackground] Error in completion callback: %s" % cb_e)
 
+        update_complete_cache(matched, unmatched, country_code)
     except Exception as exc:
         print("[EPGBackground] Error: %s" % str(exc))
         trace_error()
@@ -975,7 +976,7 @@ def create_fallback_bouquet_sync(
 
                 # Clean name
                 clean_name = decodeHtml(channel_name)
-                clean_name = rimuovi_parentesi(clean_name)
+                clean_name = remove_parentheses(clean_name)
                 clean_name = sanitizeFilename(clean_name)
 
                 # Encode URL
@@ -1127,7 +1128,7 @@ def create_bouquet_file(
 
                 # Clean name for description and matching
                 clean_name = decodeHtml(channel_name)
-                clean_name = rimuovi_parentesi(clean_name)
+                clean_name = remove_parentheses(clean_name)
                 clean_name = sanitizeFilename(clean_name)
 
                 # Encode URL for Enigma2 (replace ':' with '%3a')
@@ -1237,7 +1238,7 @@ def _create_flat_bouquet(name, url, service, bouquet_type, server_url):
                 continue
 
             name_channel = decodeHtml(name_channel)
-            name_channel = rimuovi_parentesi(name_channel)
+            name_channel = remove_parentheses(name_channel)
             name_channel = sanitizeFilename(name_channel)
 
             channel_id = channel.get("id", "")
@@ -1518,7 +1519,7 @@ def _create_category_bouquet(
                 continue
 
             name_channel = decodeHtml(name_channel)
-            name_channel = rimuovi_parentesi(name_channel)
+            name_channel = remove_parentheses(name_channel)
             name_channel = sanitizeFilename(name_channel)
 
             channel_id = channel.get("id", "")

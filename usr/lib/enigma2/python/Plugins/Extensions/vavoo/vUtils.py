@@ -63,12 +63,22 @@ from . import (
     # ENIGMA_PATH,
     # SREF_MAP_FILE,
     HOST_MAIN,
-    country_codes
+    country_codes,
+    ALIAS_FILE
 )
 
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 _original_getaddrinfo = socket.getaddrinfo
+
+try:
+    from . import channel_alias
+    alias_available = True
+except Exception:
+    alias_available = False
+    print("[VavooEPGMatcher] channel_alias module not found, using default matching")
+    pass
+
 
 try:
     from urllib.parse import quote  # , unquote
@@ -225,7 +235,6 @@ if PY3:
     from urllib.request import urlopen, Request
     from urllib.error import URLError, HTTPError
     ssl_context = ssl.create_default_context()
-    # Disable old protocols when supported by current OpenSSL build.
     for _ssl_opt in (
         "OP_NO_SSLv2",
         "OP_NO_SSLv3",
@@ -254,7 +263,7 @@ def get_screen_width():
         return width
     except Exception as e:
         print("Error getting screen width: %s" % str(e))
-        return 1920  # Default FHD
+        return 1920
 
 
 class AspectManager:
@@ -266,7 +275,7 @@ class AspectManager:
             print("[INFO] Initial aspect ratio:", self.init_aspect)
         except Exception as e:
             print("[ERROR] Failed to initialize aspect manager:", str(e))
-            self.init_aspect = 0  # Fallback
+            self.init_aspect = 0
 
     def get_current_aspect(self):
         """Get current aspect ratio setting"""
@@ -275,7 +284,7 @@ class AspectManager:
             return int(aspect) if aspect is not None else 0
         except (ValueError, TypeError, Exception) as e:
             print("[ERROR] Failed to get aspect ratio:", str(e))
-            return 0  # Default 4:3
+            return 0
 
     def restore_aspect(self):
         """Restore original aspect ratio"""
@@ -291,8 +300,8 @@ class AspectManager:
 
 aspect_manager = AspectManager()
 class_types = (type,) if PY3 else (type, types.ClassType)
-text_type = six.text_type  # unicode in Py2, str in Py3
-binary_type = six.binary_type  # str in Py2, bytes in Py3
+text_type = six.text_type
+binary_type = six.binary_type
 MAXSIZE = maxsize
 
 _UNICODE_MAP = {
@@ -372,7 +381,7 @@ def b64decoder(data):
     try:
         data = ensure_str(data, errors='ignore').strip()
         pad = len(data) % 4
-        if pad == 1:  # Invalid base64 length
+        if pad == 1:
             return ""
         if pad:
             data += "=" * (4 - pad)
@@ -634,39 +643,6 @@ def getAuthSignature():
     return "PROXY_ACTIVE"
 
 
-"""
-def getAuthSignature():
-    print("DEBUG: Getting auth signature via proxy...")
-    try:
-        sig = get_new_auth_signature()
-        if sig and sig != "proxy_auth_ok":
-            print("DEBUG: New auth system working")
-            return sig
-    except Exception as e:
-        print("DEBUG: New auth failed: " + str(e))
-
-    print("DEBUG: Falling back to old auth system...")
-    try:
-        local_ip = PROXY_HOST
-        port = PORT
-        url = "http://" + local_ip + ":" + str(port) + "/catalog"
-        req = Request(url)
-        response = urlopen(req, timeout=10)
-        data = response.read()
-
-        if response.getcode() == 200:
-            channels = loads(data.decode('utf-8'))
-            if channels:
-                return "proxy_auth_ok"
-
-        return getAuthSignature()
-
-    except Exception as e:
-        print("New auth error: " + str(e))
-        return getAuthSignature()
-"""
-
-
 def get_new_auth_signature():
     """
     New Vavoo authentication system via local proxy
@@ -811,7 +787,7 @@ def get_proxy_status():
 
 
 def is_proxy_running():
-    """Controlla se il proxy è in esecuzione"""
+    """Check if the proxy is running"""
     try:
         import socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -864,11 +840,11 @@ def fetch_vec_list():
         url = "{}/data.json".format(HOST_MAIN)
 
         if requests is not None:
-            # Usa requests se disponibile
+            # Use requests if available
             response = requests.get(url, timeout=10)
             vec_list = response.json()
         else:
-            # Fallback a urllib
+            # Fallback to urllib
             req = Request(url)
             response = urlopen(req, timeout=10)
             data = response.read()
@@ -887,7 +863,7 @@ def fetch_vec_list():
         return None
 
 
-def rimuovi_parentesi(text):
+def remove_parentheses(text):
     """Remove parentheses and their content from text"""
     return sub(
         r'\s*\([^()]*\)\s*',
@@ -936,6 +912,13 @@ def ReloadBouquets(delay=2000):
         reload_timer.start(delay, True)
     except Exception as e:
         print("Error setting up service reload: " + str(e))
+        do_reload()
+
+
+def ensure_sref_trailing_colon(sref):
+    if sref and not sref.endswith(':'):
+        return sref + ':'
+    return sref
 
 
 def sanitizeFilename(filename):
@@ -1011,8 +994,6 @@ def remove_line(filename, pattern):
         f.writelines(lines)
 
 
-# this def returns the current playing service name and stream_url from
-# give sref
 def getserviceinfo(service_ref):
     """Get service name and URL from service reference"""
     try:
@@ -1076,7 +1057,7 @@ def download_flag_online(
     try:
         # 1. Determine screen width if not provided
         if screen_width is None:
-            screen_width = get_screen_width()  # deve restituire int
+            screen_width = get_screen_width()  # must return int
 
         print(
             "Processing %s with screen_width=%d" %
@@ -1207,7 +1188,6 @@ def download_flag_with_size(
             print("No code for: %s" % country_name)
             return False
 
-        # Parse dimensioni
         if "x" in size:
             try:
                 width, height = size.split("x")
@@ -1225,15 +1205,12 @@ def download_flag_with_size(
         print("Downloading %s flag %dx%d from: %s" %
               (country_name, width, height, url))
 
-        # Create cache folder
-        # Python 2 compatible directory creation
         if not exists(cache_dir):
             try:
                 makedirs(cache_dir)
             except Exception:
                 pass
 
-        # Cache path
         cache_file = join(cache_dir, "%s.png" % country_code.lower())
 
         req = Request(url, headers={'User-Agent': 'Vavoo-Stream/1.0'})
@@ -1339,7 +1316,7 @@ def get_country_code(country_name):
 
     # Full country map
     country_map = {
-        # Europa
+        # Europe
         'Albania': 'al',
         'Arabia': 'sa',
         'Austria': 'at',
@@ -1415,7 +1392,7 @@ def cleanup_flag_cache(max_age_days=7):
         return
 
     now = time()
-    max_age = max_age_days * 86400  # seconds
+    max_age = max_age_days * 86400
 
     try:
         for filename in listdir(cache_dir):
@@ -1521,7 +1498,7 @@ def preload_country_flags(country_list, cache_dir=FLAG_CACHE_DIR):
 _epg_matcher = None
 
 
-def get_epg_matcher(similarity_threshold=0.7):
+def get_epg_matcher(similarity_threshold=0.80):
     """Return the singleton EPG matcher instance."""
     global _epg_matcher
     if _epg_matcher is None:
@@ -1537,7 +1514,7 @@ def calculate_similarity(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def get_orbital_position(self, service_ref):
+def get_orbital_position(service_ref):
     """
     Extract orbital position from service reference namespace.
     Returns orbital position in tenths of a degree (e.g., 130 = 13.0°E, -50 = 5.0°W)
@@ -1806,8 +1783,8 @@ class VavooEPGMatcher:
             # Extract additional info
             signal_priority = self._get_signal_priority(service_ref)
             orbpos = 0
-            if signal_priority == 1:  # Satellite
-                orbpos = self.get_orbital_position(service_ref)
+            if signal_priority == 1:
+                orbpos = get_orbital_position(service_ref)
 
             # Calculate boost
             boost = 1.0
@@ -1954,7 +1931,7 @@ class VavooEPGMatcher:
                     len(complete_cache)))
 
 
-# ==================== FUNCTION generate_epg_files ====================
+# ==================== EPG CACHE FUNCTIONS ====================
 
 
 def load_temp_cache():
@@ -1982,7 +1959,6 @@ def load_cache():
 def save_cache(cache):
     """Save cache to file with complete format validation"""
     try:
-        # Verify all entries have required fields
         required_fields = [
             'id',
             'name',
@@ -2295,61 +2271,72 @@ def fix_cache_format(remove_duplicates=True):
             cache = load(f)
 
         modified = 0
-        # keys_to_remove = []
+        removed = 0
+
+        def is_valid_sref(sref):
+            # Sref is valid if it's not the empty fallback
+            return sref and sref != "4097:0:0:0:0:0:0:0:0:0:"
 
         for key, value in list(cache.items()):
-            # FIX: Do not modify the name if already present
-            if 'name' not in value:
-                # Use the original key as the name, do not trim it
+            changed = False
+
+            # Field 'name'
+            if 'name' not in value or not value['name']:
                 value['name'] = key
-                modified += 1
+                changed = True
 
-            if 'country' not in value:
-                # Extract country from the key (last part after _)
+            # Field 'country'
+            if 'country' not in value or not value['country']:
                 parts = key.rsplit('_', 1)
-                if len(parts) > 1:
-                    value['country'] = parts[-1]
-                else:
-                    value['country'] = ''
-                modified += 1
+                value['country'] = parts[-1] if len(parts) > 1 else ''
+                changed = True
 
-            if 'matched' not in value:
-                # Preserve matched status if it existed, otherwise default True
-                value['matched'] = True
-                modified += 1
-
+            # Field 'timestamp'
             if 'timestamp' not in value:
                 from time import strftime, localtime
                 value['timestamp'] = strftime('%Y-%m-%d %H:%M:%S', localtime())
+                changed = True
+
+            # Field 'id'
+            current_id = value.get('id')
+            if not current_id or current_id == 'null' or current_id == '':
+                # Use original name as fallback
+                value['id'] = key
+                changed = True
+                current_id = key
+
+            # Field 'sref'
+            current_sref = value.get('sref', '')
+            if not current_sref:
+                value['sref'] = "4097:0:0:0:0:0:0:0:0:0:"
+                changed = True
+                current_sref = value['sref']
+
+            # Field 'matched': TRUE if id is valid OR sref is valid
+            current_matched = value.get('matched', False)
+            correct_matched = VavooEPGMatcher.is_valid_rytec_id(current_id) or is_valid_sref(current_sref)
+            if current_matched != correct_matched:
+                value['matched'] = correct_matched
+                changed = True
+
+            if changed:
                 modified += 1
 
-            # Ensure id exists
-            if 'id' not in value:
-                # Try to extract a meaningful ID or use the key
-                if '.' in key:
-                    # Try to extract the part after the last dot
-                    parts = key.split('.')
-                    if len(parts) > 1:
-                        # Take the first two parts as base
-                        base_id = '.'.join(parts[:2])
-                        value['id'] = base_id
-                    else:
-                        value['id'] = key
-                else:
-                    value['id'] = key
-                modified += 1
-
-            # REMOVED duplicate removal logic based on id
-            # We keep all original entries
-
-        removed = 0
+        # If you want to remove duplicates, you can do it here, but not required for now
+        if remove_duplicates:
+            # possible duplicate removal logic, if needed
+            pass
 
         if modified > 0:
             with open(CACHE_FILE, 'w') as f:
                 dump(cache, f, indent=4, sort_keys=True)
-            print(
-                "[Cache] FIXED {} entries, REMOVED {} duplicates".format(
-                    modified, removed))
+            # Update the matcher with the new cache
+            matcher = get_epg_matcher()
+            matcher.cache = cache
+            matcher._build_normalized_index()
+            print("[Cache] FIXED {} entries".format(modified))
+        else:
+            print("[Cache] No changes needed.")
 
         return modified, removed
 
@@ -2394,93 +2381,3 @@ def returnIMDB(text_clear, session):
             print("[XCF] IMDb error: ", str(e))
 
     return False
-
-
-satellite_positions = {
-    # Satelliti a Est (positive)
-    130: "13.0°E HotBird",      # 0x820000
-    192: "19.2°E Astra 1",      # 0xC00000
-    235: "23.5°E Astra 3",      # 0xEB0000
-    282: "28.2°E Astra 2",      # 0x11A0000? Verifica
-    160: "16.0°E Eutelsat",     # 0xA00000
-    90: "9.0°E Eutelsat",      # 0x5A0000
-    70: "7.0°E Eutelsat",      # 0x460000
-    48: "4.8°E Astra 4A",      # 0x300000
-    42: "4.2°E?",
-    39: "3.9°E?",
-    36: "3.6°E?",
-    33: "3.3°E?",
-    31: "3.1°E?",
-    28: "2.8°E?",
-    26: "2.6°E?",
-    23: "2.3°E?",
-    21: "2.1°E?",
-    19: "1.9°E BulgariaSat",   # 0x130000
-    16: "1.6°E?",
-    13: "1.3°E?",
-    10: "1.0°E?",
-    7: "0.7°E?",
-    5: "0.5°E?",
-    2: "0.2°E?",
-    0: "0.0°E?",
-
-    # Satelliti a Ovest (negative)
-    -8: "0.8°W Thor",         # 0xFFF80000? In realtà 3592 * 65536 = 0xE080000
-    -50: "5.0°W Eutelsat",     # 3550 * 65536 = 0xDDE0000
-    -125: "12.5°W Eutelsat",    # 3475 * 65536 = 0xD8C0000
-    -140: "14.0°W Express",     # 3460 * 65536 = 0xD840000
-    -150: "15.0°W Telstar",     # 3450 * 65536 = 0xD7A0000
-    -180: "18.0°W Intelsat",    # 3420 * 65536 = 0xD3C0000
-    -200: "20.0°W NSS",         # 3400 * 65536 = 0xD240000
-    -220: "22.0°W SES",         # 3380 * 65536 = 0xD0C0000
-    -245: "24.5°W Intelsat",    # 3355 * 65536 = 0xCEC0000
-    -275: "27.5°W Intelsat",    # 3325 * 65536 = 0xCBC0000
-    # 3300 * 65536 = 0xC900000? No, 0xCE40000 = 3300*65536? Calcola:
-    # 3300*65536=216.268.800=0xCE40000 Sì!
-    -300: "30.0°W Hispasat",
-    -315: "31.5°W Hylas",       # 3285 * 65536 = 0xCD40000
-    -345: "34.5°W Intelsat",    # 3255 * 65536 = 0xCB40000
-    -360: "36.0°W Hispasat",    # 3240 * 65536 = 0xCA80000
-    -430: "43.0°W Intelsat",    # 3170 * 65536 = 0xC620000
-    -450: "45.0°W Intelsat",    # 3150 * 65536 = 0xC4E0000
-    -500: "50.0°W Intelsat",    # 3100 * 65536 = 0xC1C0000
-    -530: "53.0°W Intelsat",    # 3070 * 65536 = 0xBFC0000
-    -555: "55.5°W Intelsat",    # 3045 * 65536 = 0xBE40000
-    -580: "58.0°W Intelsat",    # 3020 * 65536 = 0xBCC0000
-    -610: "61.0°W Amazonas",    # 2990 * 65536 = 0xBAC0000
-    -630: "63.0°W Telstar",     # 2970 * 65536 = 0xB940000
-    -650: "65.0°W Eutelsat",    # 2950 * 65536 = 0xB7C0000
-    -670: "67.0°W SES",         # 2930 * 65536 = 0xB640000
-    -700: "70.0°W Star One",    # 2900 * 65536 = 0xB3C0000
-    -718: "71.8°W Arsat",       # 2882 * 65536 = 0xB360000
-    -727: "72.7°W Nimiq",       # 2873 * 65536 = 0xB2E0000
-    -739: "73.9°W Hispasat",    # 2861 * 65536 = 0xB260000
-    -750: "75.0°W Star One",    # 2850 * 65536 = 0xB1E0000
-    -770: "77.0°W QuetzSat",    # 2830 * 65536 = 0xB0E0000
-    -788: "78.8°W Sky Mexico",  # 2812 * 65536 = 0xAFC0000
-    -810: "81.0°W Arsat",       # 2790 * 65536 = 0xAE60000
-    -820: "82.0°W Nimiq",       # 2780 * 65536 = 0xADC0000
-    -871: "87.1°W SES",         # 2729 * 65536 = 0xAA80000
-    -890: "89.0°W Galaxy",      # 2710 * 65536 = 0xA8C0000
-    -910: "91.0°W Galaxy",      # 2690 * 65536 = 0xA700000
-    -950: "95.0°W Galaxy",      # 2650 * 65536 = 0xA380000
-    -970: "97.0°W Galaxy",      # 2630 * 65536 = 0xA1C0000
-    # 2608 * 65536 = 0xA000000? 2608*65536=170.917.888=0xA300000? No, calcola:
-    # 2608*65536=170.917.888=0xA300000
-    -992: "99.2°W Galaxy",
-    -1010: "101.0°W SES",       # 2590 * 65536 = 0xA180000
-    -1030: "103.0°W SES",       # 2570 * 65536 = 0xA000000? 2570*65536=168.427.520=0xA0A0000
-    -1050: "105.0°W AMC",       # 2550 * 65536 = 0x9F60000
-    -1073: "107.3°W Anik",      # 2527 * 65536 = 0x9DC0000
-    -1100: "110.0°W EchoStar",  # 2500 * 65536 = 0x9C40000
-    -1130: "113.0°W Eutelsat",  # 2470 * 65536 = 0x9AC0000
-    # 2451 * 65536 = 0x9900000? 2451*65536=160.563.200=0x9920000
-    -1149: "114.9°W Eutelsat",
-    -1170: "117.0°W Eutelsat",  # 2430 * 65536 = 0x97E0000
-    -1190: "119.0°W Anik",      # 2410 * 65536 = 0x96A0000
-    -1210: "121.0°W EchoStar",  # 2390 * 65536 = 0x9560000
-    -1230: "123.0°W Galaxy",    # 2370 * 65536 = 0x9420000
-    -1250: "125.0°W AMC",       # 2350 * 65536 = 0x92E0000
-    -1290: "129.0°W Ciel",      # 2310 * 65536 = 0x9060000
-    -1330: "133.0°W Galaxy",    # 2270 * 65536 = 0x8DE0000
-}

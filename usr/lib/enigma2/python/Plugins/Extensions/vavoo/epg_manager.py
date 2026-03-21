@@ -9,7 +9,7 @@ Features:
 - Memory-efficient XML parsing
 - Program filtering (only current/future programs)
 """
-# mod lululla 20260314
+# Modified by lululla 20260314
 # Python 2/3 compatibility
 
 from __future__ import print_function, absolute_import, division
@@ -333,7 +333,7 @@ class EPGParser(object):
         if not name:
             return ""
 
-        # Gestione unicode compatibile Py2/Py3
+        # Handle Unicode compatibly with Py2/Py3
         if isinstance(name, text_type):
             if PY2:
                 name = name.encode('utf-8')
@@ -512,6 +512,7 @@ class EPGManager(object):
         EPGSource(
             name="France",
             url="https://epgshare01.online/epgshare01/epg_ripper_FR1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-fr.xml.gz",
             priority=1,
             enabled=True,
             country_code="fr"
@@ -519,6 +520,7 @@ class EPGManager(object):
         EPGSource(
             name="Germany",
             url="https://epgshare01.online/epgshare01/epg_ripper_DE1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-de.xml.gz.gz",
             priority=1,
             enabled=True,
             country_code="de"
@@ -526,6 +528,7 @@ class EPGManager(object):
         EPGSource(
             name="Spain",
             url="https://epgshare01.online/epgshare01/epg_ripper_ES1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-es.xml.gz",
             priority=1,
             enabled=True,
             country_code="es"
@@ -533,6 +536,7 @@ class EPGManager(object):
         EPGSource(
             name="United Kingdom",
             url="https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-gb.xml.gz",
             priority=1,
             enabled=True,
             country_code="gb"
@@ -540,6 +544,7 @@ class EPGManager(object):
         EPGSource(
             name="Portugal",
             url="https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-pt.xml.gz",
             priority=1,
             enabled=True,
             country_code="pt"
@@ -547,6 +552,7 @@ class EPGManager(object):
         EPGSource(
             name="Netherlands",
             url="https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-nl.xml.gz",
             priority=1,
             enabled=True,
             country_code="nl"
@@ -554,6 +560,7 @@ class EPGManager(object):
         EPGSource(
             name="Belgium",
             url="https://epgshare01.online/epgshare01/epg_ripper_BE2.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-be.xml.gz",
             priority=1,
             enabled=True,
             country_code="be"
@@ -561,6 +568,7 @@ class EPGManager(object):
         EPGSource(
             name="Austria",
             url="https://epgshare01.online/epgshare01/epg_ripper_AT1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-at.xml.gz",
             priority=1,
             enabled=True,
             country_code="at"
@@ -568,6 +576,7 @@ class EPGManager(object):
         EPGSource(
             name="Switzerland",
             url="https://epgshare01.online/epgshare01/epg_ripper_CH1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-ch.xml.gz",
             priority=1,
             enabled=True,
             country_code="ch"
@@ -575,6 +584,7 @@ class EPGManager(object):
         EPGSource(
             name="Poland",
             url="https://epgshare01.online/epgshare01/epg_ripper_PL1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-pl.xml.gz",
             priority=1,
             enabled=True,
             country_code="pl"
@@ -582,6 +592,7 @@ class EPGManager(object):
         EPGSource(
             name="Romania",
             url="https://epgshare01.online/epgshare01/epg_ripper_RO1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-ro.xml.gz",
             priority=1,
             enabled=True,
             country_code="ro"
@@ -589,6 +600,7 @@ class EPGManager(object):
         EPGSource(
             name="Albania",
             url="https://epgshare01.online/epgshare01/epg_ripper_AL1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-al.xml.gz",
             priority=1,
             enabled=True,
             country_code="al"
@@ -596,6 +608,7 @@ class EPGManager(object):
         EPGSource(
             name="Bulgaria",
             url="https://epgshare01.online/epgshare01/epg_ripper_BG1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-bg.xml.gz",
             priority=1,
             enabled=True,
             country_code="bg"
@@ -603,6 +616,7 @@ class EPGManager(object):
         EPGSource(
             name="Croatia",
             url="https://epgshare01.online/epgshare01/epg_ripper_HR1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-hr.xml.gz",
             priority=1,
             enabled=True,
             country_code="hr"
@@ -610,6 +624,7 @@ class EPGManager(object):
         EPGSource(
             name="Serbia",
             url="https://epgshare01.online/epgshare01/epg_ripper_RS1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-rs.xml.gz",
             priority=1,
             enabled=True,
             country_code="rs"
@@ -617,6 +632,7 @@ class EPGManager(object):
         EPGSource(
             name="Bosnia",
             url="https://epgshare01.online/epgshare01/epg_ripper_BA1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-ba.xml.gz",
             priority=1,
             enabled=True,
             country_code="ba"
@@ -624,6 +640,7 @@ class EPGManager(object):
         EPGSource(
             name="Czech Republic",
             url="https://epgshare01.online/epgshare01/epg_ripper_CZ1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-cz.xml.gz",
             priority=1,
             enabled=True,
             country_code="cz"
@@ -631,6 +648,7 @@ class EPGManager(object):
         EPGSource(
             name="Slovakia",
             url="https://epgshare01.online/epgshare01/epg_ripper_SK1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-sk.xml.gz",
             priority=1,
             enabled=True,
             country_code="sk"
@@ -638,6 +656,7 @@ class EPGManager(object):
         EPGSource(
             name="Hungary",
             url="https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-hu.xml.gz",
             priority=1,
             enabled=True,
             country_code="hu"
@@ -645,6 +664,7 @@ class EPGManager(object):
         EPGSource(
             name="Greece",
             url="https://epgshare01.online/epgshare01/epg_ripper_GR1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-gr.xml.gz",
             priority=1,
             enabled=True,
             country_code="gr"
@@ -652,6 +672,7 @@ class EPGManager(object):
         EPGSource(
             name="Turkey",
             url="https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-tr.xml.gz",
             priority=1,
             enabled=True,
             country_code="tr"
@@ -659,6 +680,7 @@ class EPGManager(object):
         EPGSource(
             name="Denmark",
             url="https://epgshare01.online/epgshare01/epg_ripper_DK1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-dk.xml.gz",
             priority=1,
             enabled=True,
             country_code="dk"
@@ -666,6 +688,7 @@ class EPGManager(object):
         EPGSource(
             name="Sweden",
             url="https://epgshare01.online/epgshare01/epg_ripper_SE1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-se.xml.gz",
             priority=1,
             enabled=True,
             country_code="se"
@@ -673,6 +696,7 @@ class EPGManager(object):
         EPGSource(
             name="Norway",
             url="https://epgshare01.online/epgshare01/epg_ripper_NO1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-no.xml.gz",
             priority=1,
             enabled=True,
             country_code="no"
@@ -680,6 +704,7 @@ class EPGManager(object):
         EPGSource(
             name="Finland",
             url="https://epgshare01.online/epgshare01/epg_ripper_FI1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-fi.xml.gz",
             priority=1,
             enabled=True,
             country_code="fi"
@@ -687,6 +712,7 @@ class EPGManager(object):
         EPGSource(
             name="Russia",
             url="https://epgshare01.online/epgshare01/epg_ripper_viva-russia.ru.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-ru.xml.gz",
             priority=1,
             enabled=True,
             country_code="ru"
@@ -694,6 +720,7 @@ class EPGManager(object):
         EPGSource(
             name="USA",
             url="https://epgshare01.online/epgshare01/epg_ripper_US2.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-us.xml.gz",
             priority=1,
             enabled=True,
             country_code="us"
@@ -701,6 +728,7 @@ class EPGManager(object):
         EPGSource(
             name="Canada",
             url="https://epgshare01.online/epgshare01/epg_ripper_CA2.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-ca.xml.gz",
             priority=1,
             enabled=True,
             country_code="ca"
@@ -708,6 +736,7 @@ class EPGManager(object):
         EPGSource(
             name="Australia",
             url="https://epgshare01.online/epgshare01/epg_ripper_AU1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-au.xml.gz",
             priority=1,
             enabled=True,
             country_code="au"
@@ -715,6 +744,7 @@ class EPGManager(object):
         EPGSource(
             name="Japan",
             url="https://epgshare01.online/epgshare01/epg_ripper_JP1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-jp.xml.gz",
             priority=1,
             enabled=True,
             country_code="jp"
@@ -722,6 +752,7 @@ class EPGManager(object):
         EPGSource(
             name="India",
             url="https://epgshare01.online/epgshare01/epg_ripper_IN1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-in.xml.gz",
             priority=1,
             enabled=True,
             country_code="in"
@@ -729,6 +760,7 @@ class EPGManager(object):
         EPGSource(
             name="Brazil",
             url="https://epgshare01.online/epgshare01/epg_ripper_BR1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-br.xml.gz",
             priority=1,
             enabled=True,
             country_code="br"
@@ -736,6 +768,7 @@ class EPGManager(object):
         EPGSource(
             name="Mexico",
             url="https://epgshare01.online/epgshare01/epg_ripper_MX1.xml.gz",
+            backup_url="https://iptv-epg.org/files/epg-mx.xml.gz",
             priority=1,
             enabled=True,
             country_code="mx"
