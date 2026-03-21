@@ -102,31 +102,14 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
-msgid "Active Automatic Bouquet Update"
-msgstr "Aktív automatikus csokorfrissítés"
-
-#, fuzzy
-msgid "Active or Disactive Ipv6."
-msgstr "Aktív vagy inaktív LAN Ipv6."
-
 msgid "All countries (%d)"
 msgstr "Minden ország (%d)"
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr ""
 
-#, fuzzy
-msgid "At an interval hours or fixed time"
-msgstr "Órák időközönként vagy meghatározott időpontban"
-
 msgid "Author:"
 msgstr "Szerző:"
-
-msgid "Auto-update EPG"
-msgstr ""
-
-msgid "Automatically trigger EPG update after source creation"
-msgstr ""
 
 msgid "Back"
 msgstr "Vissza"
@@ -136,9 +119,6 @@ msgstr "Backspace"
 
 msgid "Bottom"
 msgstr "Alul"
-
-msgid "Bouquet Position in List"
-msgstr "Csokor pozíciója a listában"
 
 #, fuzzy
 msgid "Bouquet creation error: {}"
@@ -189,19 +169,6 @@ msgstr "Összes törlése"
 msgid "Configuration saved successfully!"
 msgstr "Konfiguráció sikeresen mentve!"
 
-msgid "Configure Main Background Image."
-msgstr "Állítsa be a fő háttérképet."
-
-msgid "Configure at a fixed time"
-msgstr "Konfigurálás meghatározott időpontban"
-
-#, fuzzy
-msgid "Configure interval minutes from now"
-msgstr "Mostantól minden percnyi intervallum konfigurálása"
-
-msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "Szolgáltatás konfigurálása Referencia Iptv-Gstreamer-Exteplayer3"
-
 msgid "Console"
 msgstr "Konzol"
 
@@ -214,17 +181,8 @@ msgstr "Országok: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "Ország: %s"
 
-msgid "Create EPG source for EPGImport with Vavoo program data"
-msgstr ""
-
 msgid "Credits:"
 msgstr "Kreditek:"
-
-msgid "Default View"
-msgstr "Alapértelmezett nézet"
-
-msgid "Default view when opening the plugin"
-msgstr "Alapértelmezett nézet a bővítmény megnyitásakor"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Exportálni szeretné ezt a csokrot?"
@@ -251,12 +209,6 @@ msgstr ""
 #, fuzzy
 msgid "EPG update started successfully"
 msgstr "Konfiguráció sikeresen mentve!"
-
-msgid "Enable Vavoo EPG"
-msgstr ""
-
-msgid "Enable or disable proxy."
-msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Írjon be szöveget a kereséshez..."
@@ -323,12 +275,6 @@ msgstr "{} csatorna található"
 msgid "Generate .m3u file for:"
 msgstr ".m3u fájl generálása a következőhöz:"
 
-msgid "Generate .m3u files (Ok for Exec)"
-msgstr ".m3u fájlok generálása (Exec esetén rendben)"
-
-msgid "Generate .m3u files and save to device %s."
-msgstr ".m3u fájlok létrehozása és mentése a(z) %s eszközre."
-
 msgid "Generate .m3u files and save to device %s?"
 msgstr ".m3u fájlok generálása és mentése a(z) %s eszközre?"
 
@@ -338,14 +284,8 @@ msgstr ".m3u fájlok generálása MINDEN %d ország számára?"
 msgid "Hide/Show"
 msgstr "Elrejtés/Megjelenítés"
 
-msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
-msgstr ""
-
 msgid "Important Notes:"
 msgstr "Fontos megjegyzések:"
-
-msgid "Ipv6 State Of Lan (On/Off)"
-msgstr "IPv6 State Of Lan (be/ki)"
 
 msgid "Keyboard"
 msgstr "Billentyűzet"
@@ -359,9 +299,6 @@ msgstr "Licensz:"
 msgid "License: CC BY-NC-SA 4.0"
 msgstr "Licenc: CC BY-NC-SA 4.0"
 
-msgid "Link in Main Menu"
-msgstr "Link a főmenüben"
-
 msgid "Lower = less interruption but more refreshes"
 msgstr "Alacsonyabb = kevesebb megszakítás, de több frissítés"
 
@@ -373,9 +310,6 @@ msgstr "M3U generáció elkészült!"
 
 msgid "M3U generation error: %s"
 msgstr "M3U generálási hiba: %s"
-
-msgid "Movie Services Reference"
-msgstr "Filmszolgáltatások referencia"
 
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
@@ -404,25 +338,16 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr "Nincsenek érvényes csatornák ehhez: %s"
 
-msgid "Now %s"
-msgstr "Most %s"
-
 msgid "Only one specific country"
 msgstr "Csak egy konkrét ország"
 
 msgid "Please try another channel."
 msgstr "Kérlek, próbálj meg egy másik csatornát."
 
-msgid "Position of Vavoo bouquets in the main list"
-msgstr "A Vavoo csokrok helye a fő listában"
-
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Nyomja meg a TEXT gombot a gépeléshez, a BACKSPACE gombot a törléshez"
 
 msgid "Proxy Disabled"
-msgstr ""
-
-msgid "Proxy Enabled"
 msgstr ""
 
 msgid "Proxy Error:"
@@ -465,10 +390,6 @@ msgstr "Tényleg bezárja a beállítások mentése nélkül?"
 msgid "Recommended: 5-8 minutes"
 msgstr "Ajánlott: 5-8 perc"
 
-#, fuzzy
-msgid "Refresh stream (minutes):"
-msgstr "Automatikus frissítésű stream (perc):"
-
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Stream frissítése X percenként (1-15)"
 
@@ -503,13 +424,6 @@ msgstr "Mentve ide: %(path)s"
 msgid "Saved in: %s"
 msgstr "Mentve ide: %s"
 
-msgid "Schedule type:"
-msgstr "Menetrend típusa:"
-
-#, fuzzy
-msgid "Scheduled List:"
-msgstr "Ütemezett lista frissítése:"
-
 msgid "Search"
 msgstr "Keresés"
 
@@ -522,20 +436,11 @@ msgstr "Keresés..."
 msgid "Search:"
 msgstr "Keresés:"
 
-msgid "Select Background"
-msgstr "Háttér kiválasztása"
-
 msgid "Select M3U export mode:"
 msgstr "Válassza ki az M3U exportálási módot:"
 
 msgid "Select country to export M3U:"
 msgstr "Válasszon országot az M3U exportálásához:"
-
-msgid "Server for Player Used"
-msgstr "Használt szerver a lejátszóhoz"
-
-msgid "Server for player."
-msgstr "Szerver a játékosoknak."
 
 msgid "Showing all channels: {}"
 msgstr "Az összes csatorna megjelenítése: {}"
@@ -562,9 +467,6 @@ msgstr "Ez eltávolítja a következőket:"
 msgid "This will:"
 msgstr "Ez eltávolítja a következőket:"
 
-msgid "Time to start update:"
-msgstr "A frissítés megkezdésének ideje:"
-
 msgid "Top"
 msgstr "Felső"
 
@@ -573,13 +475,6 @@ msgstr "Összes csatorna: %(total_channels)d"
 
 msgid "UPPERCASE"
 msgstr "NAGYBETŰS"
-
-#, fuzzy
-msgid "Update interval (hours)"
-msgstr "Frissítési időköz (perc):"
-
-msgid "Update interval (minutes):"
-msgstr "Frissítési időköz (perc):"
 
 msgid "Updating EPG..."
 msgstr ""
@@ -656,6 +551,90 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
+
+#~ msgid "Active Automatic Bouquet Update"
+#~ msgstr "Aktív automatikus csokorfrissítés"
+
+#, fuzzy
+#~ msgid "Active or Disactive Ipv6."
+#~ msgstr "Aktív vagy inaktív LAN Ipv6."
+
+#, fuzzy
+#~ msgid "At an interval hours or fixed time"
+#~ msgstr "Órák időközönként vagy meghatározott időpontban"
+
+#~ msgid "Bouquet Position in List"
+#~ msgstr "Csokor pozíciója a listában"
+
+#~ msgid "Configure Main Background Image."
+#~ msgstr "Állítsa be a fő háttérképet."
+
+#~ msgid "Configure at a fixed time"
+#~ msgstr "Konfigurálás meghatározott időpontban"
+
+#, fuzzy
+#~ msgid "Configure interval minutes from now"
+#~ msgstr "Mostantól minden percnyi intervallum konfigurálása"
+
+#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+#~ msgstr "Szolgáltatás konfigurálása Referencia Iptv-Gstreamer-Exteplayer3"
+
+#~ msgid "Default View"
+#~ msgstr "Alapértelmezett nézet"
+
+#~ msgid "Default view when opening the plugin"
+#~ msgstr "Alapértelmezett nézet a bővítmény megnyitásakor"
+
+#~ msgid "Generate .m3u files (Ok for Exec)"
+#~ msgstr ".m3u fájlok generálása (Exec esetén rendben)"
+
+#~ msgid "Generate .m3u files and save to device %s."
+#~ msgstr ".m3u fájlok létrehozása és mentése a(z) %s eszközre."
+
+#~ msgid "Ipv6 State Of Lan (On/Off)"
+#~ msgstr "IPv6 State Of Lan (be/ki)"
+
+#~ msgid "Link in Main Menu"
+#~ msgstr "Link a főmenüben"
+
+#~ msgid "Movie Services Reference"
+#~ msgstr "Filmszolgáltatások referencia"
+
+#~ msgid "Now %s"
+#~ msgstr "Most %s"
+
+#~ msgid "Position of Vavoo bouquets in the main list"
+#~ msgstr "A Vavoo csokrok helye a fő listában"
+
+#, fuzzy
+#~ msgid "Refresh stream (minutes):"
+#~ msgstr "Automatikus frissítésű stream (perc):"
+
+#~ msgid "Schedule type:"
+#~ msgstr "Menetrend típusa:"
+
+#, fuzzy
+#~ msgid "Scheduled List:"
+#~ msgstr "Ütemezett lista frissítése:"
+
+#~ msgid "Select Background"
+#~ msgstr "Háttér kiválasztása"
+
+#~ msgid "Server for Player Used"
+#~ msgstr "Használt szerver a lejátszóhoz"
+
+#~ msgid "Server for player."
+#~ msgstr "Szerver a játékosoknak."
+
+#~ msgid "Time to start update:"
+#~ msgstr "A frissítés megkezdésének ideje:"
+
+#, fuzzy
+#~ msgid "Update interval (hours)"
+#~ msgstr "Frissítési időköz (perc):"
+
+#~ msgid "Update interval (minutes):"
+#~ msgstr "Frissítési időköz (perc):"
 
 #~ msgid "(%(count)d channels)"
 #~ msgstr "(%(count)d csatorna)"

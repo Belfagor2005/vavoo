@@ -102,31 +102,14 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
-msgid "Active Automatic Bouquet Update"
-msgstr "Aktívna automatická aktualizácia kytice"
-
-#, fuzzy
-msgid "Active or Disactive Ipv6."
-msgstr "Aktívna alebo neaktívna LAN IPv6."
-
 msgid "All countries (%d)"
 msgstr "Všetky krajiny (%d)"
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr ""
 
-#, fuzzy
-msgid "At an interval hours or fixed time"
-msgstr "V intervale hodín alebo v pevne stanovenom čase"
-
 msgid "Author:"
 msgstr "Autor:"
-
-msgid "Auto-update EPG"
-msgstr ""
-
-msgid "Automatically trigger EPG update after source creation"
-msgstr ""
 
 msgid "Back"
 msgstr "Späť"
@@ -136,9 +119,6 @@ msgstr "Backspace"
 
 msgid "Bottom"
 msgstr "Dole"
-
-msgid "Bouquet Position in List"
-msgstr "Pozícia kytice v zozname"
 
 #, fuzzy
 msgid "Bouquet creation error: {}"
@@ -189,19 +169,6 @@ msgstr "Zmazať všetko"
 msgid "Configuration saved successfully!"
 msgstr "Konfigurácia bola úspešne uložená!"
 
-msgid "Configure Main Background Image."
-msgstr "Konfigurácia hlavného obrázka na pozadí."
-
-msgid "Configure at a fixed time"
-msgstr "Konfigurujte v pevnom čase"
-
-#, fuzzy
-msgid "Configure interval minutes from now"
-msgstr "Odteraz konfigurujte každý interval minút"
-
-msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr "Konfigurácia služby Referencia Iptv-Gstreamer-Exteplayer3"
-
 msgid "Console"
 msgstr "Konzola"
 
@@ -214,17 +181,8 @@ msgstr "Krajiny: %(generated)d/%(total)d"
 msgid "Country: %s"
 msgstr "Krajina: %s"
 
-msgid "Create EPG source for EPGImport with Vavoo program data"
-msgstr ""
-
 msgid "Credits:"
 msgstr "Kredity:"
-
-msgid "Default View"
-msgstr "Predvolené"
-
-msgid "Default view when opening the plugin"
-msgstr "Predvolené zobrazenie pri otvorení pluginu"
 
 msgid "Do you want to export this bouquet?"
 msgstr "Chcete túto kyticu exportovať?"
@@ -251,12 +209,6 @@ msgstr ""
 #, fuzzy
 msgid "EPG update started successfully"
 msgstr "Konfigurácia bola úspešne uložená!"
-
-msgid "Enable Vavoo EPG"
-msgstr ""
-
-msgid "Enable or disable proxy."
-msgstr ""
 
 msgid "Enter text to search..."
 msgstr "Zadajte text na vyhľadávanie..."
@@ -323,12 +275,6 @@ msgstr "Nájdených kanálov: {}"
 msgid "Generate .m3u file for:"
 msgstr "Vygenerovať súbor .m3u pre:"
 
-msgid "Generate .m3u files (Ok for Exec)"
-msgstr "Generovanie súborov .m3u (vhodné pre Exec)"
-
-msgid "Generate .m3u files and save to device %s."
-msgstr "Vygenerovať súbory .m3u a uložiť ich do zariadenia %s."
-
 msgid "Generate .m3u files and save to device %s?"
 msgstr "Vygenerovať súbory .m3u a uložiť ich do zariadenia %s?"
 
@@ -338,14 +284,8 @@ msgstr "Generovať súbory .m3u pre VŠETKY %d krajiny?"
 msgid "Hide/Show"
 msgstr "Skryť/zobraziť"
 
-msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
-msgstr ""
-
 msgid "Important Notes:"
 msgstr "Dôležité poznámky:"
-
-msgid "Ipv6 State Of Lan (On/Off)"
-msgstr "Ipv6 State Of Lan (zapnuté/vypnuté)"
 
 msgid "Keyboard"
 msgstr "Klávesnica"
@@ -359,9 +299,6 @@ msgstr "Licencia:"
 msgid "License: CC BY-NC-SA 4.0"
 msgstr "Licencia: CC BY-NC-SA 4.0"
 
-msgid "Link in Main Menu"
-msgstr "Odkaz v hlavnom menu"
-
 msgid "Lower = less interruption but more refreshes"
 msgstr "Nižšia = menej prerušení, ale viac osviežení"
 
@@ -373,9 +310,6 @@ msgstr "Generovanie M3U dokončené!"
 
 msgid "M3U generation error: %s"
 msgstr "Chyba generovania M3U: %s"
-
-msgid "Movie Services Reference"
-msgstr "Odkaz na filmové služby"
 
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
@@ -404,25 +338,16 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr "Žiadne platné kanály pre: %s"
 
-msgid "Now %s"
-msgstr "Teraz %s"
-
 msgid "Only one specific country"
 msgstr "Iba jedna konkrétna krajina"
 
 msgid "Please try another channel."
 msgstr "Skúste iný kanál."
 
-msgid "Position of Vavoo bouquets in the main list"
-msgstr "Pozícia kytíc Vavoo v hlavnom zozname"
-
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr "Stlačte tlačidlo TEXT pre písanie, BACKSPACE pre vymazanie"
 
 msgid "Proxy Disabled"
-msgstr ""
-
-msgid "Proxy Enabled"
 msgstr ""
 
 msgid "Proxy Error:"
@@ -464,10 +389,6 @@ msgstr "Naozaj zavrieť bez uloženia nastavení?"
 msgid "Recommended: 5-8 minutes"
 msgstr "Odporúčané: 5 – 8 minút"
 
-#, fuzzy
-msgid "Refresh stream (minutes):"
-msgstr "Automatické obnovovanie streamu (minúty):"
-
 msgid "Refresh stream every X minutes (1-15)"
 msgstr "Obnoviť stream každých X minút (1-15)"
 
@@ -502,13 +423,6 @@ msgstr "Uložené v: %(path)s"
 msgid "Saved in: %s"
 msgstr "Uložené v: %s"
 
-msgid "Schedule type:"
-msgstr "Typ rozvrhu:"
-
-#, fuzzy
-msgid "Scheduled List:"
-msgstr "Plánovaná aktualizácia zoznamu:"
-
 msgid "Search"
 msgstr "Hľadať"
 
@@ -521,20 +435,11 @@ msgstr "Hľadať..."
 msgid "Search:"
 msgstr "Vyhľadať:"
 
-msgid "Select Background"
-msgstr "Vyberte pozadie"
-
 msgid "Select M3U export mode:"
 msgstr "Vyberte režim exportu M3U:"
 
 msgid "Select country to export M3U:"
 msgstr "Vyberte krajinu, do ktorej chcete exportovať M3U:"
-
-msgid "Server for Player Used"
-msgstr "Používaný server pre prehrávač"
-
-msgid "Server for player."
-msgstr "Server pre hráča."
 
 msgid "Showing all channels: {}"
 msgstr "Zobrazujú sa všetky kanály: {}"
@@ -561,9 +466,6 @@ msgstr "Týmto sa odstráni:"
 msgid "This will:"
 msgstr "Týmto sa odstráni:"
 
-msgid "Time to start update:"
-msgstr "Čas na spustenie aktualizácie:"
-
 msgid "Top"
 msgstr "Hore"
 
@@ -572,13 +474,6 @@ msgstr "Celkový počet kanálov: %(total_channels)d"
 
 msgid "UPPERCASE"
 msgstr "VEĽKÉ (UPPERCASE)"
-
-#, fuzzy
-msgid "Update interval (hours)"
-msgstr "Interval aktualizácie (v minútach):"
-
-msgid "Update interval (minutes):"
-msgstr "Interval aktualizácie (v minútach):"
 
 msgid "Updating EPG..."
 msgstr ""
@@ -654,6 +549,90 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
+
+#~ msgid "Active Automatic Bouquet Update"
+#~ msgstr "Aktívna automatická aktualizácia kytice"
+
+#, fuzzy
+#~ msgid "Active or Disactive Ipv6."
+#~ msgstr "Aktívna alebo neaktívna LAN IPv6."
+
+#, fuzzy
+#~ msgid "At an interval hours or fixed time"
+#~ msgstr "V intervale hodín alebo v pevne stanovenom čase"
+
+#~ msgid "Bouquet Position in List"
+#~ msgstr "Pozícia kytice v zozname"
+
+#~ msgid "Configure Main Background Image."
+#~ msgstr "Konfigurácia hlavného obrázka na pozadí."
+
+#~ msgid "Configure at a fixed time"
+#~ msgstr "Konfigurujte v pevnom čase"
+
+#, fuzzy
+#~ msgid "Configure interval minutes from now"
+#~ msgstr "Odteraz konfigurujte každý interval minút"
+
+#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+#~ msgstr "Konfigurácia služby Referencia Iptv-Gstreamer-Exteplayer3"
+
+#~ msgid "Default View"
+#~ msgstr "Predvolené"
+
+#~ msgid "Default view when opening the plugin"
+#~ msgstr "Predvolené zobrazenie pri otvorení pluginu"
+
+#~ msgid "Generate .m3u files (Ok for Exec)"
+#~ msgstr "Generovanie súborov .m3u (vhodné pre Exec)"
+
+#~ msgid "Generate .m3u files and save to device %s."
+#~ msgstr "Vygenerovať súbory .m3u a uložiť ich do zariadenia %s."
+
+#~ msgid "Ipv6 State Of Lan (On/Off)"
+#~ msgstr "Ipv6 State Of Lan (zapnuté/vypnuté)"
+
+#~ msgid "Link in Main Menu"
+#~ msgstr "Odkaz v hlavnom menu"
+
+#~ msgid "Movie Services Reference"
+#~ msgstr "Odkaz na filmové služby"
+
+#~ msgid "Now %s"
+#~ msgstr "Teraz %s"
+
+#~ msgid "Position of Vavoo bouquets in the main list"
+#~ msgstr "Pozícia kytíc Vavoo v hlavnom zozname"
+
+#, fuzzy
+#~ msgid "Refresh stream (minutes):"
+#~ msgstr "Automatické obnovovanie streamu (minúty):"
+
+#~ msgid "Schedule type:"
+#~ msgstr "Typ rozvrhu:"
+
+#, fuzzy
+#~ msgid "Scheduled List:"
+#~ msgstr "Plánovaná aktualizácia zoznamu:"
+
+#~ msgid "Select Background"
+#~ msgstr "Vyberte pozadie"
+
+#~ msgid "Server for Player Used"
+#~ msgstr "Používaný server pre prehrávač"
+
+#~ msgid "Server for player."
+#~ msgstr "Server pre hráča."
+
+#~ msgid "Time to start update:"
+#~ msgstr "Čas na spustenie aktualizácie:"
+
+#, fuzzy
+#~ msgid "Update interval (hours)"
+#~ msgstr "Interval aktualizácie (v minútach):"
+
+#~ msgid "Update interval (minutes):"
+#~ msgstr "Interval aktualizácie (v minútach):"
 
 #~ msgid "(%(count)d channels)"
 #~ msgstr "(%(count)d kanálov)"
