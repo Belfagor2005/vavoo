@@ -30,9 +30,21 @@ echo ""
 pkill -f "vavoo_proxy.py" 2>/dev/null
 sleep 2
 
+# Detect Python interpreter
+if command -v python3 >/dev/null 2>&1; then
+    PYTHON_BIN="python3"
+elif command -v python >/dev/null 2>&1; then
+    PYTHON_BIN="python"
+elif command -v python2 >/dev/null 2>&1; then
+    PYTHON_BIN="python2"
+else
+    echo "ERROR: No Python interpreter found"
+    exit 1
+fi
+
 # Start the proxy
 cd /usr/lib/enigma2/python/Plugins/Extensions/vavoo
-python /usr/lib/enigma2/python/Plugins/Extensions/vavoo/start_proxy.py > /tmp/vavoo_proxy.log 2>&1 &
+"$PYTHON_BIN" /usr/lib/enigma2/python/Plugins/Extensions/vavoo/start_proxy.py > /tmp/vavoo_proxy.log 2>&1 &
 
 # Wait a few seconds for startup
 sleep 5

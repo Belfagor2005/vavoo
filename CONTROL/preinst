@@ -53,9 +53,13 @@ fi
 echo "Installing required dependencies..."
 if [ -e "/usr/bin/python3" ]; then
     PY="python3"
+    SIXPKG="python3-six"
+    REQPKG="python3-requests"
     echo "✓ Using Python 3"
 else
     PY="python"
+    SIXPKG="python-six"
+    REQPKG="python-requests"
     echo "✓ Using Python 2.7"
 fi
 
@@ -63,11 +67,18 @@ fi
 echo "Updating package repository..."
 opkg update > /dev/null 2>&1
 
-echo "Installing ${PY}-requests..."
-if opkg install --force-reinstall "${PY}-requests" > /dev/null 2>&1; then
-    echo "✓ ${PY}-requests installed successfully"
+echo "Installing ${SIXPKG}..."
+if opkg install --force-reinstall "${SIXPKG}" > /dev/null 2>&1; then
+    echo "✓ ${SIXPKG} installed successfully"
 else
-    echo "⚠ Could not install ${PY}-requests, but continuing installation"
+    echo "⚠ Could not install ${SIXPKG}, but continuing installation"
+fi
+
+echo "Installing ${REQPKG}..."
+if opkg install --force-reinstall "${REQPKG}" > /dev/null 2>&1; then
+    echo "✓ ${REQPKG} installed successfully"
+else
+    echo "⚠ Could not install ${REQPKG}, but continuing installation"
 fi
 
 # Additional dependency checks

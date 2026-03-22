@@ -194,7 +194,10 @@ class Console(Screen):
 
     def dataAvail(self, str):
         if PY3:
-            data = str.decode()
+            try:
+                data = str.decode("utf-8", "replace")
+            except Exception:
+                data = str.decode("latin-1", "replace")
         else:
             data = str
         print("[Console] Data received: ", data)
