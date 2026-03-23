@@ -1098,7 +1098,9 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     return
 
                 matching_channels = []
-                if hasattr(proxy, 'channels_by_country') and proxy.channels_by_country:
+                if hasattr(
+                        proxy,
+                        'channels_by_country') and proxy.channels_by_country:
                     for stored_country, channels in proxy.channels_by_country.items():
                         if stored_country.lower() == country.lower():
                             matching_channels = channels
@@ -1362,7 +1364,8 @@ def shutdown_proxy():
     # Fallback: kill process
     try:
         import subprocess
-        subprocess.call(["pkill", "-f", "/Plugins/Extensions/vavoo/start_proxy.py"])
+        subprocess.call(
+            ["pkill", "-f", "/Plugins/Extensions/vavoo/start_proxy.py"])
         print(" Killed by pkill")
         return True
     except Exception as e:
@@ -1495,11 +1498,13 @@ def run_proxy_in_background():
                 else:
                     # Proxy is running but not responding, kill it
                     print(" Proxy is running but not responding, killing...")
-                    system("pkill -f '/Plugins/Extensions/vavoo/start_proxy.py' 2>/dev/null")
+                    system(
+                        "pkill -f '/Plugins/Extensions/vavoo/start_proxy.py' 2>/dev/null")
                     time.sleep(2)
             except BaseException:
                 # Proxy not responding, kill it
-                system("pkill -f '/Plugins/Extensions/vavoo/start_proxy.py' 2>/dev/null")
+                system(
+                    "pkill -f '/Plugins/Extensions/vavoo/start_proxy.py' 2>/dev/null")
                 time.sleep(2)
 
         # Start new proxy
