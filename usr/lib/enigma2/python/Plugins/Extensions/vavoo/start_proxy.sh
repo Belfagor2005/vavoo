@@ -27,7 +27,7 @@ echo "Date: $(date)"
 echo ""
 
 # Stop any existing proxy
-pkill -f "vavoo_proxy.py" 2>/dev/null
+pkill -f "/Plugins/Extensions/vavoo/start_proxy.py" 2>/dev/null
 sleep 2
 
 # Detect Python interpreter
