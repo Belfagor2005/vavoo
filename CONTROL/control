@@ -4,6 +4,7 @@ Section: misc
 Priority: optional
 Architecture: all
 Maintainer: Lululla
+Depends: python3-requests, python3-six
 Description: Vavoo stream online
 Source: enigma2-plugin-extensions-vavoo
 Homepage: *

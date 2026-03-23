@@ -68,7 +68,7 @@ class SimpleNotifyWidget(Screen):
             self["notification_text"].setText(text)
 
 
-class HybridNotificationManager:
+class HybridNotificationManager(object):
     """Singleton notification manager - works globally across all threads"""
 
     _instance = None
@@ -83,7 +83,7 @@ class HybridNotificationManager:
             return cls._instance
 
     def __init__(self):
-        if self._initialized:
+        if getattr(self, '_initialized', False):
             return
         self._initialized = True
         self.notification_window = None
@@ -135,10 +135,19 @@ class HybridNotificationManager:
                 self.hide_timer.stop()
 
                 # Convert message to correct format
-                if sys.version_info[0] < 3 and isinstance(message, unicode):
-                    display_msg = message.encode('utf-8')
+                if sys.version_info[0] < 3:
+                    if isinstance(message, unicode):
+                        display_msg = message.encode('utf-8')
+                    else:
+                        display_msg = str(message)
                 else:
-                    display_msg = str(message)
+                    if isinstance(message, bytes):
+                        try:
+                            display_msg = message.decode('utf-8', 'replace')
+                        except Exception:
+                            display_msg = message.decode('latin-1', 'replace')
+                    else:
+                        display_msg = str(message)
 
                 self.notification_window.updateMessage(display_msg)
                 self.notification_window.show()

@@ -28,12 +28,14 @@ __author__ = "Lululla"
 __license__ = "CC BY-NC-SA 4.0"
 
 import gzip
+import io
 import requests
 import uuid
 import time
 import threading
 import socket
 from json import loads, load, dumps
+from pathlib import Path
 import urllib3
 
 from . import (
@@ -180,9 +182,20 @@ HEADERS = {
 
 
 def decode_response(resp):
-    """Decode gzip response if needed"""
+    """Decode gzip response if needed, with Python 2 fallback."""
     if resp.content[:2] == b'\x1f\x8b':
-        return loads(gzip.decompress(resp.content))
+        try:
+            raw = gzip.decompress(resp.content)
+        except AttributeError:
+            bio = io.BytesIO(resp.content)
+            gz = gzip.GzipFile(fileobj=bio, mode='rb')
+            try:
+                raw = gz.read()
+            finally:
+                gz.close()
+        if not isinstance(raw, unicode):
+            raw = raw.decode('utf-8', 'replace')
+        return loads(raw)
     return resp.json()
 
 
@@ -292,7 +305,7 @@ class ProxyHealthMonitor:
 
             # 3. Restart the proxy
             global proxy
-            proxy = VavooProxy()
+            proxy = None
 
             if proxy.initialize_proxy():
                 server = ThreadedHTTPServer(
@@ -329,6 +342,7 @@ class VavooProxy:
         self.session.request = self._robust_request
 
         self.active_streams = 0
+        self._active_streams_lock = threading.Lock()
         self.addon_sig_data = {"sig": None, "ts": 0}
         self.addon_sig_lock = threading.Lock()
         self.all_filtered_items = []
@@ -343,8 +357,11 @@ class VavooProxy:
         self.refresh_timer = None
         self.resolve_cache = {}
         self.resolve_cache_ttl = 30
+        self._resolve_cache_lock = threading.Lock()
         self.server = None
         self.start_time = time.time()
+        self._sref_map_cache = {}
+        self._sref_map_mtime = None
 
         # Stop flag for background workers
         self._stop_event = threading.Event()
@@ -353,6 +370,7 @@ class VavooProxy:
         # Mirror-aware endpoints
         self.base_sites = list(BASE_SITES)
         self.base_site_index = 0
+        self._base_site_lock = threading.Lock()
         self._update_endpoints()
 
         # Start lightweight token monitor only
@@ -360,17 +378,21 @@ class VavooProxy:
         print(" Initialized at " + time.ctime())
 
     def stream_started(self):
-        self.active_streams += 1
+        with self._active_streams_lock:
+            self.active_streams += 1
+            active_streams = self.active_streams
         print(
             "[Proxy] Stream started. Active streams: {}".format(
-                self.active_streams))
+                active_streams))
 
     def stream_ended(self):
-        if self.active_streams > 0:
-            self.active_streams -= 1
+        with self._active_streams_lock:
+            if self.active_streams > 0:
+                self.active_streams -= 1
+            active_streams = self.active_streams
         print(
             "[Proxy] Stream ended. Active streams: {}".format(
-                self.active_streams))
+                active_streams))
 
     def _update_endpoints(self):
         """Update API endpoints from the current base site."""
@@ -382,11 +404,12 @@ class VavooProxy:
         """Switch to next mirror base site."""
         if not self.base_sites:
             return
-        old = self.base_sites[self.base_site_index]
-        self.base_site_index = (self.base_site_index +
-                                1) % len(self.base_sites)
-        self._update_endpoints()
-        new = self.base_sites[self.base_site_index]
+        with self._base_site_lock:
+            old = self.base_sites[self.base_site_index]
+            self.base_site_index = (self.base_site_index +
+                                    1) % len(self.base_sites)
+            self._update_endpoints()
+            new = self.base_sites[self.base_site_index]
         print(
             " Switching base site: {0} -> {1} {2}".format(old, new, reason))
 
@@ -568,9 +591,9 @@ class VavooProxy:
                 self.channels_by_id = {}
                 self.channels_by_country = {}
                 self.countries_list = []
-                self.initialized = True
-                print(" Initialized with empty catalog")
-                return True
+                self.initialized = False
+                print(" Initialization failed: empty catalog")
+                return False
 
             self.all_filtered_items = all_channels
             self.channels_by_id = {}
@@ -887,6 +910,28 @@ class VavooProxy:
     def get_local_ip(self, force_refresh=False):
         return PROXY_HOST
 
+    def load_sref_map(self):
+        """Load the service-reference map with simple mtime-based caching."""
+        try:
+            try:
+                mtime = Path(SREF_MAP_FILE).stat().st_mtime
+            except Exception:
+                mtime = None
+
+            if mtime is not None and self._sref_map_mtime == mtime:
+                return self._sref_map_cache
+
+            with open(SREF_MAP_FILE, 'r') as f:
+                data = load(f)
+
+            self._sref_map_cache = data if isinstance(data, dict) else {}
+            self._sref_map_mtime = mtime
+            return self._sref_map_cache
+        except BaseException:
+            self._sref_map_cache = {}
+            self._sref_map_mtime = None
+            return self._sref_map_cache
+
     def stop(self):
         """Stop background workers/timers and close session (safe for Py2/3)."""
         try:
@@ -983,11 +1028,7 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                 ref = unquote(ref_encoded)
 
                 # Load the sref map
-                try:
-                    with open(SREF_MAP_FILE, 'r') as f:
-                        sref_map = load(f)
-                except BaseException:
-                    sref_map = {}
+                sref_map = proxy.load_sref_map() if hasattr(proxy, 'load_sref_map') else {}
 
                 channel_id = sref_map.get(ref)
                 if not channel_id:
@@ -1057,7 +1098,12 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     return
 
                 matching_channels = []
-                if hasattr(proxy, 'all_filtered_items'):
+                if hasattr(proxy, 'channels_by_country') and proxy.channels_by_country:
+                    for stored_country, channels in proxy.channels_by_country.items():
+                        if stored_country.lower() == country.lower():
+                            matching_channels = channels
+                            break
+                elif hasattr(proxy, 'all_filtered_items'):
                     for channel in proxy.all_filtered_items:
                         channel_country = channel.get("country", "")
                         if channel_country.lower() == country.lower():
@@ -1098,14 +1144,17 @@ class VavooHTTPHandler(BaseHTTPRequestHandler):
                     self.send_error(404, "No catalog loaded")
 
             elif parsed_path.path == '/countries':
-                countries = set()
-                if hasattr(proxy, 'all_filtered_items'):
-                    for channel in proxy.all_filtered_items:
-                        country = channel.get("country", "")
-                        if country and country != "default":
-                            countries.add(country)
-
-                countries_list = sorted(list(countries))
+                countries_list = []
+                if hasattr(proxy, 'countries_list') and proxy.countries_list:
+                    countries_list = list(proxy.countries_list)
+                else:
+                    countries = set()
+                    if hasattr(proxy, 'all_filtered_items'):
+                        for channel in proxy.all_filtered_items:
+                            country = channel.get("country", "")
+                            if country and country != "default":
+                                countries.add(country)
+                    countries_list = sorted(list(countries))
                 if not self.safe_send_response(200):
                     return
                 self.send_header('Content-Type', 'application/json')
@@ -1313,7 +1362,7 @@ def shutdown_proxy():
     # Fallback: kill process
     try:
         import subprocess
-        subprocess.call(["pkill", "-f", "python.*vavoo_proxy"])
+        subprocess.call(["pkill", "-f", "/Plugins/Extensions/vavoo/start_proxy.py"])
         print(" Killed by pkill")
         return True
     except Exception as e:
@@ -1336,6 +1385,9 @@ def start_proxy():
             print("VAVOO PROXY v1.0 (Attempt " +
                   str(restart_count + 1) + "/" + str(max_restarts) + ")")
             print("=" * 50)
+
+            if proxy is None:
+                proxy = VavooProxy()
 
             if not proxy.initialize_proxy():
                 print("[✗] Failed to initialize proxy")
@@ -1443,11 +1495,11 @@ def run_proxy_in_background():
                 else:
                     # Proxy is running but not responding, kill it
                     print(" Proxy is running but not responding, killing...")
-                    system("pkill -f 'python.*vavoo_proxy' 2>/dev/null")
+                    system("pkill -f '/Plugins/Extensions/vavoo/start_proxy.py' 2>/dev/null")
                     time.sleep(2)
             except BaseException:
                 # Proxy not responding, kill it
-                system("pkill -f 'python.*vavoo_proxy' 2>/dev/null")
+                system("pkill -f '/Plugins/Extensions/vavoo/start_proxy.py' 2>/dev/null")
                 time.sleep(2)
 
         # Start new proxy
