@@ -68,7 +68,7 @@ class SimpleNotifyWidget(Screen):
             self["notification_text"].setText(text)
 
 
-class HybridNotificationManager:
+class HybridNotificationManager(object):
     """Singleton notification manager - works globally across all threads"""
 
     _instance = None
@@ -83,7 +83,7 @@ class HybridNotificationManager:
             return cls._instance
 
     def __init__(self):
-        if self._initialized:
+        if getattr(self, '_initialized', False):
             return
         self._initialized = True
         self.notification_window = None
