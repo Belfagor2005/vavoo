@@ -451,7 +451,8 @@ cfg.server = ConfigSelection(default=PRIMARY_BASE_URL, choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.epg_enabled = ConfigEnableDisable(default=False)
 cfg.epg_auto_update = ConfigEnableDisable(default=False)
-cfg.similarity_threshold = ConfigSelectionNumber(default=75, min=50, max=100, stepwidth=5)
+cfg.similarity_threshold = ConfigSelectionNumber(
+    default=75, min=50, max=100, stepwidth=5)
 cfg.epg_update_interval = ConfigSelectionNumber(
     default=6, min=1, max=24, stepwidth=1)
 cfg.timerupdate = ConfigSelectionNumber(default=5, min=1, max=60, stepwidth=1)
@@ -836,9 +837,7 @@ class vavoo_config(Screen, ConfigListScreen):
                 getConfigListEntry(
                     _("EPG Similarity Threshold (%)"),
                     cfg.similarity_threshold,
-                    _("Minimum similarity for matching channels (higher = stricter).")
-                )
-            )
+                    _("Minimum similarity for matching channels (higher = stricter).")))
             if cfg.epg_auto_update.value:
                 self.list.append(
                     getConfigListEntry(

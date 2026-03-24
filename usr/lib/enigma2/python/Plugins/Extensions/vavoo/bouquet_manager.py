@@ -646,7 +646,8 @@ def process_epg_matching_background(
         print("[EPGBackground] Updated main cache with %d matched entries" % len(matched))
         """
 
-        # Handle unmatched channels: save them to unmatched cache with their original sref
+        # Handle unmatched channels: save them to unmatched cache with their
+        # original sref
         for u in unmatched:
             save_unmatched(
                 u['name'],
@@ -721,7 +722,9 @@ def process_epg_matching_background(
         matcher.save_cache()
 
         # 8. Callback to notify completion
-        print("[EPGBackground] COMPLETED for %s - matched=%d" % (name, len(matched)))
+        print(
+            "[EPGBackground] COMPLETED for %s - matched=%d" %
+            (name, len(matched)))
         print("[EPGBackground] Calling callback with message='EPG processing completed'")
         try:
             saved_callback(True, saved_matched, "EPG processing completed")
