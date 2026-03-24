@@ -60,7 +60,8 @@ def main():
         print("Usage: python xml2pot.py <setup.xml>")
         sys.exit(1)
 
-    xml_file = sys.argv[1]
+    # FIXED PATHS
+    xml_file = "setup.xml"  # Same folder as the script
     pot_file = "locale/Calendar.pot"  # In locale/ folder
 
     if not os.path.exists(xml_file):

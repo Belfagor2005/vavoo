@@ -27,11 +27,12 @@ import codecs
 import ssl
 import time
 import threading
-from os import listdir, unlink, remove, chmod, system as os_system
-from os.path import exists as file_exists, join, islink, isfile, getsize
+from os import listdir, unlink, remove, system as os_system
+from os.path import exists as file_exists, join, isfile, getsize
 from re import compile, DOTALL, search
 from json import loads
 from sys import version_info
+from enigma import eDVBDB
 import xml.etree.ElementTree as ET
 import datetime
 
@@ -112,7 +113,7 @@ from Tools.Directories import SCOPE_PLUGINS, SCOPE_CONFIG, resolveFilename
 from Tools.NumericalTextInput import NumericalTextInput
 from Plugins.Plugin import PluginDescriptor
 
-from .vavoo_proxy import run_proxy_in_background, shutdown_proxy
+from .vavoo_proxy import proxy, run_proxy_in_background, shutdown_proxy
 from . import (
     _, __author__, __version__, __license__, export_lock, PORT,
     PLUGIN_ROOT, PROXY_HOST, PROXY_BASE_URL, PROXY_STATUS_URL,
@@ -128,7 +129,6 @@ from .bouquet_manager import (
     export_bouquet_async
 )
 from .vUtils import (
-    make_print,
     # error,
     # log,
     # debug,
@@ -138,6 +138,8 @@ from .vUtils import (
     # preload_country_flags,
     # download_flag_with_size,
     # generate_epg_files,
+    # migrate_cache_to_normalized,
+    make_print,
     update_epg_sources,
     get_epg_matcher,
     get_proxy_status,
@@ -156,6 +158,7 @@ from .vUtils import (
     ReloadBouquets,
     trace_error
 )
+
 # Import notification system
 try:
     from .notification_system import init_notification_system, quick_notify
@@ -448,6 +451,7 @@ cfg.server = ConfigSelection(default=PRIMARY_BASE_URL, choices=myser)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.epg_enabled = ConfigEnableDisable(default=False)
 cfg.epg_auto_update = ConfigEnableDisable(default=False)
+cfg.similarity_threshold = ConfigSelectionNumber(default=75, min=50, max=100, stepwidth=5)
 cfg.epg_update_interval = ConfigSelectionNumber(
     default=6, min=1, max=24, stepwidth=1)
 cfg.timerupdate = ConfigSelectionNumber(default=5, min=1, max=60, stepwidth=1)
@@ -459,7 +463,7 @@ cfg.updateinterval = ConfigSelectionNumber(
 cfg.fixedtime = ConfigClock(default=46800)
 cfg.last_update = ConfigText(default="Never")
 cfg.stmain = ConfigYesNo(default=True)
-cfg.ipv6 = ConfigEnableDisable(default=False)
+# cfg.ipv6 = ConfigEnableDisable(default=False)
 cfg.back = ConfigSelection(default='oktus', choices=BakP)
 """
 cfg.default_view = ConfigSelection(
@@ -476,13 +480,6 @@ cfg.list_position = ConfigSelection(
     choices=[("bottom", _("Bottom")), ("top", _("Top"))]
 )
 cfg.search_text = ConfigSearchText(default="")
-
-eserv = int(cfg.services.value)
-
-# ipv6
-if islink('/etc/rc3.d/S99ipv6dis.sh'):
-    cfg.ipv6.setValue(True)
-    cfg.ipv6.save()
 
 
 def normalize_language_code(language):
@@ -776,7 +773,6 @@ class vavoo_config(Screen, ConfigListScreen):
             session=self.session,
             on_change=self.changedEntry)
         self.createSetup()
-        self.v6 = cfg.ipv6.getValue()
         self.showhide()
         self.onLayoutFinish.append(self.layoutFinished)
 
@@ -794,120 +790,121 @@ class vavoo_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
+        self.list.append(
+            getConfigListEntry(
+                _("Generate .m3u files (Ok for Exec)"),
+                cfg.genm3u,
+                _("Generate .m3u files and save to device %s.") %
+                downloadfree))
 
-        def add_entry(label, cfg_item, help_text=None, indent_str=""):
-            if help_text is None:
-                help_text = ""
-            self.list.append(getConfigListEntry(
-                indent_str + _(label),
-                cfg_item,
-                _(help_text)
-            ))
-
-        add_entry(
-            "Generate .m3u files (Ok for Exec)",
-            cfg.genm3u,
-            "Generate .m3u files and save to device %s." % downloadfree
+        self.list.append(
+            getConfigListEntry(
+                _("Proxy Enabled"),
+                cfg.proxy_enabled,
+                _("Enable or disable proxy.")
+            )
         )
 
-        add_entry(
-            "Proxy Enabled",
-            cfg.proxy_enabled,
-            "Enable or disable proxy."
+        self.list.append(
+            getConfigListEntry(
+                _("Default View"),
+                cfg.default_view,
+                _("Default view when opening the plugin")))
+        help_text = _("Server for player.") + "\n" + \
+            _("Now %s") % cfg.server.value
+
+        self.list.append(
+            getConfigListEntry(
+                _("Server for Player Used"),
+                cfg.server,
+                help_text
+            )
         )
-
-        add_entry(
-            "Default View",
-            cfg.default_view,
-            "Default view when opening the plugin"
-        )
-
-        help_text = _(
-            "Server for player.\n"
-            "Now %s"
-        ) % cfg.server.value
-        add_entry("Server for Player Used", cfg.server, help_text)
-
-        add_entry(
-            "Enable Vavoo EPG",
+        self.list.append(getConfigListEntry(
+            _("Enable Vavoo EPG"),
             cfg.epg_enabled,
-            "Create EPG source for EPGImport with Vavoo program data"
-        )
+            _("Create EPG source for EPGImport with Vavoo program data")
+        ))
 
         if cfg.epg_enabled.value:
-            add_entry(
-                "Auto-update EPG",
+            self.list.append(getConfigListEntry(
+                _("Auto-update EPG"),
                 cfg.epg_auto_update,
-                "Automatically trigger EPG update after source creation"
+                _("Automatically trigger EPG update after source creation")
+            ))
+            self.list.append(
+                getConfigListEntry(
+                    _("EPG Similarity Threshold (%)"),
+                    cfg.similarity_threshold,
+                    _("Minimum similarity for matching channels (higher = stricter).")
+                )
             )
             if cfg.epg_auto_update.value:
-                add_entry(
-                    "Update interval (hours)",
-                    cfg.epg_update_interval,
-                    "How often to auto-update the EPG (requires EPGImport scheduler)")
+                self.list.append(
+                    getConfigListEntry(
+                        _("Update interval (hours)"),
+                        cfg.epg_update_interval,
+                        _("How often to auto-update the EPG (requires EPGImport scheduler)")))
 
-        add_entry(
-            "Movie Services Reference",
-            cfg.services,
-            "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+        self.list.append(
+            getConfigListEntry(
+                _("Movie Services Reference"),
+                cfg.services,
+                _("Configure service Reference Iptv-Gstreamer-Exteplayer3")))
+
+        self.list.append(
+            getConfigListEntry(
+                _("Bouquet Position in List"),
+                cfg.list_position,
+                _("Position of Vavoo bouquets in the main list"))
         )
 
-        add_entry(
-            "Bouquet Position in List",
-            cfg.list_position,
-            "Position of Vavoo bouquets in the main list"
-        )
-
-        help_text = "\n".join([
-            _("Refresh stream every X minutes (1-15)"),
-            _("Recommended: 5-8 minutes"),
-            _("Lower = less interruption but more refreshes")
-        ])
-        add_entry("Refresh stream (minutes):", cfg.timerupdate, help_text)
-
-        add_entry(
-            "Select Background",
-            cfg.back,
-            "Configure Main Background Image."
-        )
-
-        help_text = _(
-            "Active or Disactive Ipv6.\n"
-            "Now %s"
-        ) % cfg.ipv6.value
-        add_entry("Ipv6 State Of Lan (On/Off)", cfg.ipv6, help_text)
-
-        add_entry(
-            "Scheduled List:",
-            cfg.autobouquetupdate,
-            "Active Automatic Bouquet Update"
-        )
-
-        if cfg.autobouquetupdate.value:
-            add_entry(
-                indent + "Schedule type:",
-                cfg.timetype,
-                "At an interval hours or fixed time"
+        help_line1 = _("Refresh stream every X minutes (1-15)")
+        help_line2 = _("Recommended: 5-8 minutes")
+        help_line3 = _("Lower = less interruption but more refreshes")
+        help_text = help_line1 + "\n" + help_line2 + "\n" + help_line3
+        self.list.append(
+            getConfigListEntry(
+                _("Refresh stream (minutes):"),
+                cfg.timerupdate,
+                help_text
             )
-            if cfg.timetype.value == "interval":
-                add_entry(
-                    2 * indent + "Update interval (minutes):",
-                    cfg.updateinterval,
-                    "Configure interval minutes from now"
-                )
-            if cfg.timetype.value == "fixed time":
-                add_entry(
-                    2 * indent + "Time to start update:",
-                    cfg.fixedtime,
-                    "Configure at a fixed time"
-                )
-
-        add_entry(
-            "Link in Main Menu",
-            cfg.stmain,
-            "Link in Main Menu"
         )
+        self.list.append(
+            getConfigListEntry(
+                _("Select Background"),
+                cfg.back,
+                _("Configure Main Background Image.")))
 
+        self.list.append(
+            getConfigListEntry(
+                _("Scheduled List:"),
+                cfg.autobouquetupdate,
+                _("Active Automatic Bouquet Update")))
+        if cfg.autobouquetupdate.value is True:
+            self.list.append(
+                getConfigListEntry(
+                    indent + _("Schedule type:"),
+                    cfg.timetype,
+                    _("At an interval hours or fixed time")))
+            if cfg.timetype.value == "interval":
+                self.list.append(
+                    getConfigListEntry(
+                        2 * indent + _("Update interval (minutes):"),
+                        cfg.updateinterval,
+                        _("Configure interval minutes from now")))
+            if cfg.timetype.value == "fixed time":
+                self.list.append(
+                    getConfigListEntry(
+                        2 * indent + _("Time to start update:"),
+                        cfg.fixedtime,
+                        _("Configure at a fixed time")))
+
+        self.list.append(
+            getConfigListEntry(
+                _('Link in Main Menu'),
+                cfg.stmain,
+                _("Link in Main Menu")))
         self["config"].list = self.list
         self["config"].l.setList(self.list)
         self.setInfo()
@@ -1308,21 +1305,6 @@ class vavoo_config(Screen, ConfigListScreen):
             print('error as:', e)
             trace_error()
 
-    def ipv6check(self, result):
-        if result:
-            if islink('/etc/rc3.d/S99ipv6dis.sh'):
-                unlink('/etc/rc3.d/S99ipv6dis.sh')
-                cfg.ipv6.setValue(False)
-            else:
-                os_system("echo '#!/bin/bash")
-                os_system(
-                    "echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
-                chmod("/etc/init.d/ipv6dis.sh", 0o700)
-                os_system(
-                    "ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
-                cfg.ipv6.setValue(True)
-            cfg.ipv6.save()
-
     def changedEntry(self):
         for x in self.onChangedEntry:
             x()
@@ -1447,26 +1429,12 @@ class vavoo_config(Screen, ConfigListScreen):
                 run_proxy_in_background()
                 time.sleep(2)
 
-            # self.manage_epg_source()
-
             # If auto-update is enabled, schedule the EPG update
             if cfg.epg_enabled.value and cfg.epg_auto_update.value:
                 self.schedule_epg_update()
 
             if old_position and old_position != cfg.list_position.value:
                 self._reorganize_bouquets_position()
-
-            if self.v6 != cfg.ipv6.value:
-                # If the ipv6 value has changed, apply the changes
-                if islink('/etc/rc3.d/S99ipv6dis.sh'):
-                    unlink('/etc/rc3.d/S99ipv6dis.sh')
-                if cfg.ipv6.value:
-                    os_system("echo '#!/bin/bash")
-                    os_system(
-                        "echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' > /etc/init.d/ipv6dis.sh")
-                    chmod("/etc/init.d/ipv6dis.sh", 0o700)
-                    os_system(
-                        "ln -s /etc/init.d/ipv6dis.sh /etc/rc3.d/S99ipv6dis.sh")
 
             configfile.save()
 
@@ -1775,7 +1743,6 @@ class MainVavoo(Screen):
         if result:
             print("[DEBUG] User confirmed reload")
             try:
-                from enigma import eDVBDB
                 db = eDVBDB.getInstance()
                 db.reloadBouquets()
                 db.reloadServicelist()
@@ -1815,7 +1782,6 @@ class MainVavoo(Screen):
 
         # Reload bouquets in background without popup
         try:
-            from enigma import eDVBDB
             db = eDVBDB.getInstance()
             db.reloadBouquets()
             db.reloadServicelist()
@@ -2495,7 +2461,6 @@ class MainVavoo(Screen):
                     timeout=5
                 )
                 try:
-                    from enigma import eDVBDB
                     db = eDVBDB.getInstance()
                     db.reloadBouquets()
                     db.reloadServicelist()
@@ -3211,7 +3176,6 @@ class vavoo(Screen):
 
     def _reload_services(self):
         try:
-            from enigma import eDVBDB
             db = eDVBDB.getInstance()
             db.reloadBouquets()
             db.reloadServicelist()
@@ -4331,7 +4295,6 @@ class Playstream2(
                 return "EPG not available (no country code)"
 
             # Clean channel name for better matching
-            from .vUtils import remove_parentheses, decodeHtml
             clean_name = decodeHtml(self.name)
             clean_name = remove_parentheses(clean_name)
 
@@ -4539,7 +4502,6 @@ class Playstream2(
             self.last_eof_time = 0
 
             try:
-                from .vavoo_proxy import proxy
                 proxy.stream_started()
                 print("[Playstream2] Notified proxy: stream started")
             except Exception as e:
@@ -4595,7 +4557,6 @@ class Playstream2(
             print("[Playstream2] Stream stopped")
 
             try:
-                from .vavoo_proxy import proxy
                 proxy.stream_ended()
                 print("[Playstream2] Notified proxy: stream ended")
             except Exception as e:

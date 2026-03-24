@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function, absolute_import, division
 """
 EPG Manager - Optimized EPG download and caching module.
 
@@ -11,8 +12,6 @@ Features:
 """
 # Modified by lululla 20260314
 # Python 2/3 compatibility
-
-from __future__ import print_function, absolute_import, division
 
 from datetime import datetime, timedelta
 from json import load, dump
@@ -526,6 +525,14 @@ class EPGManager(object):
             country_code="de"
         ),
         EPGSource(
+            name="Balkans",
+            url="https://raw.githubusercontent.com/Belfagor2005/vavoo-player/refs/heads/master/epg_bk.xml.gz",
+            backup_url="https://raw.githubusercontent.com/Belfagor2005/vavoo-player/refs/heads/master/epg_bk.xml.gz",
+            priority=1,
+            enabled=True,
+            country_code="bk"
+        ),
+        EPGSource(
             name="Spain",
             url="https://epgshare01.online/epgshare01/epg_ripper_ES1.xml.gz",
             backup_url="https://iptv-epg.org/files/epg-es.xml.gz",
@@ -600,6 +607,7 @@ class EPGManager(object):
         EPGSource(
             name="Albania",
             url="https://epgshare01.online/epgshare01/epg_ripper_AL1.xml.gz",
+            # url="https://raw.githubusercontent.com/Belfagor2005/vavoo-player/refs/heads/master/epg_bk.xml.gz",
             backup_url="https://iptv-epg.org/files/epg-al.xml.gz",
             priority=1,
             enabled=True,
@@ -624,6 +632,7 @@ class EPGManager(object):
         EPGSource(
             name="Serbia",
             url="https://epgshare01.online/epgshare01/epg_ripper_RS1.xml.gz",
+            # url="https://raw.githubusercontent.com/Belfagor2005/vavoo-player/refs/heads/master/epg_bk.xml.gz",
             backup_url="https://iptv-epg.org/files/epg-rs.xml.gz",
             priority=1,
             enabled=True,
@@ -632,6 +641,7 @@ class EPGManager(object):
         EPGSource(
             name="Bosnia",
             url="https://epgshare01.online/epgshare01/epg_ripper_BA1.xml.gz",
+            # url="https://raw.githubusercontent.com/Belfagor2005/vavoo-player/refs/heads/master/epg_bk.xml.gz",
             backup_url="https://iptv-epg.org/files/epg-ba.xml.gz",
             priority=1,
             enabled=True,
@@ -648,6 +658,7 @@ class EPGManager(object):
         EPGSource(
             name="Slovakia",
             url="https://epgshare01.online/epgshare01/epg_ripper_SK1.xml.gz",
+            # url="https://raw.githubusercontent.com/Belfagor2005/vavoo-player/refs/heads/master/epg_bk.xml.gz",
             backup_url="https://iptv-epg.org/files/epg-sk.xml.gz",
             priority=1,
             enabled=True,

@@ -30,17 +30,11 @@ import io
 import time
 import glob
 import threading
-from json import loads, dump, load
+import urllib3
+from json import loads
 from os import listdir, remove
 from os.path import exists as file_exists, isfile, join, basename
-from re import compile, search  # , sub
-from time import strftime, localtime
-
-try:
-    from urllib.parse import unquote, quote
-except ImportError:
-    from urllib import unquote, quote
-
+from re import compile, search
 from enigma import eTimer
 from Components.config import config
 from Tools.Directories import SCOPE_PLUGINS, resolveFilename
@@ -55,31 +49,39 @@ from .vUtils import (
     remove_parentheses,
     ReloadBouquets,
     sanitizeFilename,
-    # save_unmatched,
+    save_unmatched,
     trace_error,
     update_complete_cache,
     update_epg_sources,
     write_epg_mapping_file,
+    ensure_sref_trailing_colon
 )
 from .vavoo_proxy import run_proxy_in_background
 from . import (
-    # _,
-    PY3,
-    PORT,
-    CACHE_FILE,
-    PLUGIN_ROOT,
-    PROXY_HOST,
-    ENIGMA_PATH,
+    # CACHE_FILE,
     # UNMATCHED_FILE,
     # SREF_MAP_FILE,
     # export_lock,
+    PY3,
+    PORT,
+    PLUGIN_ROOT,
+    PROXY_HOST,
+    ENIGMA_PATH,
     country_codes
 )
 
+try:
+    from urllib.parse import unquote, quote
+except ImportError:
+    from urllib import unquote, quote
+
+
 # Constants
-# PORT = 4323
 PLUGIN_PATH = PLUGIN_ROOT
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('vavoo'))
+
+# Disable SSL warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def get_local_ip():
@@ -131,6 +133,7 @@ def _add_to_main_bouquet(bouquet_name, bouquet_type, list_position="bottom"):
 
         position_info = list_position
         vavoo_lines = list(dict.fromkeys(vavoo_lines))
+
         # Configurable position
         if list_position == "top":
             new_lines = vavoo_lines + non_vavoo_lines
@@ -235,7 +238,7 @@ def remove_bouquets_by_name(name=None):
 
         # Update the sources.xml file after removals
         update_epg_sources()
-        # ------------------------------------------------
+        # ------------------
 
         return removed_count
     except Exception as e:
@@ -302,7 +305,7 @@ def convert_bouquet_sync(
         country_code = country_codes.get(base_name.capitalize(), "")
 
         # 5. Get matcher
-        matcher = get_epg_matcher(similarity_threshold=0.80)
+        matcher = get_epg_matcher()
 
         # 6. Create bouquet file (this does matching and writes the bouquet)
         ch_count, bouquet_filename, matched, unmatched = create_bouquet_file(
@@ -330,8 +333,8 @@ def convert_bouquet_sync(
         else:
             print("[Bouquet] EPG disabled or no matched channels")
 
-        # 8. Always update the sources.xml file after any change to channel
-        # files
+        # 8. Always update the sources.xml file after any
+        # change to channel files
         try:
             update_epg_sources()
             print("[Bouquet] EPG sources updated")
@@ -343,9 +346,6 @@ def convert_bouquet_sync(
             matcher.save_cache()
         except Exception as e:
             print("[Bouquet] Error saving cache: %s" % e)
-
-        # 10. Update complete cache with ALL channels (matched + unmatched)
-        # update_complete_cache(matched, unmatched, country_code)
 
         return ch_count
     except Exception as e:
@@ -403,7 +403,7 @@ def export_bouquet_async(
             reload_timer = eTimer()
             reload_timer.callback.append(do_reload)
             reload_timer.start(500, True)   # 500 ms di delay
-            # -------------------------------------------------------------------------
+            # -------------------------------------------------
 
             # Notify that bouquet is ready (first callback)
             def do_first_callback():
@@ -568,7 +568,8 @@ def process_epg_matching_background(
         channels_list,
         country_code,
         parent_screen,
-        callback):
+        callback,
+        servicetype="4097"):
     """
     Perform EPG matching in background, update the bouquet with converted service references,
     generate EPG files, and update cache.
@@ -577,32 +578,37 @@ def process_epg_matching_background(
         print("[EPGBackground] Starting EPG matching for %s" % name)
 
         # 1. Get matcher
-        matcher = get_epg_matcher(similarity_threshold=0.80)
+        matcher = get_epg_matcher()
 
         # 2. Prepare lists for matched/unmatched
-        # each: {'name': clean_name, 'channel_id': id, 'dvb_ref': ref, 'rytec_id': id, 'original_url': url}
         matched = []
-        # each: {'name': clean_name, 'channel_id': id, 'original_url': url}
+
+        # each: {'name': clean_name, 'channel_id': id, 'original_url': url, 'original_sref': sref}
         unmatched = []
 
         for ch in channels_list:
+            print("[DEBUG] original_name in ch:", repr(ch['original_name']))
+
             rytec_id, dvb_ref = matcher.find_match(
                 ch['original_name'], country_code)
             if dvb_ref:
                 if dvb_ref.endswith(':'):
                     dvb_ref = dvb_ref[:-1]
                 matched.append({
-                    'name': ch['name'],
+                    'name': ch['original_name'],
                     'channel_id': ch['channel_id'],
                     'dvb_ref': dvb_ref,
                     'rytec_id': rytec_id,
                     'original_url': ch['url']
                 })
             else:
+                # Unmatched: keep the original sref from the fallback bouquet
+                # 'fallback_sref' was stored in ch by create_fallback_bouquet_sync
                 unmatched.append({
-                    'name': ch['name'],
+                    'name': ch['original_name'],
                     'channel_id': ch['channel_id'],
-                    'original_url': ch['url']
+                    'original_url': ch['url'],
+                    'original_sref': ch.get('fallback_sref', "4097:0:0:0:0:0:0:0:0:0:")
                 })
             time.sleep(0.001)
 
@@ -610,7 +616,9 @@ def process_epg_matching_background(
         saved_matched = len(matched)
         saved_callback = callback
 
-        # 3. Update cache files
+        # 3. Update cache files (only matched channels go to main cache)
+        """
+        # Load existing main cache
         complete_cache = {}
         if file_exists(CACHE_FILE):
             try:
@@ -619,7 +627,7 @@ def process_epg_matching_background(
             except BaseException:
                 complete_cache = {}
 
-        # Add matched
+        # Add matched channels (only these go to main cache)
         for m in matched:
             key = "%s_%s" % (m['name'], country_code)
             complete_cache[key] = {
@@ -630,28 +638,23 @@ def process_epg_matching_background(
                 'matched': True,
                 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
             }
+            print("[Cache] Added matched: %s -> %s" % (key, m['rytec_id']))
 
-        # Add unmatched (with fallback)
+        # Save main cache
+        with open(CACHE_FILE, 'w') as f:
+            dump(complete_cache, f, indent=2, sort_keys=True)
+        print("[EPGBackground] Updated main cache with %d matched entries" % len(matched))
+        """
+
+        # Handle unmatched channels: save them to unmatched cache with their original sref
         for u in unmatched:
-            key = "%s_%s" % (u['name'], country_code)
-            if key not in complete_cache:
-                complete_cache[key] = {
-                    'id': key,
-                    'sref': "4097:0:0:0:0:0:0:0:0:0:",
-                    'name': u['name'],
-                    'country': country_code,
-                    'matched': False,
-                    'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
-                }
-
-        try:
-            with open(CACHE_FILE, 'w') as f:
-                dump(complete_cache, f, indent=2, sort_keys=True)
-            print(
-                "[EPGBackground] Updated complete cache with %d total entries" %
-                len(complete_cache))
-        except Exception as e:
-            print("[EPGBackground] Error saving cache: %s" % e)
+            save_unmatched(
+                u['name'],
+                country_code,
+                servicetype,
+                matched=False,
+                sref=ensure_sref_trailing_colon(u['original_sref'])
+            )
 
         # 4. Rewrite the bouquet file with converted references
         bouquet_path = join(ENIGMA_PATH, bouquet_filename)
@@ -663,7 +666,6 @@ def process_epg_matching_background(
             new_lines = []
             i = 0
             changes = 0
-            # Map channel_id -> converted ref
             match_dict = {m['channel_id']: m['dvb_ref'] for m in matched}
 
             while i < len(lines):
@@ -677,13 +679,11 @@ def process_epg_matching_background(
                         continue
 
                     url_part = parts[10] if len(parts) > 10 else ''
-                    # Decode URL to extract channel_id
                     url_decoded = unquote(url_part)
                     match = search(r'[?&]channel=([^&]+)', url_decoded)
                     if match:
                         channel_id = match.group(1)
                         if channel_id in match_dict:
-                            # Replace with converted ref + same url_part
                             new_service_line = "#SERVICE %s:%s" % (
                                 match_dict[channel_id], url_part)
                             new_lines.append(new_service_line + '\n')
@@ -720,22 +720,18 @@ def process_epg_matching_background(
         # 7. Save matcher cache
         matcher.save_cache()
 
-        # 8. Callback to notify completion - always executed even if parent
-        # screen is closed
-        print(
-            "[EPGBackground] COMPLETED for %s - matched=%d" %
-            (name, len(matched)))
+        # 8. Callback to notify completion
+        print("[EPGBackground] COMPLETED for %s - matched=%d" % (name, len(matched)))
         print("[EPGBackground] Calling callback with message='EPG processing completed'")
-        print(
-            "[EPGBackground] Executing callback with matched=%d" %
-            saved_matched)
-
         try:
             saved_callback(True, saved_matched, "EPG processing completed")
         except Exception as cb_e:
             print("[EPGBackground] Error in completion callback: %s" % cb_e)
 
-        update_complete_cache(matched, unmatched, country_code)
+        # Update the complete cache with matched channels only;
+        # - unmatched go to unmatched.json.
+        update_complete_cache(matched, unmatched, country_code, servicetype)
+
     except Exception as exc:
         print("[EPGBackground] Error: %s" % str(exc))
         trace_error()
@@ -759,11 +755,9 @@ def _create_flat_bouquet_proxy(
 
         # Create bouquet lines
         lines = ["#NAME %s" % country_name]
-
         for channel in channels:
             channel_name = channel.get('name', '')
             channel_url = channel.get('url', '')
-
             if not channel_name or not channel_url:
                 continue
 
@@ -827,7 +821,6 @@ def _create_hierarchical_bouquet_proxy(
         for channel in channels:
             channel_name = channel.get('name', '')
             channel_url = channel.get('url', '')
-
             if not channel_name or not channel_url:
                 continue
 
@@ -969,6 +962,8 @@ def create_fallback_bouquet_sync(
                 if not isinstance(channel, dict):
                     continue
                 channel_name = channel.get('name', 'Unknown')
+                # print("[DEBUG] original channel_name:", repr(channel_name))
+
                 channel_url = channel.get('url', '')
                 channel_id = channel.get('id', '')
                 if not channel_name or not channel_url or not channel_id:
@@ -994,7 +989,8 @@ def create_fallback_bouquet_sync(
                     'name': clean_name,
                     'channel_id': channel_id,
                     'url': channel_url,
-                    'original_name': channel_name
+                    'original_name': channel_name,
+                    'fallback_sref': "%s:0:0:0:0:0:0:0:0:0:%s" % (servicetype, encoded_url)
                 })
 
             except Exception as e:
@@ -1115,7 +1111,6 @@ def create_bouquet_file(
         unmatched = []    # each item: {'name': name, 'channel_id': id}
         tv_lines = ["#NAME %s" % name]
         channel_count = 0
-
         for channel in channels:
             try:
                 if not isinstance(channel, dict):
@@ -1633,7 +1628,7 @@ def reorganize_all_bouquets_position(list_position="bottom"):
                 else:
                     non_vavoo_lines.append(line)
 
-            # Apply the configured position - usa il parametro
+            # Apply the configured position
             if list_position == "top":
                 new_lines = vavoo_lines + non_vavoo_lines
             else:

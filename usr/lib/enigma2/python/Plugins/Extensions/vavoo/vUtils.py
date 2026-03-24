@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function
 """
 #########################################################
 #                                                       #
@@ -7,7 +8,7 @@
 #  Created by Lululla (https://github.com/Belfagor2005) #
 #  License: CC BY-NC-SA 4.0                             #
 #  https://creativecommons.org/licenses/by-nc-sa/4.0    #
-#  Last Modified: 20260315                              #
+#  Last Modified: 20260320                              #
 #                                                       #
 #  Credits:                                             #
 #  - Original concept by Lululla                        #
@@ -22,31 +23,31 @@
 #########################################################
 """
 
-from __future__ import absolute_import, print_function
-
 import base64
 import glob
 import io
+import six
 import socket
 import ssl
 import threading
 import types
+import urllib3
 from collections import OrderedDict
 from difflib import SequenceMatcher
 from json import dump, load, loads
-from Components.NimManager import nimmanager  # , getConfigSatlist
+from Components.config import config
+from Components.NimManager import nimmanager
 from os import listdir, makedirs, remove, system, unlink, rename
 from os.path import basename, exists, getmtime, getsize, isfile, join, splitext
 from random import choice
 from re import IGNORECASE, compile, findall, search, sub
 from shutil import copy2
 from sys import maxsize
-from time import sleep, time, strftime, localtime
-from unicodedata import normalize
-import six
-import urllib3
 from six import iteritems, unichr
 from six.moves import html_entities, html_parser
+from time import sleep, time, strftime, localtime
+from unicodedata import normalize
+
 
 from . import (
     PY2,
@@ -687,7 +688,7 @@ def get_proxy_channels(country_name):
 
     for attempt in range(max_retries):
         try:
-            print("Getting channels for '" + str(country_name) + \
+            print("Getting channels for '" + str(country_name) +
                   "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
 
             # URL-encode
@@ -1498,11 +1499,16 @@ def preload_country_flags(country_list, cache_dir=FLAG_CACHE_DIR):
 _epg_matcher = None
 
 
-def get_epg_matcher(similarity_threshold=0.80):
-    """Return the singleton EPG matcher instance."""
+def get_epg_matcher(similarity_threshold=None):
     global _epg_matcher
+    # Se non viene passato un valore, usa quello dalla configurazione
+    if similarity_threshold is None:
+        similarity_threshold = config.plugins.vavoo.similarity_threshold.value / 100.0
     if _epg_matcher is None:
         _epg_matcher = VavooEPGMatcher(similarity_threshold)
+    else:
+        # Aggiorna la soglia nel matcher esistente (per modifiche dinamiche)
+        _epg_matcher.similarity_threshold = similarity_threshold
     return _epg_matcher
 
 
@@ -1613,14 +1619,42 @@ def get_satellite_priority(orbpos, configured_sats):
 
 
 class VavooEPGMatcher:
-    def __init__(self, similarity_threshold=0.85):
+    def __init__(self, similarity_threshold=0.70):
         self.similarity_threshold = similarity_threshold
-        self.rytec_entries = []     # (clean_name, original_name, service_ref)
-        self.rytec_by_id = {}       # (original_id, service_ref)
-        self.cache = load_cache()   # persistent cache
-        self.new_matches = {}       # matches found in this session
+        self.rytec_entries = []         # (clean_name, original_name, service_ref)
+        self.rytec_by_id = {}           # (original_id, service_ref)
+        self.rytec_names = {}
+        self.cache = load_cache()       # persistent cache
+        self.new_matches = {}           # matches found in this session
+        self.normalized_index = {}      # map normalized_key -> original_key
+        self._build_normalized_index()  # build index at startup
+        self.alias_map = {}
+        self._load_alias_map()
         if not self.rytec_entries:
             self._load_rytec_database()
+
+    @staticmethod
+    def is_valid_rytec_id(id_val):
+        """Returns True if id_val appears to be a valid Rytec ID (e.g. 'Rai1.it')."""
+        if not id_val or not isinstance(id_val, str):
+            return False
+        if '.' not in id_val:
+            return False
+        parts = id_val.split('.')
+        if len(parts) < 2:
+            return False
+        suffix = parts[-1]
+        return len(suffix) in (2, 3) and suffix.isalpha()
+
+    def _load_alias_map(self):
+        if exists(ALIAS_FILE):
+            try:
+                with open(ALIAS_FILE, 'r') as f:
+                    self.alias_map = load(f)
+                    return
+            except Exception:
+                self.alias_map = {}
+                pass
 
     def _load_rytec_database(self):
         rytec_paths = [
@@ -1645,44 +1679,70 @@ class VavooEPGMatcher:
             for match in matches:
                 original_id = match[0].strip()
                 service_ref = match[1].strip()
-                comment = match[2].strip() if len(
-                    match) > 2 and match[2] else None
+                comment = match[2].strip() if len(match) > 2 and match[2] else None
 
                 if comment:
                     channel_name = comment
                 else:
-                    channel_name = original_id.replace(
-                        '.it',
-                        '').replace(
-                        '.de',
-                        '').replace(
-                        '.fr',
-                        '')
-                    channel_name = channel_name.replace(
-                        '-', ' ').replace('_', ' ')
+                    channel_name = original_id.replace('.it', '').replace('.de', '').replace('.fr', '')
+                    channel_name = channel_name.replace('-', ' ').replace('_', ' ')
 
-                clean_name = self._clean_name(channel_name)
+                # clean_name = self._clean_name(channel_name)
+                clean_name = self._clean_name_for_similarity(channel_name)
+                self.rytec_entries.append((clean_name, channel_name, original_id, service_ref))
+                self.rytec_names[original_id] = clean_name
 
-                self.rytec_entries.append(
-                    (clean_name, channel_name, original_id, service_ref))
-                self.rytec_by_id[original_id] = service_ref
+                # NEW: store the cleaned name associated with the ID
+                self.rytec_names[original_id] = clean_name
 
-            print("[VavooEPGMatcher] Loaded {} Rytec channels".format(
-                len(self.rytec_entries)))
+            print("[VavooEPGMatcher] Loaded {} Rytec channels".format(len(self.rytec_entries)))
         except Exception as e:
             print("[VavooEPGMatcher] Error loading database: {}".format(e))
 
-    def _clean_name(self, name):
+    def _clean_name_for_key(self, name):
+        """Pulisce il nome per generare la chiave: mantiene suffissi .c, .s, .b."""
         if not name:
             return ""
         cleaned = name.lower()
-        # Remove .c, .s, (backup), quality indicators
-        cleaned = sub(r'\s*\.(c|s)$', '', cleaned)
+        # Rimuovi solo parentesi e indicatori di qualità (NON i suffissi)
         cleaned = sub(r'\s*\([^)]*\)\s*', '', cleaned)
         cleaned = sub(r'\b(4k|hd|sd|fhd|uhd|hq|hevc|h265|h264)\b', '', cleaned)
-        cleaned = sub(r'[^\w\s]', ' ', cleaned)
+        # Mantieni i punti, sostituisci altri non alfanumerici con spazio
+        cleaned = sub(r'[^\w\s\.]', ' ', cleaned)
         cleaned = sub(r'\s+', ' ', cleaned).strip()
         return cleaned
+
+    def _clean_name_for_similarity(self, name):
+        """Pulisce il nome per il calcolo della similarità: rimuove suffissi .c, .s, .b e indicatori."""
+        if not name:
+            return ""
+        n = name.upper()  # usiamo maiuscolo come nell'esterno, poi abbassiamo
+        n = sub(r'\[.*\]', '', n)
+        n = sub(r'\(.*\)', '', n)
+        n = sub(r'\s+(HD|FHD|SD|4K|ITA|ITALIA|BACKUP|TIMVISION|PLUS)$', '', n)
+        # Remove suffiss Vavoo (.c, .s, .b, ...)
+        if not n.startswith("HISTORY"):
+            n = sub(r'\s+\.[A-Z0-9]{1,3}$', '', n)
+        n = sub(r'\s+\+$', '', n)
+        n = sub(r'[^A-Z0-9 ]', '', n)
+        n = sub(r'\s+', ' ', n)
+        return n.strip().lower()
+
+    def _normalize_key(self, channel_name, country_code):
+        clean_name = self._clean_name_for_key(channel_name)
+        return "{}_{}".format(clean_name, country_code)
+
+    def _build_normalized_index(self):
+        self.normalized_index = {}
+        for key, value in self.cache.items():
+            if '_' in key:
+                name_part = key.rsplit('_', 1)[0]
+                country_part = key.rsplit('_', 1)[1]
+            else:
+                name_part = key
+                country_part = ''
+            norm_key = self._normalize_key(name_part, country_part)
+            self.normalized_index[norm_key] = key
 
     def _get_signal_priority(self, service_ref, country_code=None):
         """
@@ -1757,7 +1817,7 @@ class VavooEPGMatcher:
             return None, None
 
         # Clean the input channel name
-        clean_input = self._clean_name(channel_name)
+        clean_input = self._clean_name_for_similarity(channel_name)
 
         # Load user-configured satellites (e.g., [130] for 13°E)
         if not hasattr(self, '_configured_sats'):
@@ -1771,8 +1831,21 @@ class VavooEPGMatcher:
         for clean_entry, orig_name, rytec_id, service_ref in self.rytec_entries:
             entry_country = rytec_id.split('.')[-1] if '.' in rytec_id else ""
 
-            # Filter by country
-            if country_code and entry_country != country_code:
+            # --- FILTER BY COUNTRY (including the Balkans) ---
+            if country_code:
+                if country_code == "bk":
+                    # List of Balkan countries (extend if necessary)
+                    balkan_codes = ["ba", "hr", "rs", "si", "me", "mk", "al", "bg", "ro"]
+                    if entry_country not in balkan_codes:
+                        continue
+                else:
+                    if entry_country != country_code:
+                        continue
+            # If country_code is None, we do not filter by country
+
+            # Calculate base similarity
+            score = calculate_similarity(clean_input, clean_entry)
+            if score < self.similarity_threshold:
                 continue
 
             # Calculate base similarity
@@ -1843,19 +1916,55 @@ class VavooEPGMatcher:
         return None, "4097:0:0:0:0:0:0:0:0:0:"
 
     def find_match(self, channel_name, country_code=None, servicetype="4097"):
-        """Search matches: 1) Local cache, 2) Temp cache (once), 3) Local matching"""
         if not channel_name:
             return None, None
 
-        cache_key = "{}_{}".format(channel_name.strip(), country_code or "")
+        # 0. Apply alias normalization (if available)
+        if alias_available:
+            # Clean the channel name using the same rules as playlist_generator
+            norm_name = channel_alias.normalize_channel_name(channel_name)
+            if norm_name:
+                # If we have an EPG ID for this canonical name, use it directly
+                alias_id = self.alias_map.get(norm_name)
+                if alias_id:
+                    alias_sref = self.rytec_by_id.get(alias_id)
+                    if alias_sref:
+                        if alias_sref.startswith('1:'):
+                            alias_sref = '4097' + alias_sref[1:]
+                        print("[Match] ALIAS HIT: {} -> {}".format(norm_name, alias_id))
+                        return alias_id, alias_sref
 
-        # 1. CHECK LOCAL CACHE FIRST (/etc/enigma2/vavoo_epg_cache.json)
-        if cache_key in self.cache:
-            cached = self.cache[cache_key]
-            print("[Match] Local cache HIT: {}".format(cache_key))
-            return cached.get('id'), cached.get('sref')
+        # Normalize the original name for key generation
+        search_key = self._normalize_key(channel_name, country_code or "")
 
-        # 2. TRY TEMP CACHE ONLY ONCE
+        # 1. Local cache via normalized index
+        if search_key in self.normalized_index:
+            cached_key = self.normalized_index[search_key]
+            cached = self.cache[cached_key]
+            id_val = cached.get('id')
+            if self.is_valid_rytec_id(id_val):
+                # Check if the channel name matches the Rytec name associated with that ID
+                # rytec_clean = self.rytec_names.get(id_val, '')
+                channel_clean = self._clean_name_for_similarity(channel_name)
+                rytec_clean = self.rytec_names.get(id_val, '')
+                if rytec_clean:
+                    channel_clean = self._clean_name_for_similarity(channel_name)
+                    if channel_clean == rytec_clean:
+                        print("[Match] Local cache HIT (valid ID & name match): {}".format(cached_key))
+                        return cached.get('id'), cached.get('sref')
+                    else:
+                        print("[Match] Cache ID '{}' name mismatch (channel='{}', rytec='{}'), will re-match".format(
+                            id_val, channel_clean, rytec_clean))
+                        # Do not return, proceed with live matching
+                else:
+                    # We don't have the Rytec name, accept the cache
+                    print("[Match] Local cache HIT (valid ID, no Rytec name): {}".format(cached_key))
+                    return cached.get('id'), cached.get('sref')
+            else:
+                # Invalid ID, proceed with live matching
+                print("[Match] Local cache has invalid ID, will try to re-match.")
+
+        # 2. Online cache
         if not hasattr(self, '_checked_temp_cache'):
             self._checked_temp_cache = False
             self._temp_cache = None
@@ -1869,66 +1978,85 @@ class VavooEPGMatcher:
                     self._temp_cache = load_temp_cache()
             self._checked_temp_cache = True
 
-        if self._temp_cache and cache_key in self._temp_cache:
-            cached = self._temp_cache[cache_key]
-            print("[Match] Temp cache HIT: {}".format(cache_key))
-            # Save to local cache for future
-            self.cache[cache_key] = cached
+        if self._temp_cache and search_key in self._temp_cache:
+            cached = self._temp_cache[search_key]
+            print("[Match] Temp cache HIT: {}".format(search_key))
+            new_entry = cached.copy()
+            new_entry['name'] = channel_name   # original name
+            self.cache[search_key] = new_entry
+            self._build_normalized_index()
             save_cache(self.cache)
             return cached.get('id'), cached.get('sref')
 
-        # 3. FALLBACK TO LOCAL MATCHING
-        print("[Match] Doing local matching for: {}".format(cache_key))
-
-        if cache_key in self.new_matches:
-            m = self.new_matches[cache_key]
+        # 3. Live matching
+        print("[Match] Doing local matching for: {}".format(channel_name))
+        if search_key in self.new_matches:
+            m = self.new_matches[search_key]
             return m['id'], m['sref']
 
-        result_id, result_sref = self._find_match_internal(
-            channel_name, country_code)
+        result_id, result_sref = self._find_match_internal(channel_name, country_code)
+
+        # Is there already an entry in the cache (even with invalid ID)?
+        existing_entry = self.cache.get(search_key) if search_key in self.cache else None
+
         if result_id and result_sref:
-            self.new_matches[cache_key] = {
-                'id': result_id, 'sref': result_sref}
-            save_unmatched(
-                channel_name,
-                country_code,
-                servicetype,
-                matched=True)
+            # Decide which sref to keep
+            final_sref = result_sref
+            if existing_entry:
+                existing_sref = existing_entry.get('sref')
+                # If the existing one has a valid sref (not fallback), preserve it
+                if existing_sref and existing_sref != "4097:0:0:0:0:0:0:0:0:0:":
+                    final_sref = existing_sref
+                    print("[Match] Preserving existing sref: {}".format(existing_sref))
+            # self.new_matches[search_key] = {'id': result_id, 'sref': final_sref}
+            self.new_matches[search_key] = {
+                'id': result_id,
+                'sref': final_sref,
+                'name': channel_name
+            }
+            save_unmatched(channel_name, country_code, servicetype, matched=True)
+            return result_id, final_sref
         else:
-            save_unmatched(
-                channel_name,
-                country_code,
-                servicetype,
-                matched=False)
-        return result_id, result_sref
+            # If no live match, but there is an existing entry with a valid sref, use it (with matched=False)
+            if existing_entry:
+                existing_sref = existing_entry.get('sref')
+                if existing_sref and existing_sref != "4097:0:0:0:0:0:0:0:0:0:":
+                    print("[Match] No live match, using existing sref (invalid ID)")
+                    # Update cache with matched=False if needed
+                    if existing_entry.get('matched', True) is not False:
+                        existing_entry['matched'] = False
+                        self.cache[search_key] = existing_entry
+                        self._build_normalized_index()
+                        save_cache(self.cache)
+                    return existing_entry.get('id'), existing_sref
+            # Otherwise, no match and no valid sref
+            save_unmatched(channel_name, country_code, servicetype, matched=False)
+            return None, None
 
     def save_cache(self):
-        """Save accumulated new matches to disk with COMPLETE format."""
         if self.new_matches:
-            # Load existing complete cache
             complete_cache = load_cache()
-
-            # Update with new matches (complete format)
             for key, value in self.new_matches.items():
-                # Extract name and country from key (format: "name_country")
-                name = key.split('_')[0] if '_' in key else key
-                country = key.split('_')[1] if '_' in key else ''
-
+                # Use the original name if present
+                name = value.get('name')
+                if not name:
+                    parts = key.rsplit('_', 1)
+                    name = parts[0] if len(parts) > 1 else key
+                country = key.split('_')[-1] if '_' in key else ''
                 complete_cache[key] = {
                     'id': value.get('id'),
-                    'sref': value.get('sref'),
-                    'name': name,
+                    'sref': ensure_sref_trailing_colon(value.get('sref')),
+                    'name': name,   # <-- original name
                     'country': country,
                     'matched': True,
                     'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
                 }
-
-            # Save the COMPLETE cache
-            save_cache(complete_cache)
+            with open(CACHE_FILE, 'w') as f:
+                dump(complete_cache, f, indent=2, sort_keys=True)
+            self.cache = complete_cache
+            self._build_normalized_index()
             self.new_matches.clear()
-            print(
-                "[VavooEPGMatcher] Cache saved with {} total entries".format(
-                    len(complete_cache)))
+            print("[VavooEPGMatcher] Cache saved with {} entries".format(len(complete_cache)))
 
 
 # ==================== EPG CACHE FUNCTIONS ====================
@@ -1950,8 +2078,9 @@ def load_temp_cache():
 def load_cache():
     try:
         with open(CACHE_FILE, 'r') as f:
-            # Usa object_pairs_hook
-            return load(f, object_pairs_hook=OrderedDict)
+            data = load(f, object_pairs_hook=OrderedDict)
+        # Converti tutte le chiavi in minuscolo per compatibilità
+        return OrderedDict((k.lower(), v) for k, v in data.items())
     except BaseException:
         return OrderedDict()
 
@@ -1984,6 +2113,90 @@ def save_cache(cache):
         return False
 
 
+def clean_cache_and_unmatched():
+    """
+    Move to the unmatched cache all entries from the main cache
+    that have invalid IDs or that do not match the channel name.
+    Also fixes the formatting of sref.
+    """
+    # Load main cache
+    if not exists(CACHE_FILE):
+        return
+    with open(CACHE_FILE, 'r') as f:
+        main_cache = load(f)
+
+    # Load existing unmatched cache
+    unmatched = {}
+    if exists(UNMATCHED_FILE):
+        with open(UNMATCHED_FILE, 'r') as f:
+            unmatched = load(f)
+
+    # Get matcher to access Rytec names
+    matcher = get_epg_matcher()
+
+    new_main = {}
+    moved = 0
+
+    for key, value in main_cache.items():
+        # Fix sref
+        sref = value.get('sref', '')
+        if sref and not sref.endswith(':'):
+            value['sref'] = sref + ':'
+
+        id_val = value.get('id')
+        if not matcher.is_valid_rytec_id(id_val):
+            # Move to unmatched
+            unmatched[key] = value
+            moved += 1
+            continue
+
+        # Check if the ID matches the channel name
+        # Extract name from Rytec comment if possible, otherwise use the ID
+        rytec_name = matcher.rytec_names.get(id_val, '')
+        if not rytec_name:
+            # Try to derive from ID: remove country suffix and replace dots with spaces
+            rytec_name = id_val.split('.')[0].replace('.', ' ')
+        # clean_rytec_name = matcher._clean_name(rytec_name)
+        # clean_channel_name = matcher._clean_name(key.split('_')[0])
+        clean_rytec_name = matcher._clean_name_for_similarity(rytec_name)
+        clean_channel_name = matcher._clean_name_for_similarity(key.split('_')[0])
+
+        if clean_rytec_name != clean_channel_name:
+            # Move to unmatched to be re-matched
+            unmatched[key] = value
+            moved += 1
+        else:
+            new_main[key] = value
+
+    # Save caches
+    with open(CACHE_FILE, 'w') as f:
+        dump(new_main, f, indent=2)
+    with open(UNMATCHED_FILE, 'w') as f:
+        dump(unmatched, f, indent=2)
+    matcher.cache = new_main
+    matcher._build_normalized_index()
+    print("[Cache] Cleanup completed: moved {} entries to unmatched".format(moved))
+    return moved
+
+
+def cleanup_cache_matched_flag():
+    """Fix the matched flag for entries with invalid id."""
+    if not exists(CACHE_FILE):
+        return
+    with open(CACHE_FILE, 'r') as f:
+        cache = load(f)
+    changed = False
+    for key, value in cache.items():
+        if not VavooEPGMatcher.is_valid_rytec_id(value.get('id')):
+            if value.get('matched', False):
+                value['matched'] = False
+                changed = True
+    if changed:
+        with open(CACHE_FILE, 'w') as f:
+            dump(cache, f, indent=2)
+        print("[Cache] Cleaned matched flags for invalid IDs.")
+
+
 def download_epg_cache_if_needed():
     """Download vavoo_epg_cache.json to /tmp/ if not exists"""
     temp_file = "/tmp/vavoo_epg_cache.json"
@@ -2009,9 +2222,10 @@ def download_epg_cache_if_needed():
     return False
 
 
-def update_complete_cache(matched_channels, unmatched_channels, country_code):
-    """Update the complete cache with matched and unmatched channels - CONSISTENT FORMAT"""
+def update_complete_cache(matched_channels, unmatched_channels, country_code, servicetype="4097"):
+    """Update the complete cache with matched channels only; unmatched go to unmatched.json."""
     try:
+        matcher = get_epg_matcher()
         complete_cache = {}
 
         # Load existing cache
@@ -2019,50 +2233,39 @@ def update_complete_cache(matched_channels, unmatched_channels, country_code):
             try:
                 with open(CACHE_FILE, 'r') as f:
                     complete_cache = load(f)
-                print(
-                    "[Cache] Loaded %d existing entries" %
-                    len(complete_cache))
+                print("[Cache] Loaded %d existing entries" % len(complete_cache))
             except Exception as e:
                 print("[Cache] Error loading cache: %s" % e)
                 complete_cache = {}
 
-        # Add matched channels
+        # Add matched channels (only these go to main cache)
         for m in matched_channels:
-            key = "%s_%s" % (m['name'], country_code)
+            key = matcher._normalize_key(m['name'], country_code)
             complete_cache[key] = {
-                'id': m['rytec_id'],  # Rytec ID
-                'sref': m['dvb_ref'],  # Service reference
-                'name': m['name'],     # Channel name
+                'id': m['rytec_id'],
+                'sref': ensure_sref_trailing_colon(m['dvb_ref']),
+                'name': m['name'],
                 'country': country_code,
                 'matched': True,
                 'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime())
             }
             print("[Cache] Added matched: %s -> %s" % (key, m['rytec_id']))
 
-        # Add unmatched channels
-        for u in unmatched_channels:
-            key = "%s_%s" % (u['name'], country_code)
-            if key not in complete_cache:  # Do not overwrite matched entries
-                complete_cache[key] = {
-                    'id': key,  # Use key as fallback ID
-                    'sref': "4097:0:0:0:0:0:0:0:0:0:",
-                    'name': u['name'],
-                    'country': country_code,
-                    'matched': False,
-                    'timestamp': strftime('%Y-%m-%d %H:%M:%S', localtime()),
-                    'attempts': complete_cache.get(key, {}).get('attempts', 0) + 1
-                }
-                print(
-                    "[Cache] Added unmatched: %s (attempt #%d)" %
-                    (key, complete_cache[key]['attempts']))
-
+        # Save main cache
         with open(CACHE_FILE, 'w') as f:
             dump(complete_cache, f, indent=4, sort_keys=True)
 
-        print(
-            "[Cache] Updated complete cache with %d total entries" %
-            len(complete_cache))
+        # Update matcher with new cache
+        matcher.cache = complete_cache
+        matcher._build_normalized_index()
 
+        # Process unmatched channels: save them to unmatched.json with their original sref
+        for u in unmatched_channels:
+            # u should contain 'name' and optionally 'original_sref'
+            sref = u.get('original_sref')  # if available
+            save_unmatched(u['name'], country_code, servicetype, matched=False, sref=sref)
+
+        print("[Cache] Updated main cache with %d entries" % len(complete_cache))
     except Exception as e:
         print("[Cache] Error updating complete cache: %s" % e)
         trace_error()
@@ -2072,8 +2275,12 @@ def save_unmatched(
         channel_name,
         country_code,
         servicetype="4097",
-        matched=False):
-    """Save or update an unmatched channel with consistent format"""
+        matched=False,
+        sref=None):
+    """Save or update an unmatched channel with consistent format.
+       If sref is provided, it will be used as the service reference;
+       otherwise a fallback is built from servicetype.
+    """
     try:
         unmatched_data = {}
 
@@ -2089,21 +2296,17 @@ def save_unmatched(
                             if 'matched' not in value:
                                 # Convert to new format
                                 unmatched_data[key] = {
-                                    'id': value.get(
-                                        'id', key), 'name': value.get(
-                                        'name', key.split('_')[0] if '_' in key else key), 'country': value.get(
-                                        'country', country_code), 'sref': value.get(
-                                        'sref', "%s:0:0:0:0:0:0:0:0:0:" %
-                                        servicetype), 'timestamp': value.get(
-                                        'timestamp', strftime(
-                                            '%Y-%m-%d %H:%M:%S', localtime())), 'matched': False, 'attempts': 1}
-                                print(
-                                    "[Unmatched] Converted old format: %s" %
-                                    key)
+                                    'id': value.get('id', key),
+                                    'name': value.get('name', key.split('_')[0] if '_' in key else key),
+                                    'country': value.get('country', country_code),
+                                    'sref': value.get('sref', "%s:0:0:0:0:0:0:0:0:0:" % servicetype),
+                                    'timestamp': value.get('timestamp', strftime('%Y-%m-%d %H:%M:%S', localtime())),
+                                    'matched': False,
+                                    'attempts': 1
+                                }
+                                print("[Unmatched] Converted old format: %s" % key)
             except Exception as read_error:
-                print(
-                    "[Unmatched] Corrupted file, starting fresh: %s" %
-                    read_error)
+                print("[Unmatched] Corrupted file, starting fresh: %s" % read_error)
                 unmatched_data = {}
 
         key = "%s_%s" % (channel_name.strip(), country_code or '')
@@ -2115,7 +2318,11 @@ def save_unmatched(
         elif not matched:
             # Add or update unmatched
             timestamp = strftime('%Y-%m-%d %H:%M:%S', localtime())
-            fallback_sref = "%s:0:0:0:0:0:0:0:0:0:" % servicetype
+            # Use provided sref or build fallback
+            if sref is not None:
+                fallback_sref = ensure_sref_trailing_colon(sref)
+            else:
+                fallback_sref = "%s:0:0:0:0:0:0:0:0:0:" % servicetype
 
             old_data = unmatched_data.get(key, {})
             attempts = old_data.get('attempts', 0) + 1
@@ -2129,9 +2336,7 @@ def save_unmatched(
                 'matched': False,
                 'attempts': attempts
             }
-            print(
-                "[Unmatched] Added/updated: %s (attempt #%d)" %
-                (key, attempts))
+            print("[Unmatched] Added/updated: %s (attempt #%d)" % (key, attempts))
 
         # Write complete file
         temp_file = UNMATCHED_FILE + ".tmp"
@@ -2139,9 +2344,7 @@ def save_unmatched(
             dump(unmatched_data, f, indent=4, sort_keys=True)
         rename(temp_file, UNMATCHED_FILE)
 
-        print(
-            "[Unmatched] Cache updated - total entries: %d" %
-            len(unmatched_data))
+        print("[Unmatched] Cache updated - total entries: %d" % len(unmatched_data))
 
     except Exception as e:
         print("[Unmatched] Error: %s" % e)
@@ -2314,8 +2517,7 @@ def fix_cache_format(remove_duplicates=True):
 
             # Field 'matched': TRUE if id is valid OR sref is valid
             current_matched = value.get('matched', False)
-            correct_matched = VavooEPGMatcher.is_valid_rytec_id(
-                current_id) or is_valid_sref(current_sref)
+            correct_matched = VavooEPGMatcher.is_valid_rytec_id(current_id) or is_valid_sref(current_sref)
             if current_matched != correct_matched:
                 value['matched'] = correct_matched
                 changed = True
@@ -2323,8 +2525,7 @@ def fix_cache_format(remove_duplicates=True):
             if changed:
                 modified += 1
 
-        # If you want to remove duplicates, you can do it here, but not
-        # required for now
+        # If you want to remove duplicates, you can do it here, but not required for now
         if remove_duplicates:
             # possible duplicate removal logic, if needed
             pass

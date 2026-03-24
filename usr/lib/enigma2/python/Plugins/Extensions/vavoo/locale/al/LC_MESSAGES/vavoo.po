@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: __init__.py\n"
 "X-Poedit-SearchPath-1: bouquet_manager.py\n"
@@ -21,11 +21,6 @@ msgstr ""
 "X-Poedit-SearchPath-4: vavoo_proxy.py\n"
 "X-Poedit-SearchPath-5: vUtils.py\n"
 
-# vavoo translations
-# Copyright (C) 2025 Lululla Team
-# This file is distributed under the same license as the Lululla package.
-# [lululla] <ekekaz@gmail.com>, 2025.
-#
 msgid "! Proxy Expiring"
 msgstr ""
 
@@ -44,9 +39,8 @@ msgstr ""
 msgid "- Automatic Epg generation with Service Reference"
 msgstr ""
 
-#, fuzzy
 msgid "- Automatic bouquet generation"
-msgstr "Përditësimi automatik i buqetës"
+msgstr ""
 
 msgid "- Category bouquets"
 msgstr ""
@@ -111,13 +105,25 @@ msgstr ""
 msgid "? Proxy Unknown"
 msgstr ""
 
+msgid "Active Automatic Bouquet Update"
+msgstr "Përditësimi automatik i buqetës"
+
 msgid "All countries (%d)"
 msgstr ""
 
 msgid "An export for another country is already in progress. Please wait."
 msgstr ""
 
+msgid "At an interval hours or fixed time"
+msgstr ""
+
 msgid "Author:"
+msgstr ""
+
+msgid "Auto-update EPG"
+msgstr ""
+
+msgid "Automatically trigger EPG update after source creation"
 msgstr ""
 
 msgid "Back"
@@ -127,6 +133,9 @@ msgid "Backspace"
 msgstr ""
 
 msgid "Bottom"
+msgstr ""
+
+msgid "Bouquet Position in List"
 msgstr ""
 
 msgid "Bouquet creation error: {}"
@@ -174,6 +183,18 @@ msgstr ""
 msgid "Configuration saved successfully!"
 msgstr ""
 
+msgid "Configure Main Background Image."
+msgstr ""
+
+msgid "Configure at a fixed time"
+msgstr "Konfiguro në një kohë të caktuar"
+
+msgid "Configure interval minutes from now"
+msgstr ""
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "Konfiguro referencën e shërbimit Iptv-Gstreamer-Exteplayer3"
+
 msgid "Console"
 msgstr ""
 
@@ -186,13 +207,25 @@ msgstr ""
 msgid "Country: %s"
 msgstr ""
 
+msgid "Create EPG source for EPGImport with Vavoo program data"
+msgstr ""
+
 msgid "Credits:"
+msgstr ""
+
+msgid "Default View"
+msgstr ""
+
+msgid "Default view when opening the plugin"
 msgstr ""
 
 msgid "Do you want to export this bouquet?"
 msgstr ""
 
 msgid "Do you want to fix the cache format?"
+msgstr ""
+
+msgid "EPG Similarity Threshold (%)"
 msgstr ""
 
 msgid "EPG is disabled. Please enable it in Vavoo settings first."
@@ -213,23 +246,26 @@ msgstr ""
 msgid "EPG update started successfully"
 msgstr ""
 
+msgid "Enable Vavoo EPG"
+msgstr ""
+
+msgid "Enable or disable proxy."
+msgstr ""
+
 msgid "Enter text to search..."
 msgstr ""
 
 msgid "Error"
 msgstr ""
 
-#, fuzzy
 msgid "Error fixing cache: {}"
-msgstr "Koha për të filluar përditësimin:"
+msgstr ""
 
-#, fuzzy
 msgid "Error parsing data"
-msgstr "Koha për të filluar përditësimin:"
+msgstr ""
 
-#, fuzzy
 msgid "Error starting EPG update: {}"
-msgstr "Koha për të filluar përditësimin:"
+msgstr ""
 
 msgid "Error starting channel"
 msgstr ""
@@ -276,6 +312,12 @@ msgstr ""
 msgid "Generate .m3u file for:"
 msgstr ""
 
+msgid "Generate .m3u files (Ok for Exec)"
+msgstr ""
+
+msgid "Generate .m3u files and save to device %s."
+msgstr ""
+
 msgid "Generate .m3u files and save to device %s?"
 msgstr ""
 
@@ -283,6 +325,9 @@ msgid "Generate .m3u files for ALL %d countries?"
 msgstr ""
 
 msgid "Hide/Show"
+msgstr ""
+
+msgid "How often to auto-update the EPG (requires EPGImport scheduler)"
 msgstr ""
 
 msgid "Important Notes:"
@@ -300,6 +345,9 @@ msgstr ""
 msgid "License: CC BY-NC-SA 4.0"
 msgstr ""
 
+msgid "Link in Main Menu"
+msgstr "Linku në menyn time"
+
 msgid "Lower = less interruption but more refreshes"
 msgstr ""
 
@@ -312,21 +360,26 @@ msgstr ""
 msgid "M3U generation error: %s"
 msgstr ""
 
+msgid "Minimum similarity for matching channels (higher = stricter)."
+msgstr ""
+
+msgid "Movie Services Reference"
+msgstr "Referenca e Shërbimeve të Filmit"
+
 msgid "No IMDb/TMDB plugin found"
 msgstr ""
 
 msgid "No Internet connection detected. Please check your network."
 msgstr ""
 
-#, fuzzy
 msgid "No channels found"
-msgstr "Nuk u gjet asnjë kanal në kërkim"
+msgstr ""
 
 msgid "No channels found for: %s"
 msgstr ""
 
 msgid "No channels found in search!!!"
-msgstr "Nuk u gjet asnjë kanal në kërkim"
+msgstr ""
 
 msgid "No items available"
 msgstr ""
@@ -340,16 +393,25 @@ msgstr ""
 msgid "No valid channels for: %s"
 msgstr ""
 
+msgid "Now %s"
+msgstr ""
+
 msgid "Only one specific country"
 msgstr ""
 
 msgid "Please try another channel."
 msgstr ""
 
+msgid "Position of Vavoo bouquets in the main list"
+msgstr ""
+
 msgid "Press TEXT button to type, BACKSPACE to delete"
 msgstr ""
 
 msgid "Proxy Disabled"
+msgstr ""
+
+msgid "Proxy Enabled"
 msgstr ""
 
 msgid "Proxy Error:"
@@ -388,6 +450,9 @@ msgstr "Doni të mbylleni pa ruajtur cilësimet?"
 msgid "Recommended: 5-8 minutes"
 msgstr ""
 
+msgid "Refresh stream (minutes):"
+msgstr ""
+
 msgid "Refresh stream every X minutes (1-15)"
 msgstr ""
 
@@ -421,24 +486,37 @@ msgstr ""
 msgid "Saved in: %s"
 msgstr ""
 
+msgid "Schedule type:"
+msgstr ""
+
+msgid "Scheduled List:"
+msgstr ""
+
 msgid "Search"
 msgstr "Kërko"
 
 msgid "Search Channels:"
 msgstr ""
 
-#, fuzzy
 msgid "Search..."
-msgstr "Kërko"
+msgstr ""
 
-#, fuzzy
 msgid "Search:"
-msgstr "Kërko"
+msgstr ""
+
+msgid "Select Background"
+msgstr ""
 
 msgid "Select M3U export mode:"
 msgstr ""
 
 msgid "Select country to export M3U:"
+msgstr ""
+
+msgid "Server for Player Used"
+msgstr ""
+
+msgid "Server for player."
 msgstr ""
 
 msgid "Showing all channels: {}"
@@ -465,6 +543,9 @@ msgstr ""
 msgid "This will:"
 msgstr ""
 
+msgid "Time to start update:"
+msgstr "Koha për të filluar përditësimin:"
+
 msgid "Top"
 msgstr ""
 
@@ -473,6 +554,12 @@ msgstr ""
 
 msgid "UPPERCASE"
 msgstr ""
+
+msgid "Update interval (hours)"
+msgstr ""
+
+msgid "Update interval (minutes):"
+msgstr "Intervali i përditësimit (minuta):"
 
 msgid "Updating EPG..."
 msgstr ""
@@ -489,9 +576,8 @@ msgstr "Transmetim direkt Vavoo"
 msgid "Vavoo Stream Live - Information"
 msgstr ""
 
-#, fuzzy
 msgid "Vavoo Stream Live Plugin"
-msgstr "Transmetim direkt Vavoo"
+msgstr ""
 
 msgid "Vavoo bouquets removed successfully!"
 msgstr ""
@@ -512,10 +598,10 @@ msgid "You can start it from the menu or by pressing the TEXT button."
 msgstr ""
 
 msgid "fixed time"
-msgstr "Koha e fiksuar"
+msgstr ""
 
 msgid "interval"
-msgstr "Intervali"
+msgstr ""
 
 msgid "lowercase"
 msgstr ""
@@ -546,50 +632,6 @@ msgstr ""
 
 msgid "✗ Restart Failed"
 msgstr ""
-
-#~ msgid "Active Automatic Bouquet Update"
-#~ msgstr "Përditësimi automatik i buqetës"
-
-#, fuzzy
-#~ msgid "At an interval hours or fixed time"
-#~ msgstr "Në një interval orësh ose në një kohë të caktuar"
-
-#~ msgid "Configure at a fixed time"
-#~ msgstr "Konfiguro në një kohë të caktuar"
-
-#, fuzzy
-#~ msgid "Configure interval minutes from now"
-#~ msgstr "Konfiguro çdo interval prej minutash nga tani"
-
-#~ msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-#~ msgstr "Konfiguro referencën e shërbimit Iptv-Gstreamer-Exteplayer3"
-
-#~ msgid "Link in Main Menu"
-#~ msgstr "Linku në menyn time"
-
-#~ msgid "Movie Services Reference"
-#~ msgstr "Referenca e Shërbimeve të Filmit"
-
-#, fuzzy
-#~ msgid "Refresh stream (minutes):"
-#~ msgstr "Intervali i përditësimit (minuta):"
-
-#~ msgid "Schedule type:"
-#~ msgstr "Lloi i orarit"
-
-#, fuzzy
-#~ msgid "Scheduled List:"
-#~ msgstr "Lloi i orarit"
-
-#~ msgid "Time to start update:"
-#~ msgstr "Koha për të filluar përditësimin:"
-
-#, fuzzy
-#~ msgid "Update interval (hours)"
-#~ msgstr "Intervali i përditësimit (minuta):"
-
-#~ msgid "Update interval (minutes):"
-#~ msgstr "Intervali i përditësimit (minuta):"
 
 #, fuzzy
 #~ msgid "At an interval of hours or at a fixed time"

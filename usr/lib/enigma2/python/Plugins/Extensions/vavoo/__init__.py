@@ -5,7 +5,7 @@ __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
 __license__ = "CC BY-NC-SA 4.0"
-__version__ = "1.61"
+__version__ = "1.62"
 
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
@@ -160,9 +160,9 @@ satellite_positions = {
     235: "23.5°E Astra 3",      # 0xEB0000
     282: "28.2°E Astra 2",      # 0x11A0000? Verify
     160: "16.0°E Eutelsat",     # 0xA00000
-    90: "9.0°E Eutelsat",      # 0x5A0000
-    70: "7.0°E Eutelsat",      # 0x460000
-    48: "4.8°E Astra 4A",      # 0x300000
+    90: "9.0°E Eutelsat",       # 0x5A0000
+    70: "7.0°E Eutelsat",       # 0x460000
+    48: "4.8°E Astra 4A",       # 0x300000
     42: "4.2°E?",
     39: "3.9°E?",
     36: "3.6°E?",
@@ -172,7 +172,7 @@ satellite_positions = {
     26: "2.6°E?",
     23: "2.3°E?",
     21: "2.1°E?",
-    19: "1.9°E BulgariaSat",   # 0x130000
+    19: "1.9°E BulgariaSat",    # 0x130000
     16: "1.6°E?",
     13: "1.3°E?",
     10: "1.0°E?",
@@ -182,8 +182,8 @@ satellite_positions = {
     0: "0.0°E?",
 
     # West satellites (negative)
-    -8: "0.8°W Thor",         # 0xFFF80000? Actually 3592 * 65536 = 0xE080000
-    -50: "5.0°W Eutelsat",     # 3550 * 65536 = 0xDDE0000
+    -8: "0.8°W Thor",           # 0xFFF80000? Actually 3592 * 65536 = 0xE080000
+    -50: "5.0°W Eutelsat",      # 3550 * 65536 = 0xDDE0000
     -125: "12.5°W Eutelsat",    # 3475 * 65536 = 0xD8C0000
     -140: "14.0°W Express",     # 3460 * 65536 = 0xD840000
     -150: "15.0°W Telstar",     # 3450 * 65536 = 0xD7A0000
