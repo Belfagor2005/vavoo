@@ -11,8 +11,7 @@ Based on the logic from the original vavoo-player project.
 # ------------------------------------------------------------------------------
 RENAME_RULES = [
     # (original_pattern, canonical_name, optional_flags)
-    # Special case: generic "RAI" is actually RAI 4K
-    ("RAI", "RAI 4K"),
+    ("RAI", "RAI 4K"),                     # Special case: generic "RAI" is actually RAI 4K
     ("RAI 4K", "RAI 4K"),
     ("LA 7", "LA7"),
     ("LA 5", "LA5"),
@@ -53,9 +52,9 @@ RENAME_RULES = [
     ("MEDIASET 1", "20 MEDIASET"),
     ("MOTORTREND", "MOTOR TREND"),
     ("CANALE 5", "CANALE5"),
-    ("MOTORTREND", "MOTOR TREND"),
+    ("MOTORTREND", "MOTOR TREND"),    
     ("LA 7 D", "LA7D"),
-    ("RAI SPORT", "RAI SPORT"),  # keep as is, but we can add logo later
+    ("RAI SPORT", "RAI SPORT"), # keep as is, but we can add logo later
     # History channels
     ("HISTORY CHANNEL S", "HISTORY"),
     ("HISTORY  CHANNEL S", "HISTORY"),
@@ -375,8 +374,7 @@ def normalize_channel_name(raw_name):
         if pattern in name:
             return canonical
     # Special handling for HISTORY channels
-    if name.startswith(
-            "HISTORY") and "CHANNEL" not in name and name != "HISTORY":
+    if name.startswith("HISTORY") and "CHANNEL" not in name and name != "HISTORY":
         return "HISTORY"
     # If no rule matched, return the cleaned name
     return name

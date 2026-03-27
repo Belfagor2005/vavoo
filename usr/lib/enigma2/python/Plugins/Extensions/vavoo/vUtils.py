@@ -421,18 +421,26 @@ def getUrl(url, timeout=30, retries=3, backoff=2):
             request = Request(url, headers=headers)
 
             if PY3:
-                response = urlopen(
-                    request,
-                    timeout=timeout,
-                    context=ssl_context)
-                data = response.read()
-                return data.decode('utf-8', 'ignore')
-            if PY2:
-                response = urlopen(
-                    request,
-                    timeout=timeout)
-                data = response.read()
-                return data
+                import ssl
+                unverified_context = ssl.create_default_context()
+                unverified_context.check_hostname = False
+                unverified_context.verify_mode = ssl.CERT_NONE
+                response = urlopen(request, timeout=timeout, context=unverified_context)
+            else:
+                # Python 2: prova a usare ssl se disponibile, altrimenti fallback
+                try:
+                    import ssl
+                    # Python 2.7.9+ supporta ssl._create_unverified_context
+                    unverified_context = ssl._create_unverified_context() if hasattr(ssl, '_create_unverified_context') else None
+                    if unverified_context:
+                        response = urlopen(request, timeout=timeout, context=unverified_context)
+                    else:
+                        response = urlopen(request, timeout=timeout)
+                except ImportError:
+                    response = urlopen(request, timeout=timeout)
+
+            data = response.read()
+            return data
 
         except HTTPError as e:
 
@@ -1621,8 +1629,7 @@ def get_satellite_priority(orbpos, configured_sats):
 class VavooEPGMatcher:
     def __init__(self, similarity_threshold=0.70):
         self.similarity_threshold = similarity_threshold
-        # (clean_name, original_name, service_ref)
-        self.rytec_entries = []
+        self.rytec_entries = []         # (clean_name, original_name, service_ref)
         self.rytec_by_id = {}           # (original_id, service_ref)
         self.rytec_names = {}
         self.cache = load_cache()       # persistent cache
@@ -1680,33 +1687,23 @@ class VavooEPGMatcher:
             for match in matches:
                 original_id = match[0].strip()
                 service_ref = match[1].strip()
-                comment = match[2].strip() if len(
-                    match) > 2 and match[2] else None
+                comment = match[2].strip() if len(match) > 2 and match[2] else None
 
                 if comment:
                     channel_name = comment
                 else:
-                    channel_name = original_id.replace(
-                        '.it',
-                        '').replace(
-                        '.de',
-                        '').replace(
-                        '.fr',
-                        '')
-                    channel_name = channel_name.replace(
-                        '-', ' ').replace('_', ' ')
+                    channel_name = original_id.replace('.it', '').replace('.de', '').replace('.fr', '')
+                    channel_name = channel_name.replace('-', ' ').replace('_', ' ')
 
                 # clean_name = self._clean_name(channel_name)
                 clean_name = self._clean_name_for_similarity(channel_name)
-                self.rytec_entries.append(
-                    (clean_name, channel_name, original_id, service_ref))
+                self.rytec_entries.append((clean_name, channel_name, original_id, service_ref))
                 self.rytec_names[original_id] = clean_name
 
                 # NEW: store the cleaned name associated with the ID
                 self.rytec_names[original_id] = clean_name
 
-            print("[VavooEPGMatcher] Loaded {} Rytec channels".format(
-                len(self.rytec_entries)))
+            print("[VavooEPGMatcher] Loaded {} Rytec channels".format(len(self.rytec_entries)))
         except Exception as e:
             print("[VavooEPGMatcher] Error loading database: {}".format(e))
 
@@ -1846,8 +1843,7 @@ class VavooEPGMatcher:
             if country_code:
                 if country_code == "bk":
                     # List of Balkan countries (extend if necessary)
-                    balkan_codes = [
-                        "ba", "hr", "rs", "si", "me", "mk", "al", "bg", "ro"]
+                    balkan_codes = ["ba", "hr", "rs", "si", "me", "mk", "al", "bg", "ro"]
                     if entry_country not in balkan_codes:
                         continue
                 else:
@@ -1943,8 +1939,7 @@ class VavooEPGMatcher:
                     if alias_sref:
                         if alias_sref.startswith('1:'):
                             alias_sref = '4097' + alias_sref[1:]
-                        print(
-                            "[Match] ALIAS HIT: {} -> {}".format(norm_name, alias_id))
+                        print("[Match] ALIAS HIT: {} -> {}".format(norm_name, alias_id))
                         return alias_id, alias_sref
 
         # Normalize the original name for key generation
@@ -1961,21 +1956,17 @@ class VavooEPGMatcher:
                 channel_clean = self._clean_name_for_similarity(channel_name)
                 rytec_clean = self.rytec_names.get(id_val, '')
                 if rytec_clean:
-                    channel_clean = self._clean_name_for_similarity(
-                        channel_name)
+                    channel_clean = self._clean_name_for_similarity(channel_name)
                     if channel_clean == rytec_clean:
-                        print(
-                            "[Match] Local cache HIT (valid ID & name match): {}".format(cached_key))
+                        print("[Match] Local cache HIT (valid ID & name match): {}".format(cached_key))
                         return cached.get('id'), cached.get('sref')
                     else:
-                        print(
-                            "[Match] Cache ID '{}' name mismatch (channel='{}', rytec='{}'), will re-match".format(
-                                id_val, channel_clean, rytec_clean))
+                        print("[Match] Cache ID '{}' name mismatch (channel='{}', rytec='{}'), will re-match".format(
+                            id_val, channel_clean, rytec_clean))
                         # Do not return, proceed with live matching
                 else:
                     # We don't have the Rytec name, accept the cache
-                    print(
-                        "[Match] Local cache HIT (valid ID, no Rytec name): {}".format(cached_key))
+                    print("[Match] Local cache HIT (valid ID, no Rytec name): {}".format(cached_key))
                     return cached.get('id'), cached.get('sref')
             else:
                 # Invalid ID, proceed with live matching
@@ -2011,39 +2002,30 @@ class VavooEPGMatcher:
             m = self.new_matches[search_key]
             return m['id'], m['sref']
 
-        result_id, result_sref = self._find_match_internal(
-            channel_name, country_code)
+        result_id, result_sref = self._find_match_internal(channel_name, country_code)
 
         # Is there already an entry in the cache (even with invalid ID)?
-        existing_entry = self.cache.get(
-            search_key) if search_key in self.cache else None
+        existing_entry = self.cache.get(search_key) if search_key in self.cache else None
 
         if result_id and result_sref:
             # Decide which sref to keep
             final_sref = result_sref
             if existing_entry:
                 existing_sref = existing_entry.get('sref')
-                # If the existing one has a valid sref (not fallback), preserve
-                # it
+                # If the existing one has a valid sref (not fallback), preserve it
                 if existing_sref and existing_sref != "4097:0:0:0:0:0:0:0:0:0:":
                     final_sref = existing_sref
-                    print(
-                        "[Match] Preserving existing sref: {}".format(existing_sref))
+                    print("[Match] Preserving existing sref: {}".format(existing_sref))
             # self.new_matches[search_key] = {'id': result_id, 'sref': final_sref}
             self.new_matches[search_key] = {
                 'id': result_id,
                 'sref': final_sref,
                 'name': channel_name
             }
-            save_unmatched(
-                channel_name,
-                country_code,
-                servicetype,
-                matched=True)
+            save_unmatched(channel_name, country_code, servicetype, matched=True)
             return result_id, final_sref
         else:
-            # If no live match, but there is an existing entry with a valid
-            # sref, use it (with matched=False)
+            # If no live match, but there is an existing entry with a valid sref, use it (with matched=False)
             if existing_entry:
                 existing_sref = existing_entry.get('sref')
                 if existing_sref and existing_sref != "4097:0:0:0:0:0:0:0:0:0:":
@@ -2056,11 +2038,7 @@ class VavooEPGMatcher:
                         save_cache(self.cache)
                     return existing_entry.get('id'), existing_sref
             # Otherwise, no match and no valid sref
-            save_unmatched(
-                channel_name,
-                country_code,
-                servicetype,
-                matched=False)
+            save_unmatched(channel_name, country_code, servicetype, matched=False)
             return None, None
 
     def save_cache(self):
@@ -2086,9 +2064,7 @@ class VavooEPGMatcher:
             self.cache = complete_cache
             self._build_normalized_index()
             self.new_matches.clear()
-            print(
-                "[VavooEPGMatcher] Cache saved with {} entries".format(
-                    len(complete_cache)))
+            print("[VavooEPGMatcher] Cache saved with {} entries".format(len(complete_cache)))
 
 
 # ==================== EPG CACHE FUNCTIONS ====================
@@ -2186,14 +2162,12 @@ def clean_cache_and_unmatched():
         # Extract name from Rytec comment if possible, otherwise use the ID
         rytec_name = matcher.rytec_names.get(id_val, '')
         if not rytec_name:
-            # Try to derive from ID: remove country suffix and replace dots
-            # with spaces
+            # Try to derive from ID: remove country suffix and replace dots with spaces
             rytec_name = id_val.split('.')[0].replace('.', ' ')
         # clean_rytec_name = matcher._clean_name(rytec_name)
         # clean_channel_name = matcher._clean_name(key.split('_')[0])
         clean_rytec_name = matcher._clean_name_for_similarity(rytec_name)
-        clean_channel_name = matcher._clean_name_for_similarity(key.split('_')[
-                                                                0])
+        clean_channel_name = matcher._clean_name_for_similarity(key.split('_')[0])
 
         if clean_rytec_name != clean_channel_name:
             # Move to unmatched to be re-matched
@@ -2256,11 +2230,7 @@ def download_epg_cache_if_needed():
     return False
 
 
-def update_complete_cache(
-        matched_channels,
-        unmatched_channels,
-        country_code,
-        servicetype="4097"):
+def update_complete_cache(matched_channels, unmatched_channels, country_code, servicetype="4097"):
     """Update the complete cache with matched channels only; unmatched go to unmatched.json."""
     try:
         matcher = get_epg_matcher()
@@ -2271,9 +2241,7 @@ def update_complete_cache(
             try:
                 with open(CACHE_FILE, 'r') as f:
                     complete_cache = load(f)
-                print(
-                    "[Cache] Loaded %d existing entries" %
-                    len(complete_cache))
+                print("[Cache] Loaded %d existing entries" % len(complete_cache))
             except Exception as e:
                 print("[Cache] Error loading cache: %s" % e)
                 complete_cache = {}
@@ -2299,21 +2267,13 @@ def update_complete_cache(
         matcher.cache = complete_cache
         matcher._build_normalized_index()
 
-        # Process unmatched channels: save them to unmatched.json with their
-        # original sref
+        # Process unmatched channels: save them to unmatched.json with their original sref
         for u in unmatched_channels:
             # u should contain 'name' and optionally 'original_sref'
             sref = u.get('original_sref')  # if available
-            save_unmatched(
-                u['name'],
-                country_code,
-                servicetype,
-                matched=False,
-                sref=sref)
+            save_unmatched(u['name'], country_code, servicetype, matched=False, sref=sref)
 
-        print(
-            "[Cache] Updated main cache with %d entries" %
-            len(complete_cache))
+        print("[Cache] Updated main cache with %d entries" % len(complete_cache))
     except Exception as e:
         print("[Cache] Error updating complete cache: %s" % e)
         trace_error()
@@ -2344,21 +2304,17 @@ def save_unmatched(
                             if 'matched' not in value:
                                 # Convert to new format
                                 unmatched_data[key] = {
-                                    'id': value.get(
-                                        'id', key), 'name': value.get(
-                                        'name', key.split('_')[0] if '_' in key else key), 'country': value.get(
-                                        'country', country_code), 'sref': value.get(
-                                        'sref', "%s:0:0:0:0:0:0:0:0:0:" %
-                                        servicetype), 'timestamp': value.get(
-                                        'timestamp', strftime(
-                                            '%Y-%m-%d %H:%M:%S', localtime())), 'matched': False, 'attempts': 1}
-                                print(
-                                    "[Unmatched] Converted old format: %s" %
-                                    key)
+                                    'id': value.get('id', key),
+                                    'name': value.get('name', key.split('_')[0] if '_' in key else key),
+                                    'country': value.get('country', country_code),
+                                    'sref': value.get('sref', "%s:0:0:0:0:0:0:0:0:0:" % servicetype),
+                                    'timestamp': value.get('timestamp', strftime('%Y-%m-%d %H:%M:%S', localtime())),
+                                    'matched': False,
+                                    'attempts': 1
+                                }
+                                print("[Unmatched] Converted old format: %s" % key)
             except Exception as read_error:
-                print(
-                    "[Unmatched] Corrupted file, starting fresh: %s" %
-                    read_error)
+                print("[Unmatched] Corrupted file, starting fresh: %s" % read_error)
                 unmatched_data = {}
 
         key = "%s_%s" % (channel_name.strip(), country_code or '')
@@ -2388,9 +2344,7 @@ def save_unmatched(
                 'matched': False,
                 'attempts': attempts
             }
-            print(
-                "[Unmatched] Added/updated: %s (attempt #%d)" %
-                (key, attempts))
+            print("[Unmatched] Added/updated: %s (attempt #%d)" % (key, attempts))
 
         # Write complete file
         temp_file = UNMATCHED_FILE + ".tmp"
@@ -2398,9 +2352,7 @@ def save_unmatched(
             dump(unmatched_data, f, indent=4, sort_keys=True)
         rename(temp_file, UNMATCHED_FILE)
 
-        print(
-            "[Unmatched] Cache updated - total entries: %d" %
-            len(unmatched_data))
+        print("[Unmatched] Cache updated - total entries: %d" % len(unmatched_data))
 
     except Exception as e:
         print("[Unmatched] Error: %s" % e)
@@ -2573,8 +2525,7 @@ def fix_cache_format(remove_duplicates=True):
 
             # Field 'matched': TRUE if id is valid OR sref is valid
             current_matched = value.get('matched', False)
-            correct_matched = VavooEPGMatcher.is_valid_rytec_id(
-                current_id) or is_valid_sref(current_sref)
+            correct_matched = VavooEPGMatcher.is_valid_rytec_id(current_id) or is_valid_sref(current_sref)
             if current_matched != correct_matched:
                 value['matched'] = correct_matched
                 changed = True
@@ -2582,8 +2533,7 @@ def fix_cache_format(remove_duplicates=True):
             if changed:
                 modified += 1
 
-        # If you want to remove duplicates, you can do it here, but not
-        # required for now
+        # If you want to remove duplicates, you can do it here, but not required for now
         if remove_duplicates:
             # possible duplicate removal logic, if needed
             pass
@@ -2616,27 +2566,33 @@ def returnIMDB(text_clear, session):
 
     if exists(TMDB):
         try:
-            from Plugins.Extensions.TMBD.plugin import TMBD
+            # from Plugins.Extensions.TMBD.plugin import TMBD
+            # print("[XCF] Opening TMDB for: %s" % text)
+            # session.open(TMBD.tmdbScreen, text, 0)
+            from Plugins.Extensions.TMBD.plugin import tmdbScreen
             print("[XCF] Opening TMDB for: %s" % text)
-            session.open(TMBD.tmdbScreen, text, 0)
+            session.open(tmdbScreen, text, 2)
             return True
         except Exception as e:
             print("[XCF] TMDB error: ", str(e))
 
     if exists(tmdbx):
         try:
-            from Plugins.Extensions.tmdb.plugin import tmdb
-            print("[XCF] Opening tmdb for: %s" % text)
-            session.open(tmdb.tmdbScreen, text, 0)
+            # from Plugins.Extensions.tmdb.plugin import tmdb
+            # print("[XCF] Opening tmdb for: %s" % text)
+            # session.open(tmdbScreen, text, 0)
+            from Plugins.Extensions.tmdb.tmdb import tmdbScreen
+            session.open(tmdbScreen, text, 2)
             return True
         except Exception as e:
             print("[XCF] tmdb error: ", str(e))
 
     if exists(IMDb):
         try:
-            from Plugins.Extensions.IMDb.plugin import main as imdb
+            from Plugins.Extensions.IMDb.plugin import IMDB  # main as imdb
             print("[XCF] Opening IMDb for: %s" % text)
-            imdb(session, text)
+            session.open(IMDB, text, False)
+            # imdb(session, text)
             return True
         except Exception as e:
             print("[XCF] IMDb error: ", str(e))
