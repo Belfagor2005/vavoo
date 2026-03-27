@@ -647,7 +647,8 @@ class VavooProxy:
 
                 for attempt in range(max_retries):
                     try:
-                        print("Fetching catalog page {0} (attempt {1}/{2})".format(page, attempt + 1, max_retries))
+                        print(
+                            "Fetching catalog page {0} (attempt {1}/{2})".format(page, attempt + 1, max_retries))
 
                         r_catalog = self.session.post(
                             self.catalog_url,
@@ -671,12 +672,16 @@ class VavooProxy:
                             )
 
                         if r_catalog.status_code == 502:
-                            print("502 Bad Gateway on page {0}, attempt {1}".format(page, attempt + 1))
+                            print(
+                                "502 Bad Gateway on page {0}, attempt {1}".format(
+                                    page, attempt + 1))
                             if attempt < max_retries - 1:
                                 time.sleep(2 ** attempt)
                                 continue
                             else:
-                                print("Giving up on page {0} after {1} attempts".format(page, max_retries))
+                                print(
+                                    "Giving up on page {0} after {1} attempts".format(
+                                        page, max_retries))
                                 break
 
                         r_catalog.raise_for_status()
@@ -685,11 +690,14 @@ class VavooProxy:
                         try:
                             catalog_data = r_catalog.json()
                         except ValueError as json_err:
-                            print("JSON decode error on page {0}, attempt {1}: {2}".format(page, attempt + 1, json_err))
+                            print(
+                                "JSON decode error on page {0}, attempt {1}: {2}".format(
+                                    page, attempt + 1, json_err))
 
                             if attempt == max_retries - 1:
                                 # last attempt -> switch base and retry page
-                                self._switch_to_next_base("(JSON decode error)")
+                                self._switch_to_next_base(
+                                    "(JSON decode error)")
                                 break
                             else:
                                 time.sleep(2 ** attempt)
@@ -704,7 +712,8 @@ class VavooProxy:
                         print("HTTP error on page {0}: {1}".format(page, e))
 
                         if e.response is not None and e.response.status_code == 451:
-                            self._switch_to_next_base("(HTTP 451 on catalog HTTPError)")
+                            self._switch_to_next_base(
+                                "(HTTP 451 on catalog HTTPError)")
                             if attempt < max_retries - 1:
                                 continue
 
@@ -725,7 +734,8 @@ class VavooProxy:
                             break
 
                 if not success:
-                    print("Failed to load page {0}, stopping catalog download".format(page))
+                    print(
+                        "Failed to load page {0}, stopping catalog download".format(page))
                     if last_exception:
                         print("Last error: {0}".format(last_exception))
                     break
@@ -747,7 +757,8 @@ class VavooProxy:
 
                         for sep in separators:
                             if sep in base_country:
-                                base_country = base_country.split(sep)[0].strip()
+                                base_country = base_country.split(sep)[
+                                    0].strip()
                                 break
 
                         if not base_country:
@@ -765,7 +776,9 @@ class VavooProxy:
                         all_channels.append(channel_data)
                         items_processed += 1
 
-                print("Page {0}: processed {1} items, total {2} channels".format(page, items_processed, len(all_channels)))
+                print(
+                    "Page {0}: processed {1} items, total {2} channels".format(
+                        page, items_processed, len(all_channels)))
 
                 cursor = catalog_data.get("nextCursor")
 
@@ -778,7 +791,9 @@ class VavooProxy:
                 if page % 10 == 0:
                     time.sleep(0.1)
 
-            print("Catalog loaded: {0} channels in {1} pages".format(len(all_channels), page - 1))
+            print(
+                "Catalog loaded: {0} channels in {1} pages".format(
+                    len(all_channels), page - 1))
             return all_channels
 
         except Exception as e:
@@ -786,7 +801,9 @@ class VavooProxy:
             trace_error()
 
             if all_channels:
-                print("Returning {0} channels already loaded".format(len(all_channels)))
+                print(
+                    "Returning {0} channels already loaded".format(
+                        len(all_channels)))
                 return all_channels
 
             return None
