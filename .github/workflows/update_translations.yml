@@ -4,8 +4,7 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * 0"
+
 jobs:
   update-translations:
     runs-on: ubuntu-latest
