@@ -120,7 +120,7 @@ from . import (
     PROXY_COUNTRIES_URL, PROXY_REFRESH_URL, PROXY_SHUTDOWN_URL,
     FLAG_CACHE_DIR, PRIMARY_BASE_URL, FALLBACK_BASE_URL, EPGIMPORT_CONF
 )
-from . import PY2, PY3, vUtils
+from . import PY2, PY3, vUtils, CACHE_FILE
 from .bouquet_manager import (
     convert_bouquet,
     _update_favorite_file,
@@ -1663,7 +1663,13 @@ class MainVavoo(Screen):
         self['actions'] = ActionMap(actions_list, actions, -1)
 
     def _fix_cache_format(self, result=None):
-        """Fix cache format with confirmation and show result popup"""
+        # print("[DEBUG] Cache file path:", CACHE_FILE)
+        # print("[DEBUG] File exists:", isfile(CACHE_FILE))
+        # if isfile(CACHE_FILE):
+            # with open(CACHE_FILE, 'r') as f:
+                # import json
+                # data = json.load(f)
+                # print("[DEBUG] First entry keys:", list(data.keys())[:3])
 
         if result is None:
             message_lines = []
@@ -1690,7 +1696,8 @@ class MainVavoo(Screen):
             if NOTIFICATION_AVAILABLE:
                 quick_notify(_("Fixing cache format..."), 2)
 
-            fixed, removed = fix_cache_format(remove_duplicates=True)
+            # fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True)
+            fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True, remove_invalid=True)
 
             if fixed == 0 and removed == 0:
                 message = _(
@@ -1724,6 +1731,120 @@ class MainVavoo(Screen):
                 MessageBox.TYPE_ERROR,
                 timeout=5
             )
+    
+    # def fix_cache_format(remove_duplicates=True):
+        # """
+        # Fix cache file:
+        # - Lowercase all keys and the 'name' field.
+        # - Remove any extra fields (e.g., 'attempts') not in the required set.
+        # - Ensure required fields exist (id, name, country, sref, timestamp, matched).
+        # - Mark duplicates (same name+country) as matched=False.
+        # Returns (fixed_count, duplicate_count).
+        # """
+        # try:
+            # if not file_exists(CACHE_FILE):
+                # print("[Cache] No cache file found")
+                # return 0, 0
+
+            # with open(CACHE_FILE, 'r') as f:
+                # cache = load(f)
+
+            # required = {'id', 'name', 'country', 'sref', 'timestamp', 'matched'}
+            # new_cache = {}
+            # fixed = 0
+            # duplicate_count = 0
+
+            # # Step 1: lowercase keys and clean each entry
+            # for key, value in cache.items():
+                # key_lower = key.lower().strip()
+
+                # # Remove any field not in required
+                # extra = set(value.keys()) - required
+                # if extra:
+                    # for k in extra:
+                        # del value[k]
+                    # fixed += 1
+
+                # # Ensure all required fields exist with proper format
+                # if 'name' not in value:
+                    # value['name'] = key_lower
+                    # fixed += 1
+                # else:
+                    # # Lowercase the name (no other normalization)
+                    # value['name'] = value['name'].lower().strip()
+                    # fixed += 1
+
+                # if 'country' not in value or not value['country']:
+                    # parts = key_lower.rsplit('_', 1)
+                    # value['country'] = parts[-1] if len(parts) > 1 else ''
+                    # fixed += 1
+                # else:
+                    # value['country'] = value['country'].lower().strip()
+
+                # if 'id' not in value or not value['id']:
+                    # value['id'] = key_lower
+                    # fixed += 1
+                # else:
+                    # value['id'] = value['id'].lower().strip()
+
+                # if 'sref' not in value or not value['sref']:
+                    # value['sref'] = "4097:0:0:0:0:0:0:0:0:0:"
+                    # fixed += 1
+                # # sref remains as is (no lowercase)
+
+                # if 'timestamp' not in value:
+                    # from time import strftime, localtime
+                    # value['timestamp'] = strftime('%Y-%m-%d %H:%M:%S', localtime())
+                    # fixed += 1
+
+                # if 'matched' not in value:
+                    # value['matched'] = False
+                    # fixed += 1
+
+                # new_cache[key_lower] = value
+
+            # # Step 2: detect duplicates based on (name, country)
+            # groups = {}
+            # for key, val in new_cache.items():
+                # name_key = val['name'].strip()
+                # country_key = val['country'].strip()
+                # group = (name_key, country_key)
+                # groups.setdefault(group, []).append(key)
+
+            # # Mark duplicates as matched=False (keep first occurrence)
+            # for group, keys in groups.items():
+                # if len(keys) > 1:
+                    # primary = keys[0]
+                    # for dup_key in keys[1:]:
+                        # if new_cache[dup_key].get('matched', False):
+                            # new_cache[dup_key]['matched'] = False
+                            # duplicate_count += 1
+                            # fixed += 1
+
+            # # Save if anything changed
+            # if fixed > 0 or duplicate_count > 0:
+                # with open(CACHE_FILE, 'w') as f:
+                    # dump(new_cache, f, indent=4, sort_keys=True)
+
+                # # Update matcher cache (if available)
+                # try:
+                    # from .vUtils import get_epg_matcher
+                    # matcher = get_epg_matcher()
+                    # matcher.cache = new_cache
+                    # matcher._build_normalized_index()
+                # except:
+                    # pass
+
+                # print("[Cache] Fixed %d entries, marked %d duplicates as unmatched" % (fixed, duplicate_count))
+            # else:
+                # print("[Cache] No changes needed.")
+
+            # return fixed, duplicate_count
+
+        # except Exception as e:
+            # print("[Cache] Error: %s" % e)
+            # trace_error()
+            # return 0, 0
 
     def reload_bouquets_with_popup(self):
         """Reload bouquets with confirmation popup"""

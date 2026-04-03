@@ -2532,9 +2532,142 @@ def update_epg_sources():
         print("[EPG] Error writing sources file: %s" % e)
 
 
+def fix_cache_format(remove_duplicates=True, remove_unmatched=False, remove_invalid=False):
+    """
+    Fix cache file.
+    - Lowercase keys only (not name or id)
+    - Remove extra fields
+    - Mark duplicates as matched=False (case-insensitive comparison for names)
+    - Remove entries based on flags
+    Returns (fixed_count, removed_count)
+    """
+    try:
+        if not exists(CACHE_FILE):
+            print("[Cache] No cache file found")
+            return 0, 0
+
+        with open(CACHE_FILE, 'r') as f:
+            cache = load(f)
+
+        required = {'id', 'name', 'country', 'sref', 'timestamp', 'matched'}
+        new_cache = {}
+        modified = 0
+        duplicates = 0
+        keys_changed = False
+
+        # Lista degli sref di fallback da considerare invalidi
+        fallback_srefs = [
+            "4097:0:0:0:0:0:0:0:0:0:",
+            "4097:0:1:1:1:40:0:0:0:0"
+        ]
+
+        for key, value in cache.items():
+            new_key = key.lower().strip()
+            if new_key != key:
+                keys_changed = True
+            changed = False
+
+            # Remove extra fields
+            extra = set(value.keys()) - required
+            if extra:
+                for k in extra:
+                    del value[k]
+                changed = True
+
+            # Name: keep original case
+            if 'name' not in value:
+                value['name'] = key
+                changed = True
+
+            # Country: lowercase
+            if 'country' not in value or not value['country']:
+                parts = new_key.rsplit('_', 1)
+                value['country'] = parts[-1] if len(parts) > 1 else ''
+                changed = True
+            else:
+                new_country = str(value['country']).lower().strip()
+                if new_country != value['country']:
+                    value['country'] = new_country
+                    changed = True
+
+            # ID: keep original case
+            if 'id' not in value or not value['id']:
+                value['id'] = key
+                changed = True
+
+            # sref: se è vuoto o mancante, assegna il primo fallback (ma poi verrà eventualmente rimosso)
+            if 'sref' not in value or not value['sref']:
+                value['sref'] = fallback_srefs[0]
+                changed = True
+
+            # timestamp
+            if 'timestamp' not in value:
+                from time import strftime, localtime
+                value['timestamp'] = strftime('%Y-%m-%d %H:%M:%S', localtime())
+                changed = True
+
+            # matched
+            if 'matched' not in value:
+                value['matched'] = False
+                changed = True
+
+            if changed:
+                modified += 1
+
+            new_cache[new_key] = value
+
+        # Mark duplicates (case-insensitive comparison on name)
+        if remove_duplicates:
+            groups = {}
+            for k, v in new_cache.items():
+                name_key = v['name'].lower().strip() if v['name'] else ''
+                country_key = v['country']
+                group = (name_key, country_key)
+                groups.setdefault(group, []).append(k)
+
+            for group, keys in groups.items():
+                if len(keys) > 1:
+                    for dup in keys[1:]:
+                        if new_cache[dup].get('matched', False):
+                            new_cache[dup]['matched'] = False
+                            duplicates += 1
+                            modified += 1
+
+        # Remove entries based on flags
+        removed = 0
+        to_delete = []
+        for k, v in new_cache.items():
+            if remove_unmatched and v.get('matched') is False:
+                to_delete.append(k)
+            elif remove_invalid and v.get('sref') in fallback_srefs:
+                to_delete.append(k)
+
+        to_delete = list(set(to_delete))
+        for k in to_delete:
+            del new_cache[k]
+            removed += 1
+
+        if removed:
+            print("[Cache] Removed %d entries (unmatched=%s, invalid=%s)" % (removed, remove_unmatched, remove_invalid))
+
+        # Save if any changes
+        if modified > 0 or duplicates > 0 or keys_changed or removed > 0:
+            with open(CACHE_FILE, 'w') as f:
+                dump(new_cache, f, indent=4, sort_keys=True, ensure_ascii=False)
+            print("[Cache] Fixed %d entries, marked %d duplicates, removed %d entries, keys lowercased" % (modified, duplicates, removed))
+            return modified, removed
+        else:
+            print("[Cache] No changes needed")
+            return 0, 0
+
+    except Exception as e:
+        print("[Cache] Error: %s" % e)
+        trace_error()
+        return 0, 0
+
+
+"""
 def fix_cache_format(remove_duplicates=True):
-    """Fix all cache entries and optionally remove duplicates.
-       Returns tuple (fixed_count, removed_duplicates_count)"""
     try:
         if not exists(CACHE_FILE):
             print("[Cache] No cache file found")
@@ -2619,6 +2752,7 @@ def fix_cache_format(remove_duplicates=True):
         print("[Cache] Error: {}".format(e))
         trace_error()
         return 0, 0
+"""
 
 
 def returnIMDB(text_clear, session):
