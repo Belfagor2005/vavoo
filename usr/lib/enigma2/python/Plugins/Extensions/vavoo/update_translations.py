@@ -389,8 +389,8 @@ def fix_po_file(po_file):
             if line.strip() == 'msgid ""' and i + \
                     1 < len(lines) and lines[i + 1].strip() == 'msgstr ""':
                 # Check if this is the header (should be only one)
-                if not any(l.strip().startswith('"Project-Id-Version:')
-                           for l in fixed_lines):
+                if not any(ls.strip().startswith('"Project-Id-Version:')
+                           for ls in fixed_lines):
                     # Keep header
                     fixed_lines.append(line)
                     fixed_lines.append(lines[i + 1])
