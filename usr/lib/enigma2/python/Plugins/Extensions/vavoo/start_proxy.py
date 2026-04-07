@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function
+import sys
 """
 #########################################################
 #                                                       #
@@ -22,8 +24,6 @@
 #  please maintain this credit header.                  #
 #########################################################
 """
-
-import sys
 
 plugin_path = "/usr/lib/enigma2/python/Plugins/Extensions/vavoo"
 if plugin_path not in sys.path:

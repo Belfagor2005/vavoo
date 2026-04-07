@@ -1,27 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-"""
-#########################################################
-#                                                       #
-#  Vavoo Stream Live Plugin                             #
-#  Created by Lululla (https://github.com/Belfagor2005) #
-#  License: CC BY-NC-SA 4.0                             #
-#  https://creativecommons.org/licenses/by-nc-sa/4.0    #
-#  Last Modified: 20260315                              #
-#                                                       #
-#  Credits:                                             #
-#  - Original concept by Lululla                        #
-#  - Background images by @oktus                        #
-#  - Additional contributions by Qu4k3                  #
-#  - Linuxsat-support.com & Corvoboys communities       #
-#                                                       #
-#  Usage of this code without proper attribution        #
-#  is strictly prohibited.                              #
-#  For modifications and redistribution,                #
-#  please maintain this credit header.                  #
-#########################################################
-"""
 
 import codecs
 import ssl
@@ -158,6 +137,27 @@ from .vUtils import (
     ReloadBouquets,
     trace_error
 )
+"""
+#########################################################
+#                                                       #
+#  Vavoo Stream Live Plugin                             #
+#  Created by Lululla (https://github.com/Belfagor2005) #
+#  License: CC BY-NC-SA 4.0                             #
+#  https://creativecommons.org/licenses/by-nc-sa/4.0    #
+#  Last Modified: 20260315                              #
+#                                                       #
+#  Credits:                                             #
+#  - Original concept by Lululla                        #
+#  - Background images by @oktus                        #
+#  - Additional contributions by Qu4k3                  #
+#  - Linuxsat-support.com & Corvoboys communities       #
+#                                                       #
+#  Usage of this code without proper attribution        #
+#  is strictly prohibited.                              #
+#  For modifications and redistribution,                #
+#  please maintain this credit header.                  #
+#########################################################
+"""
 
 # Import notification system
 try:

@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, absolute_import
 
+import sys
+from Components.Label import Label
+from Screens.Screen import Screen
+from enigma import eTimer
+from threading import Lock
+
 """
 #########################################################
 #                                                       #
@@ -20,12 +26,6 @@ from __future__ import print_function, absolute_import
 """
 
 __author__ = "Lululla"
-
-import sys
-from Components.Label import Label
-from Screens.Screen import Screen
-from enigma import eTimer
-from threading import Lock
 
 if sys.version_info[0] >= 3:
     unicode = str

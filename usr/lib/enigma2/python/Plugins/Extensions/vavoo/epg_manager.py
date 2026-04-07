@@ -1,18 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, absolute_import, division
-"""
-EPG Manager - Optimized EPG download and caching module.
-
-Features:
-- Local disk cache with configurable TTL
-- Streaming download with on-the-fly decompression
-- Retry with exponential backoff
-- Memory-efficient XML parsing
-- Program filtering (only current/future programs)
-"""
-# Modified by lululla 20260314
-# Python 2/3 compatibility
-
 from datetime import datetime, timedelta
 from json import load, dump
 from os import unlink
@@ -26,6 +13,19 @@ import time
 import xml.etree.ElementTree as ET
 
 from . import PY2
+"""
+EPG Manager - Optimized EPG download and caching module.
+
+Features:
+- Local disk cache with configurable TTL
+- Streaming download with on-the-fly decompression
+- Retry with exponential backoff
+- Memory-efficient XML parsing
+- Program filtering (only current/future programs)
+"""
+# Modified by lululla 20260314
+# Python 2/3 compatibility
+
 
 # Disable SSL warnings
 try:
