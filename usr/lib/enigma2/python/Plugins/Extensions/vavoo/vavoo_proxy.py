@@ -38,31 +38,6 @@ from .vUtils import (
     RequestAgent
 )
 
-"""
-#########################################################
-#                                                       #
-#  Vavoo Stream Live Plugin                             #
-#  Created by Lululla (https://github.com/Belfagor2005) #
-#  License: CC BY-NC-SA 4.0                             #
-#  https://creativecommons.org/licenses/by-nc-sa/4.0    #
-#  Last Modified: 20260315                              #
-#                                                       #
-#  Credits:                                             #
-#  - Original concept by Lululla                        #
-#  - Background images by @oktus                        #
-#  - Additional contributions by Qu4k3                  #
-#  - Linuxsat-support.com & Corvoboys communities       #
-#                                                       #
-#  Usage of this code without proper attribution        #
-#  is strictly prohibited.                              #
-#  For modifications and redistribution,                #
-#  please maintain this credit header.                  #
-#########################################################
-"""
-
-# Disable SSL warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 _starting = False
 
 try:
@@ -112,10 +87,36 @@ except ImportError:
     from SocketServer import ThreadingMixIn
 
 
+# Disable SSL warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
     allow_reuse_address = True
 
+
+"""
+#########################################################
+#                                                       #
+#  Vavoo Stream Live Plugin                             #
+#  Created by Lululla (https://github.com/Belfagor2005) #
+#  License: CC BY-NC-SA 4.0                             #
+#  https://creativecommons.org/licenses/by-nc-sa/4.0    #
+#  Last Modified: 20260315                              #
+#                                                       #
+#  Credits:                                             #
+#  - Original concept by Lululla                        #
+#  - Background images by @oktus                        #
+#  - Additional contributions by Qu4k3                  #
+#  - Linuxsat-support.com & Corvoboys communities       #
+#                                                       #
+#  Usage of this code without proper attribution        #
+#  is strictly prohibited.                              #
+#  For modifications and redistribution,                #
+#  please maintain this credit header.                  #
+#########################################################
+"""
 
 # ========== CONFIGURATIONS ==========
 
