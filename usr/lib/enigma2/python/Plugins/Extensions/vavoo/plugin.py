@@ -99,7 +99,7 @@ from . import (
     PROXY_COUNTRIES_URL, PROXY_REFRESH_URL, PROXY_SHUTDOWN_URL,
     FLAG_CACHE_DIR, PRIMARY_BASE_URL, FALLBACK_BASE_URL, EPGIMPORT_CONF
 )
-from . import PY2, PY3, vUtils  # , CACHE_FILE
+from . import PY2, PY3, vUtils  #, CACHE_FILE
 from .bouquet_manager import (
     convert_bouquet,
     _update_favorite_file,
@@ -404,7 +404,7 @@ def getDNSinfo():
                 if line.startswith("nameserver"):
                     dns_box = line.split()[1]
                     break
-    except BaseException:
+    except:
         dns_box = "n/a"
 
     try:
@@ -413,7 +413,7 @@ def getDNSinfo():
             if line.startswith("h="):
                 dns_external = line.split("=")[1]
                 break
-    except BaseException:
+    except:
         dns_external = "n/a"
 
     return dns_box, dns_external
@@ -1720,8 +1720,7 @@ class MainVavoo(Screen):
                 quick_notify(_("Fixing cache format..."), 2)
 
             # fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True)
-            fixed, removed = fix_cache_format(
-                remove_duplicates=True, remove_unmatched=True, remove_invalid=True)
+            fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True, remove_invalid=True)
 
             if fixed == 0 and removed == 0:
                 message = _(
@@ -1755,7 +1754,7 @@ class MainVavoo(Screen):
                 MessageBox.TYPE_ERROR,
                 timeout=5
             )
-
+    
     def reload_bouquets_with_popup(self):
         """Reload bouquets with confirmation popup"""
         print("[DEBUG] reload_bouquets_with_popup called")
