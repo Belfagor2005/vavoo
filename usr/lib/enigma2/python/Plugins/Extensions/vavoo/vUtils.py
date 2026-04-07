@@ -702,7 +702,7 @@ def get_proxy_channels(country_name):
 
     for attempt in range(max_retries):
         try:
-            print("Getting channels for '" + str(country_name) + \
+            print("Getting channels for '" + str(country_name) +
                   "' (attempt " + str(attempt + 1) + "/" + str(max_retries) + ")")
 
             # URL-encode
@@ -2532,10 +2532,7 @@ def update_epg_sources():
         print("[EPG] Error writing sources file: %s" % e)
 
 
-def fix_cache_format(
-        remove_duplicates=True,
-        remove_unmatched=False,
-        remove_invalid=False):
+def fix_cache_format(remove_duplicates=True, remove_unmatched=False, remove_invalid=False):
     """
     Fix cache file.
     - Lowercase keys only (not name or id)
@@ -2598,8 +2595,7 @@ def fix_cache_format(
                 value['id'] = key
                 changed = True
 
-            # sref: se è vuoto o mancante, assegna il primo fallback (ma poi
-            # verrà eventualmente rimosso)
+            # sref: se è vuoto o mancante, assegna il primo fallback (ma poi verrà eventualmente rimosso)
             if 'sref' not in value or not value['sref']:
                 value['sref'] = fallback_srefs[0]
                 changed = True
@@ -2652,22 +2648,13 @@ def fix_cache_format(
             removed += 1
 
         if removed:
-            print(
-                "[Cache] Removed %d entries (unmatched=%s, invalid=%s)" %
-                (removed, remove_unmatched, remove_invalid))
+            print("[Cache] Removed %d entries (unmatched=%s, invalid=%s)" % (removed, remove_unmatched, remove_invalid))
 
         # Save if any changes
         if modified > 0 or duplicates > 0 or keys_changed or removed > 0:
             with open(CACHE_FILE, 'w') as f:
-                dump(
-                    new_cache,
-                    f,
-                    indent=4,
-                    sort_keys=True,
-                    ensure_ascii=False)
-            print(
-                "[Cache] Fixed %d entries, marked %d duplicates, removed %d entries, keys lowercased" %
-                (modified, duplicates, removed))
+                dump(new_cache, f, indent=4, sort_keys=True, ensure_ascii=False)
+            print("[Cache] Fixed %d entries, marked %d duplicates, removed %d entries, keys lowercased" % (modified, duplicates, removed))
             return modified, removed
         else:
             print("[Cache] No changes needed")

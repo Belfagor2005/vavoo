@@ -1,11 +1,8 @@
 #!/bin/bash
 
-version='1.62'
+version='1.63'
 changelog="
-- channel_alias
-- Cache fix
-- HTTP 451 fallback
-- Proxy monitoring improved
+- Request DNS
 - Performance improvements
 
 Improved EPG
