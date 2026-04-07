@@ -99,7 +99,7 @@ from . import (
     PROXY_COUNTRIES_URL, PROXY_REFRESH_URL, PROXY_SHUTDOWN_URL,
     FLAG_CACHE_DIR, PRIMARY_BASE_URL, FALLBACK_BASE_URL, EPGIMPORT_CONF
 )
-from . import PY2, PY3, vUtils  #, CACHE_FILE
+from . import PY2, PY3, vUtils  # , CACHE_FILE
 from .bouquet_manager import (
     convert_bouquet,
     _update_favorite_file,
@@ -397,7 +397,6 @@ print('final folder back: ', BackPath)
 def getDNSinfo():
     dns_box = None
     dns_external = None
-
     try:
         with open("/etc/resolv.conf", "r") as f:
             for line in f:
@@ -407,15 +406,13 @@ def getDNSinfo():
     except:
         dns_box = "n/a"
 
-    try:
-        data = urlopen("https://1.1.1.1/cdn-cgi/trace", timeout=5).read()
-        for line in data.split("\n"):
-            if line.startswith("h="):
-                dns_external = line.split("=")[1]
-                break
-    except:
-        dns_external = "n/a"
-
+    data = urlopen("https://1.1.1.1/cdn-cgi/trace", timeout=5).read()
+    for line in data.split("\n"):
+        if line.startswith("h="):
+            dns_external = line.split("=")[1]
+            break
+        else:
+            dns_external = "n/a"
     return dns_box, dns_external
 
 
