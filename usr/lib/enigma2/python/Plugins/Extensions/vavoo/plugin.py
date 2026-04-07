@@ -1718,7 +1718,8 @@ class MainVavoo(Screen):
                 quick_notify(_("Fixing cache format..."), 2)
 
             # fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True)
-            fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True, remove_invalid=True)
+            fixed, removed = fix_cache_format(
+                remove_duplicates=True, remove_unmatched=True, remove_invalid=True)
 
             if fixed == 0 and removed == 0:
                 message = _(
@@ -1752,7 +1753,7 @@ class MainVavoo(Screen):
                 MessageBox.TYPE_ERROR,
                 timeout=5
             )
-    
+
     def reload_bouquets_with_popup(self):
         """Reload bouquets with confirmation popup"""
         print("[DEBUG] reload_bouquets_with_popup called")
