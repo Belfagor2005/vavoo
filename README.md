@@ -1,9 +1,12 @@
 # 🎬 Vavoo Stream Live - Enigma2 Plugin
 
 [![Python package](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/vavoo/actions/workflows/pylint.yml)
-[![Version](https://img.shields.io/badge/Version-1.61-blue.svg)](https://github.com/Belfagor2005/vavoo)
+[![Version](https://img.shields.io/badge/Version-1.63-blue.svg)](https://github.com/Belfagor2005/vavoo)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Python](https://img.shields.io/badge/Python-2.7%2F3.x-yellow.svg)](https://python.org)
+
+<a href="https://github.com/Belfagor2005/vavoo/actions/workflows/ruff.yml">
+<img src="https://github.com/Belfagor2005/vavoo/actions/workflows/ruff.yml/badge.svg" alt="Ruff Status" style="max-width: 100%;"></a>
 
 ## 📌 Overview
 Vavoo Stream Live Plugin is an Enigma2 extension that provides access to thousands of live TV channels from multiple countries. It features a built-in local proxy for improved reliability, automatic bouquet updates, EPG integration, real-time notifications, satellite priority matching, and seamless integration with your Enigma2 receiver.
