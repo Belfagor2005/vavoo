@@ -394,35 +394,6 @@ except Exception as e:
 print('final folder back: ', BackPath)
 
 
-def getDNSinfo():
-    dns_box = None
-    dns_external = None
-    try:
-        with open("/etc/resolv.conf", "r") as f:
-            for line in f:
-                if line.startswith("nameserver"):
-                    dns_box = line.split()[1]
-                    break
-    except BaseException:
-        dns_box = "n/a"
-
-    data = urlopen("https://1.1.1.1/cdn-cgi/trace", timeout=5).read()
-    data = data.decode("utf-8")
-    for line in data.split("\n"):
-        if line.startswith("h="):
-            dns_external = line.split("=")[1]
-            break
-        else:
-            dns_external = "n/a"
-    return dns_box, dns_external
-
-
-dns_box, dns_ext = getDNSinfo()
-
-print("DNS box:", dns_box)
-print("DNS out:", dns_ext)
-
-
 # Helper function for string conversion
 def to_string(text):
     """Convert any input to proper string format for Enigma2 widgets"""
@@ -1718,8 +1689,7 @@ class MainVavoo(Screen):
                 quick_notify(_("Fixing cache format..."), 2)
 
             # fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True)
-            fixed, removed = fix_cache_format(
-                remove_duplicates=True, remove_unmatched=True, remove_invalid=True)
+            fixed, removed = fix_cache_format(remove_duplicates=True, remove_unmatched=True, remove_invalid=True)
 
             if fixed == 0 and removed == 0:
                 message = _(
@@ -1753,7 +1723,7 @@ class MainVavoo(Screen):
                 MessageBox.TYPE_ERROR,
                 timeout=5
             )
-
+    
     def reload_bouquets_with_popup(self):
         """Reload bouquets with confirmation popup"""
         print("[DEBUG] reload_bouquets_with_popup called")
