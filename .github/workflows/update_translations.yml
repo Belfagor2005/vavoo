@@ -13,12 +13,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false  # Important: useremo GITHUB_TOKEN manualmente
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -29,12 +29,15 @@ jobs:
 
       - name: Run translation updaters
         run: |
-          # Loop through all subfolders looking for update_translations.py
           for pyfile in $(find . -type f -name "update_translations.py"); do
             plugin_dir=$(dirname "$pyfile")
             echo "Running translation updater in $plugin_dir"
             cd "$plugin_dir"
             python3 update_translations.py
+            # Forza l'aggiunta dei file locale generati (ignora .gitignore)
+            if [ -d locale ]; then
+              git add -f locale/
+            fi
             cd - > /dev/null
           done
 
@@ -42,12 +45,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-
-          git add .
           git diff --cached --quiet || git commit -m "Update translations via workflow"
-
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-
           git pull --rebase origin main
           git push origin main
-
